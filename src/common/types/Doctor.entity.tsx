@@ -1,0 +1,30 @@
+import { Branch } from "./Branch.entity";
+import { Certificate } from "./Certificate.entity";
+import { AppointmentSchedule } from "./expert/AppointmentSchedule.entity";
+import { Expertise } from "./Expertise.entity";
+import { Title } from "./Title.entity";
+
+export type Doctor = {
+  _id: string;
+  expert_name: string;
+  expert_surname: string;
+  expert_email: string;
+  expert_expertise: Expertise;
+  expert_title: Title;
+  expert_role: string;
+  expert_branch: Branch[];
+  expert_appointment_schedule: AppointmentSchedule;
+  expert_reset_password_token: string;
+  expert_reset_password_expire: Date;
+  expert_company: string;
+  expert_physical_location: string;
+  expert_city_location: string;
+  expert_session_fee: string;
+  expert_tel: string;
+  expert_status: number;
+  expert_creation_date: string;
+  expert_operating_type: number;
+  expert_about_me: string;
+  expert_avatar_path: string;
+  expert_certificates: Certificate[];
+};
