@@ -247,7 +247,8 @@ export default function DashboardHeaderExpert({}: Props) {
                 <h1 className="text-lg text-color-dark-primary font-bold opacity-60">
                   Sertifikalarım
                 </h1>
-                {authExpertObject?.expert_appointment_schedule ? (
+                {authExpertObject?.expert_certificates &&
+                authExpertObject?.expert_certificates.length > 0 ? (
                   <div></div>
                 ) : (
                   <GrStatusGoodSmall className="text-[12px] opacity-80 text-color-warning-primary absolute bottom-full left-full" />

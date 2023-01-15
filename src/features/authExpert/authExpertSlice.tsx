@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Appointment } from "../../common/types/Appointment.entity";
 import { Branch } from "../../common/types/Branch.entity";
+import { Certificate } from "../../common/types/Certificate.entity";
 import { Client } from "../../common/types/Client.entity";
 import { Doctor } from "../../common/types/Doctor.entity";
 
@@ -9,6 +10,7 @@ type initialState = {
   auth_expert_object?: Doctor;
   auth_expert_appointments: Appointment[];
   auth_expert_myappointments: Appointment[];
+  auth_expert_certificates: Certificate[];
 };
 
 const initialState: initialState = {
@@ -16,12 +18,22 @@ const initialState: initialState = {
   auth_expert_object: undefined,
   auth_expert_appointments: [],
   auth_expert_myappointments: [],
+  auth_expert_certificates: [],
 };
 
 const authExpertSlice = createSlice({
   name: "authexpert",
   initialState,
   reducers: {
+    addAuthExpertCertificates: (state, { payload }) => {
+      state.auth_expert_certificates = payload;
+    },
+    removeAuthExpertCertificate: (state, { payload }) => {
+      let newState = state.auth_expert_certificates.filter(
+        (certificate) => certificate._id !== payload._id
+      );
+      state.auth_expert_certificates = newState;
+    },
     addAuthExpertToken: (state, { payload }) => {
       state.auth_expert_token = payload;
     },
@@ -73,4 +85,6 @@ export const {
   addAutExperthMyAppointment,
   updateAuthExpertAppointment,
   updateAuthExpertMyAppointment,
+  addAuthExpertCertificates,
+  removeAuthExpertCertificate,
 } = authExpertSlice.actions;

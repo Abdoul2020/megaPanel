@@ -263,3 +263,28 @@ export const authExpertDownloadProfilePicture = async (token: string) => {
     });
   return response;
 };
+
+export const authExpertUploadCertificatePdf = async (
+  token: string,
+  file: any
+) => {
+  let formData = new FormData();
+  formData.append("file", file);
+  const response = await axios
+    .post(`${BASE_URL}/auth/expert/upload-certificate`, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    .then((response) => {
+      return { success: true, data: response };
+    })
+    .catch((err) => {
+      return {
+        success: false,
+        data: err,
+      };
+    });
+  return response;
+};
