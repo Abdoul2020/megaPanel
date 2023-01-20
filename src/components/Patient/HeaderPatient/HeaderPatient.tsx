@@ -1,29 +1,59 @@
 import React, { useEffect, useState } from "react";
 import { FaStethoscope } from "react-icons/fa";
 import { BsArrowRight, BsFillPersonFill } from "react-icons/bs";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { FiLogOut, FiSearch } from "react-icons/fi";
 import { CgProfile } from "react-icons/cg";
 import { useAppDispatch, useAppSelector } from "../../../app/hooks";
+import { addAuthExpertObject } from "../../../features/authExpert/authExpertSlice";
+import {
+  removeCookie,
+  unauthenticateExpert,
+  unauthenticatehardExpert,
+} from "../../../helpers/authExpertHelper";
 import { addAuthObject } from "../../../features/auth/authSlice";
-import { unauthenticate } from "../../../helpers/authHelper";
-import { updateDoctorState } from "../../../features/options/optionsSlice";
+import {
+  unauthenticate,
+  unauthenticatehard,
+} from "../../../helpers/authHelper";
 import { fetchClientProfilePicture } from "../../../features/clients/clientsAPI";
+import { fetchExpertProfilePicture } from "../../../features/doctorSlice/doctorAPI";
+import { updateDoctorState } from "../../../features/options/optionsSlice";
 
 export default function HeaderPatient() {
+  const location = useLocation();
   const navigate = useNavigate();
   const forDoctors = useAppSelector((state) => state.options.forDoctors);
   const pathname = useAppSelector((state) => state.options.pathname);
   const authObject = useAppSelector((state) => state.auth.auth_object);
+  const authExpertObject = useAppSelector(
+    (state) => state.authexpert.auth_expert_object
+  );
+
   const [profileImageBase64, setProfileImageBase64] = useState(null);
   const [profileImageLoader, setProfileImageLoader] = useState(false);
+
+  const [expertProfileImageBase64, setExpertProfileImageBase64] =
+    useState(null);
+  const [expertProfileImageLoader, setExpertProfileImageLoader] =
+    useState(false);
+
   const dispatch = useAppDispatch();
   const handleLogout = () => {
-    dispatch(addAuthObject(undefined));
-    unauthenticate(() => {
-      navigate("/login");
-    });
+    if (authExpertObject) {
+      dispatch(addAuthExpertObject(undefined));
+      unauthenticatehardExpert(() => {
+        navigate("/for-doctors/login");
+      });
+      removeCookie("m_t");
+    } else if (authObject) {
+      dispatch(addAuthObject(undefined));
+      unauthenticatehard(() => {
+        navigate("/login");
+      });
+      removeCookie("m_e_t");
+    }
   };
   // useEffect(() => {
   //   console.log(authObject);
@@ -31,7 +61,7 @@ export default function HeaderPatient() {
 
   useEffect(() => {
     async function fetchData() {
-      if (authObject && authObject.client_avatar_path !== "") {
+      if (authObject) {
         setProfileImageLoader(true);
         const authClientDownloadProfilePictureResponse =
           await fetchClientProfilePicture(authObject._id);
@@ -43,16 +73,49 @@ export default function HeaderPatient() {
           const base64 = authClientDownloadProfilePictureResponse.data.data;
           setProfileImageBase64(base64);
         } else {
-          console.log({ authClientDownloadProfilePictureResponse });
+          // console.log({ authClientDownloadProfilePictureResponse });
         }
       }
     }
-    fetchData();
+    if (
+      authObject &&
+      authObject.client_avatar_path !== "" &&
+      authObject.client_avatar_path !== undefined
+    ) {
+      fetchData();
+    }
   }, [authObject]);
+
+  useEffect(() => {
+    async function fetchData() {
+      if (authExpertObject) {
+        setExpertProfileImageLoader(true);
+        const authExpertDownloadProfilePictureResponse =
+          await fetchExpertProfilePicture(authExpertObject._id);
+        setExpertProfileImageLoader(false);
+        const authExpertDownloadProfilePictureSuccess =
+          authExpertDownloadProfilePictureResponse.success;
+
+        if (authExpertDownloadProfilePictureSuccess) {
+          const base64 = authExpertDownloadProfilePictureResponse.data.data;
+          setExpertProfileImageBase64(base64);
+        } else {
+          // console.log({ authExpertDownloadProfilePictureResponse });
+        }
+      }
+    }
+    if (
+      authExpertObject &&
+      authExpertObject.expert_avatar_path !== "" &&
+      authExpertObject.expert_avatar_path !== undefined
+    ) {
+      fetchData();
+    }
+  }, [authExpertObject]);
   return (
-    <div className="z-10 w-full absolute top-0 flex justify-center items-center">
-      <div className="w-3/4 flex justify-between py-4 items-center">
-        <div className="flex justify-center items-center gap-10">
+    <div className="absolute top-0 z-10 hidden w-full items-center justify-center lg:flex">
+      <div className="flex w-full items-center justify-between py-4 px-10 xl:w-3/4 xl:px-0">
+        <div className="flex items-center justify-center gap-10">
           <Link to="/">
             {pathname === "/" || pathname === "/for-doctors" ? (
               <motion.img
@@ -84,92 +147,31 @@ export default function HeaderPatient() {
               />
             )}
           </Link>
-          <Link
-            to={forDoctors ? "/" : "/for-doctors"}
-            onClick={() => dispatch(updateDoctorState())}
-          >
-            <div
-              className={`${
-                pathname === "/for-doctors" || pathname === "/"
-                  ? "flex"
-                  : "hidden"
-              } z-20 flex justify-center items-center gap-4 px-8 py-[18px] rounded-[15px] bg-color-secondary hover:bg-color-white group transition-all duration-500 cursor-pointer`}
+          {authExpertObject !== undefined || authObject !== undefined ? (
+            <div></div>
+          ) : (
+            <Link
+              to="/for-doctors"
+              onClick={() => dispatch(updateDoctorState())}
             >
-              {forDoctors ? (
-                <FiSearch
-                  fontSize={15}
-                  className="text-color-white group-hover:text-color-secondary transition-all duration-500"
-                />
-              ) : (
+              <div
+                className={`${
+                  pathname === "/for-doctors" || pathname === "/"
+                    ? "flex"
+                    : "hidden"
+                } group z-20 flex cursor-pointer items-center justify-center gap-4 rounded-[15px] bg-color-secondary px-8 py-[18px] transition-all duration-500 hover:bg-color-white`}
+              >
                 <FaStethoscope
                   fontSize={15}
-                  className="text-color-white group-hover:text-color-secondary transition-all duration-500"
+                  className="text-color-white transition-all duration-500 group-hover:text-color-secondary"
                 />
-              )}
-              <button className="z-30">
-                <h1 className="text-sm font-normal text-color-white group-hover:text-color-secondary transition-all duration-500">
-                  {forDoctors ? "Uzman Ara" : "Uzman mısınız?"}
-                </h1>
-              </button>
-            </div>
-          </Link>
-          {forDoctors ? (
-            <motion.ul
-              initial={{ opacity: 0, x: -100 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{
-                ease: "backInOut",
-                duration: 0.7,
-                reapat: 1,
-              }}
-              viewport={{ once: true }}
-              className={`flex justify-center items-center gap-8 ${
-                pathname.includes("register") ||
-                pathname.includes("login") ||
-                pathname.includes("forgot-password")
-                  ? "hidden"
-                  : "flex"
-              }`}
-            >
-              <li className="hover:opacity-80 hover:cursor-pointer">
-                <h1
-                  className={
-                    forDoctors ? "text-color-main" : "text-color-white"
-                  }
-                >
-                  Özellikler
-                </h1>
-              </li>
-              <li className="hover:opacity-80 hover:cursor-pointer">
-                <h1
-                  className={
-                    forDoctors ? "text-color-main" : "text-color-white"
-                  }
-                >
-                  S.S.S
-                </h1>
-              </li>
-              <li className="hover:opacity-80 hover:cursor-pointer">
-                <h1
-                  className={
-                    forDoctors ? "text-color-main" : "text-color-white"
-                  }
-                >
-                  Fiyatlar
-                </h1>
-              </li>
-              <li className="hover:opacity-80 hover:cursor-pointer">
-                <h1
-                  className={
-                    forDoctors ? "text-color-main" : "text-color-white"
-                  }
-                >
-                  Destek
-                </h1>
-              </li>
-            </motion.ul>
-          ) : (
-            <div></div>
+                <button className="z-30">
+                  <h1 className="text-sm font-normal text-color-white transition-all duration-500 group-hover:text-color-secondary">
+                    Uzman mısınız?
+                  </h1>
+                </button>
+              </div>
+            </Link>
           )}
         </div>
         {pathname.includes("register") ||
@@ -181,9 +183,9 @@ export default function HeaderPatient() {
               onClick={() => dispatch(updateDoctorState())}
             >
               <div
-                className="z-20 flex justify-center items-center gap-4
-        group  px-8 py-4 rounded-[15px] bg-color-third
-           hover:bg-color-secondary group transition-all duration-500 cursor-pointer"
+                className="group group z-20 flex cursor-pointer
+        items-center  justify-center gap-4 rounded-[15px] bg-color-third
+           px-8 py-4 transition-all duration-500 hover:bg-color-secondary"
               >
                 {forDoctors ? (
                   <FiSearch
@@ -199,7 +201,7 @@ export default function HeaderPatient() {
                 <button className="z-30">
                   <h1 className="text-sm font-normal text-color-white transition-all duration-500">
                     {forDoctors
-                      ? "Danışman Olarak Kaydol"
+                      ? "Danışan Olarak Kaydol"
                       : "Uzman Olarak Kaydol"}
                   </h1>
                 </button>
@@ -211,9 +213,9 @@ export default function HeaderPatient() {
               onClick={() => dispatch(updateDoctorState())}
             >
               <div
-                className="z-20 flex justify-center items-center gap-4
-        group  px-8 py-4 rounded-[15px] bg-color-third
-           hover:bg-color-secondary group transition-all duration-500 cursor-pointer"
+                className="group group z-20 flex cursor-pointer
+        items-center  justify-center gap-4 rounded-[15px] bg-color-third
+           px-8 py-4 transition-all duration-500 hover:bg-color-secondary"
               >
                 {forDoctors ? (
                   <FiSearch
@@ -238,40 +240,83 @@ export default function HeaderPatient() {
           )
         ) : (
           <div>
-            {authObject !== undefined ? (
-              <div className="flex justify-center items-center gap-8">
-                <Link to="/dashboard">
-                  <div className="flex justify-center items-center gap-4 transition-all duration-300 group cursor-pointer">
-                    <div className="w-[50px] h-[50px] rounded-[20px] overflow-hidden">
-                      {profileImageBase64 ? (
-                        <img
-                          src={`data:image/jpeg;base64,${profileImageBase64}`}
-                          className="w-[50px] h-[50px] rounded-[15px]"
-                          alt=""
-                        />
-                      ) : (
-                        <button className="w-full h-full flex justify-center items-center p-4 rounded-[15px] bg-color-secondary group-hover:bg-color-third transition-all duration-300">
-                          <BsFillPersonFill className="text-color-white text-[40px]" />
-                        </button>
-                      )}
-                    </div>
-                    <h1 className="text-color-white uppercase text-lg group-hover:text-opacity-80">
-                      {`${authObject.client_name} ${authObject.client_surname}`}
-                    </h1>
+            {authObject !== undefined || authExpertObject !== undefined ? (
+              <div>
+                {authExpertObject !== undefined ? (
+                  <div className="flex items-center justify-center gap-8">
+                    <Link to="/for-doctors/dashboard">
+                      <div className="group flex cursor-pointer items-center justify-center gap-4 transition-all duration-300">
+                        <div className="h-[50px] w-[50px] overflow-hidden rounded-[20px]">
+                          {expertProfileImageBase64 ? (
+                            <img
+                              src={`data:image/jpeg;base64,${expertProfileImageBase64}`}
+                              className="h-[50px] w-[50px] rounded-[15px]"
+                              alt=""
+                            />
+                          ) : (
+                            <button className="flex h-full w-full items-center justify-center rounded-[15px] bg-color-secondary p-4 transition-all duration-300 group-hover:bg-color-third">
+                              <BsFillPersonFill className="text-[40px] text-color-white" />
+                            </button>
+                          )}
+                        </div>
+                        <div className="flex items-center justify-center gap-2">
+                          <h1 className="text-lg font-bold uppercase text-color-dark-primary text-opacity-50 group-hover:text-opacity-80">
+                            {`${
+                              authExpertObject.expert_title
+                                ? authExpertObject.expert_title.title_title
+                                : ""
+                            }`}
+                          </h1>
+                          <h1 className="text-base uppercase text-color-dark-primary group-hover:text-opacity-80">
+                            {`${authExpertObject.expert_name} ${authExpertObject.expert_surname}`}
+                          </h1>
+                        </div>
+                      </div>
+                    </Link>
+                    <button
+                      className="rounded-[15px] bg-color-third p-4 transition-all 
+                duration-300 hover:bg-color-secondary"
+                      onClick={handleLogout}
+                    >
+                      <FiLogOut className="text-[24px] text-color-white" />
+                    </button>
                   </div>
-                </Link>
-                <button
-                  className="p-4 rounded-[15px] bg-color-third hover:bg-color-secondary 
-                transition-all duration-300"
-                  onClick={handleLogout}
-                >
-                  <FiLogOut className="text-color-white text-[24px]" />
-                </button>
+                ) : (
+                  <div className="flex items-center justify-center gap-8">
+                    <Link to="/dashboard">
+                      <div className="group flex cursor-pointer items-center justify-center gap-4 transition-all duration-300">
+                        <div className="h-[50px] w-[50px] overflow-hidden rounded-[20px]">
+                          {profileImageBase64 ? (
+                            <img
+                              src={`data:image/jpeg;base64,${profileImageBase64}`}
+                              className="h-[50px] w-[50px] rounded-[15px]"
+                              alt=""
+                            />
+                          ) : (
+                            <button className="flex h-full w-full items-center justify-center rounded-[15px] bg-color-secondary p-4 transition-all duration-300 group-hover:bg-color-third">
+                              <BsFillPersonFill className="text-[40px] text-color-white" />
+                            </button>
+                          )}
+                        </div>
+                        <h1 className="text-lg uppercase text-color-white group-hover:text-opacity-80">
+                          {`${authObject?.client_name} ${authObject?.client_surname}`}
+                        </h1>
+                      </div>
+                    </Link>
+                    <button
+                      className="rounded-[15px] bg-color-third p-4 transition-all 
+                duration-300 hover:bg-color-secondary"
+                      onClick={handleLogout}
+                    >
+                      <FiLogOut className="text-[24px] text-color-white" />
+                    </button>
+                  </div>
+                )}
               </div>
             ) : (
-              <div className="flex justify-center items-center gap-4">
+              <div className="flex items-center justify-center gap-4">
                 <Link to={forDoctors ? "/for-doctors/register" : "/register"}>
-                  <button className="px-8 py-4 rounded-[15px] bg-color-third hover:bg-color-secondary group transition-all duration-500 cursor-pointer">
+                  <button className="group cursor-pointer rounded-[15px] bg-color-third px-8 py-4 transition-all duration-500 hover:bg-color-secondary">
                     <h1 className="text-sm font-normal text-color-white">
                       Hemen Kaydol
                     </h1>
@@ -279,7 +324,7 @@ export default function HeaderPatient() {
                 </Link>
                 <Link to={forDoctors ? "/for-doctors/login" : "/login"}>
                   <button
-                    className={`flex justify-center items-center gap-2 px-8 py-4 rounded-[15px] border-solid border-[1px] ${
+                    className={`flex items-center justify-center gap-2 rounded-[15px] border-[1px] border-solid px-8 py-4 ${
                       forDoctors || pathname !== "/"
                         ? "border-color-main"
                         : "border-color-white"
@@ -287,14 +332,14 @@ export default function HeaderPatient() {
                       forDoctors
                         ? "hover:border-color-white"
                         : "hover:border-color-main"
-                    } group transition-all duration-500 cursor-pointer`}
+                    } group cursor-pointer transition-all duration-500`}
                   >
                     <h1
                       className={`text-sm font-normal ${
                         forDoctors || pathname !== "/"
                           ? "text-color-main"
                           : "text-color-white"
-                      } group-hover:text-color-secondary transition-all duration-500`}
+                      } transition-all duration-500 group-hover:text-color-secondary`}
                     >
                       Giriş Yap
                     </h1>
@@ -303,7 +348,7 @@ export default function HeaderPatient() {
                         forDoctors || pathname !== "/"
                           ? "text-color-main"
                           : "text-color-white"
-                      } group-hover:text-color-secondary transition-all duration-500`}
+                      } transition-all duration-500 group-hover:text-color-secondary`}
                       fontSize={20}
                     />
                   </button>

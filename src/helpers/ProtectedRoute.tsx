@@ -18,7 +18,7 @@ export default function ProtectedRoute({
   if (!isAuth()) {
     const alert: Alert = {
       type: "warning",
-      text: "Oturumunuzun süresi doldu",
+      text: "Oturumum zaman aşımına uğradı.",
       active: true,
       statusCode: 408,
     };

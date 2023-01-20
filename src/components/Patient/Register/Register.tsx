@@ -12,6 +12,7 @@ import { updateAlert } from "../../../features/options/optionsSlice";
 import { AuthClientRegisterDto } from "../../../common/dtos/auth/client/authClientRegisterDto.dto";
 import { BiLoaderAlt } from "react-icons/bi";
 import { isAuth } from "../../../helpers/authHelper";
+import { isAuthExpert } from "../../../helpers/authExpertHelper";
 
 type Props = {};
 
@@ -19,8 +20,13 @@ export default function Register({}: Props) {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (isAuth()) {
-      navigate("/");
+    if (isAuthExpert() || isAuth()) {
+      if (isAuthExpert()) {
+        navigate("/for-doctors");
+      }
+      if (isAuth()) {
+        navigate("/");
+      }
     }
   }, []);
 
@@ -127,21 +133,21 @@ export default function Register({}: Props) {
     setPasswordRetypeHide((value) => !value);
   };
   return (
-    <div className="relative h-screen w-full flex justify-center items-center bg-color-white-secondary pt-20">
-      <div className="z-20 w-1/2 grid grid-cols-2 gap-10">
-        <div className="flex flex-col justify-center items-center gap-8 w-full">
-          <div className="flex flex-col justify-center items-start gap-6 p-8 px-10 bg-color-white shadow-lg rounded-[25px] w-full">
-            <h1 className="text-xl text-color-dark-primary font-bold opacity-80">
+    <div className="relative flex h-screen w-full items-center justify-center bg-color-white-secondary py-20 pt-[170px] px-10 lg:px-0">
+      <div className="z-20 flex w-full grid-cols-2 content-start items-center justify-center gap-10 lg:grid lg:w-2/3">
+        <div className="flex w-full flex-col items-center justify-center gap-8">
+          <div className="flex w-full flex-col items-start justify-center gap-6 rounded-[25px] bg-color-white p-8 px-10 shadow-lg">
+            <h1 className="text-xl font-bold text-color-dark-primary opacity-80">
               Kayıt Ol
             </h1>
             <form
-              className="flex flex-col justify-center items-start gap-4 w-full"
+              className="flex w-full flex-col items-start justify-center gap-4"
               onSubmit={handleSubmit}
             >
-              <div className="flex flex-col justify-center items-start gap-1 w-full">
+              <div className="flex w-full flex-col items-start justify-center gap-1">
                 <label
                   htmlFor="name"
-                  className="text-color-dark-primary opacity-50 font-bold"
+                  className="font-bold text-color-dark-primary opacity-50"
                 >
                   Adı
                 </label>
@@ -152,14 +158,14 @@ export default function Register({}: Props) {
                   name="name"
                   id="name"
                   placeholder="Adını Gir"
-                  className="w-full transition-all duration-300 focus:border-color-main font-medium outline-none bg-color-white-third text-[16px]
-                py-[15px] px-[22px] border-[1px] border-color-dark-primary rounded-[20px] border-opacity-10"
+                  className="w-full rounded-[20px] border-[1px] border-color-dark-primary border-opacity-10 bg-color-white-third py-[15px] px-[22px]
+                text-[16px] font-medium outline-none transition-all duration-300 focus:border-color-main"
                 />
               </div>
-              <div className="flex flex-col justify-center items-start gap-1 w-full">
+              <div className="flex w-full flex-col items-start justify-center gap-1">
                 <label
                   htmlFor="surname"
-                  className="text-color-dark-primary opacity-50 font-bold"
+                  className="font-bold text-color-dark-primary opacity-50"
                 >
                   Soyadı
                 </label>
@@ -170,14 +176,14 @@ export default function Register({}: Props) {
                   name="surname"
                   id="surname"
                   placeholder="Soyadını Gir"
-                  className="w-full transition-all duration-300 focus:border-color-main font-medium outline-none bg-color-white-third text-[16px]
-                py-[15px] px-[22px] border-[1px] border-color-dark-primary rounded-[20px] border-opacity-10"
+                  className="w-full rounded-[20px] border-[1px] border-color-dark-primary border-opacity-10 bg-color-white-third py-[15px] px-[22px]
+                text-[16px] font-medium outline-none transition-all duration-300 focus:border-color-main"
                 />
               </div>
-              <div className="flex flex-col justify-center items-start gap-1 w-full">
+              <div className="flex w-full flex-col items-start justify-center gap-1">
                 <label
                   htmlFor="email"
-                  className="text-color-dark-primary opacity-50 font-bold"
+                  className="font-bold text-color-dark-primary opacity-50"
                 >
                   E-posta
                 </label>
@@ -189,18 +195,18 @@ export default function Register({}: Props) {
                   name="email"
                   id="email"
                   placeholder="E-postanı Gir"
-                  className="w-full transition-all duration-300 focus:border-color-main font-medium outline-none bg-color-white-third text-[16px]
-                py-[15px] px-[22px] border-[1px] border-color-dark-primary rounded-[20px] border-opacity-10"
+                  className="w-full rounded-[20px] border-[1px] border-color-dark-primary border-opacity-10 bg-color-white-third py-[15px] px-[22px]
+                text-[16px] font-medium outline-none transition-all duration-300 focus:border-color-main"
                 />
               </div>
-              <div className="flex flex-col justify-center items-start gap-1 w-full">
+              <div className="flex w-full flex-col items-start justify-center gap-1">
                 <label
                   htmlFor="password"
-                  className="text-color-dark-primary opacity-50 font-bold"
+                  className="font-bold text-color-dark-primary opacity-50"
                 >
                   Şifreniz
                 </label>
-                <div className="w-full relative">
+                <div className="relative w-full">
                   <input
                     onChange={handlePasswordChange}
                     value={password}
@@ -208,32 +214,32 @@ export default function Register({}: Props) {
                     name="password"
                     id="password"
                     placeholder="Şifreniz"
-                    className="w-full transition-all duration-300 focus:border-color-main font-medium outline-none bg-color-white-third text-[16px]
-                py-[15px] px-[22px] border-[1px] border-color-dark-primary rounded-[20px] border-opacity-10"
+                    className="w-full rounded-[20px] border-[1px] border-color-dark-primary border-opacity-10 bg-color-white-third py-[15px] px-[22px]
+                text-[16px] font-medium outline-none transition-all duration-300 focus:border-color-main"
                   />
-                  <div className="absolute top-0 right-0 h-full flex justify-center items-center pr-4">
+                  <div className="absolute top-0 right-0 flex h-full items-center justify-center pr-4">
                     {passwordHide ? (
                       <AiFillEye
-                        className="text-color-dark-primary opacity-50 hover:opacity-80 transition-all duration-300 hover:cursor-pointer text-[24px]"
+                        className="text-[24px] text-color-dark-primary opacity-50 transition-all duration-300 hover:cursor-pointer hover:opacity-80"
                         onClick={handlePasswordHide}
                       />
                     ) : (
                       <AiFillEye
-                        className="text-color-main hover:cursor-pointer text-[24px]"
+                        className="text-[24px] text-color-main hover:cursor-pointer"
                         onClick={handlePasswordHide}
                       />
                     )}
                   </div>
                 </div>
               </div>
-              <div className="flex flex-col justify-center items-start gap-1 w-full">
+              <div className="flex w-full flex-col items-start justify-center gap-1">
                 <label
                   htmlFor="passwordRetype"
-                  className="text-color-dark-primary opacity-50 font-bold"
+                  className="font-bold text-color-dark-primary opacity-50"
                 >
                   Şifre Tekrar
                 </label>
-                <div className="w-full relative">
+                <div className="relative w-full">
                   <input
                     onChange={handlePasswordRetypeChange}
                     value={passwordRetype}
@@ -241,18 +247,18 @@ export default function Register({}: Props) {
                     name="passwordRetype"
                     id="passwordRetype"
                     placeholder="Şifre Tekrar"
-                    className="w-full transition-all duration-300 focus:border-color-main font-medium outline-none bg-color-white-third text-[16px]
-                py-[15px] px-[22px] border-[1px] border-color-dark-primary rounded-[20px] border-opacity-10"
+                    className="w-full rounded-[20px] border-[1px] border-color-dark-primary border-opacity-10 bg-color-white-third py-[15px] px-[22px]
+                text-[16px] font-medium outline-none transition-all duration-300 focus:border-color-main"
                   />
-                  <div className="absolute top-0 right-0 h-full flex justify-center items-center pr-4">
+                  <div className="absolute top-0 right-0 flex h-full items-center justify-center pr-4">
                     {passwordRetypeHide ? (
                       <AiFillEye
-                        className="text-color-dark-primary opacity-50 hover:opacity-80 transition-all duration-300 hover:cursor-pointer text-[24px]"
+                        className="text-[24px] text-color-dark-primary opacity-50 transition-all duration-300 hover:cursor-pointer hover:opacity-80"
                         onClick={handlePasswordRetypeHide}
                       />
                     ) : (
                       <AiFillEye
-                        className="text-color-main hover:cursor-pointer text-[24px]"
+                        className="text-[24px] text-color-main hover:cursor-pointer"
                         onClick={handlePasswordRetypeHide}
                       />
                     )}
@@ -262,26 +268,26 @@ export default function Register({}: Props) {
               <button
                 type="submit"
                 disabled={submitDisable}
-                className="w-full flex justify-center items-center gap-2 bg-color-third rounded-[15px]
-           py-4 px-8 hover:opacity-80 hover:cursor-pointer transition-all duration-300"
+                className="flex w-full items-center justify-center gap-2 rounded-[15px] bg-color-third
+           py-4 px-8 transition-all duration-300 hover:cursor-pointer hover:opacity-80"
               >
                 {loader ? (
                   <div className="animate-spin">
-                    <BiLoaderAlt className="text-color-white text-[24px] text-opacity-80" />
+                    <BiLoaderAlt className="text-[24px] text-color-white text-opacity-80" />
                   </div>
                 ) : (
-                  <div className="flex justify-center items-center gap-2">
-                    <h1 className="text-color-white-secondary font-bold">
+                  <div className="flex items-center justify-center gap-2">
+                    <h1 className="font-bold text-color-white-secondary">
                       Kayıt Ol
                     </h1>
-                    <BsArrowRight className="text-color-white-secondary text-[24px]" />
+                    <BsArrowRight className="text-[24px] text-color-white-secondary" />
                   </div>
                 )}
               </button>
             </form>
           </div>
-          <div className="flex justify-center items-center gap-2">
-            <h1 className="text-color-dark-primary opacity-50 text-base">
+          <div className="flex items-center justify-center gap-2">
+            <h1 className="text-base text-color-dark-primary opacity-50">
               Zaten üye misiniz?
             </h1>
             <Link to="/login">
@@ -289,20 +295,20 @@ export default function Register({}: Props) {
             </Link>
           </div>
         </div>
-        <div className="flex flex-col justify-start items-start gap-10 p-4 rounded-[15px]">
+        <div className="hidden lg:flex flex-col items-start justify-start gap-10 rounded-[15px] p-4">
           <h1 className="text-xl font-bold">
             Her branştan alanında uzmanlar ile{" "}
             <span className="text-color-main">
               online olarak hemen görüşün!
             </span>
           </h1>
-          <ul className="flex flex-col justify-center items-start gap-10">
-            <li className="flex justify-center items-start gap-4">
-              <div className="p-2 border-4 border-solid border-color-main rounded-xl">
+          <ul className="flex flex-col items-start justify-center gap-10">
+            <li className="flex items-start justify-center gap-4">
+              <div className="rounded-xl border-4 border-solid border-color-main p-2">
                 <BsPlusLg className="text-[36px] text-color-main" />
               </div>
-              <div className="flex flex-col justify-center items-start">
-                <h1 className="text-xl text-color-dark-primary font-bold">
+              <div className="flex flex-col items-start justify-center">
+                <h1 className="text-xl font-bold text-color-dark-primary">
                   Branş Seç
                 </h1>
                 <h1 className="text-color-dark-primary opacity-70">
@@ -310,12 +316,12 @@ export default function Register({}: Props) {
                 </h1>
               </div>
             </li>
-            <li className="flex justify-center items-start gap-4">
-              <div className="p-2 border-4 border-solid border-color-main rounded-xl">
+            <li className="flex items-start justify-center gap-4">
+              <div className="rounded-xl border-4 border-solid border-color-main p-2">
                 <GiDoctorFace className="text-[36px] text-color-main" />
               </div>
-              <div className="flex flex-col justify-center items-start">
-                <h1 className="text-xl text-color-dark-primary font-bold">
+              <div className="flex flex-col items-start justify-center">
+                <h1 className="text-xl font-bold text-color-dark-primary">
                   Uzman Bul
                 </h1>
                 <h1 className="text-color-dark-primary opacity-70">
@@ -323,12 +329,12 @@ export default function Register({}: Props) {
                 </h1>
               </div>
             </li>
-            <li className="flex justify-center items-start gap-4">
-              <div className="p-2 border-4 border-solid border-color-main rounded-xl">
+            <li className="flex items-start justify-center gap-4">
+              <div className="rounded-xl border-4 border-solid border-color-main p-2">
                 <TbCalendarPlus className="text-[36px] text-color-main" />
               </div>
-              <div className="flex flex-col justify-center items-start">
-                <h1 className="text-xl text-color-dark-primary font-bold">
+              <div className="flex flex-col items-start justify-center">
+                <h1 className="text-xl font-bold text-color-dark-primary">
                   Yüz Yüze Randevu
                 </h1>
                 <h1 className="text-color-dark-primary opacity-70">
@@ -336,12 +342,12 @@ export default function Register({}: Props) {
                 </h1>
               </div>
             </li>
-            <li className="flex justify-center items-start gap-4">
-              <div className="p-2 border-4 border-solid border-color-main rounded-xl">
+            <li className="flex items-start justify-center gap-4">
+              <div className="rounded-xl border-4 border-solid border-color-main p-2">
                 <FiSmartphone className="text-[36px] text-color-main" />
               </div>
-              <div className="flex flex-col justify-center items-start">
-                <h1 className="text-xl text-color-dark-primary font-bold">
+              <div className="flex flex-col items-start justify-center">
+                <h1 className="text-xl font-bold text-color-dark-primary">
                   Online Görüşme
                 </h1>
                 <h1 className="text-color-dark-primary opacity-70">

@@ -4,7 +4,11 @@ import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
 import Footer from "./components/Footer/Footer";
 import { AiOutlineArrowUp } from "react-icons/ai";
 import { useAppDispatch, useAppSelector } from "./app/hooks";
-import { updateAlert, updateSticky } from "./features/options/optionsSlice";
+import {
+  updateAlert,
+  updateScrollToTop,
+  updateSticky,
+} from "./features/options/optionsSlice";
 import AlertSuccess from "./components/Common/Alerts/AlertSuccess";
 import AlertDanger from "./components/Common/Alerts/AlertDanger";
 import AlertWarning from "./components/Common/Alerts/AlertWarning";
@@ -31,14 +35,19 @@ import { fetchTotals } from "./features/totals/totalsAPI";
 import { addTotals } from "./features/totals/totalsSlice";
 import PatientPage from "./components/Patient/PatientPage";
 import DoctorPage from "./components/Doctor/DoctorPage";
+import { fetchFirms } from "./features/firms/firmsAPI";
+import { addFirms } from "./features/firms/firmsSlice";
+import { Doctor } from "./common/types/Doctor.entity";
+import { Branch } from "./common/types/Branch.entity";
 
 function App() {
   const appRef = useRef<HTMLInputElement>(null);
   const [sticky, setSticky] = useState(false);
+  const [experts, setExperts] = useState<Doctor[]>([]);
+  const [branches, setBranches] = useState<Branch[]>([]);
 
-  const experts = useAppSelector((state) => state.doctors.expertList);
-  const branches = useAppSelector((state) => state.branches.branchesList);
   const alert = useAppSelector((state) => state.options.alert);
+  const scrollToTop = useAppSelector((state) => state.options.scrollToTop);
   const dispatch = useAppDispatch();
 
   const handleScroll = (e: any) => {
@@ -70,83 +79,98 @@ function App() {
     async function fetchData() {
       const token = getCookie("m_t");
       const tokenExpert = getCookie("m_e_t");
+      if (token !== null && token !== undefined && token !== "") {
+        const fetchAuthClientProfileResponse = await authGetProfile(token);
+        const successClientProfile = fetchAuthClientProfileResponse.success;
+        if (successClientProfile) {
+          const statusCodeClientProfile =
+            fetchAuthClientProfileResponse.data.status;
+          const data = fetchAuthClientProfileResponse.data.data;
+          dispatch(addAuthObject(data));
+        } else {
+          dispatch(addAuthObject(undefined));
+          if (getCookie("m_t")) {
+            removeCookie("m_t");
+          }
+          // console.log(fetchAuthClientProfileResponse);
+        }
+      }
+      if (
+        tokenExpert !== null &&
+        tokenExpert !== undefined &&
+        tokenExpert !== ""
+      ) {
+        const fetchAuthExpertProfileResponse = await authExpertGetProfile(
+          tokenExpert
+        );
+        const successExpertProfile = fetchAuthExpertProfileResponse.success;
+        if (successExpertProfile) {
+          const statusCodeExpertProfile =
+            fetchAuthExpertProfileResponse.data.status;
 
-      const fetchAuthClientProfileResponse = await authGetProfile(token);
-      const fetchAuthExpertProfileResponse = await authExpertGetProfile(
-        tokenExpert
-      );
+          const data = fetchAuthExpertProfileResponse.data.data;
 
-      const successClientProfile = fetchAuthClientProfileResponse.success;
-      const successExpertProfile = fetchAuthExpertProfileResponse.success;
+          dispatch(addAuthExpertObject(data));
+        } else {
+          dispatch(addAuthExpertObject(undefined));
+          if (getCookie("m_e_t")) {
+            removeCookie("m_e_t");
+          }
+          // console.log(fetchAuthExpertProfileResponse);
+        }
+      }
 
       const query = {
         page: 1,
-        size: 15,
+        size: 10,
         sort: "ASC",
         sort_by: "expert_name",
         query_text: "",
         count: false,
         city: "",
-        operating_type: 2,
+        operating_type: 1,
         location: "",
       };
       const fetchExpertsResponse = await fetchExperts(query);
       const fetchBranchesResponse = await fetchBranches();
       const fetchTitlesResponse = await fetchTitles();
+      const fetchFirmsResponse = await fetchFirms();
       const fetchSpecializationsResponse = await fetchSpecializations();
-
+      // console.log({ fetchExpertsResponse });
       const successExperts = fetchExpertsResponse.success;
       const successBranches = fetchBranchesResponse.success;
       const successTitles = fetchTitlesResponse.success;
       const successSpecializations = fetchSpecializationsResponse.success;
+      const successFirms = fetchFirmsResponse.success;
 
-      if (successExpertProfile) {
-        const statusCodeExpertProfile =
-          fetchAuthExpertProfileResponse.data.status;
-
-        const data = fetchAuthExpertProfileResponse.data.data;
-
-        dispatch(addAuthExpertObject(data));
-      } else {
-        dispatch(addAuthExpertObject(undefined));
-        if (getCookie("m_e_t")) {
-          removeCookie("m_e_t");
-        }
-        console.log(fetchAuthExpertProfileResponse);
-      }
-
-      if (successClientProfile) {
-        const statusCodeClientProfile =
-          fetchAuthClientProfileResponse.data.status;
-        const data = fetchAuthClientProfileResponse.data.data;
-        dispatch(addAuthObject(data));
-      } else {
-        dispatch(addAuthObject(undefined));
-        if (getCookie("m_t")) {
-          removeCookie("m_t");
-        }
-        console.log(fetchAuthClientProfileResponse);
-      }
       if (successBranches) {
         const statusCodeBranches = fetchBranchesResponse.data.status;
         const data = fetchBranchesResponse.data.data;
         dispatch(addBranches(data));
       } else {
-        console.log(fetchBranchesResponse);
+        // console.log(fetchBranchesResponse);
       }
       if (successExperts) {
         const statusCodeExperts = fetchExpertsResponse.data.status;
         const data = fetchExpertsResponse.data.data;
+        setExperts(data);
         // dispatch(addExperts(data));
       } else {
-        console.log(fetchExpertsResponse);
+        // console.log(fetchExpertsResponse);
       }
       if (successTitles) {
         const statusCodeTitles = fetchTitlesResponse.data.status;
         const data = fetchTitlesResponse.data.data;
         dispatch(addTitles(data));
       } else {
-        console.log(fetchTitlesResponse);
+        // console.log(fetchTitlesResponse);
+      }
+      if (successFirms) {
+        const statusCodeFirms = fetchFirmsResponse.data.status;
+        const data = fetchFirmsResponse.data.data;
+        dispatch(addFirms(data));
+      } else {
+        // console.log(fetchFirmsResponse);
       }
       if (successSpecializations) {
         const statusCodeSpecializations =
@@ -154,20 +178,25 @@ function App() {
         const data = fetchSpecializationsResponse.data.data;
         dispatch(addSpecializations(data));
       } else {
-        console.log(fetchSpecializationsResponse);
+        // console.log(fetchSpecializationsResponse);
       }
     }
     fetchData();
   }, []);
-
+  useEffect(() => {
+    if (appRef.current && scrollToTop) {
+      appRef.current.scrollTo(0, 0);
+      dispatch(updateScrollToTop(false));
+    }
+  }, [scrollToTop]);
   return (
     <div
-      className="p-0 box-border relative m-0 h-screen overflow-x-hidden scroll-smooth"
+      className="relative m-0 box-border h-screen scroll-smooth p-0 overflow-x-hidden"
       onScroll={handleScroll}
       ref={appRef}
     >
       <BrowserRouter>
-        {/* <HeaderPatient /> */}
+        {/* <Header /> */}
         <Routes>
           <Route
             path="/*"
@@ -181,7 +210,10 @@ function App() {
               </ProtectedRoute>
             }
           />
-          <Route path="/for-doctors/*" element={<DoctorPage doctors={experts} />} />{" "}
+          <Route
+            path="/for-doctors/*"
+            element={<DoctorPage doctors={experts} />}
+          />{" "}
           <Route
             path="/for-doctors/dashboard/*"
             element={
@@ -192,19 +224,28 @@ function App() {
           />
         </Routes>
         <div
-          className={`hover:opacity-80 shadow-lg hover:cursor-pointer rounded-lg z-50 bg-color-main p-4 fixed bottom-10 right-12 transition-all duration-300 ${
+          className={`fixed bottom-10 right-12 z-50 rounded-lg bg-color-main p-4 shadow-lg transition-all duration-300 hover:cursor-pointer hover:opacity-80 ${
             sticky ? "scale-100 opacity-100" : "scale-0 opacity-0"
           }`}
           onClick={() => appRef.current?.scrollTo(0, 0)}
         >
-          <AiOutlineArrowUp className="text-color-white text-[30px]" />
+          <AiOutlineArrowUp className="text-[30px] text-color-white" />
         </div>
         {/* <Footer /> */}
       </BrowserRouter>
       <div
-        className={`fixed bottom-0 right-0 transition-all duration-300 ${
+        className={`fixed bottom-0 right-0 z-50 w-full transition-all duration-300 sm:w-max ${
           alert.active ? "translate-y-0" : "translate-y-full"
         }`}
+        onClick={() => {
+          const alert_current: Alert = {
+            type: alert.type,
+            text: alert.text,
+            active: false,
+            statusCode: alert.statusCode,
+          };
+          dispatch(updateAlert(alert_current));
+        }}
       >
         {alert.type === "success" ? (
           <AlertSuccess alert={alert} />

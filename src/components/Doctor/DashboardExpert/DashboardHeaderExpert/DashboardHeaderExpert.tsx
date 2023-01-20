@@ -7,14 +7,24 @@ import { RiArrowGoBackLine } from "react-icons/ri";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../../../app/hooks";
 import { addAuthExpertObject } from "../../../../features/authExpert/authExpertSlice";
-import { unauthenticateExpert } from "../../../../helpers/authExpertHelper";
+import {
+  unauthenticateExpert,
+  unauthenticatehardExpert,
+} from "../../../../helpers/authExpertHelper";
 import { motion } from "framer-motion";
 import { FaClock } from "react-icons/fa";
 import { AiFillSafetyCertificate, AiFillSchedule } from "react-icons/ai";
 import { GrStatusGoodSmall } from "react-icons/gr";
 import { HiArrowUturnLeft, HiArrowUturnRight } from "react-icons/hi2";
-import { getCookie } from "../../../../helpers/authHelper";
+import {
+  getCookie,
+  removeCookie,
+  unauthenticatehard,
+} from "../../../../helpers/authHelper";
 import { authExpertDownloadProfilePicture } from "../../../../features/authExpert/authExpertAPI";
+import { updateAlert } from "../../../../features/options/optionsSlice";
+import { Alert } from "../../../../common/types/Alert";
+import { addAuthObject } from "../../../../features/auth/authSlice";
 
 type Props = {};
 
@@ -23,6 +33,7 @@ export default function DashboardHeaderExpert({}: Props) {
   const authExpertObject = useAppSelector(
     (state) => state.authexpert.auth_expert_object
   );
+  const authObject = useAppSelector((state) => state.auth.auth_object);
   const dispatch = useAppDispatch();
   const location = useLocation();
   const [navElem, setNavElem] = useState(0);
@@ -95,46 +106,83 @@ export default function DashboardHeaderExpert({}: Props) {
         const base64 = authExpertDownloadProfilePictureResponse.data.data;
         setProfileImageBase64(base64);
       } else {
-        console.log({ authExpertDownloadProfilePictureResponse });
+        if (
+          authExpertDownloadProfilePictureResponse.data.response.data.message &&
+          authExpertDownloadProfilePictureResponse.data.response.data
+            .message === "error:TokenExpiredError: jwt expired"
+        ) {
+          const alert: Alert = {
+            type: "warning",
+            text: "Oturum zaman aşımına uğradı",
+            active: true,
+            statusCode:
+              authExpertDownloadProfilePictureResponse.data.statusCode,
+          };
+          dispatch(updateAlert(alert));
+          dispatch(addAuthExpertObject(undefined));
+          unauthenticateExpert(navigate("/for-doctors/login"));
+        } else {
+          const alert: Alert = {
+            type: "danger",
+            text: authExpertDownloadProfilePictureResponse.data.response.data
+              .message,
+            active: true,
+            statusCode:
+              authExpertDownloadProfilePictureResponse.data.statusCode,
+          };
+          dispatch(updateAlert(alert));
+        }
       }
     }
-    if (authExpertObject?.expert_avatar_path !== "") {
+    if (
+      authExpertObject?.expert_avatar_path !== "" &&
+      authExpertObject?.expert_avatar_path !== undefined
+    ) {
       fetchData();
     }
   }, [authExpertObject]);
 
   const handleLogout = () => {
-    dispatch(addAuthExpertObject(undefined));
-    unauthenticateExpert(() => {
-      navigate("/for-doctors/login");
-    });
+    if (authExpertObject) {
+      dispatch(addAuthExpertObject(undefined));
+      unauthenticatehardExpert(() => {
+        navigate("/for-doctors/login");
+      });
+      removeCookie("m_t");
+    } else if (authObject) {
+      dispatch(addAuthObject(undefined));
+      unauthenticatehard(() => {
+        navigate("/login");
+      });
+      removeCookie("m_e_t");
+    }
   };
   return (
     <div
-      className="min-w-[300px] h-screen flex flex-col justify-between items-center gap-10 border-r-[1px]
-      py-10 border-solid border-color-dark-primary border-opacity-10"
+      className="hidden lg:flex h-screen min-w-[300px] flex-col items-center justify-between gap-10 border-r-[1px]
+      border-solid border-color-dark-primary border-opacity-10 py-10"
       // onWheel={handleWheel}
     >
       <Link to="/for-doctors">
         <img
           src={require("../../../../assets/images/megaverse_logo_2.png")}
           alt="megaverse"
-          className="h-10 mb-10"
+          className="mb-10 h-10"
         />
       </Link>
-      <div className="flex flex-col w-full h-full justify-start items-center gap-12">
+      <div className="flex h-full w-full flex-col items-center justify-start gap-12">
         <Link to="/for-doctors" className="w-full">
           <div
-            className="hover:opacity-80 hover:cursor-pointer px-10 w-full 
-            flex justify-start items-center gap-4 relative"
+            className="relative flex w-full items-center 
+            justify-start gap-4 px-10 hover:cursor-pointer hover:opacity-80"
           >
             <RiArrowGoBackLine className="text-[24px] text-color-main" />
-            <h1 className="text-lg text-color-dark-primary font-bold opacity-60">
+            <h1 className="text-lg font-bold text-color-dark-primary opacity-60">
               Ana Sayfa
             </h1>
           </div>
         </Link>
-        <ul className="w-full h-full flex flex-col justify-start items-start gap-4">
+        <ul className="flex h-full w-full flex-col items-start justify-start gap-4">
           {/* <Link to="/for-doctors/dashboard" className="w-full">
             <li className="hover:opacity-80 hover:cursor-pointer py-2 px-10 w-full flex justify-start items-center gap-4 relative">
               <MdSpaceDashboard className="text-[24px] text-color-main" />
@@ -158,13 +206,13 @@ export default function DashboardHeaderExpert({}: Props) {
             </li>
           </Link> */}
           <Link to="/for-doctors/dashboard/appointments" className="w-full">
-            <li className="hover:opacity-80 hover:cursor-pointer py-2 px-10 w-full flex justify-start items-center gap-4 relative">
+            <li className="relative flex w-full items-center justify-start gap-4 py-2 px-10 hover:cursor-pointer hover:opacity-80">
               <FaClock className="text-[24px] text-color-main" />
-              <div className="w-full flex justify-start items-center gap-2">
-                <h1 className="text-color-dark-primary font-bold text-lg opacity-60">
+              <div className="flex w-full items-center justify-start gap-2">
+                <h1 className="text-lg font-bold text-color-dark-primary opacity-60">
                   Randevularım
                 </h1>
-                <HiArrowUturnRight className="text-color-dark-primary font-bold opacity-60 text-[24px]" />
+                <HiArrowUturnRight className="text-[24px] font-bold text-color-dark-primary opacity-60" />
               </div>
               {navElem === 1 ? (
                 <motion.div
@@ -175,21 +223,21 @@ export default function DashboardHeaderExpert({}: Props) {
                     duration: 0.3,
                     reapat: 1,
                   }}
-                  className="h-full absolute right-0 top-0 w-1 bg-color-main"
+                  className="absolute right-0 top-0 h-full w-1 bg-color-main"
                 ></motion.div>
               ) : (
-                <div className="h-full absolute right-0 top-0 w-1"></div>
+                <div className="absolute right-0 top-0 h-full w-1"></div>
               )}
             </li>
           </Link>
           <Link to="/for-doctors/dashboard/myappointments" className="w-full">
-            <li className="hover:opacity-80 hover:cursor-pointer py-2 px-10 w-full flex justify-start items-center gap-4 relative">
+            <li className="relative flex w-full items-center justify-start gap-4 py-2 px-10 hover:cursor-pointer hover:opacity-80">
               <FaClock className="text-[24px] text-color-main" />
-              <div className="w-full flex justify-start items-center gap-2">
-                <h1 className="text-color-dark-primary font-bold text-lg opacity-60">
+              <div className="flex w-full items-center justify-start gap-2">
+                <h1 className="text-lg font-bold text-color-dark-primary opacity-60">
                   Randevularım
                 </h1>
-                <HiArrowUturnLeft className="text-color-dark-primary font-bold opacity-60 text-[24px]" />
+                <HiArrowUturnLeft className="text-[24px] font-bold text-color-dark-primary opacity-60" />
               </div>
               {navElem === 2 ? (
                 <motion.div
@@ -200,10 +248,10 @@ export default function DashboardHeaderExpert({}: Props) {
                     duration: 0.3,
                     reapat: 1,
                   }}
-                  className="h-full absolute right-0 top-0 w-1 bg-color-main"
+                  className="absolute right-0 top-0 h-full w-1 bg-color-main"
                 ></motion.div>
               ) : (
-                <div className="h-full absolute right-0 top-0 w-1"></div>
+                <div className="absolute right-0 top-0 h-full w-1"></div>
               )}
             </li>
           </Link>
@@ -211,16 +259,16 @@ export default function DashboardHeaderExpert({}: Props) {
             to="/for-doctors/dashboard/appointments-chart"
             className="w-full"
           >
-            <li className="hover:opacity-80 hover:cursor-pointer py-2 px-10 w-full flex justify-start items-center gap-4 relative">
+            <li className="relative flex w-full items-center justify-start gap-4 py-2 px-10 hover:cursor-pointer hover:opacity-80">
               <AiFillSchedule className="text-[24px] text-color-main" />
               <div className="relative">
-                <h1 className="text-lg text-color-dark-primary font-bold opacity-60">
+                <h1 className="text-lg font-bold text-color-dark-primary opacity-60">
                   Randevu Çizelgem
                 </h1>
                 {authExpertObject?.expert_appointment_schedule ? (
                   <div></div>
                 ) : (
-                  <GrStatusGoodSmall className="text-[12px] opacity-80 text-color-warning-primary absolute bottom-full left-full" />
+                  <GrStatusGoodSmall className="absolute bottom-full left-full text-[12px] text-color-warning-primary opacity-80" />
                 )}
               </div>
 
@@ -233,26 +281,26 @@ export default function DashboardHeaderExpert({}: Props) {
                     duration: 0.3,
                     reapat: 1,
                   }}
-                  className="h-full absolute right-0 top-0 w-1 bg-color-main"
+                  className="absolute right-0 top-0 h-full w-1 bg-color-main"
                 ></motion.div>
               ) : (
-                <div className="h-full absolute right-0 top-0 w-1"></div>
+                <div className="absolute right-0 top-0 h-full w-1"></div>
               )}
             </li>
           </Link>
           <Link to="/for-doctors/dashboard/certificates" className="w-full">
-            <li className="hover:opacity-80 hover:cursor-pointer py-2 px-10 w-full flex justify-start items-center gap-4 relative">
+            <li className="relative flex w-full items-center justify-start gap-4 py-2 px-10 hover:cursor-pointer hover:opacity-80">
               <AiFillSafetyCertificate className="text-[24px] text-color-main" />
               <div className="relative">
-                <h1 className="text-lg text-color-dark-primary font-bold opacity-60">
+                <h1 className="text-lg font-bold text-color-dark-primary opacity-60">
                   Sertifikalarım
                 </h1>
-                {authExpertObject?.expert_certificates &&
+                {/* {authExpertObject?.expert_certificates &&
                 authExpertObject?.expert_certificates.length > 0 ? (
                   <div></div>
                 ) : (
-                  <GrStatusGoodSmall className="text-[12px] opacity-80 text-color-warning-primary absolute bottom-full left-full" />
-                )}
+                  <GrStatusGoodSmall className="absolute bottom-full left-full text-[12px] text-color-warning-primary opacity-80" />
+                )} */}
               </div>
 
               {navElem === 4 ? (
@@ -264,18 +312,18 @@ export default function DashboardHeaderExpert({}: Props) {
                     duration: 0.3,
                     reapat: 1,
                   }}
-                  className="h-full absolute right-0 top-0 w-1 bg-color-main"
+                  className="absolute right-0 top-0 h-full w-1 bg-color-main"
                 ></motion.div>
               ) : (
-                <div className="h-full absolute right-0 top-0 w-1"></div>
+                <div className="absolute right-0 top-0 h-full w-1"></div>
               )}
             </li>
           </Link>
           <Link to="/for-doctors/dashboard/settings" className="w-full">
-            <li className="hover:opacity-80 hover:cursor-pointer py-2 px-10 w-full flex justify-start items-center gap-4 relative">
+            <li className="relative flex w-full items-center justify-start gap-4 py-2 px-10 hover:cursor-pointer hover:opacity-80">
               <IoSettings className="text-[24px] text-color-main" />
               <div className="relative">
-                <h1 className="text-lg text-color-dark-primary font-bold opacity-60">
+                <h1 className="text-lg font-bold text-color-dark-primary opacity-60">
                   Hesap Bilgilerim
                 </h1>
                 {authExpertObject?.expert_name !== undefined &&
@@ -290,8 +338,6 @@ export default function DashboardHeaderExpert({}: Props) {
                 authExpertObject?.expert_physical_location !== "" &&
                 authExpertObject?.expert_session_fee !== undefined &&
                 authExpertObject?.expert_session_fee !== "" &&
-                authExpertObject?.expert_company !== undefined &&
-                authExpertObject?.expert_company !== "" &&
                 authExpertObject?.expert_tel !== undefined &&
                 authExpertObject?.expert_tel !== "" &&
                 authExpertObject?.expert_operating_type !== undefined &&
@@ -302,7 +348,7 @@ export default function DashboardHeaderExpert({}: Props) {
                 authExpertObject?.expert_avatar_path !== "" ? (
                   <div></div>
                 ) : (
-                  <GrStatusGoodSmall className="text-[12px] opacity-80 text-color-warning-primary absolute bottom-full left-full" />
+                  <GrStatusGoodSmall className="absolute bottom-full left-full text-[12px] text-color-warning-primary opacity-80" />
                 )}
               </div>
               {navElem === 5 ? (
@@ -314,35 +360,35 @@ export default function DashboardHeaderExpert({}: Props) {
                     duration: 0.3,
                     reapat: 1,
                   }}
-                  className="h-full absolute right-0 top-0 w-1 bg-color-main"
+                  className="absolute right-0 top-0 h-full w-1 bg-color-main"
                 ></motion.div>
               ) : (
-                <div className="h-full absolute right-0 top-0 w-1"></div>
+                <div className="absolute right-0 top-0 h-full w-1"></div>
               )}
             </li>
           </Link>
         </ul>
       </div>
-      <div className="px-6 w-full flex flex-col justify-center items-start gap-10">
-        <div className="flex justify-center items-center gap-4 transition-all duration-300 group cursor-pointer">
+      <div className="flex w-full flex-col items-start justify-center gap-10 px-6">
+        <div className="group flex cursor-pointer items-center justify-center gap-4 transition-all duration-300">
           {profileImageBase64 ? (
             <img
               src={`data:image/jpeg;base64,${profileImageBase64}`}
-              className="w-[75px] h-[75px] rounded-[15px]"
+              className="h-[75px] w-[75px] rounded-[15px]"
               alt=""
             />
           ) : (
-            <button className="p-4 rounded-[15px] bg-color-secondary group-hover:bg-color-third transition-all duration-300">
-              <BsFillPersonFill className="text-color-white text-[24px]" />
+            <button className="rounded-[15px] bg-color-secondary p-4 transition-all duration-300 group-hover:bg-color-third">
+              <BsFillPersonFill className="text-[24px] text-color-white" />
             </button>
           )}
 
           <div>
-            <h1 className="text-color-dark-primary text-sm text-opacity-60 font-bold">
+            <h1 className="text-sm font-bold text-color-dark-primary text-opacity-60">
               Hoşgeldin
             </h1>
             <div>
-              <h1 className="font-bold text-color-dark-primary text-base text-opacity-50">
+              <h1 className="text-base font-bold text-color-dark-primary text-opacity-50">
                 {`${
                   authExpertObject !== undefined
                     ? authExpertObject.expert_title
@@ -364,11 +410,11 @@ export default function DashboardHeaderExpert({}: Props) {
           </div>
         </div>
         <button
-          className="w-full flex justify-center items-center p-4 rounded-[15px] bg-color-third hover:bg-color-secondary 
-                transition-all duration-300"
+          className="flex w-full items-center justify-center rounded-[15px] bg-color-third p-4 transition-all 
+                duration-300 hover:bg-color-secondary"
           onClick={handleLogout}
         >
-          <FiLogOut className="text-color-white text-[24px]" />
+          <FiLogOut className="text-[24px] text-color-white" />
         </button>
       </div>
     </div>

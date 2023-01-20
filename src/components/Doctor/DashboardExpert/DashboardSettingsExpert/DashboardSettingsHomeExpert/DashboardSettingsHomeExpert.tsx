@@ -16,14 +16,18 @@ import {
 import { updateAlert } from "../../../../../features/options/optionsSlice";
 import { addAuthExpertObject } from "../../../../../features/authExpert/authExpertSlice";
 import AlertHeaderWarning from "../../../../Common/AlertHeaderWarning/AlertHeaderWarning";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 import { MdModeEdit } from "react-icons/md";
 import { BsFillPersonFill } from "react-icons/bs";
+import { Firm } from "../../../../../common/types/Firm.entity";
+import { unauthenticate } from "../../../../../helpers/authHelper";
 
 type Props = {};
 
 export default function DashboardSettingsHomeExpert({}: Props) {
+  const navigate = useNavigate();
+
   const [name, setName] = useState("");
   const [surname, setSurname] = useState("");
   const [email, setEmail] = useState("");
@@ -33,6 +37,9 @@ export default function DashboardSettingsHomeExpert({}: Props) {
   const [physicalLocation, setPhysicalLocation] = useState("");
   const [sessionFee, setSessionFee] = useState("");
   const [currentBranches, setCurrentBranches] = useState<Branch[] | []>([]);
+  const [companyObject, setCompanyObject] = useState<Firm | undefined>(
+    undefined
+  );
   const [expertise, setExpertise] = useState<Expertise | undefined>(undefined);
   const [title, setTitle] = useState<Title | undefined>(undefined);
   const [operatingType, setOperatingType] = useState(1);
@@ -53,6 +60,7 @@ export default function DashboardSettingsHomeExpert({}: Props) {
   const specializations = useAppSelector(
     (state) => state.specializations.specializationsList
   );
+  const firms = useAppSelector((state) => state.firms.firmsList);
   const authExpertObject = useAppSelector(
     (state) => state.authexpert.auth_expert_object
   );
@@ -87,6 +95,9 @@ export default function DashboardSettingsHomeExpert({}: Props) {
     setEmail(value);
   };
   const handleCompanyChange = (e: any) => {
+    if (companyObject) {
+      setCompanyObject(undefined);
+    }
     const value = e.target.value;
     setCompany(value);
   };
@@ -120,15 +131,21 @@ export default function DashboardSettingsHomeExpert({}: Props) {
         dispatch(updateAlert(alert));
       }
     }
-    console.log(currentBranches);
+    // console.log(currentBranches);
+  };
+
+  // Firm
+  const onFirmChange = (e: any) => {
+    const valueRaw = e.target.value;
+    const value: Firm = JSON.parse(valueRaw);
+    setCompanyObject(value);
+    setCompany(value.firm_title);
   };
   const onTitleChange = (e: any) => {
     const valueRaw = e.target.value;
     if (valueRaw !== "") {
       const value = JSON.parse(valueRaw);
       setTitle(value);
-      console.log(title?.title_title);
-      console.log(value.title_title);
     }
   };
   const onExpertiseChange = (e: any) => {
@@ -192,7 +209,29 @@ export default function DashboardSettingsHomeExpert({}: Props) {
           dispatch(updateAlert(alert));
           dispatch(addAuthExpertObject(uploadProfileImageResponse.data.data));
         } else {
-          console.log({ authExpertDownloadProfilePictureResponse });
+          if (
+            uploadProfileImageResponse.data.response.data.message &&
+            uploadProfileImageResponse.data.response.data.message ===
+              "error:TokenExpiredError: jwt expired"
+          ) {
+            const alert: Alert = {
+              type: "warning",
+              text: "Oturum zaman aşımına uğradı",
+              active: true,
+              statusCode: uploadProfileImageResponse.data.statusCode,
+            };
+            dispatch(updateAlert(alert));
+            dispatch(addAuthExpertObject(undefined));
+            unauthenticate(navigate("/for-doctors/login"));
+          } else {
+            const alert: Alert = {
+              type: "danger",
+              text: uploadProfileImageResponse.data.response.data.message,
+              active: true,
+              statusCode: uploadProfileImageResponse.data.statusCode,
+            };
+            dispatch(updateAlert(alert));
+          }
         }
       } else {
         const alert: Alert = {
@@ -230,22 +269,46 @@ export default function DashboardSettingsHomeExpert({}: Props) {
     const token = getCookie("m_e_t");
     setLoader(true);
     setSubmitDisable(true);
-    const authExpertUpdatePasswordResponse = await authExpertUpdateProfile(
+    const authExpertUpdateProfileResponse = await authExpertUpdateProfile(
       token,
       authExpertUpdateProfileDto
     );
     setLoader(false);
     setSubmitDisable(false);
-    const success = authExpertUpdatePasswordResponse.success;
+    const success = authExpertUpdateProfileResponse.success;
     if (success) {
       const alert: Alert = {
         type: "success",
         text: "Profiliniz Güncellendi.",
         active: true,
-        statusCode: authExpertUpdatePasswordResponse.data.statusCode,
+        statusCode: authExpertUpdateProfileResponse.data.statusCode,
       };
       dispatch(updateAlert(alert));
-      dispatch(addAuthExpertObject(authExpertUpdatePasswordResponse.data.data));
+      dispatch(addAuthExpertObject(authExpertUpdateProfileResponse.data.data));
+    } else {
+      if (
+        authExpertUpdateProfileResponse.data.response.data.message &&
+        authExpertUpdateProfileResponse.data.response.data.message ===
+          "error:TokenExpiredError: jwt expired"
+      ) {
+        const alert: Alert = {
+          type: "warning",
+          text: "Oturum zaman aşımına uğradı",
+          active: true,
+          statusCode: authExpertUpdateProfileResponse.data.statusCode,
+        };
+        dispatch(updateAlert(alert));
+        dispatch(addAuthExpertObject(undefined));
+        unauthenticate(navigate("/for-doctors/login"));
+      } else {
+        const alert: Alert = {
+          type: "danger",
+          text: authExpertUpdateProfileResponse.data.response.data.message,
+          active: true,
+          statusCode: authExpertUpdateProfileResponse.data.statusCode,
+        };
+        dispatch(updateAlert(alert));
+      }
     }
   };
 
@@ -261,7 +324,32 @@ export default function DashboardSettingsHomeExpert({}: Props) {
         const base64 = authExpertDownloadProfilePictureResponse.data.data;
         setProfileImageBase64(base64);
       } else {
-        console.log({ authExpertDownloadProfilePictureResponse });
+        if (
+          authExpertDownloadProfilePictureResponse.data.response.data.message &&
+          authExpertDownloadProfilePictureResponse.data.response.data
+            .message === "error:TokenExpiredError: jwt expired"
+        ) {
+          const alert: Alert = {
+            type: "warning",
+            text: "Oturum zaman aşımına uğradı",
+            active: true,
+            statusCode:
+              authExpertDownloadProfilePictureResponse.data.statusCode,
+          };
+          dispatch(updateAlert(alert));
+          dispatch(addAuthExpertObject(undefined));
+          unauthenticate(navigate("/for-doctors/login"));
+        } else {
+          const alert: Alert = {
+            type: "danger",
+            text: authExpertDownloadProfilePictureResponse.data.response.data
+              .message,
+            active: true,
+            statusCode:
+              authExpertDownloadProfilePictureResponse.data.statusCode,
+          };
+          dispatch(updateAlert(alert));
+        }
       }
     }
     setName(authExpertObject ? authExpertObject.expert_name : "");
@@ -286,7 +374,7 @@ export default function DashboardSettingsHomeExpert({}: Props) {
         : ""
     );
     setOperatingType(
-      authExpertObject && authExpertObject?.expert_operating_type
+      authExpertObject?.expert_operating_type !== undefined
         ? authExpertObject?.expert_operating_type
         : 1
     );
@@ -305,14 +393,18 @@ export default function DashboardSettingsHomeExpert({}: Props) {
         ? authExpertObject?.expert_branch
         : []
     );
-    if (authExpertObject?.expert_avatar_path !== "") {
+    if (
+      authExpertObject &&
+      authExpertObject?.expert_avatar_path !== "" &&
+      authExpertObject?.expert_avatar_path !== undefined
+    ) {
       fetchData();
     }
   }, [authExpertObject]);
 
   return (
-    <div className="w-full flex flex-col justify-start items-start gap-4">
-      <div className="w-full bg-color-warning-primary rounded-[15px]">
+    <div className="flex w-full flex-col items-start justify-start gap-4 overflow-x-hidden">
+      <div className="w-full rounded-[15px] bg-color-warning-primary">
         {authExpertObject?.expert_name !== undefined &&
         authExpertObject?.expert_name !== "" &&
         authExpertObject?.expert_surname !== undefined &&
@@ -345,23 +437,23 @@ export default function DashboardSettingsHomeExpert({}: Props) {
           />
         )}
       </div>
-      <div className="w-full flex flex-col justify-start items-start gap-12">
-        <h1 className="text-color-dark-primary font-bold">
+      <div className="flex w-full flex-col items-start justify-start gap-12">
+        <h1 className="font-bold text-color-dark-primary">
           Hesap Bilgilerim & Ayarlarım
         </h1>
-        <div className="gap-10 w-full flex justify-start items-start shadow-lg bg-color-white rounded-[25px] p-5">
+        <div className="flex w-full items-start justify-start gap-10 rounded-[25px] bg-color-white p-5 shadow-lg">
           <form
             onSubmit={handleSubmit}
-            className="w-full flex flex-col justify-start items-start"
+            className="flex w-full flex-col items-start justify-start"
           >
-            <div className="w-full grid grid-cols-2 gap-10">
-              <div className="grid grid-cols-2 gap-4">
-                <div className="flex flex-col justify-start items-start gap-1 w-full">
+            <div className="flex flex-col justify-start items-start xl:grid w-full grid-cols-2 gap-10">
+              <div className="flex flex-col justify-center items-center md:grid grid-cols-2 gap-4">
+                <div className="flex w-full flex-col items-start justify-start gap-1">
                   <label
                     htmlFor="name"
-                    className="text-color-dark-primary opacity-50 font-bold"
+                    className="font-bold text-color-dark-primary opacity-50"
                   >
-                    Adı
+                    Adı(*)
                   </label>
                   <input
                     onChange={handleNameChange}
@@ -370,16 +462,16 @@ export default function DashboardSettingsHomeExpert({}: Props) {
                     name="name"
                     id="name"
                     placeholder="Adını Gir"
-                    className="w-full transition-all duration-300 focus:border-color-main font-medium outline-none bg-color-white-third text-[16px]
-                py-[15px] px-[22px] border-[1px] border-color-dark-primary rounded-[20px] border-opacity-10"
+                    className="w-full rounded-[20px] border-[1px] border-color-dark-primary border-opacity-10 bg-color-white-third py-[15px] px-[22px]
+                text-[16px] font-medium outline-none transition-all duration-300 focus:border-color-main"
                   />
                 </div>
-                <div className="flex flex-col justify-start items-start gap-1 w-full">
+                <div className="flex w-full flex-col items-start justify-start gap-1">
                   <label
                     htmlFor="surname"
-                    className="text-color-dark-primary opacity-50 font-bold"
+                    className="font-bold text-color-dark-primary opacity-50"
                   >
-                    Soyadı
+                    Soyadı(*)
                   </label>
                   <input
                     onChange={handleSurnameChange}
@@ -388,16 +480,16 @@ export default function DashboardSettingsHomeExpert({}: Props) {
                     name="surname"
                     id="surname"
                     placeholder="Soyadını Gir"
-                    className="w-full transition-all duration-300 focus:border-color-main font-medium outline-none bg-color-white-third text-[16px]
-                py-[15px] px-[22px] border-[1px] border-color-dark-primary rounded-[20px] border-opacity-10"
+                    className="w-full rounded-[20px] border-[1px] border-color-dark-primary border-opacity-10 bg-color-white-third py-[15px] px-[22px]
+                text-[16px] font-medium outline-none transition-all duration-300 focus:border-color-main"
                   />
                 </div>
-                <div className="flex flex-col justify-start items-start gap-1 w-full">
+                <div className="flex w-full flex-col items-start justify-start gap-1">
                   <label
                     htmlFor="email"
-                    className="text-color-dark-primary opacity-50 font-bold"
+                    className="font-bold text-color-dark-primary opacity-50"
                   >
-                    E-posta
+                    E-posta(*)
                   </label>
                   <input
                     onChange={handleEmailChange}
@@ -406,46 +498,46 @@ export default function DashboardSettingsHomeExpert({}: Props) {
                     name="email"
                     id="email"
                     placeholder="E-posta"
-                    className="w-full transition-all duration-300 focus:border-color-main font-medium outline-none bg-color-white-third text-[16px]
-                py-[15px] px-[22px] border-[1px] border-color-dark-primary rounded-[20px] border-opacity-10"
+                    className="w-full rounded-[20px] border-[1px] border-color-dark-primary border-opacity-10 bg-color-white-third py-[15px] px-[22px]
+                text-[16px] font-medium outline-none transition-all duration-300 focus:border-color-main"
                   />
                 </div>
-                <div className="flex flex-col justify-start items-start gap-1 w-full">
+                <div className="flex w-full flex-col items-start justify-start gap-1">
                   <label
                     htmlFor="password"
-                    className="text-color-dark-primary opacity-50 font-bold"
+                    className="font-bold text-color-dark-primary opacity-50"
                   >
                     Şifreniz
                   </label>
-                  <div className="w-full relative">
+                  <div className="relative w-full">
                     <Link to="change-password">
                       <button
                         type="button"
-                        className="h-full p-4 rounded-[15px] bg-color-secondary group-hover:bg-color-third transition-all duration-300"
+                        className="h-full rounded-[15px] bg-color-secondary p-4 transition-all duration-300 group-hover:bg-color-third"
                       >
-                        <h1 className="text-color-white font-bold">
+                        <h1 className="font-bold text-color-white">
                           Şifreni Değiştir
                         </h1>
                       </button>
                     </Link>
                   </div>
                 </div>
-                <div className="w-full flex flex-col justify-start items-start">
-                  <div className="relative flex flex-col justify-start items-start gap-1 w-full">
+                <div className="flex w-full flex-col items-start justify-start">
+                  <div className="relative flex w-full flex-col items-start justify-start gap-1">
                     <label
                       htmlFor="branch"
-                      className="text-color-dark-primary opacity-50 font-bold"
+                      className="font-bold text-color-dark-primary opacity-50"
                     >
-                      Branş
+                      Branş(*)
                     </label>
                     <div
-                      className="w-full transition-all duration-300 focus:border-color-main py-[15px] px-[22px] min-w-4 border-solid
-              border-[1px] border-color-dark-primary rounded-[20px] border-opacity-10"
+                      className="min-w-4 w-full rounded-[20px] border-[1px] border-solid border-color-dark-primary border-opacity-10 py-[15px]
+              px-[22px] transition-all duration-300 focus:border-color-main"
                     >
                       <select
                         name=""
                         id=""
-                        className="outline-none text-lg w-full text-opacity-50 cursor-pointer"
+                        className="w-full cursor-pointer text-lg text-opacity-50 outline-none"
                         onChange={onBranchChange}
                       >
                         <option value="" selected>
@@ -465,22 +557,22 @@ export default function DashboardSettingsHomeExpert({}: Props) {
                     </div>
                   </div>
                 </div>
-                <div className="relative flex flex-col justify-start items-start gap-1 w-full">
+                <div className="relative flex w-full flex-col items-start justify-start gap-1">
                   <label
                     htmlFor="title"
-                    className="text-color-dark-primary opacity-50 font-bold"
+                    className="font-bold text-color-dark-primary opacity-50"
                   >
-                    Unvan
+                    Unvan(*)
                   </label>
 
                   <div
-                    className="w-full transition-all duration-300 focus:border-color-main py-[15px] px-[22px] min-w-4 border-solid
-              border-[1px] border-color-dark-primary rounded-[20px] border-opacity-10"
+                    className="min-w-4 w-full rounded-[20px] border-[1px] border-solid border-color-dark-primary border-opacity-10 py-[15px]
+              px-[22px] transition-all duration-300 focus:border-color-main"
                   >
                     <select
                       name=""
                       id=""
-                      className="outline-none text-lg w-full text-opacity-50 cursor-pointer"
+                      className="w-full cursor-pointer text-lg text-opacity-50 outline-none"
                       onChange={onTitleChange}
                     >
                       <option value="" selected>
@@ -500,41 +592,41 @@ export default function DashboardSettingsHomeExpert({}: Props) {
                     </select>
                   </div>
                 </div>
-                <div className="flex flex-col justify-center items-start gap-1 w-full">
+                <div className="flex w-full flex-col items-start justify-center gap-1">
                   <label
                     htmlFor="sessionFee"
-                    className="text-color-dark-primary opacity-50 font-bold"
+                    className="font-bold text-color-dark-primary opacity-50"
                   >
-                    Seans Ücretiniz
+                    Seans Ücretiniz(*)
                   </label>
                   <div
-                    className="w-full transition-all duration-300 focus:border-color-main font-medium outline-none bg-color-white-third text-[16px]
-                py-[15px] px-[22px] border-[1px] border-color-dark-primary rounded-[20px] border-opacity-10"
+                    className="w-full rounded-[20px] border-[1px] border-color-dark-primary border-opacity-10 bg-color-white-third py-[15px] px-[22px]
+                text-[16px] font-medium outline-none transition-all duration-300 focus:border-color-main"
                   >
                     <CurrencyFormat
                       thousandSeparator={true}
                       prefix={"₺"}
                       value={sessionFee}
                       onValueChange={handleSessionFeeChange}
-                      className="outline-none w-full"
+                      className="w-full outline-none"
                     />
                   </div>
                 </div>
-                <div className="relative flex flex-col justify-start items-start gap-1 w-full">
+                <div className="relative flex w-full flex-col items-start justify-start gap-1">
                   <label
                     htmlFor="expertise"
-                    className="text-color-dark-primary opacity-50 font-bold"
+                    className="font-bold text-color-dark-primary opacity-50"
                   >
-                    Uzmanlık
+                    Uzmanlık(*)
                   </label>
                   <div
-                    className="w-full transition-all duration-300 focus:border-color-main py-[15px] px-[22px] min-w-4 border-solid
-              border-[1px] border-color-dark-primary rounded-[20px] border-opacity-10"
+                    className="min-w-4 w-full rounded-[20px] border-[1px] border-solid border-color-dark-primary border-opacity-10 py-[15px]
+              px-[22px] transition-all duration-300 focus:border-color-main"
                   >
                     <select
                       name=""
                       id=""
-                      className="outline-none text-lg w-full text-opacity-50 cursor-pointer"
+                      className="w-full cursor-pointer text-lg text-opacity-50 outline-none"
                       onChange={onExpertiseChange}
                     >
                       <option value="" selected>
@@ -557,28 +649,28 @@ export default function DashboardSettingsHomeExpert({}: Props) {
                     </select>
                   </div>
                 </div>
-                <div className="relative flex flex-col justify-start items-start gap-1 w-full">
+                <div className="relative flex w-full flex-col items-start justify-start gap-1">
                   <label
                     htmlFor="expertise"
-                    className="text-color-dark-primary opacity-50 font-bold"
+                    className="font-bold text-color-dark-primary opacity-50"
                   >
-                    Operasyon Tipi
+                    Operasyon Tipi(*)
                   </label>
                   <div
-                    className="w-full transition-all duration-300 focus:border-color-main py-[15px] px-[22px] min-w-4 border-solid
-              border-[1px] border-color-dark-primary rounded-[20px] border-opacity-10"
+                    className="min-w-4 w-full rounded-[20px] border-[1px] border-solid border-color-dark-primary border-opacity-10 py-[15px]
+              px-[22px] transition-all duration-300 focus:border-color-main"
                   >
                     <select
                       name=""
                       id=""
-                      className="outline-none text-lg w-full text-opacity-50 cursor-pointer"
+                      className="w-full cursor-pointer text-lg text-opacity-50 outline-none"
                       onChange={onOperatingTypeChange}
                     >
                       <option value={1} selected={operatingType === 1}>
                         Yüz Yüze
                       </option>
                       <option value={0} selected={operatingType === 0}>
-                        İkisi de
+                        Online/Yüz Yüze
                       </option>
                       <option value={2} selected={operatingType === 2}>
                         Online
@@ -586,12 +678,12 @@ export default function DashboardSettingsHomeExpert({}: Props) {
                     </select>
                   </div>
                 </div>
-                <div className="flex flex-col justify-start items-start gap-1 w-full">
+                <div className="flex w-full flex-col items-start justify-start gap-1">
                   <label
                     htmlFor="tel"
-                    className="text-color-dark-primary opacity-50 font-bold"
+                    className="font-bold text-color-dark-primary opacity-50"
                   >
-                    Telefon Numarası
+                    Telefon Numarası(*)
                   </label>
                   <input
                     onChange={handleTelChange}
@@ -600,25 +692,25 @@ export default function DashboardSettingsHomeExpert({}: Props) {
                     name="tel"
                     id="tel"
                     placeholder="Telefon Numarası"
-                    className="w-full transition-all duration-300 focus:border-color-main font-medium outline-none bg-color-white-third text-[16px]
-                py-[15px] px-[22px] border-[1px] border-color-dark-primary rounded-[20px] border-opacity-10"
+                    className="w-full rounded-[20px] border-[1px] border-color-dark-primary border-opacity-10 bg-color-white-third py-[15px] px-[22px]
+                text-[16px] font-medium outline-none transition-all duration-300 focus:border-color-main"
                   />
                 </div>
-                <div className="relative flex flex-col justify-start items-start gap-1 w-full">
+                <div className="relative flex w-full flex-col items-start justify-start gap-1">
                   <label
                     htmlFor="title"
-                    className="text-color-dark-primary opacity-50 font-bold"
+                    className="font-bold text-color-dark-primary opacity-50"
                   >
-                    Şehir
+                    Şehir(*)
                   </label>
                   <div
-                    className="w-full transition-all duration-300 focus:border-color-main py-[15px] px-[22px] min-w-4 border-solid
-              border-[1px] border-color-dark-primary rounded-[20px] border-opacity-10"
+                    className="min-w-4 w-full rounded-[20px] border-[1px] border-solid border-color-dark-primary border-opacity-10 py-[15px]
+              px-[22px] transition-all duration-300 focus:border-color-main"
                   >
                     <select
                       name=""
                       id=""
-                      className="outline-none text-lg w-full text-opacity-50 cursor-pointer"
+                      className="w-full cursor-pointer text-lg text-opacity-50 outline-none"
                       onChange={onCityChange}
                     >
                       <option value="" selected>
@@ -638,30 +730,90 @@ export default function DashboardSettingsHomeExpert({}: Props) {
                     </select>
                   </div>
                 </div>
-                <div className="flex flex-col justify-start items-start gap-1 w-full">
-                  <label
-                    htmlFor="company"
-                    className="text-color-dark-primary opacity-50 font-bold"
-                  >
-                    Firma Adı
-                  </label>
-                  <input
-                    onChange={handleCompanyChange}
-                    value={company}
-                    type="text"
-                    name="company"
-                    id="company"
-                    placeholder="Firma Adı"
-                    className="w-full transition-all duration-300 focus:border-color-main font-medium outline-none bg-color-white-third text-[16px]
-                py-[15px] px-[22px] border-[1px] border-color-dark-primary rounded-[20px] border-opacity-10"
-                  />
+                <div className="flex w-full flex-col items-start justify-center gap-1">
+                  <div className="flex w-full flex-col items-start justify-center gap-1">
+                    <label
+                      htmlFor="company"
+                      className="font-bold text-color-dark-primary opacity-50"
+                    >
+                      Firma Adı
+                    </label>
+                    {company !== "" && company !== undefined ? (
+                      <div
+                        className="group flex cursor-pointer items-center justify-center gap-2 rounded-[15px]
+                    bg-color-gray-primary p-2 px-6
+                    transition-all duration-300 hover:bg-color-main"
+                        onClick={() => {
+                          setCompany("");
+                          setCompanyObject(undefined);
+                        }}
+                      >
+                        <h1
+                          className="text-sm font-bold 
+                                    text-color-dark-primary text-opacity-80
+                                  transition-all duration-300 group-hover:text-color-white"
+                        >
+                          {company}
+                        </h1>
+                        <AiOutlineCloseCircle className="text-color-dark-primary transition-all duration-300 group-hover:text-color-white" />
+                      </div>
+                    ) : (
+                      <div
+                        className="min-w-4 w-full rounded-[20px] border-[1px] border-solid border-color-dark-primary border-opacity-10 py-[15px]
+              px-[22px] transition-all duration-300 focus:border-color-main"
+                      >
+                        <select
+                          name=""
+                          id=""
+                          className="w-full cursor-pointer text-lg text-opacity-50 outline-none"
+                          onChange={onFirmChange}
+                        >
+                          <option value="" selected>
+                            Firma Seç
+                          </option>
+                          {firms.map((Firm) => {
+                            return (
+                              <option
+                                key={Firm._id}
+                                value={JSON.stringify(Firm)}
+                              >
+                                {Firm.firm_title}
+                              </option>
+                            );
+                          })}
+                        </select>
+                      </div>
+                    )}
+                  </div>
+                  {companyObject === undefined ? (
+                    <div className="flex w-full flex-col items-start justify-center gap-1">
+                      <label
+                        htmlFor="company"
+                        className="font-bold text-color-dark-primary opacity-50"
+                      >
+                        Firma Adı(Diğer)
+                      </label>
+                      <input
+                        onChange={handleCompanyChange}
+                        value={company}
+                        type="text"
+                        name="company"
+                        id="company"
+                        placeholder="Firma Adı"
+                        className="w-full rounded-[20px] border-[1px] border-color-dark-primary border-opacity-10 bg-color-white-third py-[15px] px-[22px]
+                text-[16px] font-medium outline-none transition-all duration-300 focus:border-color-main"
+                      />
+                    </div>
+                  ) : (
+                    <div></div>
+                  )}
                 </div>
-                <div className="flex flex-col justify-center items-start gap-1 w-full">
+                <div className="flex w-full flex-col items-start justify-center gap-1">
                   <label
                     htmlFor="physicalLocation"
-                    className="text-color-dark-primary opacity-50 font-bold"
+                    className="font-bold text-color-dark-primary opacity-50"
                   >
-                    Açık Adres
+                    Açık Adres(*)
                   </label>
                   <textarea
                     onChange={handlePhysicalLocationChange}
@@ -671,16 +823,16 @@ export default function DashboardSettingsHomeExpert({}: Props) {
                     name="physicalLocation"
                     id="physicalLocation"
                     placeholder="Fiziksel Lokasyon"
-                    className="w-full transition-all duration-300 focus:border-color-main font-medium outline-none bg-color-white-third text-[16px]
-                py-[15px] px-[22px] border-[1px] border-color-dark-primary rounded-[20px] border-opacity-10"
+                    className="w-full rounded-[20px] border-[1px] border-color-dark-primary border-opacity-10 bg-color-white-third py-[15px] px-[22px]
+                text-[16px] font-medium outline-none transition-all duration-300 focus:border-color-main"
                   />
                 </div>
-                <div className="flex flex-col justify-center items-start gap-1 w-full">
+                <div className="flex w-full flex-col items-start justify-center gap-1">
                   <label
                     htmlFor="aboutMe"
-                    className="text-color-dark-primary opacity-50 font-bold"
+                    className="font-bold text-color-dark-primary opacity-50"
                   >
-                    Hakkımda
+                    Hakkımda(*)
                   </label>
                   <textarea
                     onChange={handleAboutMeChange}
@@ -690,36 +842,36 @@ export default function DashboardSettingsHomeExpert({}: Props) {
                     name="aboutMe"
                     id="aboutMe"
                     placeholder="Hakkımda"
-                    className="w-full transition-all duration-300 focus:border-color-main font-medium outline-none bg-color-white-third text-[16px]
-                py-[15px] px-[22px] border-[1px] border-color-dark-primary rounded-[20px] border-opacity-10"
+                    className="w-full rounded-[20px] border-[1px] border-color-dark-primary border-opacity-10 bg-color-white-third py-[15px] px-[22px]
+                text-[16px] font-medium outline-none transition-all duration-300 focus:border-color-main"
                   />
                 </div>
               </div>
 
-              <div className="flex flex-col justify-start items-start w-full gap-4">
-                <div className="w-full flex justify-start items-start gap-10">
-                  <div className="h-[200px] w-[200px] rounded-[20px] relative">
+              <div className="flex w-full flex-col items-start justify-start gap-4">
+                <div className="flex flex-col md:flex-row w-full items-start justify-start gap-10">
+                  <div className="relative h-[200px] min-w-[200px] rounded-[20px]">
                     {profileImageBase64 ? (
                       <img
                         src={`data:image/jpeg;base64,${profileImageBase64}`}
                         alt=""
-                        className="w-full h-full rounded-[20px]"
+                        className="h-full w-full rounded-[20px]"
                       />
                     ) : (
                       <img
                         src={require("../../../../../assets/images/doc_pp.jpg")}
                         alt=""
-                        className="w-full h-full rounded-[20px]"
+                        className="h-full w-full rounded-[20px]"
                       />
                     )}
                     <div
-                      className="absolute bottom-[90%] left-[90%] flex flex-col 
-              justify-start items-start gap-1 w-full"
+                      className="absolute bottom-[90%] left-[90%] flex w-full 
+              flex-col items-start justify-start gap-1"
                     >
                       <label
                         htmlFor="pp"
-                        className="p-2 rounded-full bg-color-white shadow-lg border-[1px]
-                  border-solid border-color-dark-primary border-opacity-10 hover:cursor-pointer"
+                        className="rounded-full border-[1px] border-solid border-color-dark-primary border-opacity-10
+                  bg-color-white p-2 shadow-lg hover:cursor-pointer"
                       >
                         <MdModeEdit className="text-[18px] text-color-main" />
                       </label>
@@ -732,53 +884,58 @@ export default function DashboardSettingsHomeExpert({}: Props) {
                       />
                     </div>
                   </div>
-                  <div className="flex flex-col justify-start items-start gap-2">
-                    <div className="flex justify-center items-center gap-2">
-                      <h1 className="text-color-dark-primary uppercase text-lg font-bold text-opacity-50">
+                  <div className="flex flex-col items-start justify-start gap-2">
+                    <div className="flex items-center justify-center gap-2">
+                      <h1 className="text-lg font-bold uppercase text-color-dark-primary text-opacity-50">
                         {authExpertObject && authExpertObject?.expert_title
                           ? authExpertObject?.expert_title.title_title
                           : ""}
                       </h1>
-                      <h1 className="text-color-dark-primary uppercase text-base">
+                      <h1 className="text-base uppercase text-color-dark-primary">
                         {authExpertObject?.expert_name}
                       </h1>
                     </div>
-                    <h1 className="text-color-dark-primary uppercase text-base font-bold">
-                      {authExpertObject && authExpertObject.expert_expertise
-                        ? authExpertObject.expert_expertise.expertise_title
-                        : ""}
-                    </h1>
-                    <p className="text-color-dark-primary font-bold text-opacity-50">
+                    <div className="flex items-center justify-center gap-2">
+                      <h1 className="font-bold text-color-dark-primary opacity-50">
+                        Uzmanlık:
+                      </h1>
+                      <h1 className="text-base font-bold uppercase text-color-dark-primary">
+                        {authExpertObject && authExpertObject.expert_expertise
+                          ? authExpertObject.expert_expertise.expertise_title
+                          : ""}
+                      </h1>
+                    </div>
+                    <p className="font-bold text-color-dark-primary text-opacity-50">
                       {authExpertObject && authExpertObject?.expert_about_me
                         ? authExpertObject?.expert_about_me
                         : ""}
                     </p>
                   </div>
                 </div>
-                <div className="flex flex-col justify-start items-start gap-2">
-                  <h1 className="text-color-dark-primary opacity-50 font-bold">
+                <div className="flex flex-col items-start justify-start gap-2">
+                  <h1 className="font-bold text-color-dark-primary opacity-50">
                     Branşlarım
                   </h1>
                   {currentBranches.length === 0 ? (
                     <h1>Henüz bir şey yok.</h1>
                   ) : (
-                    <ul className="flex justify-start items-start gap-2 flex-wrap max-w-[450px]">
+                    <ul className="flex max-w-[450px] flex-wrap items-start justify-start gap-2">
                       {currentBranches.map((branch) => {
                         return (
                           <li
-                            className="flex justify-center items-center gap-2 p-2 px-6 bg-color-gray-primary
-                        rounded-[15px] hover:bg-color-main group
-                        transition-all duration-300 cursor-pointer"
+                            className="group flex cursor-pointer items-center justify-center gap-2 rounded-[15px]
+                        bg-color-gray-primary p-2 px-6
+                        transition-all duration-300 hover:bg-color-main"
                             onClick={() => handleRemoveBranch(branch._id)}
                           >
                             <h1
-                              className="group-hover:text-color-white text-color-dark-primary 
-                                    transition-all duration-300
-                                  font-bold text-opacity-80 text-sm"
+                              className="text-sm font-bold 
+                                    text-color-dark-primary text-opacity-80
+                                  transition-all duration-300 group-hover:text-color-white"
                             >
                               {branch.branch_title}
                             </h1>
-                            <AiOutlineCloseCircle className="text-color-dark-primary group-hover:text-color-white transition-all duration-300" />
+                            <AiOutlineCloseCircle className="text-color-dark-primary transition-all duration-300 group-hover:text-color-white" />
                           </li>
                         );
                       })}
@@ -788,19 +945,19 @@ export default function DashboardSettingsHomeExpert({}: Props) {
               </div>
             </div>
 
-            <div className="w-full flex justify-end items-center">
+            <div className="flex w-full items-center justify-end pt-10">
               <button
                 disabled={submitDisable}
                 type="submit"
-                className="w-[200px] h-[60px] flex justify-center items-center p-4 rounded-[15px] bg-color-third hover:bg-color-secondary 
-                transition-all duration-300"
+                className="flex h-[60px] w-[200px] items-center justify-center rounded-[15px] bg-color-third p-4 transition-all 
+                duration-300 hover:bg-color-secondary"
               >
                 {loader ? (
                   <div className="animate-spin">
-                    <BiLoaderAlt className="text-color-white text-[24px] text-opacity-80" />
+                    <BiLoaderAlt className="text-[24px] text-color-white text-opacity-80" />
                   </div>
                 ) : (
-                  <h1 className="text-color-white text-lg">
+                  <h1 className="text-lg text-color-white">
                     Bilgilerimi Kaydet
                   </h1>
                 )}

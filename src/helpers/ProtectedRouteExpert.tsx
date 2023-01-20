@@ -19,7 +19,7 @@ export default function ProtectedRouteExpert({
   if (!isAuthExpert()) {
     const alert: Alert = {
       type: "warning",
-      text: "Oturumunuzun süresi doldu",
+      text: "Oturum zaman aşımına uğradı.",
       active: true,
       statusCode: 408,
     };

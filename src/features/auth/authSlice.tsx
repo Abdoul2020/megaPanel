@@ -29,9 +29,19 @@ const authSlice = createSlice({
     addAuthAppointment: (state, { payload }) => {
       state.auth_appointments = payload;
     },
+    removeAuthAppointment: (state, { payload }) => {
+      let newState = state.auth_appointments.filter(
+        (appointment) => appointment._id !== payload._id
+      );
+      state.auth_appointments = newState;
+    },
   },
 });
 
 export default authSlice.reducer;
-export const { addAuthToken, addAuthObject, addAuthAppointment } =
-  authSlice.actions;
+export const {
+  addAuthToken,
+  removeAuthAppointment,
+  addAuthObject,
+  addAuthAppointment,
+} = authSlice.actions;

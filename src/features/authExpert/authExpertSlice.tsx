@@ -74,6 +74,12 @@ const authExpertSlice = createSlice({
         state.auth_expert_myappointments = newState;
       }
     },
+    removeAuthExpertAppointment: (state, { payload }) => {
+      let newState = state.auth_expert_myappointments.filter(
+        (appointment) => appointment._id !== payload._id
+      );
+      state.auth_expert_myappointments = newState;
+    },
   },
 });
 
@@ -87,4 +93,5 @@ export const {
   updateAuthExpertMyAppointment,
   addAuthExpertCertificates,
   removeAuthExpertCertificate,
+  removeAuthExpertAppointment,
 } = authExpertSlice.actions;

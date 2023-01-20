@@ -21,10 +21,10 @@ export default function TeamSection(props: Props) {
   }, []);
 
   return (
-    <div className="w-full bg-color-white-secondary flex justify-center items-center">
-      <div className="w-2/3 flex flex-col justify-center items-start py-20 gap-10">
-        <div className="flex flex-col justify-center items-start gap-21">
-          <h1 className="text-2xl text-color-dark-primary font-bold">
+    <div className="flex w-full items-center justify-center bg-color-white-secondary px-10 lg:px-0">
+      <div className="flex w-full lg:w-2/3 flex-col items-start justify-center gap-10 py-20">
+        <div className="gap-21 flex flex-col items-start justify-center">
+          <h1 className="text-2xl font-bold text-color-dark-primary">
             Uzmanlarımızla Tanış
           </h1>
           <p className="text-color-dark-primary opacity-70">
@@ -33,7 +33,7 @@ export default function TeamSection(props: Props) {
           </p>
         </div>
         <div className="relative w-full">
-          <div className="z-20 mr-4 absolute right-full h-full flex flex-col justify-center items-center">
+          {/* <div className="z-20 mr-4 absolute right-full h-full flex flex-col justify-center items-center">
             <div
               className="p-4 bg-color-main-extra bg-opacity-50 rounded-full group hover:bg-opacity-100 transition-all
              duration-300 hover:cursor-pointer"
@@ -48,7 +48,7 @@ export default function TeamSection(props: Props) {
             >
               <BsArrowRight className="text-[24px] text-color-white" />
             </div>
-          </div>
+          </div> */}
           {/* <div className="scroll-smooth py-2 snap-x snap-mandatory w-full flex justify-start items-center gap-8 overflow-x-scroll scrollbar-none">
             {specialists.map((specialist) => {
               return (
@@ -69,15 +69,7 @@ export default function TeamSection(props: Props) {
               className="flex gap-4 py-4"
             >
               {props.doctors.map((expert) => {
-                return (
-                  <TeamMember
-                    key={expert._id}
-                    expert={{
-                      ...expert,
-                      expert_image_src: `team-1.jpg`,
-                    }}
-                  />
-                );
+                return <TeamMember key={expert._id} expert={expert} />;
               })}
             </motion.div>
           </motion.div>

@@ -32,13 +32,13 @@ export default function BannerSection() {
   const cities = useAppSelector((state) => state.cities.citiesList);
   return (
     <section
-      className="h-[70vh] w-full relative bg-no-repeat flex flex-col justify-center items-center"
+      className="relative flex h-[70vh] w-full flex-col items-center justify-center bg-no-repeat"
       style={{
         background:
           "radial-gradient(circle, rgba(51,169,179,1) 0%, rgba(22,63,64,1) 35%)",
       }}
     >
-      <div className="bg-color-main absolute w-full h-full opacity-80"></div>
+      <div className="absolute h-full w-full bg-color-main opacity-80"></div>
       <motion.div
         initial={{ opacity: 0, scale: 0.5 }}
         whileInView={{ opacity: 1, scale: 1 }}
@@ -48,34 +48,34 @@ export default function BannerSection() {
           reapat: 1,
         }}
         viewport={{ once: true }}
-        className="z-10 flex flex-col justify-center items-center gap-6"
+        className="z-10 flex w-full flex-col items-center justify-center gap-6 px-10 lg:px-0"
       >
-        <div className="flex flex-col justify-center items-center">
-          <h1 className="text-color-white font-bold text-[40px]">
+        <div className="flex flex-col items-center justify-center">
+          <h1 className="text-center text-[28px] font-bold text-color-white lg:text-[40px]">
             Uluslararası kişisel gelişim portalı,
           </h1>
-          <h1 className="text-color-third font-bold text-[40px]">
-            <span className="text-color-white font-bold">
+          <h1 className="text-center text-[28px] font-bold text-color-third lg:text-[40px]">
+            <span className="font-bold text-color-white">
               Uzman bul, randevu al,
             </span>{" "}
             online görüşme yap!
           </h1>
         </div>
-        <div className="bg-color-third rounded-[30px] p-2">
-          <div className="grid grid-cols-2 relative p-2">
+        <div className="rounded-[30px] bg-color-third p-2">
+          <div className="relative grid grid-cols-2 p-2">
             <div
-              className="p-3 px-12 flex justify-center items-center cursor-pointer"
+              className="flex cursor-pointer items-center justify-center p-3 px-6 lg:px-12"
               onClick={() => setAppointmenType("online")}
             >
-              <h1 className="text-sm font-bold text-color-white z-50">
+              <h1 className="z-50 text-sm font-bold text-color-white">
                 Online Görüşme
               </h1>
             </div>
             <div
-              className="py-3 px-12 flex justify-center items-center cursor-pointer"
+              className="flex cursor-pointer items-center justify-center py-3 px-6 lg:px-12"
               onClick={() => setAppointmenType("facetoface")}
             >
-              <h1 className="text-sm font-bold text-color-white z-50">
+              <h1 className="z-50 text-sm font-bold text-color-white">
                 Yüz Yüze Randevu
               </h1>
             </div>
@@ -84,30 +84,30 @@ export default function BannerSection() {
                 appointmentType === "online"
                   ? "translate-x-0"
                   : "translate-x-full"
-              } h-full w-1/2 bg-color-secondary absolute rounded-[25px] pointer-events-none`}
+              } pointer-events-none absolute h-full w-1/2 rounded-[25px] bg-color-main`}
             ></div>
           </div>
         </div>
-        <div>
+        <div className="flex w-full lg:w-3/4 items-center justify-center">
           <form
-            className="overflow-hidden flex justify-center items-center gap-2 bg-color-white-secondary py-1 pr-1 rounded-[20px]"
+            className="flex w-full items-center justify-between gap-2 overflow-hidden rounded-[20px] bg-color-white-secondary py-1 pr-1 lg:w-2/3"
             onSubmit={handleSubmit}
           >
             <div
               className={`${
                 appointmentType === "online"
-                  ? "-translate-x-full ml-0 hidden"
-                  : "translate-x-0 block"
-              } w-[150px] h-full p-4 ml-2 bg-color-main 
-              rounded-[20px] 
+                  ? "ml-0 hidden -translate-x-full"
+                  : "block translate-x-0"
+              } ml-2 h-full rounded-[20px] bg-color-main 
+              p-4 px-2
               opacity-80 
-            hover:opacity-100 transition-all duration-500`}
+            transition-all duration-500 hover:opacity-100`}
             >
               <select
                 name=""
                 id=""
-                className="text-color-white outline-none text-lg w-full cursor-pointer bg-color-main scrollbar-thin scrollbar-thumb-color-main-extra
-                 scrollbar-track-color-white"
+                className="w-full cursor-pointer bg-color-main text-sm text-color-white outline-none scrollbar-thin scrollbar-track-color-white scrollbar-thumb-color-main-extra
+                 lg:text-lg"
                 onChange={onCityChange}
               >
                 <option value="" selected>
@@ -127,15 +127,17 @@ export default function BannerSection() {
               type="text"
               name="search"
               id="search"
-              className="pl-4 text-base py-2 w-[600px] outline-none tracking-wide opacity-80 bg-color-white-secondary"
+              className="w-full bg-color-white-secondary py-2 pl-4 text-sm tracking-wide opacity-80 outline-none lg:text-base"
               placeholder="Uzman veya branş arayın..."
             />
             <button
               type="submit"
-              className="py-4 h-[64px] px-6 flex justify-center items-center gap-4 bg-color-main rounded-[20px] opacity-80 hover:opacity-100 transition-all duration-500"
+              className="flex h-[64px] items-center justify-center gap-4 rounded-[20px] bg-color-main py-4 px-6 opacity-80 transition-all duration-500 hover:opacity-100"
             >
-              <h1 className="font-bold text-color-white">ara</h1>
-              <FiSearch className="text-color-white font-bold text-xl" />
+              <h1 className="text-sm font-bold text-color-white lg:text-sm">
+                ara
+              </h1>
+              <FiSearch className="text-xl font-bold text-color-white" />
             </button>
           </form>
         </div>

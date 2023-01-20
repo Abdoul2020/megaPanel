@@ -52,13 +52,26 @@ export const removeLocalStorage = (key: any) => {
 
 // authenticate user by passing data to cookie and localstorage during signin
 
-export const authenticateExpert = (response: any, next: any) => {
+export const authenticateExpert = (
+  response: any,
+  next: any,
+  remind_me?: any
+) => {
   setCookie("m_e_t", response.data.token);
-  setLocalStorage("m_e_u", response.data.user);
+  setLocalStorage("rmm_e", {
+    rmm: remind_me !== undefined ? remind_me : false,
+    rmm_t: response.data.remind_me_token,
+  });
   next();
 };
 export const unauthenticateExpert = (next: any) => {
   removeCookie("m_e_t");
+  next();
+};
+
+export const unauthenticatehardExpert = (next: any) => {
+  removeCookie("m_e_t");
+  removeLocalStorage("rmm_e");
   next();
 };
 

@@ -22,6 +22,7 @@ export const authExpertRegister = async (body: AuthExpertRegisterDto) => {
       expert_name: body.expert_name,
       expert_surname: body.expert_surname,
       expert_email: body.expert_email,
+      expert_company: body.expert_company,
       expert_password: body.expert_password,
       expert_retype_password: body.expert_retype_password,
       expert_branch: body.expert_branch,
@@ -52,6 +53,7 @@ export const authExpertLogin = async (body: AuthExpertLoginDto) => {
     data: {
       expert_email: body.expert_email,
       expert_password: body.expert_password,
+      expert_remind_me_token: body.expert_remind_me_token,
     },
   })
     .then((response) => {
@@ -129,7 +131,7 @@ export const authExpertUpdateProfile = async (
     .then((response) => {
       return { success: true, data: response };
     })
-    .catch((err) => {
+    .catch(async (err) => {
       return {
         success: false,
         data: err,
@@ -144,7 +146,6 @@ export const authExpertUpdatePassword = async (
   token: string,
   body: AuthExpertUpdatePasswordDto
 ) => {
-  console.log({ token, body });
   const response = await axios({
     method: "patch",
     url: `${BASE_URL}/auth/expert/update-password`,
@@ -224,7 +225,6 @@ export const authExpertUploadProfilePicture = async (
   token: string,
   file: any
 ) => {
-  console.log(file);
   let formData = new FormData();
   formData.append("file", file);
   const response = await axios
@@ -266,7 +266,9 @@ export const authExpertDownloadProfilePicture = async (token: string) => {
 
 export const authExpertUploadCertificatePdf = async (
   token: string,
-  file: any
+  file: any,
+  title: string,
+  company: string
 ) => {
   let formData = new FormData();
   formData.append("file", file);
@@ -275,6 +277,10 @@ export const authExpertUploadCertificatePdf = async (
       headers: {
         "Content-Type": "multipart/form-data",
         Authorization: `Bearer ${token}`,
+      },
+      params: {
+        certificate_title: title,
+        certificate_company: company,
       },
     })
     .then((response) => {
