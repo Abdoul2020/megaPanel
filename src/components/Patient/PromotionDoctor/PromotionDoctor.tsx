@@ -1,17 +1,18 @@
 import React from "react";
 import { BsArrowRight } from "react-icons/bs";
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
 
 type Props = {};
 
 export default function PromotionDoctor({}: Props) {
   return (
-    <div className="w-full bg-color-white-secondary flex justify-center items-center py-20 pt-40">
-      <div className="w-2/3 relative bg-doctor-color-main rounded-[30px] grid grid-cols-2 px-10 py-20">
+    <div className="flex w-full items-center justify-center bg-color-white-secondary py-20 px-10 pt-40 lg:px-0">
+      <div className="relative flex w-full grid-cols-2 rounded-[30px] bg-doctor-color-main px-10 py-20 lg:grid lg:w-2/3">
         <div></div>
-        <div className="flex flex-col justify-center items-start gap-10 z-20">
-          <div className="flex flex-col justify-center items-start gap-4">
-            <div className="flex flex-col justify-center items-start">
+        <div className="z-20 flex flex-col items-start justify-center gap-10">
+          <div className="flex flex-col items-start justify-center gap-4">
+            <div className="flex flex-col items-start justify-center">
               <h1 className="text-3xl font-bold text-color-dark-primary">
                 Uzmanlar için Megaverse!
               </h1>
@@ -22,24 +23,20 @@ export default function PromotionDoctor({}: Props) {
               platformdur.
             </p>
           </div>
-          <motion.button
-            initial={{ opacity: 0, x: "-50%" }}
-            whileInView={{ opacity: 1, x: "0%" }}
-            transition={{
-              ease: "backInOut",
-              duration: 0.3,
-              reapat: 1,
-            }}
-            viewport={{ once: true }}
-            className="flex justify-center items-center gap-2 bg-color-third rounded-[15px]
-           py-4 px-8 hover:opacity-80 hover:cursor-pointer transition-all duration-300"
-          >
-            <h1 className="text-color-white-secondary font-bold">Hemen Dene</h1>
-            <BsArrowRight className="text-color-white-secondary text-[24px]" />
-          </motion.button>
+          <Link to="/for-doctors/#banner">
+            <button
+              className="flex items-center justify-center gap-2 rounded-[15px] bg-color-third
+           py-4 px-8 transition-all duration-300 hover:cursor-pointer hover:opacity-80"
+            >
+              <h1 className="font-bold text-color-white-secondary">
+                Hemen Dene
+              </h1>
+              <BsArrowRight className="text-[24px] text-color-white-secondary" />
+            </button>
+          </Link>
         </div>
-        <div className="absolute w-full h-full grid grid-cols-2">
-          <div className="relative flex justify-center items-center">
+        <div className="absolute grid h-full w-full grid-cols-2">
+          <div className="relative hidden items-center justify-center lg:flex">
             <img
               src={require("../../../assets/images/gorsel_3.png")}
               alt=""

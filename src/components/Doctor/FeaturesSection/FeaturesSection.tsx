@@ -3,10 +3,11 @@ import { RiCalendarCheckFill } from "react-icons/ri";
 import { ImSearch } from "react-icons/im";
 import { TbReportAnalytics } from "react-icons/tb";
 import { MdDeviceThermostat } from "react-icons/md";
-import { IoFolder } from "react-icons/io5";
+import { IoFolder, IoTicket } from "react-icons/io5";
 import { TbReport } from "react-icons/tb";
-import { FaFileMedicalAlt } from "react-icons/fa";
+import { TfiAgenda } from "react-icons/tfi";
 import { motion } from "framer-motion";
+import { IoIosPeople } from "react-icons/io";
 
 type Props = {};
 
@@ -14,10 +15,10 @@ export default function FeaturesSection({}: Props) {
   const array = [1, 2, 3, 4, 5, 6, 7];
   const [activeFeature, setActiveFeature] = useState(0);
   return (
-    <div className="py-20 w-full relative bg-color-white-secondary flex flex-col justify-center items-center gap-12">
-      <div className="w-2/3 flex justify-start items-start">
-        <div className="flex flex-col justify-start items-start gap-21">
-          <h1 className="text-2xl text-color-dark-primary font-bold">
+    <div className="relative flex w-full flex-col items-center justify-center gap-12 bg-color-white-secondary py-20 px-10 lg:px-0">
+      <div className="flex w-full items-start justify-start lg:w-2/3">
+        <div className="gap-21 flex flex-col items-start justify-start">
+          <h1 className="text-2xl font-bold text-color-dark-primary">
             Öne Çıkan Özelliklerimiz
           </h1>
           <p className="text-color-dark-primary opacity-70">
@@ -25,17 +26,17 @@ export default function FeaturesSection({}: Props) {
           </p>
         </div>
       </div>
-      <div className="w-2/3 flex flex-col justify-center items-center gap-12">
-        <div className="w-full flex justify-around relative items-center gap-8 border-b-[1px] border-color-dark-primary border-opacity-10">
+      <div className="flex w-full flex-col items-center justify-center gap-12 lg:w-2/3">
+        <div className="relative grid-cols-2 grid md:grid-cols-3 lg:flex w-full items-center justify-around gap-8 border-b-[1px] border-color-dark-primary border-opacity-10">
           <div
-            className="flex flex-col justify-center items-center gap-2 relative pb-6 px-2 group hover:cursor-pointer"
+            className="group relative flex flex-col items-center justify-center gap-2 px-2 pb-6 hover:cursor-pointer"
             onClick={() => setActiveFeature(0)}
           >
-            <div className="p-6 bg-color-white rounded-[25px] shadow-lg">
-              <RiCalendarCheckFill className="text-[48px] text-color-main group-hover:scale-110 transition-all duration-300" />
+            <div className="rounded-[25px] bg-color-white p-6 shadow-lg">
+              <RiCalendarCheckFill className="text-[48px] text-color-main transition-all duration-300 group-hover:scale-110" />
             </div>
             <h1
-              className={`text-color-dark-primary text-base font-bold ${
+              className={`text-base font-bold text-color-dark-primary ${
                 activeFeature === 0
                   ? "opacity-80"
                   : "opacity-50 transition-all duration-300"
@@ -52,28 +53,29 @@ export default function FeaturesSection({}: Props) {
                   duration: 0.3,
                   reapat: 1,
                 }}
-                className="h-[5px] absolute -bottom-[3px] w-[200px] rounded-full bg-color-main"
+                className="absolute -bottom-[3px] h-[5px] w-[200px] rounded-full bg-color-main"
               ></motion.div>
             ) : (
-              <div className="h-[5px] absolute -bottom-[3px] w-[200px] rounded-full"></div>
+              <div className="absolute -bottom-[3px] h-[5px] w-[200px] rounded-full"></div>
             )}
           </div>
 
-          {/* <div
-            className="flex flex-col justify-center items-center gap-2 relative pb-6 px-2 group hover:cursor-pointer"
+          <div
+            className="group relative flex flex-col items-center justify-center gap-2 px-2 pb-6 hover:cursor-pointer"
             onClick={() => setActiveFeature(1)}
           >
-            <div className="p-6 bg-color-white rounded-[25px] shadow-lg">
-              <FaFileMedicalAlt className="text-[48px] text-color-main group-hover:scale-110 transition-all duration-500" />
+            <div className="relative rounded-[25px] bg-color-white p-6 shadow-lg">
+              <TfiAgenda className="text-[48px] text-color-main transition-all duration-500 group-hover:scale-110" />
+              <IoTicket className="absolute bottom-[80%] left-[80%] text-[24px] text-color-warning-primary" />
             </div>
             <h1
-              className={`text-color-dark-primary text-base font-bold ${
+              className={`text-base font-bold text-color-dark-primary ${
                 activeFeature === 1
                   ? "opacity-80"
                   : "opacity-50 transition-all duration-300"
               }`}
             >
-              Medikal Takip
+              Ajanda ve Notlar
             </h1>
             {activeFeature === 1 ? (
               <motion.div
@@ -84,22 +86,22 @@ export default function FeaturesSection({}: Props) {
                   duration: 0.3,
                   reapat: 1,
                 }}
-                className="h-[5px] absolute -bottom-[3px] w-[200px] rounded-full bg-color-main"
+                className="absolute -bottom-[3px] h-[5px] w-[200px] rounded-full bg-color-main"
               ></motion.div>
             ) : (
-              <div className="h-[5px] absolute -bottom-[3px] w-[200px] rounded-full"></div>
+              <div className="absolute -bottom-[3px] h-[5px] w-[200px] rounded-full"></div>
             )}
-          </div> */}
+          </div>
 
           <div
-            className="flex flex-col justify-center items-center gap-2 relative pb-6 px-2 group hover:cursor-pointer"
+            className="group relative flex flex-col items-center justify-center gap-2 px-2 pb-6 hover:cursor-pointer"
             onClick={() => setActiveFeature(2)}
           >
-            <div className="p-6 bg-color-white rounded-[25px] shadow-lg">
-              <ImSearch className="text-[48px] text-color-main group-hover:scale-110 transition-all duration-500" />
+            <div className="rounded-[25px] bg-color-white p-6 shadow-lg">
+              <ImSearch className="text-[48px] text-color-main transition-all duration-500 group-hover:scale-110" />
             </div>
             <h1
-              className={`text-color-dark-primary text-base font-bold ${
+              className={`text-base font-bold text-color-dark-primary ${
                 activeFeature === 2
                   ? "opacity-80"
                   : "opacity-50 transition-all duration-300"
@@ -116,22 +118,23 @@ export default function FeaturesSection({}: Props) {
                   duration: 0.3,
                   reapat: 1,
                 }}
-                className="h-[5px] absolute -bottom-[3px] w-[200px] rounded-full bg-color-main"
+                className="absolute -bottom-[3px] h-[5px] w-[200px] rounded-full bg-color-main"
               ></motion.div>
             ) : (
-              <div className="h-[5px] absolute -bottom-[3px] w-[200px] rounded-full"></div>
+              <div className="absolute -bottom-[3px] h-[5px] w-[200px] rounded-full"></div>
             )}
           </div>
 
           <div
-            className="flex flex-col justify-center items-center gap-2 relative pb-6 px-2 group hover:cursor-pointer"
+            className="group relative flex flex-col items-center justify-center gap-2 px-2 pb-6 hover:cursor-pointer"
             onClick={() => setActiveFeature(3)}
           >
-            <div className="p-6 bg-color-white rounded-[25px] shadow-lg">
-              <TbReportAnalytics className="text-[48px] text-color-main group-hover:scale-110 transition-all duration-500" />
+            <div className="relative rounded-[25px] bg-color-white p-6 shadow-lg">
+              <TbReportAnalytics className="text-[48px] text-color-main transition-all duration-500 group-hover:scale-110" />
+              <IoTicket className="absolute bottom-[80%] left-[80%] text-[24px] text-color-warning-primary" />
             </div>
             <h1
-              className={`text-color-dark-primary text-base font-bold ${
+              className={`text-base font-bold text-color-dark-primary ${
                 activeFeature === 3
                   ? "opacity-80"
                   : "opacity-50 transition-all duration-300"
@@ -148,28 +151,29 @@ export default function FeaturesSection({}: Props) {
                   duration: 0.3,
                   reapat: 1,
                 }}
-                className="h-[5px] absolute -bottom-[3px] w-[200px] rounded-full bg-color-main"
+                className="absolute -bottom-[3px] h-[5px] w-[200px] rounded-full bg-color-main"
               ></motion.div>
             ) : (
-              <div className="h-[5px] absolute -bottom-[3px] w-[200px] rounded-full"></div>
+              <div className="absolute -bottom-[3px] h-[5px] w-[200px] rounded-full"></div>
             )}
           </div>
 
-          {/* <div
-            className="flex flex-col justify-center items-center gap-2 relative pb-6 px-2 group hover:cursor-pointer"
+          <div
+            className="group relative flex flex-col items-center justify-center gap-2 px-2 pb-6 hover:cursor-pointer"
             onClick={() => setActiveFeature(4)}
           >
-            <div className="p-6 bg-color-white rounded-[25px] shadow-lg">
-              <MdDeviceThermostat className="text-[48px] text-color-main group-hover:scale-110 transition-all duration-500" />
+            <div className="relative rounded-[25px] bg-color-white p-6 shadow-lg">
+              <IoIosPeople className="text-[48px] text-color-main transition-all duration-500 group-hover:scale-110" />
+              <IoTicket className="absolute bottom-[80%] left-[80%] text-[24px] text-color-warning-primary" />
             </div>
             <h1
-              className={`text-color-dark-primary text-base font-bold ${
+              className={`text-base font-bold text-color-dark-primary ${
                 activeFeature === 4
                   ? "opacity-80"
                   : "opacity-50 transition-all duration-300"
               }`}
             >
-              Ölçüm Takip
+              Personel Yönetimi
             </h1>
             {activeFeature === 4 ? (
               <motion.div
@@ -180,28 +184,29 @@ export default function FeaturesSection({}: Props) {
                   duration: 0.3,
                   reapat: 1,
                 }}
-                className="h-[5px] absolute -bottom-[3px] w-[200px] rounded-full bg-color-main"
+                className="absolute -bottom-[3px] h-[5px] w-[200px] rounded-full bg-color-main"
               ></motion.div>
             ) : (
-              <div className="h-[5px] absolute -bottom-[3px] w-[200px] rounded-full"></div>
+              <div className="absolute -bottom-[3px] h-[5px] w-[200px] rounded-full"></div>
             )}
-          </div> */}
+          </div>
 
-          {/* <div
-            className="flex flex-col justify-center items-center gap-2 relative pb-6 px-2 group hover:cursor-pointer"
+          <div
+            className="group relative flex flex-col items-center justify-center gap-2 px-2 pb-6 hover:cursor-pointer"
             onClick={() => setActiveFeature(5)}
           >
-            <div className="p-6 bg-color-white rounded-[25px] shadow-lg">
-              <TbReport className="text-[48px] text-color-main group-hover:scale-110 transition-all duration-500" />
+            <div className="relative rounded-[25px] bg-color-white p-6 shadow-lg">
+              <TbReport className="text-[48px] text-color-main transition-all duration-500 group-hover:scale-110" />
+              <IoTicket className="absolute bottom-[80%] left-[80%] text-[24px] text-color-warning-primary" />
             </div>
             <h1
-              className={`text-color-dark-primary text-base font-bold ${
+              className={`text-base font-bold text-color-dark-primary ${
                 activeFeature === 5
                   ? "opacity-80"
                   : "opacity-50 transition-all duration-300"
               }`}
             >
-              Raporlama
+              Raporlama/Analiz
             </h1>
             {activeFeature === 5 ? (
               <motion.div
@@ -212,22 +217,22 @@ export default function FeaturesSection({}: Props) {
                   duration: 0.3,
                   reapat: 1,
                 }}
-                className="h-[5px] absolute -bottom-[3px] w-[200px] rounded-full bg-color-main"
+                className="absolute -bottom-[3px] h-[5px] w-[200px] rounded-full bg-color-main"
               ></motion.div>
             ) : (
-              <div className="h-[5px] absolute -bottom-[3px] w-[200px] rounded-full"></div>
+              <div className="absolute -bottom-[3px] h-[5px] w-[200px] rounded-full"></div>
             )}
-          </div> */}
+          </div>
 
           <div
-            className="flex flex-col justify-center items-center gap-2 relative pb-6 px-2 group hover:cursor-pointer"
+            className="group relative flex flex-col items-center justify-center gap-2 px-2 pb-6 hover:cursor-pointer"
             onClick={() => setActiveFeature(6)}
           >
-            <div className="p-6 bg-color-white rounded-[25px] shadow-lg">
-              <IoFolder className="text-[48px] text-color-main group-hover:scale-110 transition-all duration-500" />
+            <div className="rounded-[25px] bg-color-white p-6 shadow-lg">
+              <IoFolder className="text-[48px] text-color-main transition-all duration-500 group-hover:scale-110" />
             </div>
             <h1
-              className={`text-color-dark-primary text-base font-bold ${
+              className={`text-base font-bold text-color-dark-primary ${
                 activeFeature === 6
                   ? "opacity-80"
                   : "opacity-50 transition-all duration-300"
@@ -244,16 +249,16 @@ export default function FeaturesSection({}: Props) {
                   duration: 0.3,
                   reapat: 1,
                 }}
-                className="h-[5px] absolute -bottom-[3px] w-[200px] rounded-full bg-color-main"
+                className="absolute -bottom-[3px] h-[5px] w-[200px] rounded-full bg-color-main"
               ></motion.div>
             ) : (
-              <div className="h-[5px] absolute -bottom-[3px] w-[200px] rounded-full"></div>
+              <div className="absolute -bottom-[3px] h-[5px] w-[200px] rounded-full"></div>
             )}
           </div>
         </div>
         {activeFeature === 0 ? (
-          <div className="w-full grid grid-cols-3 gap-10">
-            <div className="flex flex-col justify-center items-start gap-4 col-span-1">
+          <div className="flex lg:grid w-full grid-cols-3 gap-10">
+            <div className="col-span-1 flex flex-col items-start justify-start gap-4">
               <h1 className="text-2xl font-bold text-color-main">
                 Randevu Yönetimi
               </h1>
@@ -268,43 +273,43 @@ export default function FeaturesSection({}: Props) {
                 yapabilirsiniz.
               </p>
             </div>
-            <div className="col-span-2 flex justify-center items-center">
+            <div className="col-span-2 items-center justify-center hidden lg:flex">
               <img
-                src={require("../../../assets/images/features/appointment-management-1.jpg")}
+                src={require("../../../assets/images/randevu_yonetimi.png")}
                 alt=""
-                className="w-4/5 h-full p-4 bg-color-white rounded-[25px] shadow-lg opacity-90"
+                className="h-full w-4/5 rounded-[25px] bg-color-white p-4 opacity-90 shadow-lg"
               />
             </div>
           </div>
-        ) : // activeFeature === 1 ? (
-        //   <div className="w-full grid grid-cols-3 gap-10">
-        //     <div className="flex flex-col justify-center items-start gap-4 col-span-1">
-        //       <h1 className="text-2xl font-bold text-color-main">
-        //         Medikal Takip
-        //       </h1>
-        //       <h1 className="text-lg font-bold text-color-dark-primary">
-        //         Hastalar için medikal özgeçmiş ve muayene bilgilerini kolaylıkla
-        //         kayıt altına alabilir, geçmiş bulgulara birkaç tıklama ile
-        //         ulaşabilirsiniz.
-        //       </h1>
-        //       <p className="text-color-dark-primary opacity-80">
-        //         Her branş için özel geliştirilmiş medikal ekranlar sayesinde
-        //         medikal takiplerinizi kolaylıkla yapabilir, branşlara bağlı
-        //         olarak değişen iş süreçlerinizi yönetebilirsiniz.
-        //       </p>
-        //     </div>
-        //     <div className="col-span-2 flex justify-center items-center">
-        //       <img
-        //         src={require("../../../assets/images/features/medical-follow-1.jpg")}
-        //         alt=""
-        //         className="w-4/5 h-full p-4 bg-color-white rounded-[25px] shadow-lg opacity-90"
-        //       />
-        //     </div>
-        //   </div>
-        // )
-        activeFeature === 2 ? (
-          <div className="w-full grid grid-cols-3 gap-10">
-            <div className="flex flex-col justify-center items-start gap-4 col-span-1">
+        ) : activeFeature === 1 ? (
+          <div className="flex lg:grid w-full grid-cols-3 gap-10">
+            <div className="col-span-1 flex flex-col items-start justify-start gap-4">
+              <h1 className="text-2xl font-bold text-color-main">
+                Ajanda ve Notlar
+              </h1>
+              {/* <h1 className="text-lg font-bold text-color-dark-primary">
+                Hastalar için medikal özgeçmiş ve muayene bilgilerini kolaylıkla
+                kayıt altına alabilir, geçmiş bulgulara birkaç tıklama ile
+                ulaşabilirsiniz.
+              </h1> */}
+              <p className="text-lg text-color-dark-primary opacity-80">
+                Her şeyin dijitale yöneldiği günümüzde defter tarih olmak üzere,
+                siz de güvenle ajandanızı, merkez notlarınızı, danışan
+                notlarınızı ve her şeyi veri tabanımıza kaydederek hem güvende
+                tutun hem de gözden kaçırmayın!
+              </p>
+            </div>
+            <div className="col-span-2 hidden lg:flex items-center justify-center">
+              <img
+                src={require("../../../assets/images/no_feature.jpg")}
+                alt=""
+                className="h-[400px] w-4/5 rounded-[25px] bg-color-white p-4 opacity-90 shadow-lg"
+              />
+            </div>
+          </div>
+        ) : activeFeature === 2 ? (
+          <div className="flex lg:grid w-full grid-cols-3 gap-10">
+            <div className="col-span-1 flex flex-col items-start justify-start gap-4">
               <h1 className="text-2xl font-bold text-color-main">
                 Danışan Takibi
               </h1>
@@ -319,17 +324,17 @@ export default function FeaturesSection({}: Props) {
                 Megaverse üzerinden kendi tasarımınıza göre alabilirsiniz.
               </p>
             </div>
-            <div className="col-span-2 flex justify-center items-center">
+            <div className="col-span-2 hidden lg:flex items-center justify-center">
               <img
-                src={require("../../../assets/images/features/patient-monitoring-1.jpg")}
+                src={require("../../../assets/images/danisan_takibi.png")}
                 alt=""
-                className="w-4/5 h-full p-4 bg-color-white rounded-[25px] shadow-lg opacity-90"
+                className="h-[400px] w-4/5 rounded-[25px] bg-color-white p-4 opacity-90 shadow-lg"
               />
             </div>
           </div>
         ) : activeFeature === 3 ? (
-          <div className="w-full grid grid-cols-3 gap-10">
-            <div className="flex flex-col justify-center items-start gap-4 col-span-1">
+          <div className="flex lg:grid w-full grid-cols-3 gap-10">
+            <div className="col-span-1 flex flex-col items-start justify-start gap-4">
               <h1 className="text-2xl font-bold text-color-main">
                 Finansal Bilgiler
               </h1>
@@ -345,66 +350,74 @@ export default function FeaturesSection({}: Props) {
                 kolaylıkla yazdırabilirsiniz.
               </p>
             </div>
-            <div className="col-span-2 flex justify-center items-center">
+            <div className="col-span-2 hidden lg:flex items-center justify-center">
               <img
-                src={require("../../../assets/images/features/financial-information-1.jpg")}
+                src={require("../../../assets/images/no_feature.jpg")}
                 alt=""
-                className="w-4/5 h-full p-4 bg-color-white rounded-[25px] shadow-lg opacity-90"
+                className="h-[400px] w-4/5 rounded-[25px] bg-color-white p-4 opacity-90 shadow-lg"
               />
             </div>
           </div>
         ) : activeFeature === 4 ? (
-          <div className="w-full grid grid-cols-3 gap-10">
-            <div className="flex flex-col justify-center items-start gap-4 col-span-1">
+          <div className="flex lg:grid w-full grid-cols-3 gap-10">
+            <div className="col-span-1 flex flex-col items-start justify-start gap-4">
               <h1 className="text-2xl font-bold text-color-main">
-                Ölçüm Takip
+                Personel Yönetimi
               </h1>
-              <h1 className="text-lg font-bold text-color-dark-primary">
+              {/* <h1 className="text-lg font-bold text-color-dark-primary">
                 Hastalarınızın Boy, kilo, adım, tansiyon, ateş, alınan kalori
                 gibi takip etmek isteyeceğiz tüm bilgileri tarih bazlı kayıt
                 altına alabilir, bu bilgileri grafik üzerinde
                 görüntüleyebilirsiniz
-              </h1>
-              <p className="text-color-dark-primary opacity-80">
-                Hasta Mobil Takip Uygulaması sayesinde hastalarınız ölçüm
-                bilgilerini kayıt altına alabilir ve Megaverse'e entegre olarak
-                sizin ile paylaşabilir.
+              </h1> */}
+              <p className="text-lg text-color-dark-primary opacity-80">
+                Birden fazla koç ile birlikte hizmet veren merkezlerde
+                danışmanların randevu takibini anlık kayıt altına alarak
+                tamamlanan ve iptal edilen görüşmeleri takip edebilir,
+                merkezinizin muhasebesini, maaş ödeme ve izinleri kayıt altında
+                tutabilirsiniz.
               </p>
             </div>
-            <div className="col-span-2 flex justify-center items-center">
+            <div className="col-span-2 hidden lg:flex items-center justify-center">
               <img
-                src={require("../../../assets/images/features/measure-follow-2.jpg")}
+                src={require("../../../assets/images/no_feature.jpg")}
                 alt=""
-                className="w-4/5 h-full p-4 bg-color-white rounded-[25px] shadow-lg opacity-90"
+                className="h-[400px] w-4/5 rounded-[25px] bg-color-white p-4 opacity-90 shadow-lg"
               />
             </div>
           </div>
         ) : activeFeature === 5 ? (
-          <div className="w-full grid grid-cols-3 gap-10">
-            <div className="flex flex-col justify-center items-start gap-4 col-span-1">
-              <h1 className="text-2xl font-bold text-color-main">Raporlama</h1>
-              <h1 className="text-lg font-bold text-color-dark-primary">
+          <div className="flex lg:grid w-full grid-cols-3 gap-10">
+            <div className="col-span-1 flex flex-col items-start justify-start gap-4">
+              <h1 className="text-2xl font-bold text-color-main">
+                Raporlama/Analiz
+              </h1>
+              {/* <h1 className="text-lg font-bold text-color-dark-primary">
                 Kliniğinizde tüm verileri analiz edebileceğiniz raporlar sizin
                 için hazır olarak gelmektedir. Dilerseniz grafik, dilerseniz
                 liste raporlar alabilir, bunlar üzerinde revizyonlar
                 yapabilirsiniz.
-              </h1>
-              <p className="text-color-dark-primary opacity-80">
-                Yöneticiler için oluşturulmuş Dashboard modülü ile tek bakışta
-                veri analizlerini canlı olarak görebilirsiniz.
+              </h1> */}
+              <p className="text-lg text-color-dark-primary opacity-80">
+                Merkezinizde gerçekleşen tüm işlem ve hareketleri görsel
+                grafikler ve farklı filtrelerle raporlaştırabilirsiniz, tüm
+                koçlarınız için ayrı ayrı raporlar oluşturabilirsiniz. Tüm
+                bilgileri gözünüzün önünde bulundurun ve fiziksel kopyalarını
+                çıkartın. Tarih aralıkları belirley- erek analizlerinizi
+                şekillendirin.
               </p>
             </div>
-            <div className="col-span-2 flex justify-center items-center">
+            <div className="col-span-2 hidden lg:flex items-center justify-center">
               <img
-                src={require("../../../assets/images/features/reporting-1.jpg")}
+                src={require("../../../assets/images/no_feature.jpg")}
                 alt=""
-                className="w-4/5 h-full p-4 bg-color-white rounded-[25px] shadow-lg opacity-90"
+                className="h-[400px] w-4/5 rounded-[25px] bg-color-white p-4 opacity-90 shadow-lg"
               />
             </div>
           </div>
         ) : activeFeature === 6 ? (
-          <div className="w-full grid grid-cols-3 gap-10">
-            <div className="flex flex-col justify-center items-start gap-4 col-span-1">
+          <div className="flex lg:grid w-full grid-cols-3 gap-10">
+            <div className="col-span-1 flex flex-col items-start justify-start gap-4">
               <h1 className="text-2xl font-bold text-color-main">
                 Döküman Yönetimi
               </h1>
@@ -419,17 +432,17 @@ export default function FeaturesSection({}: Props) {
                 içerisinde eklenmiş dokümanlara rahatlıkla ulaşabilirsiniz.
               </p>
             </div>
-            <div className="col-span-2 flex justify-center items-center">
+            <div className="col-span-2 hidden lg:flex items-center justify-center">
               <img
-                src={require("../../../assets/images/features/document-management-1.jpg")}
+                src={require("../../../assets/images/dokuman_yonetimi.png")}
                 alt=""
-                className="w-4/5 h-full p-4 bg-color-white rounded-[25px] shadow-lg opacity-90"
+                className="h-[400px] w-4/5 rounded-[25px] bg-color-white p-4 opacity-90 shadow-lg"
               />
             </div>
           </div>
         ) : (
-          <div className="w-full grid grid-cols-3 gap-10">
-            <div className="flex flex-col justify-center items-start gap-4 col-span-1">
+          <div className="flex lg:grid w-full grid-cols-3 gap-10">
+            <div className="col-span-1 flex flex-col items-start justify-start gap-4">
               <h1 className="text-2xl font-bold text-color-main">
                 Randevu Yönetimi
               </h1>
@@ -444,11 +457,11 @@ export default function FeaturesSection({}: Props) {
                 yapabilirsiniz.
               </p>
             </div>
-            <div className="col-span-2 flex justify-center items-center">
+            <div className="col-span-2 hidden lg:flex items-center justify-center">
               <img
-                src={require("../../../assets/images/features/appointment-management-1.jpg")}
+                src={require("../../../assets/images/randevu_yonetimi.png")}
                 alt=""
-                className="w-4/5 h-full p-4 bg-color-white rounded-[25px] shadow-lg opacity-90"
+                className="h-[400px] w-4/5 rounded-[25px] bg-color-white p-4 opacity-90 shadow-lg"
               />
             </div>
           </div>

@@ -10,6 +10,7 @@ import citiesReducer from "../features/cities/citiesSlice";
 import totalsReducer from "../features/totals/totalsSlice";
 import appointmentsReducer from "../features/appointments/appointmentsSlice";
 import appointmentTypesReducer from "../features/appointmentTypes/appointmentTypesSlice";
+import firmsReducer from "../features/firms/firmsSlice";
 
 const store = configureStore({
   reducer: {
@@ -24,6 +25,7 @@ const store = configureStore({
     totals: totalsReducer,
     appointments: appointmentsReducer,
     appointmentTypes: appointmentTypesReducer,
+    firms: firmsReducer,
   },
 });
 

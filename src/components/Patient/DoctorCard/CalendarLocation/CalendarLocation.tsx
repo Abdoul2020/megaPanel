@@ -7,7 +7,7 @@ import { Doctor } from "../../../../common/types/Doctor.entity";
 import { AppointmentSchedule } from "../../../../common/types/expert/AppointmentSchedule.entity";
 
 type Props = {
-  expert: Doctor;
+  expert: Doctor | null;
 };
 
 export default function CalendarLocation(props: Props) {
@@ -135,7 +135,6 @@ export default function CalendarLocation(props: Props) {
     }
   };
   const handleMonthDecrease = () => {
-    console.log(year !== new Date().getFullYear());
     if (month !== new Date().getMonth() || year !== new Date().getFullYear()) {
       if (month === 0) {
         setMonth(11);
@@ -172,7 +171,7 @@ export default function CalendarLocation(props: Props) {
     const theDay: string = days_string[(i + 1) % 7];
     const string = "appointment_schedule_" + theDay.toLowerCase();
     return (
-      props.expert.expert_appointment_schedule[
+      props.expert?.expert_appointment_schedule[
         string as keyof AppointmentSchedule
       ] !== undefined &&
       props.expert.expert_appointment_schedule[
@@ -183,7 +182,7 @@ export default function CalendarLocation(props: Props) {
 
   const calHours: any = (week_date: string) => {
     const string = "appointment_schedule_" + week_date.toLowerCase();
-    return props.expert.expert_appointment_schedule[
+    return props.expert?.expert_appointment_schedule[
       string as keyof AppointmentSchedule
     ];
   };
@@ -196,47 +195,47 @@ export default function CalendarLocation(props: Props) {
     appointment_date.setMonth(month);
     appointment_date.setHours(appointment_hour, appointment_minute, 0);
     appointment_date.setDate(selectedDate);
-    console.log(appointment_date.toLocaleString());
     navigate(
       `/checkout?date=${appointment_date.toLocaleString()}&online=${false}&expertID=${
-        props.expert._id
+        props.expert?._id
       }`
     );
   };
 
   return (
-    <div className="flex justify-center items-center">
+    <div className="flex items-center justify-center">
       {hourSection ? (
-        <div className="w-full flex flex-col justify-start items-start gap-4">
-          <div className="w-full flex justify-start items-center gap-2">
+        <div className="flex w-full flex-col items-start justify-start gap-4">
+          <div className="flex w-full items-center justify-start gap-2">
             <BiChevronLeft
-              className="text-gray-900 font-bold text-[40px] opacity-60 cursor-pointer"
+              className="text-gray-900 cursor-pointer text-[40px] font-bold opacity-60"
               onClick={() => setHourSection(false)}
             />
-            <div className="flex justify-center items-center gap-2">
-              <h1 className="text-gray-900 font-bold opacity-80 text-2xl">
+            <div className="flex items-center justify-center gap-2">
+              <h1 className="text-gray-900 text-2xl font-bold opacity-80">
                 {selectedDate}
               </h1>
-              <h1 className="text-gray-900 font-bold opacity-80 text-2xl">
+              <h1 className="text-gray-900 text-2xl font-bold opacity-80">
                 {toMonthTr(months_string[month])}
               </h1>
-              <h1 className="text-gray-900 font-bold opacity-80 text-2xl">
+              <h1 className="text-gray-900 text-2xl font-bold opacity-80">
                 {year},
               </h1>
-              <h1 className="text-gray-900 font-bold opacity-80 text-lg">
+              <h1 className="text-gray-900 text-lg font-bold opacity-80">
                 {toDayTr(selectedDay)}
               </h1>
             </div>
           </div>
-          <ul className="w-full grid grid-cols-5 gap-6 grid-center place-items-center">
+          <ul className="grid-center grid w-full grid-cols-5 place-items-center gap-6">
             {calHours(selectedDay) !== undefined
-              ? calHours(selectedDay).map((hour: any) => {
+              ? calHours(selectedDay).map((hour: any, index: number) => {
                   return (
                     <li
-                      className="cursor-pointer hover:opacity-80 p-2 px-4 bg-color-gray-primary rounded-[15px]"
+                      className="cursor-pointer rounded-[15px] bg-color-gray-primary p-2 px-4 hover:opacity-80"
+                      key={index}
                       onClick={() => handleNavigateCheckout(hour)}
                     >
-                      <h1 className="text-color-dark-primary font-bold">
+                      <h1 className="text-sm font-bold text-color-dark-primary lg:text-base">
                         {hour}
                       </h1>
                     </li>
@@ -246,52 +245,52 @@ export default function CalendarLocation(props: Props) {
           </ul>
         </div>
       ) : (
-        <div className="w-full flex flex-col justify-start items-start gap-4">
-          <div className="w-full flex justify-between items-center">
-            <div className="flex justify-center items-center gap-2">
-              <h1 className="text-gray-900 font-bold opacity-80 text-2xl">
+        <div className="flex w-full flex-col items-start justify-start gap-4">
+          <div className="flex w-full items-center justify-between">
+            <div className="flex items-center justify-center gap-2">
+              <h1 className="text-gray-900 text-2xl font-bold opacity-80">
                 {toMonthTr(months_string[month])}
               </h1>
-              <h1 className="text-gray-900 font-bold opacity-80 text-2xl">
+              <h1 className="text-gray-900 text-2xl font-bold opacity-80">
                 {year}
               </h1>
             </div>
-            <div className="flex justify-center items-center gap-2">
+            <div className="flex items-center justify-center gap-2">
               <BiChevronLeft
-                className="text-gray-900 font-bold text-[32px] opacity-80 cursor-pointer"
+                className="text-gray-900 cursor-pointer text-[32px] font-bold opacity-80"
                 onClick={handleMonthDecrease}
               />
               <BiChevronRight
-                className="text-gray-900 font-bold text-[32px] opacity-80 cursor-pointer"
+                className="text-gray-900 cursor-pointer text-[32px] font-bold opacity-80"
                 onClick={handleMonthIncrease}
               />
             </div>
           </div>
-          <div className="w-full flex flex-col justify-start items-start gap-4">
-            <div className="w-full grid grid-cols-7 gap-4 grid-center place-items-center">
-              <h1 className="text-lg text-gray-900 font-bold opacity-60">
+          <div className="flex w-full flex-col items-start justify-start gap-4">
+            <div className="grid-center grid w-full grid-cols-7 place-items-center gap-4">
+              <h1 className="text-gray-900 text-lg font-bold opacity-60">
                 Pzt
               </h1>
-              <h1 className="text-lg text-gray-900 font-bold opacity-60">
+              <h1 className="text-gray-900 text-lg font-bold opacity-60">
                 Sal
               </h1>
-              <h1 className="text-lg text-gray-900 font-bold opacity-60">
+              <h1 className="text-gray-900 text-lg font-bold opacity-60">
                 Çrş
               </h1>
-              <h1 className="text-lg text-gray-900 font-bold opacity-60">
+              <h1 className="text-gray-900 text-lg font-bold opacity-60">
                 Prş
               </h1>
-              <h1 className="text-lg text-gray-900 font-bold opacity-60">
+              <h1 className="text-gray-900 text-lg font-bold opacity-60">
                 Cum
               </h1>
-              <h1 className="text-lg text-gray-900 font-bold opacity-60">
+              <h1 className="text-gray-900 text-lg font-bold opacity-60">
                 Cmt
               </h1>
-              <h1 className="text-lg text-gray-900 font-bold opacity-60">
+              <h1 className="text-gray-900 text-lg font-bold opacity-60">
                 Pzr
               </h1>
             </div>
-            <ul className="grid grid-cols-7 gap-4 w-full grid-center place-items-center">
+            <ul className="grid-center grid w-full grid-cols-7 place-items-center gap-4">
               {Array.from(
                 Array(
                   months[months_string[month]] + days_string.indexOf(weekDate)
@@ -306,14 +305,15 @@ export default function CalendarLocation(props: Props) {
                           i - days_string.indexOf(weekDate) + 1
                         )
                       }
-                      className={`p-1 px-2 rounded-full hover:bg-color-gray-primary 
-                hover:bg-opacity-50 cursor-pointer ${
-                  props.expert.expert_appointment_schedule && cal(i - 1)
+                      key={i}
+                      className={`cursor-pointer rounded-full p-1 px-2 
+                hover:bg-color-gray-primary hover:bg-opacity-50 ${
+                  props.expert?.expert_appointment_schedule && cal(i - 1)
                     ? "bg-color-success-primary"
                     : "bg-color-gray-secondary"
                 }`}
                     >
-                      <h2 key={i} className="font-bold text-base">
+                      <h2 key={i} className="text-base font-bold">
                         {i - days_string.indexOf(weekDate) + 1}
                       </h2>
                     </li>
@@ -321,10 +321,10 @@ export default function CalendarLocation(props: Props) {
                 } else {
                   return (
                     <li
-                      className="p-2 rounded-full hover:bg-color-gray-primary 
-              hover:bg-opacity-50 cursor-pointer"
+                      className="cursor-pointer rounded-full p-2 
+              hover:bg-color-gray-primary hover:bg-opacity-50"
                     >
-                      <h2 key={i} className="font-bold opacity-0 text-base">
+                      <h2 key={i} className="text-base font-bold opacity-0">
                         a
                       </h2>
                     </li>

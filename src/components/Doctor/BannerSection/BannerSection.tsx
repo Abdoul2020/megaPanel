@@ -5,7 +5,17 @@ import { useNavigate } from "react-router-dom";
 import { updateAlert } from "../../../features/options/optionsSlice";
 import { useAppDispatch, useAppSelector } from "../../../app/hooks";
 import { Alert } from "../../../common/types/Alert";
-import { isAuthExpert } from "../../../helpers/authExpertHelper";
+import {
+  isAuthExpert,
+  unauthenticatehardExpert,
+} from "../../../helpers/authExpertHelper";
+import { addAuthExpertObject } from "../../../features/authExpert/authExpertSlice";
+import {
+  isAuth,
+  removeCookie,
+  unauthenticatehard,
+} from "../../../helpers/authHelper";
+import { addAuthObject } from "../../../features/auth/authSlice";
 
 type Props = {};
 
@@ -23,18 +33,62 @@ export default function BannerSection({}: Props) {
   const navigate = useNavigate();
   const handleSubmit = (e: any) => {
     e.preventDefault();
-    if (isAuthExpert()) {
-      const alert: Alert = {
-        type: "warning",
-        text: "Aktif oturumunuz bulunuyor",
-        active: true,
-        statusCode: 401,
-      };
-      dispatch(updateAlert(alert));
+    if (isAuth() || isAuthExpert()) {
+      if (window.confirm("Oturumu kapatmayı onaylıyor musunuz?")) {
+        if (authExpertObject) {
+          dispatch(addAuthExpertObject(undefined));
+          unauthenticatehardExpert(() => {
+            navigate("/for-doctors/login");
+          });
+          removeCookie("m_t");
+        } else if (authObject) {
+          dispatch(addAuthObject(undefined));
+          unauthenticatehard(() => {
+            navigate("/login");
+          });
+          removeCookie("m_e_t");
+        }
+        if (isAuthExpert()) {
+          const alert: Alert = {
+            type: "warning",
+            text: "Aktif oturumunuz bulunuyor",
+            active: true,
+            statusCode: 401,
+          };
+          dispatch(updateAlert(alert));
+        } else {
+          navigate(
+            `/for-doctors/register?company=${company}&name=${name}&surname=${surname}`
+          );
+        }
+      }
     } else {
-      navigate(
-        `/for-doctors/register?company=${company}&name=${name}&surname=${surname}`
-      );
+      if (authExpertObject) {
+        dispatch(addAuthExpertObject(undefined));
+        unauthenticatehardExpert(() => {
+          navigate("/for-doctors/login");
+        });
+        removeCookie("m_t");
+      } else if (authObject) {
+        dispatch(addAuthObject(undefined));
+        unauthenticatehard(() => {
+          navigate("/login");
+        });
+        removeCookie("m_e_t");
+      }
+      if (isAuthExpert()) {
+        const alert: Alert = {
+          type: "warning",
+          text: "Aktif oturumunuz bulunuyor",
+          active: true,
+          statusCode: 401,
+        };
+        dispatch(updateAlert(alert));
+      } else {
+        navigate(
+          `/for-doctors/register?company=${company}&name=${name}&surname=${surname}`
+        );
+      }
     }
   };
   const handleNameChange = (e: any) => {
@@ -74,11 +128,12 @@ export default function BannerSection({}: Props) {
   const authExpertObject = useAppSelector(
     (state) => state.authexpert.auth_expert_object
   );
+  const authObject = useAppSelector((state) => state.auth.auth_object);
 
   const cities = useAppSelector((state) => state.cities.citiesList);
 
   return (
-    <section className="h-[70vh] bg-doctor-color-main bg-opacity-50 w-full relative bg-no-repeat flex justify-center items-center ">
+    <section className="relative flex h-[50vh] w-full items-center justify-center bg-doctor-color-main bg-opacity-50 bg-no-repeat pt-[90px]">
       {authExpertObject ? (
         <motion.div
           initial={{ opacity: 0, scale: 0.5 }}
@@ -89,34 +144,34 @@ export default function BannerSection({}: Props) {
             reapat: 1,
           }}
           viewport={{ once: true }}
-          className="z-10 flex flex-col justify-center items-center gap-6"
+          className="z-10 flex w-full flex-col items-center justify-center gap-6 px-10 lg:px-0"
         >
-          <div className="flex flex-col justify-center items-center">
-            <h1 className="text-color-main font-bold text-[40px]">
+          <div className="flex flex-col items-center justify-center">
+            <h1 className="text-center text-[28px] font-bold text-color-main lg:text-[40px]">
               Uluslararası kişisel gelişim portalı,
             </h1>
-            <h1 className="text-color-third font-bold text-[40px]">
-              <span className="text-color-main font-bold">
+            <h1 className="text-center text-[28px] font-bold text-color-third lg:text-[40px]">
+              <span className="font-bold text-color-main">
                 Uzman bul, randevu al,
               </span>{" "}
               online görüşme yap!
             </h1>
           </div>
-          <div className="bg-color-secondary rounded-[30px] p-2">
-            <div className="grid grid-cols-2 relative p-2">
+          <div className="rounded-[30px] bg-color-secondary p-2">
+            <div className="relative grid grid-cols-2 p-2">
               <div
-                className="p-3 px-12 flex justify-center items-center cursor-pointer"
+                className="flex cursor-pointer items-center justify-center p-3 px-6 lg:px-12"
                 onClick={() => setAppointmenType("online")}
               >
-                <h1 className="text-sm font-bold text-color-white z-50">
+                <h1 className="z-50 text-sm font-bold text-color-white">
                   Online Görüşme
                 </h1>
               </div>
               <div
-                className="py-3 px-12 flex justify-center items-center cursor-pointer"
+                className="flex cursor-pointer items-center justify-center py-3 px-6 lg:px-12"
                 onClick={() => setAppointmenType("facetoface")}
               >
-                <h1 className="text-sm font-bold text-color-white z-50">
+                <h1 className="z-50 text-sm font-bold text-color-white">
                   Yüz Yüze Randevu
                 </h1>
               </div>
@@ -125,30 +180,30 @@ export default function BannerSection({}: Props) {
                   appointmentType === "online"
                     ? "translate-x-0"
                     : "translate-x-full"
-                } h-full w-1/2 bg-doctor-color-main absolute rounded-[25px] pointer-events-none`}
+                } pointer-events-none absolute h-full w-1/2 rounded-[25px] bg-doctor-color-main`}
               ></div>
             </div>
           </div>
-          <div>
+          <div className=" w-full lg:w-3/4 flex justify-center items-center">
             <form
-              className="overflow-hidden flex justify-center items-center gap-2 bg-color-white-secondary py-1 pr-1 rounded-[20px]"
+              className="flex w-full lg:w-2/3 items-center justify-between gap-2 overflow-hidden rounded-[20px] bg-color-white-secondary py-1 pr-1"
               onSubmit={handleSubmitSearch}
             >
               <div
                 className={`${
                   appointmentType === "online"
-                    ? "-translate-x-full ml-0 hidden"
-                    : "translate-x-0 block"
-                } w-[150px] h-full p-4 ml-2 bg-color-main 
-              rounded-[20px] 
+                    ? "ml-0 hidden -translate-x-full"
+                    : "block translate-x-0"
+                } ml-2 h-full rounded-[20px] bg-color-main 
+              p-4 px-2
               opacity-80 
-            hover:opacity-100 transition-all duration-500`}
+            transition-all duration-500 hover:opacity-100`}
               >
                 <select
                   name=""
                   id=""
-                  className="text-color-white outline-none text-lg w-full cursor-pointer bg-color-main scrollbar-thin scrollbar-thumb-color-main-extra
-                 scrollbar-track-color-white"
+                  className="w-full cursor-pointer bg-color-main text-sm lg:text-lg text-color-white outline-none scrollbar-thin scrollbar-track-color-white
+                 scrollbar-thumb-color-main-extra"
                   onChange={onCityChange}
                 >
                   <option value="" selected>
@@ -168,15 +223,15 @@ export default function BannerSection({}: Props) {
                 type="text"
                 name="search"
                 id="search"
-                className="pl-4 text-base py-2 w-[600px] outline-none tracking-wide opacity-80 bg-color-white-secondary"
+                className="w-full bg-color-white-secondary py-2 pl-4 text-sm lg:text-base tracking-wide opacity-80 outline-none"
                 placeholder="Uzman veya branş arayın..."
               />
               <button
                 type="submit"
-                className="py-4 h-[64px] px-6 flex justify-center items-center gap-4 bg-color-main rounded-[20px] opacity-80 hover:opacity-100 transition-all duration-500"
+                className="flex h-[64px] items-center justify-center gap-4 rounded-[20px] bg-color-main py-4 px-6 opacity-80 transition-all duration-500 hover:opacity-100"
               >
-                <h1 className="font-bold text-color-white">ara</h1>
-                <FiSearch className="text-color-white font-bold text-xl" />
+                <h1 className="font-bold text-sm lg:text-sm text-color-white">ara</h1>
+                <FiSearch className="text-xl font-bold text-color-white" />
               </button>
             </form>
           </div>
@@ -191,17 +246,17 @@ export default function BannerSection({}: Props) {
             reapat: 1,
           }}
           viewport={{ once: true }}
-          className="z-10 flex flex-col justify-center items-center gap-6"
+          className="z-10 flex flex-col items-center justify-center gap-6 px-10 lg:px-0"
         >
-          <h1 className="text-color-main font-bold text-[40px] text-center w-[600px]">
+          <h1 className="w-2/3 text-center text-[32px] font-bold text-color-main lg:text-[40px]">
             Bulut Tabanlı,
-            <span className="text-color-third text-[40px]">
+            <span className="text-center text-color-third">
               Uluslararası Online Kişisel Gelişim Portalı
             </span>
           </h1>
           <div>
             <form
-              className="flex justify-center items-center gap-2 bg-color-white-secondary py-1 pr-1 pl-6 rounded-[20px]"
+              className="flex w-full items-center justify-center gap-2 rounded-[20px] bg-color-white-secondary py-1 pr-1 pl-6"
               onSubmit={handleSubmit}
             >
               <input
@@ -210,7 +265,7 @@ export default function BannerSection({}: Props) {
                 type="text"
                 name="company"
                 id="company"
-                className="border-r-2 border-solid border-color-dark-primary border-opacity-10 text-base py-2 w-[300px] outline-none tracking-wide opacity-80 bg-color-white-secondary"
+                className="w-2/4 border-r-2 border-solid border-color-dark-primary border-opacity-10 bg-color-white-secondary py-2 text-base tracking-wide opacity-80 outline-none"
                 placeholder="Firma Adı"
               />
               <input
@@ -219,7 +274,7 @@ export default function BannerSection({}: Props) {
                 type="text"
                 name="name"
                 id="name"
-                className="border-r-2 border-solid border-color-dark-primary border-opacity-10 pl-6 text-base py-2 w-[150px] outline-none tracking-wide opacity-80 bg-color-white-secondary"
+                className="w-1/4 border-r-2 border-solid border-color-dark-primary border-opacity-10 bg-color-white-secondary py-2 pl-6 text-base tracking-wide opacity-80 outline-none"
                 placeholder="Ad"
               />
               <input
@@ -228,14 +283,16 @@ export default function BannerSection({}: Props) {
                 type="text"
                 name="surname"
                 id="surname"
-                className="pl-6 text-base py-2 w-[150px] outline-none tracking-wide opacity-80 bg-color-white-secondary"
+                className="w-1/4 bg-color-white-secondary py-2 pl-6 text-base tracking-wide opacity-80 outline-none"
                 placeholder="Soyad"
               />
               <button
                 type="submit"
-                className="py-4 h-[64px] px-6 flex justify-center items-center gap-4 bg-color-main rounded-[20px] opacity-80 hover:opacity-100 transition-all duration-500"
+                className="flex h-[64px] items-center justify-center gap-4 rounded-[20px] bg-color-main py-4 px-6 opacity-80 transition-all duration-500 hover:opacity-100"
               >
-                <h1 className="font-bold text-color-white">Ücretsiz Dene</h1>
+                <h1 className="text-sm font-bold text-color-white lg:text-base">
+                  Ücretsiz Dene
+                </h1>
               </button>
             </form>
           </div>

@@ -1,7 +1,7 @@
 import React, { useState, ChangeEvent, useEffect } from "react";
 import { BiLoaderAlt } from "react-icons/bi";
 import { MdModeEdit } from "react-icons/md";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../../../../app/hooks";
 import { AuthClientUpdateProfileDto } from "../../../../../common/dtos/auth/client/authClientUpdateProfileDto.dto";
 import { Alert } from "../../../../../common/types/Alert";
@@ -12,11 +12,13 @@ import {
 } from "../../../../../features/auth/authAPI";
 import { addAuthObject } from "../../../../../features/auth/authSlice";
 import { updateAlert } from "../../../../../features/options/optionsSlice";
-import { getCookie } from "../../../../../helpers/authHelper";
+import { getCookie, unauthenticate } from "../../../../../helpers/authHelper";
 
 type Props = {};
 
 export default function DashboardSettingsHomePatient({}: Props) {
+  const navigate = useNavigate();
+
   const [name, setName] = useState("");
   const [surname, setSurname] = useState("");
   const [email, setEmail] = useState("");
@@ -86,6 +88,30 @@ export default function DashboardSettingsHomePatient({}: Props) {
       };
       dispatch(updateAlert(alert));
       dispatch(addAuthObject(authClientUpdatePasswordResponse.data.data));
+    } else {
+      if (
+        authClientUpdatePasswordResponse.data.response.data.message &&
+        authClientUpdatePasswordResponse.data.response.data.message ===
+          "error:TokenExpiredError: jwt expired"
+      ) {
+        const alert: Alert = {
+          type: "warning",
+          text: "Oturum zaman aşımına uğradı",
+          active: true,
+          statusCode: authClientUpdatePasswordResponse.data.statusCode,
+        };
+        dispatch(updateAlert(alert));
+        dispatch(addAuthObject(undefined));
+        unauthenticate(navigate("/login"));
+      } else {
+        const alert: Alert = {
+          type: "danger",
+          text: authClientUpdatePasswordResponse.data.response.data.message,
+          active: true,
+          statusCode: authClientUpdatePasswordResponse.data.statusCode,
+        };
+        dispatch(updateAlert(alert));
+      }
     }
   };
   useEffect(() => {
@@ -100,13 +126,42 @@ export default function DashboardSettingsHomePatient({}: Props) {
         const base64 = authClientDownloadProfilePictureResponse.data.data;
         setProfileImageBase64(base64);
       } else {
-        console.log({ authClientDownloadProfilePictureResponse });
+        if (
+          authClientDownloadProfilePictureResponse.data.response.data.message &&
+          authClientDownloadProfilePictureResponse.data.response.data
+            .message === "error:TokenExpiredError: jwt expired"
+        ) {
+          const alert: Alert = {
+            type: "warning",
+            text: "Oturum zaman aşımına uğradı",
+            active: true,
+            statusCode:
+              authClientDownloadProfilePictureResponse.data.statusCode,
+          };
+          dispatch(updateAlert(alert));
+          dispatch(addAuthObject(undefined));
+          unauthenticate(navigate("/login"));
+        } else {
+          const alert: Alert = {
+            type: "danger",
+            text: authClientDownloadProfilePictureResponse.data.response.data
+              .message,
+            active: true,
+            statusCode:
+              authClientDownloadProfilePictureResponse.data.statusCode,
+          };
+          dispatch(updateAlert(alert));
+        }
       }
     }
     setName(authObject ? authObject.client_name : "");
     setSurname(authObject ? authObject.client_surname : "");
     setEmail(authObject ? authObject.client_email : "");
-    if (authObject?.client_avatar_path !== "") {
+    if (
+      authObject &&
+      authObject?.client_avatar_path !== "" &&
+      authObject?.client_avatar_path !== undefined
+    ) {
       fetchData();
     }
   }, [authObject]);
@@ -137,16 +192,54 @@ export default function DashboardSettingsHomePatient({}: Props) {
           dispatch(updateAlert(alert));
           dispatch(addAuthObject(uploadProfileImageResponse.data.data));
         } else {
-          console.log({ authClientDownloadProfilePictureResponse });
+          if (
+            uploadProfileImageResponse.data.response.data.message &&
+            uploadProfileImageResponse.data.response.data.message ===
+              "error:TokenExpiredError: jwt expired"
+          ) {
+            const alert: Alert = {
+              type: "warning",
+              text: "Oturum zaman aşımına uğradı",
+              active: true,
+              statusCode: uploadProfileImageResponse.data.statusCode,
+            };
+            dispatch(updateAlert(alert));
+            dispatch(addAuthObject(undefined));
+            unauthenticate(navigate("/login"));
+          } else {
+            const alert: Alert = {
+              type: "danger",
+              text: uploadProfileImageResponse.data.response.data.message,
+              active: true,
+              statusCode: uploadProfileImageResponse.data.statusCode,
+            };
+            dispatch(updateAlert(alert));
+          }
         }
       } else {
-        const alert: Alert = {
-          type: "danger",
-          text: "Bir sorun oluştu.",
-          active: true,
-          statusCode: 500,
-        };
-        dispatch(updateAlert(alert));
+        if (
+          uploadProfileImageResponse.data.response.data.message &&
+          uploadProfileImageResponse.data.response.data.message ===
+            "error:TokenExpiredError: jwt expired"
+        ) {
+          const alert: Alert = {
+            type: "warning",
+            text: "Oturum zaman aşımına uğradı",
+            active: true,
+            statusCode: uploadProfileImageResponse.data.statusCode,
+          };
+          dispatch(updateAlert(alert));
+          dispatch(addAuthObject(undefined));
+          unauthenticate(navigate("/login"));
+        } else {
+          const alert: Alert = {
+            type: "danger",
+            text: uploadProfileImageResponse.data.response.data.message,
+            active: true,
+            statusCode: uploadProfileImageResponse.data.statusCode,
+          };
+          dispatch(updateAlert(alert));
+        }
       }
       setProfileImageLoader(false);
     }
@@ -155,25 +248,25 @@ export default function DashboardSettingsHomePatient({}: Props) {
     }
   }, [file]);
   return (
-    <div className="w-full flex flex-col justify-start items-start gap-4">
-      <div className="w-full flex flex-col justify-start items-start gap-12">
-        <h1 className="text-color-dark-primary font-bold">
+    <div className="flex w-full flex-col items-start justify-start gap-4 overflow-x-hidden">
+      <div className="flex w-full flex-col items-start justify-start gap-12">
+        <h1 className="font-bold text-color-dark-primary">
           Hesap Bilgilerim & Ayarlarım
         </h1>
       </div>
-      <div className="gap-10 w-full flex justify-start items-start shadow-lg bg-color-white rounded-[25px] p-5">
+      <div className="flex w-full items-start justify-start gap-10 rounded-[25px] bg-color-white p-5 shadow-lg">
         <form
           onSubmit={handleSubmit}
-          className="w-full flex flex-col justify-start items-start"
+          className="flex w-full flex-col items-start justify-start"
         >
-          <div className="w-full grid grid-cols-2 gap-10">
-            <div className="grid grid-cols-2 gap-4">
-              <div className="flex flex-col justify-start items-start gap-1 w-full">
+          <div className="flex flex-col justify-start items-start xl:grid w-full grid-cols-2 gap-10">
+            <div className="flex flex-col justify-center items-center md:grid grid-cols-2 gap-4">
+              <div className="flex w-full flex-col items-start justify-start gap-1">
                 <label
                   htmlFor="name"
-                  className="text-color-dark-primary opacity-50 font-bold"
+                  className="font-bold text-color-dark-primary opacity-50"
                 >
-                  Adı
+                  Adı(*)
                 </label>
                 <input
                   onChange={handleNameChange}
@@ -182,16 +275,16 @@ export default function DashboardSettingsHomePatient({}: Props) {
                   name="name"
                   id="name"
                   placeholder="Adını Gir"
-                  className="w-full transition-all duration-300 focus:border-color-main font-medium outline-none bg-color-white-third text-[16px]
-                py-[15px] px-[22px] border-[1px] border-color-dark-primary rounded-[20px] border-opacity-10"
+                  className="w-full rounded-[20px] border-[1px] border-color-dark-primary border-opacity-10 bg-color-white-third py-[15px] px-[22px]
+                text-[16px] font-medium outline-none transition-all duration-300 focus:border-color-main"
                 />
               </div>
-              <div className="flex flex-col justify-start items-start gap-1 w-full">
+              <div className="flex w-full flex-col items-start justify-start gap-1">
                 <label
                   htmlFor="surname"
-                  className="text-color-dark-primary opacity-50 font-bold"
+                  className="font-bold text-color-dark-primary opacity-50"
                 >
-                  Soyadı
+                  Soyadı(*)
                 </label>
                 <input
                   onChange={handleSurnameChange}
@@ -200,16 +293,16 @@ export default function DashboardSettingsHomePatient({}: Props) {
                   name="surname"
                   id="surname"
                   placeholder="Soyadını Gir"
-                  className="w-full transition-all duration-300 focus:border-color-main font-medium outline-none bg-color-white-third text-[16px]
-                py-[15px] px-[22px] border-[1px] border-color-dark-primary rounded-[20px] border-opacity-10"
+                  className="w-full rounded-[20px] border-[1px] border-color-dark-primary border-opacity-10 bg-color-white-third py-[15px] px-[22px]
+                text-[16px] font-medium outline-none transition-all duration-300 focus:border-color-main"
                 />
               </div>
-              <div className="flex flex-col justify-start items-start gap-1 w-full">
+              <div className="flex w-full flex-col items-start justify-start gap-1">
                 <label
                   htmlFor="email"
-                  className="text-color-dark-primary opacity-50 font-bold"
+                  className="font-bold text-color-dark-primary opacity-50"
                 >
-                  E-posta
+                  E-posta(*)
                 </label>
                 <input
                   onChange={handleEmailChange}
@@ -218,24 +311,24 @@ export default function DashboardSettingsHomePatient({}: Props) {
                   name="email"
                   id="email"
                   placeholder="E-posta"
-                  className="w-full transition-all duration-300 focus:border-color-main font-medium outline-none bg-color-white-third text-[16px]
-                py-[15px] px-[22px] border-[1px] border-color-dark-primary rounded-[20px] border-opacity-10"
+                  className="w-full rounded-[20px] border-[1px] border-color-dark-primary border-opacity-10 bg-color-white-third py-[15px] px-[22px]
+                text-[16px] font-medium outline-none transition-all duration-300 focus:border-color-main"
                 />
               </div>
-              <div className="flex flex-col justify-start items-start gap-1 w-full">
+              <div className="flex w-full flex-col items-start justify-start gap-1">
                 <label
                   htmlFor="password"
-                  className="text-color-dark-primary opacity-50 font-bold"
+                  className="font-bold text-color-dark-primary opacity-50"
                 >
                   Şifreniz
                 </label>
-                <div className="w-full relative">
+                <div className="relative w-full">
                   <Link to="change-password">
                     <button
                       type="button"
-                      className="h-full p-4 rounded-[15px] bg-color-secondary group-hover:bg-color-third transition-all duration-300"
+                      className="h-full rounded-[15px] bg-color-secondary p-4 transition-all duration-300 group-hover:bg-color-third"
                     >
-                      <h1 className="text-color-white font-bold">
+                      <h1 className="font-bold text-color-white">
                         Şifreni Değiştir
                       </h1>
                     </button>
@@ -244,30 +337,30 @@ export default function DashboardSettingsHomePatient({}: Props) {
               </div>
             </div>
 
-            <div className="flex flex-col justify-start items-start w-full gap-4">
-              <div className="w-full flex justify-start items-start gap-10">
-                <div className="h-[200px] w-[200px] rounded-[20px] relative">
+            <div className="flex w-full flex-col items-start justify-start gap-4">
+              <div className="flex w-full items-start justify-start gap-10">
+                <div className="relative h-[200px] w-[200px] rounded-[20px]">
                   {profileImageBase64 ? (
                     <img
                       src={`data:image/jpeg;base64,${profileImageBase64}`}
                       alt=""
-                      className="w-full h-full rounded-[20px]"
+                      className="h-full w-full rounded-[20px]"
                     />
                   ) : (
                     <img
                       src={require("../../../../../assets/images/client_pp.jpg")}
                       alt=""
-                      className="w-full h-full rounded-[20px]"
+                      className="h-full w-full rounded-[20px]"
                     />
                   )}
                   <div
-                    className="absolute bottom-[90%] left-[90%] flex flex-col 
-              justify-start items-start gap-1 w-full"
+                    className="absolute bottom-[90%] left-[90%] flex w-full 
+              flex-col items-start justify-start gap-1"
                   >
                     <label
                       htmlFor="pp"
-                      className="p-2 rounded-full bg-color-white shadow-lg border-[1px]
-                  border-solid border-color-dark-primary border-opacity-10 hover:cursor-pointer"
+                      className="rounded-full border-[1px] border-solid border-color-dark-primary border-opacity-10
+                  bg-color-white p-2 shadow-lg hover:cursor-pointer"
                     >
                       <MdModeEdit className="text-[18px] text-color-main" />
                     </label>
@@ -306,19 +399,19 @@ export default function DashboardSettingsHomePatient({}: Props) {
             </div>
           </div>
 
-          <div className="w-full flex justify-end items-center">
+          <div className="flex w-full items-center justify-end pt-10">
             <button
               disabled={submitDisable}
               type="submit"
-              className="w-[200px] h-[60px] flex justify-center items-center p-4 rounded-[15px] bg-color-third hover:bg-color-secondary 
-                transition-all duration-300"
+              className="flex h-[60px] w-[200px] items-center justify-center rounded-[15px] bg-color-third p-4 transition-all 
+                duration-300 hover:bg-color-secondary"
             >
               {loader ? (
                 <div className="animate-spin">
-                  <BiLoaderAlt className="text-color-white text-[24px] text-opacity-80" />
+                  <BiLoaderAlt className="text-[24px] text-color-white text-opacity-80" />
                 </div>
               ) : (
-                <h1 className="text-color-white text-lg">Bilgilerimi Kaydet</h1>
+                <h1 className="text-lg text-color-white">Bilgilerimi Kaydet</h1>
               )}
             </button>
           </div>

@@ -7,10 +7,11 @@ import { AuthClientUpdatePasswordDto } from "../../../../../common/dtos/auth/cli
 import { AuthExpertUpdatePasswordDto } from "../../../../../common/dtos/auth/expert/authExpertUpdatePassword.dto";
 import { Alert } from "../../../../../common/types/Alert";
 import { authClientUpdatePassword } from "../../../../../features/auth/authAPI";
-import { authExpertUpdatePassword } from "../../../../../features/authExpert/authExpertAPI";
+import { addAuthObject } from "../../../../../features/auth/authSlice";
 import { addAuthExpertObject } from "../../../../../features/authExpert/authExpertSlice";
 import { updateAlert } from "../../../../../features/options/optionsSlice";
 import { getCookie } from "../../../../../helpers/authExpertHelper";
+import { unauthenticate } from "../../../../../helpers/authHelper";
 
 type Props = {};
 
@@ -84,14 +85,29 @@ export default function DashboardSettingsChangePasswordPatient({}: Props) {
         );
         navigate("/dashboard/settings");
       } else {
-        const alert: Alert = {
-          type: "danger",
-          text: authClientUpdateProfileResponse.data.response.data.message,
-          active: true,
-          statusCode:
-          authClientUpdateProfileResponse.data.response.data.statusCode,
-        };
-        dispatch(updateAlert(alert));
+        if (
+          authClientUpdateProfileResponse.data.response.data.message &&
+          authClientUpdateProfileResponse.data.response.data.message ===
+            "error:TokenExpiredError: jwt expired"
+        ) {
+          const alert: Alert = {
+            type: "warning",
+            text: "Oturum zaman aşımına uğradı",
+            active: true,
+            statusCode: authClientUpdateProfileResponse.data.statusCode,
+          };
+          dispatch(updateAlert(alert));
+          dispatch(addAuthObject(undefined));
+          unauthenticate(navigate("/login"));
+        } else {
+          const alert: Alert = {
+            type: "danger",
+            text: authClientUpdateProfileResponse.data.response.data.message,
+            active: true,
+            statusCode: authClientUpdateProfileResponse.data.statusCode,
+          };
+          dispatch(updateAlert(alert));
+        }
       }
     }
     if (oldPassword === "" || password === "" || passwordRetype === "") {

@@ -16,18 +16,16 @@ type Props = {
 
 export default function BranchCardb(props: Props) {
   return (
-    <div className="snap-center bg-color-white rounded-[30px] h-[250px] min-w-[225px] py-4 px-4">
-      <div className="h-full flex flex-col justify-between items-center">
-        <MdBusinessCenter className="text-color-main text-[64px] opacity-80 mt-6" />
-        <h1 className="text-center text-color-dark-primary uppercase text-sm font-semibold opacity-80 tracking-wide">
-          {props.branch.branch_title}
-        </h1>
-        <button className="relative overflow-hidden hover:bg-color-main hover:bg-opacity-100 bg-color-secondary bg-opacity-20 w-full rounded-[30px] py-3 group transition-all duration-300">
+    <div className=" flex h-[250px] min-w-[225px] flex-col items-center justify-center gap-2">
+      <MdBusinessCenter className="mt-6 text-[64px] text-color-main opacity-80" />
+      <h1 className="text-center text-sm font-semibold uppercase tracking-wide text-color-dark-primary opacity-80">
+        {props.branch.branch_title}
+      </h1>
+      {/* <button className="relative overflow-hidden hover:bg-color-main hover:bg-opacity-100 bg-color-secondary bg-opacity-20 w-full rounded-[30px] py-3 group transition-all duration-300">
           <h1 className="group-hover:text-color-white-secondary transition-all duration-300 text-color-main font-bold tracking-wide">
-            {/* {props.branch.specialist_count} Uzman */} 39 Uzman
+             39 Uzman
           </h1>
-        </button>
-      </div>
+        </button> */}
     </div>
   );
 }

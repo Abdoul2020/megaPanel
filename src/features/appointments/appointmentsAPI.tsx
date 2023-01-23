@@ -90,3 +90,24 @@ export const declineAppointment = async (token: string, id: string) => {
     });
   return response;
 };
+
+export const cancelAppointment = async (token: string, id: string) => {
+  const response = await axios({
+    method: "get",
+    url: `${BASE_URL}/appointments/${id}/cancel`,
+    headers: { Authorization: `Bearer ${token}` },
+  })
+    .then((response) => {
+      return {
+        success: true,
+        data: response,
+      };
+    })
+    .catch((err) => {
+      return {
+        success: false,
+        data: err,
+      };
+    });
+  return response;
+};

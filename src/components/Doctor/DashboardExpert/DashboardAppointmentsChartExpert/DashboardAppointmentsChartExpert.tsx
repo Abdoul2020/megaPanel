@@ -14,6 +14,8 @@ import { BiLoaderAlt } from "react-icons/bi";
 import { addAuthExpertObject } from "../../../../features/authExpert/authExpertSlice";
 import { GrStatusGoodSmall } from "react-icons/gr";
 import AlertHeaderWarning from "../../../Common/AlertHeaderWarning/AlertHeaderWarning";
+import { useNavigate } from "react-router-dom";
+import { unauthenticate } from "../../../../helpers/authHelper";
 
 type Props = {};
 
@@ -24,6 +26,7 @@ type SpecialConditionDay = {
 };
 
 export default function DashboardAppointmentsChartExpert({}: Props) {
+  const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const authExpertObject = useAppSelector(
     (state) => state.authexpert.auth_expert_object
@@ -178,12 +181,6 @@ export default function DashboardAppointmentsChartExpert({}: Props) {
 
     let today = new Date();
 
-    console.log({
-      shiftBreakStartHour,
-      shiftBreakStartMinute,
-      shiftBreakEndHour,
-      shiftBreakEndMinute,
-    });
 
     const hoursWithBreak: string[] = ItHasBreak(
       today,
@@ -284,7 +281,6 @@ export default function DashboardAppointmentsChartExpert({}: Props) {
       expert_appointment_schedule: authExpertAppointmentSchedule,
     };
     const token = getCookie("m_e_t");
-    console.log({ authExpertUpdateProfileDto });
     setLoader(true);
     setSubmitDisable(true);
     const authExpertUpdateProfileResponse = await authExpertUpdateProfile(
@@ -308,6 +304,30 @@ export default function DashboardAppointmentsChartExpert({}: Props) {
       setSpecialConditionShiftDaysWithTime([]);
       setSpecialConditionShiftStartHour("09");
       setSpecialConditionShiftStartMinute("00");
+    } else {
+      if (
+        authExpertUpdateProfileResponse.data.response.data.message &&
+        authExpertUpdateProfileResponse.data.response.data.message ===
+          "error:TokenExpiredError: jwt expired"
+      ) {
+        const alert: Alert = {
+          type: "warning",
+          text: "Oturum zaman aşımına uğradı",
+          active: true,
+          statusCode: authExpertUpdateProfileResponse.data.statusCode,
+        };
+        dispatch(updateAlert(alert));
+        dispatch(addAuthExpertObject(undefined));
+        unauthenticate(navigate("/for-doctors/login"));
+      } else {
+        const alert: Alert = {
+          type: "danger",
+          text: authExpertUpdateProfileResponse.data.response.data.message,
+          active: true,
+          statusCode: authExpertUpdateProfileResponse.data.statusCode,
+        };
+        dispatch(updateAlert(alert));
+      }
     }
   };
   const handleSpecialConditionSubmit = async () => {
@@ -392,6 +412,30 @@ export default function DashboardAppointmentsChartExpert({}: Props) {
       setShiftBreakStartMinute("30");
       setShiftBreakEndHour("13");
       setShiftBreakEndMinute("30");
+    } else {
+      if (
+        authExpertUpdateProfileResponse.data.response.data.message &&
+        authExpertUpdateProfileResponse.data.response.data.message ===
+          "error:TokenExpiredError: jwt expired"
+      ) {
+        const alert: Alert = {
+          type: "warning",
+          text: "Oturum zaman aşımına uğradı",
+          active: true,
+          statusCode: authExpertUpdateProfileResponse.data.statusCode,
+        };
+        dispatch(updateAlert(alert));
+        dispatch(addAuthExpertObject(undefined));
+        unauthenticate(navigate("/for-doctors/login"));
+      } else {
+        const alert: Alert = {
+          type: "danger",
+          text: authExpertUpdateProfileResponse.data.response.data.message,
+          active: true,
+          statusCode: authExpertUpdateProfileResponse.data.statusCode,
+        };
+        dispatch(updateAlert(alert));
+      }
     }
   };
   const ItHasNotBreak = (
@@ -887,8 +931,8 @@ export default function DashboardAppointmentsChartExpert({}: Props) {
     }
   }, [authExpertObject]);
   return (
-    <div className="w-full flex flex-col justify-start items-start gap-4">
-      <div className="w-full bg-color-warning-primary rounded-[15px]">
+    <div className="flex w-full flex-col items-start justify-start gap-4">
+      <div className="w-full rounded-[15px] bg-color-warning-primary">
         {authExpertObject?.expert_appointment_schedule ? (
           <div></div>
         ) : (
@@ -900,25 +944,25 @@ export default function DashboardAppointmentsChartExpert({}: Props) {
           />
         )}
       </div>
-      <div className="w-full flex flex-col justify-start items-start gap-12">
-        <h1 className="text-color-dark-primary font-bold">
+      <div className="flex w-full flex-col items-start justify-start gap-12">
+        <h1 className="font-bold text-color-dark-primary">
           Randevu Çizelgesi Oluştur
         </h1>
-        <div className="w-full flex flex-col justify-start items-start shadow-lg bg-color-white rounded-[25px] p-5">
+        <div className="flex w-full flex-col items-start justify-start rounded-[25px] bg-color-white p-5 shadow-lg">
           <div
-            className="flex flex-col justify-start items-start gap-10 
+            className="flex flex-col items-start justify-start gap-10 
         border-b-[1px] border-solid border-color-dark-primary 
         border-opacity-10"
           >
-            <h1 className="text-color-dark-primary font-bold">
+            <h1 className="font-bold text-color-dark-primary">
               Randevu Çizelge Tipini Seçiniz (Gerekli)
             </h1>
-            <div className="w-full flex justify-center items-center">
+            <div className="flex w-full items-center justify-center">
               <div
-                className="px-10 relative pb-2 hover:cursor-pointer hover:opacity-80"
+                className="relative px-10 pb-2 hover:cursor-pointer hover:opacity-80"
                 onClick={() => setAppointmentCondition(1)}
               >
-                <h1 className="text-color-dark-primary font-bold">
+                <h1 className="font-bold text-color-dark-primary">
                   Zaman Koşullu
                 </h1>
                 {appointmentCondition === 1 ? (
@@ -930,12 +974,12 @@ export default function DashboardAppointmentsChartExpert({}: Props) {
                       duration: 0.3,
                       reapat: 1,
                     }}
-                    className="w-full absolute right-0 bottom-0 h-1 bg-color-main rounded-full"
+                    className="absolute right-0 bottom-0 h-1 w-full rounded-full bg-color-main"
                   ></motion.div>
                 ) : (
-                  <div className="w-full absolute right-0 bottom-0 h-1"></div>
+                  <div className="absolute right-0 bottom-0 h-1 w-full"></div>
                 )}
-                <div className="absolute -mb-2 mr-2 w-full bottom-full right-0 flex justify-end items-center">
+                <div className="absolute bottom-full right-0 -mb-2 mr-2 flex w-full items-center justify-end">
                   {authExpertObject?.expert_appointment_schedule &&
                   authExpertObject?.expert_appointment_schedule
                     .appointment_schedule_type === 1 ? (
@@ -946,10 +990,10 @@ export default function DashboardAppointmentsChartExpert({}: Props) {
                 </div>
               </div>
               <div
-                className="px-10 relative pb-2 hover:cursor-pointer hover:opacity-80"
+                className="relative px-10 pb-2 hover:cursor-pointer hover:opacity-80"
                 onClick={() => setAppointmentCondition(2)}
               >
-                <h1 className="text-color-dark-primary font-bold">
+                <h1 className="font-bold text-color-dark-primary">
                   Özel Koşullu
                 </h1>
                 {appointmentCondition === 2 ? (
@@ -961,12 +1005,12 @@ export default function DashboardAppointmentsChartExpert({}: Props) {
                       duration: 0.3,
                       reapat: 1,
                     }}
-                    className="w-full absolute right-0 bottom-0 h-1 bg-color-main rounded-full"
+                    className="absolute right-0 bottom-0 h-1 w-full rounded-full bg-color-main"
                   ></motion.div>
                 ) : (
-                  <div className="w-full absolute right-0 bottom-0 h-1"></div>
+                  <div className="absolute right-0 bottom-0 h-1 w-full"></div>
                 )}
-                <div className="absolute -mb-2 mr-2 w-full bottom-full right-0 flex justify-end items-center">
+                <div className="absolute bottom-full right-0 -mb-2 mr-2 flex w-full items-center justify-end">
                   {authExpertObject?.expert_appointment_schedule &&
                   authExpertObject?.expert_appointment_schedule
                     .appointment_schedule_type === 2 ? (
@@ -988,9 +1032,9 @@ export default function DashboardAppointmentsChartExpert({}: Props) {
                   duration: 0.5,
                   reapat: 1,
                 }}
-                className="flex flex-col justify-start items-start gap-1"
+                className="flex flex-col items-start justify-start gap-1"
               >
-                <h1 className="text-color-dark-primary font-bold">
+                <h1 className="font-bold text-color-dark-primary">
                   Zaman Koşullu Randevu Oluştur!
                 </h1>
                 <p className="text-color-dark-primary text-opacity-50">
@@ -1007,9 +1051,9 @@ export default function DashboardAppointmentsChartExpert({}: Props) {
                   duration: 0.5,
                   reapat: 1,
                 }}
-                className="flex flex-col justify-start items-start gap-1"
+                className="flex flex-col items-start justify-start gap-1"
               >
-                <h1 className="text-color-dark-primary font-bold">
+                <h1 className="font-bold text-color-dark-primary">
                   Özel Koşullu Randevu Oluştur!
                 </h1>
                 <p className="text-color-dark-primary text-opacity-50">
@@ -1020,13 +1064,13 @@ export default function DashboardAppointmentsChartExpert({}: Props) {
             )}
           </div>
           <div
-            className="w-full py-5 border-t-[1px] border-solid border-color-dark-primary 
-        border-opacity-10"
+            className="w-full border-t-[1px] border-solid border-color-dark-primary border-opacity-10 
+        py-5"
           >
             {appointmentCondition === 1 ? (
-              <div className="flex flex-col justify-start items-start gap-10">
-                <div className="flex flex-col justify-start items-start gap-1">
-                  <h1 className="text-color-dark-primary font-bold">
+              <div className="flex flex-col items-start justify-start gap-10">
+                <div className="flex flex-col items-start justify-start gap-1">
+                  <h1 className="font-bold text-color-dark-primary">
                     Randevu Günlerini Belirle
                   </h1>
                   <p className="text-color-dark-primary text-opacity-50">
@@ -1034,18 +1078,18 @@ export default function DashboardAppointmentsChartExpert({}: Props) {
                     (gerekli)
                   </p>
                 </div>
-                <ul className="grid grid-cols-5 gap-6">
+                <ul className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-6">
                   <li
                     className={`p-2 px-6 ${
                       shiftDays.includes("monday")
                         ? "bg-color-success-primary"
                         : "bg-color-gray-primary"
-                    } rounded-[15px] flex 
-                justify-center 
-                items-center transition-all duration-300 cursor-pointer`}
+                    } flex cursor-pointer 
+                items-center 
+                justify-center rounded-[15px] transition-all duration-300`}
                     onClick={() => handleShiftDays("monday")}
                   >
-                    <h1 className="text-color-dark-primary font-bold text-opacity-80 text-sm">
+                    <h1 className="text-sm font-bold text-color-dark-primary text-opacity-80">
                       Pazartesi
                     </h1>
                   </li>
@@ -1054,12 +1098,12 @@ export default function DashboardAppointmentsChartExpert({}: Props) {
                       shiftDays.includes("tuesday")
                         ? "bg-color-success-primary"
                         : "bg-color-gray-primary"
-                    } rounded-[15px] flex 
-                justify-center 
-                items-center transition-all duration-300 cursor-pointer`}
+                    } flex cursor-pointer 
+                items-center 
+                justify-center rounded-[15px] transition-all duration-300`}
                     onClick={() => handleShiftDays("tuesday")}
                   >
-                    <h1 className="text-color-dark-primary font-bold text-opacity-80 text-sm">
+                    <h1 className="text-sm font-bold text-color-dark-primary text-opacity-80">
                       Salı
                     </h1>
                   </li>
@@ -1068,12 +1112,12 @@ export default function DashboardAppointmentsChartExpert({}: Props) {
                       shiftDays.includes("wednesday")
                         ? "bg-color-success-primary"
                         : "bg-color-gray-primary"
-                    } rounded-[15px] flex 
-                justify-center 
-                items-center transition-all duration-300 cursor-pointer`}
+                    } flex cursor-pointer 
+                items-center 
+                justify-center rounded-[15px] transition-all duration-300`}
                     onClick={() => handleShiftDays("wednesday")}
                   >
-                    <h1 className="text-color-dark-primary font-bold text-opacity-80 text-sm">
+                    <h1 className="text-sm font-bold text-color-dark-primary text-opacity-80">
                       Çarşamba
                     </h1>
                   </li>
@@ -1082,12 +1126,12 @@ export default function DashboardAppointmentsChartExpert({}: Props) {
                       shiftDays.includes("thursday")
                         ? "bg-color-success-primary"
                         : "bg-color-gray-primary"
-                    } rounded-[15px] flex 
-                justify-center 
-                items-center transition-all duration-300 cursor-pointer`}
+                    } flex cursor-pointer 
+                items-center 
+                justify-center rounded-[15px] transition-all duration-300`}
                     onClick={() => handleShiftDays("thursday")}
                   >
-                    <h1 className="text-color-dark-primary font-bold text-opacity-80 text-sm">
+                    <h1 className="text-sm font-bold text-color-dark-primary text-opacity-80">
                       Perşembe
                     </h1>
                   </li>
@@ -1096,12 +1140,12 @@ export default function DashboardAppointmentsChartExpert({}: Props) {
                       shiftDays.includes("friday")
                         ? "bg-color-success-primary"
                         : "bg-color-gray-primary"
-                    } rounded-[15px] flex 
-                justify-center 
-                items-center transition-all duration-300 cursor-pointer`}
+                    } flex cursor-pointer 
+                items-center 
+                justify-center rounded-[15px] transition-all duration-300`}
                     onClick={() => handleShiftDays("friday")}
                   >
-                    <h1 className="text-color-dark-primary font-bold text-opacity-80 text-sm">
+                    <h1 className="text-sm font-bold text-color-dark-primary text-opacity-80">
                       Cuma
                     </h1>
                   </li>
@@ -1110,12 +1154,12 @@ export default function DashboardAppointmentsChartExpert({}: Props) {
                       shiftDays.includes("saturday")
                         ? "bg-color-success-primary"
                         : "bg-color-gray-primary"
-                    } rounded-[15px] flex 
-                justify-center 
-                items-center transition-all duration-300 cursor-pointer`}
+                    } flex cursor-pointer 
+                items-center 
+                justify-center rounded-[15px] transition-all duration-300`}
                     onClick={() => handleShiftDays("saturday")}
                   >
-                    <h1 className="text-color-dark-primary font-bold text-opacity-80 text-sm">
+                    <h1 className="text-sm font-bold text-color-dark-primary text-opacity-80">
                       Cumartesi
                     </h1>
                   </li>
@@ -1124,21 +1168,21 @@ export default function DashboardAppointmentsChartExpert({}: Props) {
                       shiftDays.includes("sunday")
                         ? "bg-color-success-primary"
                         : "bg-color-gray-primary"
-                    } rounded-[15px] flex 
-                justify-center 
-                items-center transition-all duration-300 cursor-pointer`}
+                    } flex cursor-pointer 
+                items-center 
+                justify-center rounded-[15px] transition-all duration-300`}
                     onClick={() => handleShiftDays("sunday")}
                   >
-                    <h1 className="text-color-dark-primary font-bold text-opacity-80 text-sm">
+                    <h1 className="text-sm font-bold text-color-dark-primary text-opacity-80">
                       Pazar
                     </h1>
                   </li>
                 </ul>
               </div>
             ) : (
-              <div className="flex flex-col justify-start items-start gap-10">
-                <div className="flex flex-col justify-start items-start gap-1">
-                  <h1 className="text-color-dark-primary font-bold">
+              <div className="flex flex-col items-start justify-start gap-10">
+                <div className="flex flex-col items-start justify-start gap-1">
+                  <h1 className="font-bold text-color-dark-primary">
                     Randevu Günlerini Belirle
                   </h1>
                   <p className="text-color-dark-primary text-opacity-50">
@@ -1146,18 +1190,18 @@ export default function DashboardAppointmentsChartExpert({}: Props) {
                     (gerekli)
                   </p>
                 </div>
-                <ul className="grid grid-cols-5 gap-6">
+                <ul className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-6">
                   <li
                     className={`p-2 px-6 ${
                       specialConditionShiftDays.includes("monday")
                         ? "bg-color-success-primary"
                         : "bg-color-gray-primary"
-                    } rounded-[15px] flex 
-                justify-center 
-                items-center transition-all duration-300 cursor-pointer`}
+                    } flex cursor-pointer 
+                items-center 
+                justify-center rounded-[15px] transition-all duration-300`}
                     onClick={() => handleSpecialConditionShiftDays("monday")}
                   >
-                    <h1 className="text-color-dark-primary font-bold text-opacity-80 text-sm">
+                    <h1 className="text-sm font-bold text-color-dark-primary text-opacity-80">
                       Pazartesi
                     </h1>
                   </li>
@@ -1166,12 +1210,12 @@ export default function DashboardAppointmentsChartExpert({}: Props) {
                       specialConditionShiftDays.includes("tuesday")
                         ? "bg-color-success-primary"
                         : "bg-color-gray-primary"
-                    } rounded-[15px] flex 
-                justify-center 
-                items-center transition-all duration-300 cursor-pointer`}
+                    } flex cursor-pointer 
+                items-center 
+                justify-center rounded-[15px] transition-all duration-300`}
                     onClick={() => handleSpecialConditionShiftDays("tuesday")}
                   >
-                    <h1 className="text-color-dark-primary font-bold text-opacity-80 text-sm">
+                    <h1 className="text-sm font-bold text-color-dark-primary text-opacity-80">
                       Salı
                     </h1>
                   </li>
@@ -1180,12 +1224,12 @@ export default function DashboardAppointmentsChartExpert({}: Props) {
                       specialConditionShiftDays.includes("wednesday")
                         ? "bg-color-success-primary"
                         : "bg-color-gray-primary"
-                    } rounded-[15px] flex 
-                justify-center 
-                items-center transition-all duration-300 cursor-pointer`}
+                    } flex cursor-pointer 
+                items-center 
+                justify-center rounded-[15px] transition-all duration-300`}
                     onClick={() => handleSpecialConditionShiftDays("wednesday")}
                   >
-                    <h1 className="text-color-dark-primary font-bold text-opacity-80 text-sm">
+                    <h1 className="text-sm font-bold text-color-dark-primary text-opacity-80">
                       Çarşamba
                     </h1>
                   </li>
@@ -1194,12 +1238,12 @@ export default function DashboardAppointmentsChartExpert({}: Props) {
                       specialConditionShiftDays.includes("thursday")
                         ? "bg-color-success-primary"
                         : "bg-color-gray-primary"
-                    } rounded-[15px] flex 
-                justify-center 
-                items-center transition-all duration-300 cursor-pointer`}
+                    } flex cursor-pointer 
+                items-center 
+                justify-center rounded-[15px] transition-all duration-300`}
                     onClick={() => handleSpecialConditionShiftDays("thursday")}
                   >
-                    <h1 className="text-color-dark-primary font-bold text-opacity-80 text-sm">
+                    <h1 className="text-sm font-bold text-color-dark-primary text-opacity-80">
                       Perşembe
                     </h1>
                   </li>
@@ -1208,12 +1252,12 @@ export default function DashboardAppointmentsChartExpert({}: Props) {
                       specialConditionShiftDays.includes("friday")
                         ? "bg-color-success-primary"
                         : "bg-color-gray-primary"
-                    } rounded-[15px] flex 
-                justify-center 
-                items-center transition-all duration-300 cursor-pointer`}
+                    } flex cursor-pointer 
+                items-center 
+                justify-center rounded-[15px] transition-all duration-300`}
                     onClick={() => handleSpecialConditionShiftDays("friday")}
                   >
-                    <h1 className="text-color-dark-primary font-bold text-opacity-80 text-sm">
+                    <h1 className="text-sm font-bold text-color-dark-primary text-opacity-80">
                       Cuma
                     </h1>
                   </li>
@@ -1222,12 +1266,12 @@ export default function DashboardAppointmentsChartExpert({}: Props) {
                       specialConditionShiftDays.includes("saturday")
                         ? "bg-color-success-primary"
                         : "bg-color-gray-primary"
-                    } rounded-[15px] flex 
-                justify-center 
-                items-center transition-all duration-300 cursor-pointer`}
+                    } flex cursor-pointer 
+                items-center 
+                justify-center rounded-[15px] transition-all duration-300`}
                     onClick={() => handleSpecialConditionShiftDays("saturday")}
                   >
-                    <h1 className="text-color-dark-primary font-bold text-opacity-80 text-sm">
+                    <h1 className="text-sm font-bold text-color-dark-primary text-opacity-80">
                       Cumartesi
                     </h1>
                   </li>
@@ -1236,12 +1280,12 @@ export default function DashboardAppointmentsChartExpert({}: Props) {
                       specialConditionShiftDays.includes("sunday")
                         ? "bg-color-success-primary"
                         : "bg-color-gray-primary"
-                    } rounded-[15px] flex 
-                justify-center 
-                items-center transition-all duration-300 cursor-pointer`}
+                    } flex cursor-pointer 
+                items-center 
+                justify-center rounded-[15px] transition-all duration-300`}
                     onClick={() => handleSpecialConditionShiftDays("sunday")}
                   >
-                    <h1 className="text-color-dark-primary font-bold text-opacity-80 text-sm">
+                    <h1 className="text-sm font-bold text-color-dark-primary text-opacity-80">
                       Pazar
                     </h1>
                   </li>
@@ -1259,14 +1303,14 @@ export default function DashboardAppointmentsChartExpert({}: Props) {
                   duration: 0.5,
                   reapat: 1,
                 }}
-                className="w-full flex flex-col justify-start items-start"
+                className="flex w-full flex-col items-start justify-start"
               >
                 <div
-                  className="flex flex-col justify-start items-start gap-10 w-full py-5 border-t-[1px] border-solid border-color-dark-primary 
-      border-opacity-10"
+                  className="flex w-full flex-col items-start justify-start gap-10 border-t-[1px] border-solid border-color-dark-primary border-opacity-10 
+      py-5"
                 >
-                  <div className="flex flex-col justify-start items-start gap-1">
-                    <h1 className="text-color-dark-primary font-bold">
+                  <div className="flex flex-col items-start justify-start gap-1">
+                    <h1 className="font-bold text-color-dark-primary">
                       Mesai Saatlerini Belirle
                     </h1>
                     <p className="text-color-dark-primary text-opacity-50">
@@ -1274,15 +1318,15 @@ export default function DashboardAppointmentsChartExpert({}: Props) {
                       belirleyiniz. (gerekli)
                     </p>
                   </div>
-                  <div className="flex justify-center items-center gap-2">
+                  <div className="flex sm:flex-row flex-col items-center justify-center gap-2">
                     <div
-                      className="py-2 min-w-4 border-[2px] border-solid border-color-dark-primary 
-                    border-opacity-20"
+                      className="min-w-4 border-[2px] border-solid border-color-dark-primary border-opacity-20 
+                    py-2"
                     >
                       <select
                         name=""
                         id=""
-                        className="outline-none text-lg w-24 text-opacity-50"
+                        className="w-24 text-lg text-opacity-50 outline-none"
                         onChange={(e: any) => setShiftStartHour(e.target.value)}
                       >
                         <option
@@ -1432,13 +1476,13 @@ export default function DashboardAppointmentsChartExpert({}: Props) {
                       </select>
                     </div>
                     <div
-                      className="py-2 min-w-4 border-[2px] border-solid border-color-dark-primary 
-                    border-opacity-20"
+                      className="min-w-4 border-[2px] border-solid border-color-dark-primary border-opacity-20 
+                    py-2"
                     >
                       <select
                         name=""
                         id=""
-                        className="outline-none text-lg w-24 text-opacity-50"
+                        className="w-24 text-lg text-opacity-50 outline-none"
                         onChange={(e: any) =>
                           setShiftStartMinute(e.target.value)
                         }
@@ -1517,17 +1561,17 @@ export default function DashboardAppointmentsChartExpert({}: Props) {
                         </option>
                       </select>
                     </div>
-                    <h1 className="text-color-dark-primary text-3xl text-opacity-80 font-light">
+                    <h1 className="text-3xl font-light text-color-dark-primary text-opacity-80">
                       -
                     </h1>
                     <div
-                      className="py-2 min-w-4 border-[2px] border-solid border-color-dark-primary 
-                    border-opacity-20"
+                      className="min-w-4 border-[2px] border-solid border-color-dark-primary border-opacity-20 
+                    py-2"
                     >
                       <select
                         name=""
                         id=""
-                        className="outline-none text-lg w-24 text-opacity-50"
+                        className="w-24 text-lg text-opacity-50 outline-none"
                         onChange={(e: any) => setShiftEndHour(e.target.value)}
                       >
                         <option
@@ -1677,13 +1721,13 @@ export default function DashboardAppointmentsChartExpert({}: Props) {
                       </select>
                     </div>
                     <div
-                      className="py-2 min-w-4 border-[2px] border-solid border-color-dark-primary 
-                    border-opacity-20"
+                      className="min-w-4 border-[2px] border-solid border-color-dark-primary border-opacity-20 
+                    py-2"
                     >
                       <select
                         name=""
                         id=""
-                        className="outline-none text-lg w-24 text-opacity-50"
+                        className="w-24 text-lg text-opacity-50 outline-none"
                         onChange={(e: any) => setShiftEndMinute(e.target.value)}
                       >
                         <option
@@ -1763,11 +1807,11 @@ export default function DashboardAppointmentsChartExpert({}: Props) {
                   </div>
                 </div>
                 <div
-                  className="flex flex-col justify-start items-start gap-10 w-full py-5 border-t-[1px] border-solid border-color-dark-primary 
-      border-opacity-10"
+                  className="flex w-full flex-col items-start justify-start gap-10 border-t-[1px] border-solid border-color-dark-primary border-opacity-10 
+      py-5"
                 >
-                  <div className="flex flex-col justify-start items-start gap-1">
-                    <h1 className="text-color-dark-primary font-bold">
+                  <div className="flex flex-col items-start justify-start gap-1">
+                    <h1 className="font-bold text-color-dark-primary">
                       Mola Saatlerini Belirle
                     </h1>
                     <p className="text-color-dark-primary text-opacity-50">
@@ -1776,13 +1820,13 @@ export default function DashboardAppointmentsChartExpert({}: Props) {
                     </p>
                   </div>
                   <div
-                    className="py-2 min-w-4 border-[2px] border-solid border-color-dark-primary 
-        border-opacity-20"
+                    className="min-w-4 border-[2px] border-solid border-color-dark-primary border-opacity-20 
+        py-2"
                   >
                     <select
                       name=""
                       id=""
-                      className="outline-none text-lg w-96 text-opacity-50"
+                      className="w-full text-lg text-opacity-50 outline-none"
                       onChange={onHasBreakChange}
                     >
                       <option value="true" selected={hasBreak ? true : false}>
@@ -1802,16 +1846,16 @@ export default function DashboardAppointmentsChartExpert({}: Props) {
                         duration: 0.5,
                         reapat: 1,
                       }}
-                      className="flex justify-center items-center gap-2"
+                      className="flex flex-col sm:flex-row items-center justify-center gap-2"
                     >
                       <div
-                        className="py-2 min-w-4 border-[2px] border-solid border-color-dark-primary 
-                    border-opacity-20"
+                        className="min-w-4 border-[2px] border-solid border-color-dark-primary border-opacity-20 
+                    py-2"
                       >
                         <select
                           name=""
                           id=""
-                          className="outline-none text-lg w-24 text-opacity-50"
+                          className="w-24 text-lg text-opacity-50 outline-none"
                           onChange={(e: any) =>
                             setShiftBreakStartHour(e.target.value)
                           }
@@ -2011,13 +2055,13 @@ export default function DashboardAppointmentsChartExpert({}: Props) {
                         </select>
                       </div>
                       <div
-                        className="py-2 min-w-4 border-[2px] border-solid border-color-dark-primary 
-                    border-opacity-20"
+                        className="min-w-4 border-[2px] border-solid border-color-dark-primary border-opacity-20 
+                    py-2"
                       >
                         <select
                           name=""
                           id=""
-                          className="outline-none text-lg w-24 text-opacity-50"
+                          className="w-24 text-lg text-opacity-50 outline-none"
                           onChange={(e: any) =>
                             setShiftBreakStartMinute(e.target.value)
                           }
@@ -2120,17 +2164,17 @@ export default function DashboardAppointmentsChartExpert({}: Props) {
                           </option>
                         </select>
                       </div>
-                      <h1 className="text-color-dark-primary text-3xl text-opacity-80 font-light">
+                      <h1 className="text-3xl font-light text-color-dark-primary text-opacity-80">
                         -
                       </h1>
                       <div
-                        className="py-2 min-w-4 border-[2px] border-solid border-color-dark-primary 
-                    border-opacity-20"
+                        className="min-w-4 border-[2px] border-solid border-color-dark-primary border-opacity-20 
+                    py-2"
                       >
                         <select
                           name=""
                           id=""
-                          className="outline-none text-lg w-24 text-opacity-50"
+                          className="w-24 text-lg text-opacity-50 outline-none"
                           onChange={(e: any) =>
                             setShiftBreakEndHour(e.target.value)
                           }
@@ -2282,13 +2326,13 @@ export default function DashboardAppointmentsChartExpert({}: Props) {
                         </select>
                       </div>
                       <div
-                        className="py-2 min-w-4 border-[2px] border-solid border-color-dark-primary 
-                    border-opacity-20"
+                        className="min-w-4 border-[2px] border-solid border-color-dark-primary border-opacity-20 
+                    py-2"
                       >
                         <select
                           name=""
                           id=""
-                          className="outline-none text-lg w-24 text-opacity-50"
+                          className="w-24 text-lg text-opacity-50 outline-none"
                           onChange={(e: any) =>
                             setShiftBreakEndMinute(e.target.value)
                           }
@@ -2373,11 +2417,11 @@ export default function DashboardAppointmentsChartExpert({}: Props) {
                   )}
                 </div>
                 <div
-                  className="flex flex-col justify-start items-start gap-10 w-full py-5 border-t-[1px] border-solid border-color-dark-primary 
-      border-opacity-10"
+                  className="flex w-full flex-col items-start justify-start gap-10 border-t-[1px] border-solid border-color-dark-primary border-opacity-10 
+      py-5"
                 >
-                  <div className="flex flex-col justify-start items-start gap-1">
-                    <h1 className="text-color-dark-primary font-bold">
+                  <div className="flex flex-col items-start justify-start gap-1">
+                    <h1 className="font-bold text-color-dark-primary">
                       Randevu Süresini Belirle
                     </h1>
                     <p className="text-color-dark-primary text-opacity-50">
@@ -2385,13 +2429,13 @@ export default function DashboardAppointmentsChartExpert({}: Props) {
                     </p>
                   </div>
                   <div
-                    className="py-2 min-w-4 border-[2px] border-solid border-color-dark-primary 
-        border-opacity-20"
+                    className="min-w-4 border-[2px] border-solid border-color-dark-primary border-opacity-20 
+        py-2"
                   >
                     <select
                       name=""
                       id=""
-                      className="outline-none text-lg w-96 text-opacity-50"
+                      className="w-full text-lg text-opacity-50 outline-none"
                       onChange={onAppointmentDurationChange}
                     >
                       <option value="10" selected={appointmentDuration === 10}>
@@ -2436,15 +2480,15 @@ export default function DashboardAppointmentsChartExpert({}: Props) {
               </motion.div>
             ) : (
               <div
-                className="w-full pb-5 border-t-[1px] border-solid border-color-dark-primary 
-        border-opacity-10"
+                className="w-full border-t-[1px] border-solid border-color-dark-primary border-opacity-10 
+        pb-5"
               >
                 <div
-                  className="flex flex-col justify-start items-start gap-10 w-full py-5 border-b-[1px] border-solid border-color-dark-primary 
-  border-opacity-10"
+                  className="flex w-full flex-col items-start justify-start gap-10 border-b-[1px] border-solid border-color-dark-primary border-opacity-10 
+  py-5"
                 >
-                  <div className="flex flex-col justify-start items-start gap-1">
-                    <h1 className="text-color-dark-primary font-bold">
+                  <div className="flex flex-col items-start justify-start gap-1">
+                    <h1 className="font-bold text-color-dark-primary">
                       Randevu Süresini Belirle
                     </h1>
                     <p className="text-color-dark-primary text-opacity-50">
@@ -2452,13 +2496,13 @@ export default function DashboardAppointmentsChartExpert({}: Props) {
                     </p>
                   </div>
                   <div
-                    className="py-2 min-w-4 border-[2px] border-solid border-color-dark-primary 
-    border-opacity-20"
+                    className="min-w-4 border-[2px] border-solid border-color-dark-primary border-opacity-20 
+    py-2"
                   >
                     <select
                       name=""
                       id=""
-                      className="outline-none text-lg w-96 text-opacity-50"
+                      className="w-full text-lg text-opacity-50 outline-none"
                       onChange={onSpecialConditionAppointmentDurationChange}
                     >
                       <option value="10" selected={appointmentDuration === 10}>
@@ -2501,7 +2545,7 @@ export default function DashboardAppointmentsChartExpert({}: Props) {
                   </div>
                 </div>
                 {specialConditionShiftDays.length > 0 ? (
-                  <div className="flex flex-col justify-start items-start gap-10 py-5">
+                  <div className="flex flex-col items-start justify-start gap-10 py-5">
                     {specialConditionShiftDays
                       .sort((a, b) => {
                         return orderOfDays[a as keyof typeof orderOfDays] >
@@ -2519,10 +2563,10 @@ export default function DashboardAppointmentsChartExpert({}: Props) {
                               duration: 0.5,
                               reapat: 1,
                             }}
-                            className="flex flex-col justify-start items-start gap-2"
+                            className="flex flex-col items-start justify-start gap-2"
                           >
-                            <div className="flex flex-col justify-start items-start gap-1">
-                              <h1 className="text-color-dark-primary font-bold">
+                            <div className="flex flex-col items-start justify-start gap-1">
+                              <h1 className="font-bold text-color-dark-primary">
                                 {handleDay(day)}
                               </h1>
                               <p className="text-color-dark-primary text-opacity-50">
@@ -2543,29 +2587,29 @@ export default function DashboardAppointmentsChartExpert({}: Props) {
                                           minute: time.minute,
                                         })
                                       }
-                                      className="flex justify-center items-center gap-2 p-2 px-6 bg-color-gray-primary
-                               rounded-[15px] hover:bg-color-main group
-                               transition-all duration-300 cursor-pointer"
+                                      className="group flex cursor-pointer items-center justify-center gap-2 rounded-[15px]
+                               bg-color-gray-primary p-2 px-6
+                               transition-all duration-300 hover:bg-color-main"
                                     >
                                       <h1
-                                        className="group-hover:text-color-white text-color-dark-primary 
-                                    transition-all duration-300
-                                  font-bold text-opacity-80 text-sm"
+                                        className="text-sm font-bold 
+                                    text-color-dark-primary text-opacity-80
+                                  transition-all duration-300 group-hover:text-color-white"
                                       >{`${time.hour}:${time.minute}`}</h1>
-                                      <AiOutlineCloseCircle className="text-color-dark-primary group-hover:text-color-white transition-all duration-300" />
+                                      <AiOutlineCloseCircle className="text-color-dark-primary transition-all duration-300 group-hover:text-color-white" />
                                     </li>
                                   );
                                 })}
                             </ul>
-                            <div className="flex justify-center items-center gap-2">
+                            <div className="flex items-center justify-center gap-2">
                               <div
-                                className="py-2 min-w-4 border-[2px] border-solid border-color-dark-primary 
-                    border-opacity-20"
+                                className="min-w-4 border-[2px] border-solid border-color-dark-primary border-opacity-20 
+                    py-2"
                               >
                                 <select
                                   name=""
                                   id=""
-                                  className="outline-none text-lg w-24 text-opacity-50"
+                                  className="w-24 text-lg text-opacity-50 outline-none"
                                   onChange={(e: any) =>
                                     setSpecialConditionShiftStartHour(
                                       e.target.value
@@ -2601,13 +2645,13 @@ export default function DashboardAppointmentsChartExpert({}: Props) {
                                 </select>
                               </div>
                               <div
-                                className="py-2 min-w-4 border-[2px] border-solid border-color-dark-primary 
-                    border-opacity-20"
+                                className="min-w-4 border-[2px] border-solid border-color-dark-primary border-opacity-20 
+                    py-2"
                               >
                                 <select
                                   name=""
                                   id=""
-                                  className="outline-none text-lg w-24 text-opacity-50"
+                                  className="w-24 text-lg text-opacity-50 outline-none"
                                   onChange={(e: any) =>
                                     setSpecialConditionShiftStartMinute(
                                       e.target.value
@@ -2634,10 +2678,10 @@ export default function DashboardAppointmentsChartExpert({}: Props) {
                                 onClick={() =>
                                   handleAddSpecialConditionStartTime(day)
                                 }
-                                className="w-full flex justify-center items-center p-4 rounded-[10px] bg-color-secondary hover:bg-opacity-80 
-                transition-all duration-300"
+                                className="flex w-full items-center justify-center rounded-[10px] bg-color-secondary p-4 transition-all 
+                duration-300 hover:bg-opacity-80"
                               >
-                                <h1 className="text-sm text-color-white font-bold">
+                                <h1 className="text-sm font-bold text-color-white">
                                   Ekle
                                 </h1>
                               </button>
@@ -2661,7 +2705,7 @@ export default function DashboardAppointmentsChartExpert({}: Props) {
                 duration: 0.3,
                 reapat: 1,
               }}
-              className="w-full flex justify-end items-center"
+              className="flex w-full items-center justify-end"
             >
               {shiftDays.length > 0 ? (
                 <motion.button
@@ -2674,15 +2718,15 @@ export default function DashboardAppointmentsChartExpert({}: Props) {
                     reapat: 1,
                   }}
                   onClick={handleTimeConditionSubmit}
-                  className="w-[220px] h-[60px] flex justify-center items-center p-4 rounded-[15px] bg-color-third hover:bg-color-secondary 
-                transition-all duration-300"
+                  className="flex h-[60px] w-[220px] items-center justify-center rounded-[15px] bg-color-third p-4 transition-all 
+                duration-300 hover:bg-color-secondary"
                 >
                   {loader ? (
                     <div className="animate-spin">
-                      <BiLoaderAlt className="text-color-white text-[24px] text-opacity-80" />
+                      <BiLoaderAlt className="text-[24px] text-color-white text-opacity-80" />
                     </div>
                   ) : (
-                    <h1 className="text-color-white text-lg">
+                    <h1 className="text-lg text-color-white">
                       Zaman Koşullu Kaydet
                     </h1>
                   )}
@@ -2700,7 +2744,7 @@ export default function DashboardAppointmentsChartExpert({}: Props) {
                 duration: 0.3,
                 reapat: 1,
               }}
-              className="w-full flex justify-end items-center"
+              className="flex w-full items-center justify-end"
             >
               {specialConditionShiftDays.length > 0 &&
               specialConditionShiftDaysWithTime.length > 0 ? (
@@ -2714,15 +2758,15 @@ export default function DashboardAppointmentsChartExpert({}: Props) {
                     reapat: 1,
                   }}
                   onClick={handleSpecialConditionSubmit}
-                  className="w-[200px] h-[60px] flex justify-center items-center p-4 rounded-[15px] bg-color-third hover:bg-color-secondary 
-                transition-all duration-300"
+                  className="flex h-[60px] w-[200px] items-center justify-center rounded-[15px] bg-color-third p-4 transition-all 
+                duration-300 hover:bg-color-secondary"
                 >
                   {loader ? (
                     <div className="animate-spin">
-                      <BiLoaderAlt className="text-color-white text-[24px] text-opacity-80" />
+                      <BiLoaderAlt className="text-[24px] text-color-white text-opacity-80" />
                     </div>
                   ) : (
-                    <h1 className="text-color-white text-lg">
+                    <h1 className="text-lg text-color-white">
                       Özel Koşullu Kaydet
                     </h1>
                   )}

@@ -6,4 +6,5 @@ export type Certificate = {
   certificate_file_path: string;
   certificate_owner: Doctor;
   certificate_status: number;
+  certificate_company: string;
 };

@@ -20,6 +20,7 @@ import { fetchTotals } from "../../../features/totals/totalsAPI";
 import { addTotals } from "../../../features/totals/totalsSlice";
 import { BiLoaderAlt } from "react-icons/bi";
 import DoctorList from "../../Patient/DoctorList/DoctorList";
+import { updateScrollToTop } from "../../../features/options/optionsSlice";
 
 type Props = {
   experts: Doctor[];
@@ -72,7 +73,6 @@ export default function SearchPage(props: Props) {
     setQueryText(paramQueryText !== null ? paramQueryText : "");
 
     async function fetchData() {
-      console.log({ asd: query });
       setElementsLoading(true);
       const fetchExpertsResponse = await fetchExperts({
         ...query,
@@ -92,15 +92,15 @@ export default function SearchPage(props: Props) {
         const data = fetchExpertsCountResponse.data.data;
         setPageCount(Math.ceil(data / size));
       } else {
-        console.log(fetchExpertsCountResponse);
+        // console.log(fetchExpertsCountResponse);
       }
       if (sucessExperts) {
         const statusCodeExperts = fetchExpertsResponse.data.status;
         const data = fetchExpertsResponse.data.data;
-        console.log({ data });
+        // console.log({ data });
         dispatch(addExperts(data));
       } else {
-        console.log(fetchExpertsResponse);
+        // console.log(fetchExpertsResponse);
       }
     }
     fetchData();
@@ -147,7 +147,7 @@ export default function SearchPage(props: Props) {
         const data = fetchExpertsCountResponse.data.data;
         setPageCount(Math.ceil(data / size));
       } else {
-        console.log(fetchExpertsCountResponse);
+        // console.log(fetchExpertsCountResponse);
       }
 
       if (sucessExperts) {
@@ -155,7 +155,7 @@ export default function SearchPage(props: Props) {
         const data = fetchExpertsResponse.data.data;
         dispatch(addExperts(data));
       } else {
-        console.log(fetchExpertsResponse);
+        // console.log(fetchExpertsResponse);
       }
       setOnline((value) => !value);
     }
@@ -250,7 +250,7 @@ export default function SearchPage(props: Props) {
         const data = fetchExpertsCountResponse.data.data;
         setPageCount(Math.ceil(data / size));
       } else {
-        console.log(fetchExpertsCountResponse);
+        // console.log(fetchExpertsCountResponse);
       }
 
       if (sucessExperts) {
@@ -258,28 +258,26 @@ export default function SearchPage(props: Props) {
         const data = fetchExpertsResponse.data.data;
         dispatch(addExperts(data));
       } else {
-        console.log({ fetchExpertsResponse });
+        // console.log({ fetchExpertsResponse });
       }
     }
     fetchData();
   };
   const scrollToTop = () => {
-    if (searchRef.current) {
-      searchRef.current.scrollTo(0, 0);
-    }
+    dispatch(updateScrollToTop(true));
   };
   useEffect(() => {
     async function fetchData() {
       setElementsLoading(true);
-      const fetchExpertsResponse = await fetchExperts(query);
+      const fetchExpertsResponse = await fetchExperts({ ...query, page });
       setElementsLoading(false);
       const sucessExperts = fetchExpertsResponse.success;
       if (sucessExperts) {
         const statusCodeExperts = fetchExpertsResponse.data.status;
         const data = fetchExpertsResponse.data.data;
-        // dispatch(addExperts(data));
+        dispatch(addExperts(data));
       } else {
-        console.log(fetchExpertsResponse);
+        // console.log(fetchExpertsResponse);
       }
     }
     fetchData();
@@ -300,6 +298,7 @@ export default function SearchPage(props: Props) {
       sort: `${paramSort}`,
       sort_by: `${paramSortBy}`,
     });
+    scrollToTop();
   }, [page]);
 
   const handleSearchValueChange = (e: any) => {
@@ -314,43 +313,43 @@ export default function SearchPage(props: Props) {
   return (
     <div
       ref={searchRef}
-      className="w-full bg-color-white-secondary flex flex-col justify-center items-center"
+      className="flex w-full flex-col items-center justify-center bg-color-white-secondary py-20 pt-[170px]"
     >
-      <div className="w-full min-h-[25vh] bg-color-white-secondary flex justify-center items-end">
-        <div className="w-2/3 flex flex-col justify-center items-center">
-          <div className="w-full flex justify-between items-center p-4">
-            <div>
+      <div className="flex w-full items-end justify-center bg-color-white-secondary">
+        <div className="flex w-full flex-col items-center justify-center lg:w-2/3">
+          <div className="w-full flex-col items-center justify-between gap-10 p-4">
+            <div className="w-full">
               <form
-                className="overflow-hidden flex justify-center items-center gap-2 bg-color-white py-1 pr-1 rounded-[20px]"
+                className="flex w-full items-center justify-between gap-2 overflow-hidden rounded-[20px] bg-color-white py-1 pr-1"
                 onSubmit={handleSubmit}
               >
                 {city !== "" ? (
                   <div
                     className={`cursor-pointer ${
                       online ? "hidden" : "flex"
-                    } justify-between items-center w-[150px] h-full p-4 ml-2 bg-color-main rounded-[20px] 
-                    opacity-80 hover:opacity-100 transition-all duration-500`}
+                    } ml-2 h-full w-[150px] items-center justify-between rounded-[20px] bg-color-main p-4 
+                    opacity-80 transition-all duration-500 hover:opacity-100`}
                     onClick={handleCityRemove}
                   >
-                    <h1 className="text-color-white text-lg">{city}</h1>
-                    <AiFillCloseCircle className="text-color-white text-[24px]" />
+                    <h1 className="text-lg text-color-white">{city}</h1>
+                    <AiFillCloseCircle className="text-[24px] text-color-white" />
                   </div>
                 ) : (
                   <div
                     className={`${
                       online
-                        ? "-translate-x-full ml-0 hidden"
-                        : "translate-x-0 block"
-                    } w-[150px] h-full p-4 ml-2 bg-color-main 
-              rounded-[20px] 
+                        ? "ml-0 hidden -translate-x-full"
+                        : "block translate-x-0"
+                    } ml-2 h-full w-[150px] rounded-[20px] bg-color-main 
+              p-4 
               opacity-80 
-            hover:opacity-100 transition-all duration-500`}
+            transition-all duration-500 hover:opacity-100`}
                   >
                     <select
                       name=""
                       id=""
-                      className="text-color-white outline-none text-lg w-full cursor-pointer bg-color-main scrollbar-thin scrollbar-thumb-color-main-extra
-                 scrollbar-track-color-white"
+                      className="w-full cursor-pointer bg-color-main text-sm text-color-white outline-none scrollbar-thin scrollbar-track-color-white scrollbar-thumb-color-main-extra
+                 lg:text-lg"
                       onChange={onCityChange}
                     >
                       <option value="" selected>
@@ -376,41 +375,43 @@ export default function SearchPage(props: Props) {
                   type="text"
                   name="search"
                   id="search"
-                  className="pl-4 text-base py-2 w-[600px] outline-none tracking-wide opacity-80 bg-color-white"
+                  className="max-w-[600px] bg-color-white py-2 pl-4 text-sm tracking-wide opacity-80 outline-none lg:text-base"
                   placeholder="Uzman veya branş arayın..."
                 />
                 <button
                   type="submit"
-                  className="py-4 h-[64px] px-6 flex justify-center items-center gap-4 bg-color-main rounded-[20px] opacity-80 hover:opacity-100 transition-all duration-500"
+                  className="flex h-[64px] items-center justify-center gap-4 rounded-[20px] bg-color-main py-4 px-6 opacity-80 transition-all duration-500 hover:opacity-100"
                 >
                   <h1 className="font-bold text-color-white">ara</h1>
-                  <FiSearch className="text-color-white font-bold text-xl" />
+                  <FiSearch className="text-xl font-bold text-color-white" />
                 </button>
               </form>
             </div>
-            <div
-              className={`flex justify-center items-center gap-2 border-solid 
-              border-[1px] h-[56px] p-4 rounded-[15px] cursor-pointer 
+            <div className="mt-10 flex w-full items-center justify-center">
+              <div
+                className={`flex h-[56px] w-[300px] cursor-pointer items-center justify-center
+              gap-2 rounded-[15px] border-[1px] border-solid p-4 
               ${
                 online
                   ? "border-color-main border-opacity-80"
                   : "border-color-dark-primary border-opacity-10"
               } transition-all duration-300`}
-              onClick={handleToggleButton}
-            >
-              <h1 className="text-color-dark-primary opacity-80">
-                Online Görüşme
-              </h1>
-              <div
-                className={`relative w-12 h-6 rounded-full ${
-                  online ? "bg-color-secondary" : "bg-color-gray-primary"
-                } p-1 transition-all duration-300`}
+                onClick={handleToggleButton}
               >
+                <h1 className="text-color-dark-primary opacity-80">
+                  Online Görüşme
+                </h1>
                 <div
-                  className={`rounded-full bg-color-white h-full w-4 ${
-                    online ? "translate-x-[150%]" : "translate-x-0"
-                  } transition-all duration-300`}
-                ></div>
+                  className={`relative h-6 w-12 rounded-full ${
+                    online ? "bg-color-secondary" : "bg-color-gray-primary"
+                  } p-1 transition-all duration-300`}
+                >
+                  <div
+                    className={`h-full w-4 rounded-full bg-color-white ${
+                      online ? "translate-x-[150%]" : "translate-x-0"
+                    } transition-all duration-300`}
+                  ></div>
+                </div>
               </div>
             </div>
             {/* <div className="flex justify-center items-center gap-4">
@@ -449,32 +450,32 @@ export default function SearchPage(props: Props) {
           </div>
         </div>
       </div>
-      <div className="w-full flex justify-center items-center py-20 bg-color-white-secondary">
-        <div className="w-2/3 h-full flex flex-col justify-center items-center gap-20">
+      <div className="flex w-full items-center justify-center bg-color-white-secondary py-20">
+        <div className="flex h-full w-full flex-col items-center justify-center gap-20 px-10 lg:w-2/3 lg:px-0">
           {elementsLoading ? (
             <div className="animate-spin">
-              <BiLoaderAlt className="text-color-white text-[24px] text-opacity-80" />
+              <BiLoaderAlt className="text-[24px] text-color-white text-opacity-80" />
             </div>
           ) : (
             <DoctorList experts={experts} />
           )}
           {experts.length > 0 ? (
-            <div className="flex justify-center items-center gap-4">
+            <div className="flex items-center justify-center gap-4">
               {page > 1 ? (
                 <div
                   onClick={() => setPage((value) => value - 1)}
-                  className="px-3 py-3 bg-color-white rounded-[10px] group hover:bg-color-main 
-        transition-all duration-300 cursor-pointer"
+                  className="group cursor-pointer rounded-[10px] bg-color-white px-3 py-3 
+        transition-all duration-300 hover:bg-color-main"
                 >
                   <AiOutlineArrowLeft
                     className="font-bold text-color-dark-primary 
-          opacity-80 group-hover:text-color-white transition-all duration-300"
+          opacity-80 transition-all duration-300 group-hover:text-color-white"
                   />
                 </div>
               ) : (
                 <div></div>
               )}
-              <ul className="flex justify-center items-center gap-2">
+              <ul className="flex items-center justify-center gap-2">
                 {Array.from(Array(pageCount), (e, i) => {
                   return (
                     <li
@@ -484,8 +485,8 @@ export default function SearchPage(props: Props) {
                         page === i + 1
                           ? "pointer-events-none bg-color-main"
                           : "pointer-events-auto bg-color-white"
-                      } px-6 py-2 rounded-[15px] group
-                    hover:bg-color-main transition-all duration-300 cursor-pointer`}
+                      } group cursor-pointer rounded-[15px] px-6
+                    py-2 transition-all duration-300 hover:bg-color-main`}
                     >
                       <h1
                         className={`group-hover:opacity-80 ${
@@ -493,9 +494,9 @@ export default function SearchPage(props: Props) {
                             ? "text-color-white opacity-100"
                             : "text-color-dark-primary opacity-50"
                         }
-                      group-hover:text-color-white
+                      font-bold
                       transition-all duration-300 
-                      font-bold`}
+                      group-hover:text-color-white`}
                       >
                         {i + 1}
                       </h1>
@@ -506,12 +507,12 @@ export default function SearchPage(props: Props) {
               {pageCount !== page ? (
                 <div
                   onClick={() => setPage((value) => value + 1)}
-                  className="px-3 py-3 bg-color-white rounded-[10px] group hover:bg-color-main 
-        transition-all duration-300 cursor-pointer"
+                  className="group cursor-pointer rounded-[10px] bg-color-white px-3 py-3 
+        transition-all duration-300 hover:bg-color-main"
                 >
                   <AiOutlineArrowRight
                     className="font-bold text-color-dark-primary 
-          opacity-80 group-hover:text-color-white transition-all duration-300"
+          opacity-80 transition-all duration-300 group-hover:text-color-white"
                   />
                 </div>
               ) : (

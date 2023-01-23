@@ -51,6 +51,7 @@ export const authClientLogin = async (body: AuthClientLoginDto) => {
     data: {
       client_email: body.client_email,
       client_password: body.client_password,
+      client_remind_me_token: body.client_remind_me_token,
     },
   })
     .then((response) => {
@@ -155,7 +156,6 @@ export const authClientResetPassword = async (
 export const authClientForgotPassword = async (
   body: AuthClientForgotPasswordDto
 ) => {
-  console.log(body);
   const response = await axios({
     method: "post",
     url: `${BASE_URL}/auth/client/forgot-password`,
@@ -244,7 +244,6 @@ export const authClientUpdatePassword = async (
   token: string,
   body: AuthClientUpdatePasswordDto
 ) => {
-  console.log({ token, body });
   const response = await axios({
     method: "patch",
     url: `${BASE_URL}/auth/client/update-password`,

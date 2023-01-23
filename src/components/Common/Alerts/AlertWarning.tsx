@@ -8,9 +8,9 @@ type Props = {
 
 export default function AlertWarning(props: Props) {
   return (
-    <div className="min-w-[350px] mb-10 mr-12 bg-color-warning-primary bg-opacity-30 p-6 flex justify-start items-center gap-4 rounded-xl">
-      <AiFillExclamationCircle className="text-color-warning-dark text-[24px]" />
-      <h1 className="text-color-warning-dark">{props.alert.text}</h1>
+    <div className="flex min-w-full items-center justify-start gap-4 rounded-none bg-color-warning-primary p-6 sm:mb-10 sm:mr-12 sm:min-w-[350px] sm:rounded-xl">
+      <AiFillExclamationCircle className="text-color-white text-[24px]" />
+      <h1 className="text-color-white">{props.alert.text}</h1>
     </div>
   );
 }

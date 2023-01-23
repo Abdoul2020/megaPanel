@@ -19,14 +19,14 @@ import { BiLoaderAlt } from "react-icons/bi";
 import { CreateAppointmentDto } from "../../../common/dtos/createAppointmentDto";
 import { fetchAppointmentTypes } from "../../../features/appointmentTypes/appointmentTypesAPI";
 import { AppointmentType } from "../../../common/types/AppointmentType.entity";
-import { getCookie } from "../../../helpers/authHelper";
+import { getCookie, unauthenticate } from "../../../helpers/authHelper";
 import { fetchClient } from "../../../features/clients/clientsAPI";
 import { authGetProfile } from "../../../features/auth/authAPI";
 import { Client } from "../../../common/types/Client.entity";
 import { createAppointment } from "../../../features/appointments/appointmentsAPI";
 import { Alert } from "../../../common/types/Alert";
 import { updateAlert } from "../../../features/options/optionsSlice";
-import { useAppDispatch } from "../../../app/hooks";
+import { useAppDispatch, useAppSelector } from "../../../app/hooks";
 import { addAuthObject } from "../../../features/auth/authSlice";
 import { authExpertGetProfile } from "../../../features/authExpert/authExpertAPI";
 
@@ -35,6 +35,11 @@ type Props = {};
 export default function Checkout({}: Props) {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
+
+  const authExpertObject = useAppSelector(
+    (state) => state.authexpert.auth_expert_object
+  );
+  const authObject = useAppSelector((state) => state.auth.auth_object);
 
   const [expert, setExpert] = useState<Doctor | null>(null);
   const [client, setClient] = useState<Client | null>(null);
@@ -120,36 +125,43 @@ export default function Checkout({}: Props) {
 
       const fetchExpertResponse = await fetchExpert(paramExpertID || "");
       const getClientResponse = await authGetProfile(token);
-
-      const getExpertProfileResponse = await authExpertGetProfile(tokenExpert);
+      if (
+        tokenExpert !== null &&
+        tokenExpert !== undefined &&
+        tokenExpert !== ""
+      ) {
+        const getExpertProfileResponse = await authExpertGetProfile(
+          tokenExpert
+        );
+        const getExpertProfileSuccess = getExpertProfileResponse.success;
+        if (getExpertProfileSuccess) {
+          setClientExpert(getExpertProfileResponse.data.data);
+        } else {
+          // console.log({ getExpertProfileResponse });
+        } 
+      }
 
       const fetchExpertSuccess = fetchExpertResponse.success;
       const fetchAppointmentTypesSuccess =
         fetchAppointmentTypesResponse.success;
       const getClientProfileSuccess = getClientResponse.success;
-      const getExpertProfileSuccess = getExpertProfileResponse.success;
 
       if (fetchExpertSuccess) {
         setExpert(fetchExpertResponse.data.data);
       } else {
-        console.log({ fetchExpertResponse });
+        // console.log({ fetchExpertResponse });
       }
 
       if (fetchAppointmentTypesSuccess) {
         setAppointmentTypes(fetchAppointmentTypesResponse.data.data);
       } else {
-        console.log({ fetchAppointmentTypesResponse });
+        // console.log({ fetchAppointmentTypesResponse });
       }
 
       if (getClientProfileSuccess) {
         setClient(getClientResponse.data.data);
       } else {
-        console.log({ getClientResponse });
-      }
-      if (getExpertProfileSuccess) {
-        setClientExpert(getExpertProfileResponse.data.data);
-      } else {
-        console.log({ getExpertProfileResponse });
+        // console.log({ getClientResponse });
       }
     }
 
@@ -170,7 +182,7 @@ export default function Checkout({}: Props) {
           const base64 = authExpertDownloadProfilePictureResponse.data.data;
           setProfileImageBase64(base64);
         } else {
-          console.log({ authExpertDownloadProfilePictureResponse });
+          // console.log({ authExpertDownloadProfilePictureResponse });
         }
       }
     }
@@ -197,6 +209,9 @@ export default function Checkout({}: Props) {
   };
 
   const handleSubmit = (e: any) => {
+    if (authObject === undefined && authExpertObject === undefined) {
+      navigate("/login");
+    }
     e.preventDefault();
     async function fetchData() {
       const token = getCookie("m_t");
@@ -228,14 +243,29 @@ export default function Checkout({}: Props) {
         };
         dispatch(updateAlert(alert));
       } else {
-        const message = createAppointmentResponse.data.response.data.message;
-        const alert: Alert = {
-          type: "danger",
-          text: message,
-          active: true,
-          statusCode: createAppointmentResponse.data.statusCode,
-        };
-        dispatch(updateAlert(alert));
+        if (
+          createAppointmentResponse.data.response.data.message &&
+          createAppointmentResponse.data.response.data.message ===
+            "error:TokenExpiredError: jwt expired"
+        ) {
+          const alert: Alert = {
+            type: "warning",
+            text: "Oturum zaman aşımına uğradı",
+            active: true,
+            statusCode: createAppointmentResponse.data.statusCode,
+          };
+          dispatch(updateAlert(alert));
+          dispatch(addAuthObject(undefined));
+          unauthenticate(navigate("/login"));
+        } else {
+          const alert: Alert = {
+            type: "danger",
+            text: createAppointmentResponse.data.response.data.message,
+            active: true,
+            statusCode: createAppointmentResponse.data.statusCode,
+          };
+          dispatch(updateAlert(alert));
+        }
       }
     }
     async function fetchDataExpert() {
@@ -260,7 +290,7 @@ export default function Checkout({}: Props) {
       );
       setLoader(false);
       setSubmitDisable(false);
-      console.log({ createAppointmentResponse });
+      // console.log({ createAppointmentResponse });
       const createAppointmentSuccess = createAppointmentResponse.success;
       if (createAppointmentSuccess) {
         if (client) {
@@ -276,14 +306,29 @@ export default function Checkout({}: Props) {
         };
         dispatch(updateAlert(alert));
       } else {
-        const message = createAppointmentResponse.data.response.data.message;
-        const alert: Alert = {
-          type: "danger",
-          text: message,
-          active: true,
-          statusCode: createAppointmentResponse.data.statusCode,
-        };
-        dispatch(updateAlert(alert));
+        if (
+          createAppointmentResponse.data.response.data.message &&
+          createAppointmentResponse.data.response.data.message ===
+            "error:TokenExpiredError: jwt expired"
+        ) {
+          const alert: Alert = {
+            type: "warning",
+            text: "Oturum zaman aşımına uğradı",
+            active: true,
+            statusCode: createAppointmentResponse.data.statusCode,
+          };
+          dispatch(updateAlert(alert));
+          dispatch(addAuthObject(undefined));
+          unauthenticate(navigate("/login"));
+        } else {
+          const alert: Alert = {
+            type: "danger",
+            text: createAppointmentResponse.data.response.data.message,
+            active: true,
+            statusCode: createAppointmentResponse.data.statusCode,
+          };
+          dispatch(updateAlert(alert));
+        }
       }
     }
     if (client && clientExpert) {
@@ -318,35 +363,19 @@ export default function Checkout({}: Props) {
     }
   };
 
-  const doctor = {
-    id: 1,
-    name: "Dr. Julia Jhone",
-    specialty: "MBBS, MS - General Surgery, MCh",
-    location: "G87P, Birmingham, UK",
-    available: true,
-    rate: 32,
-  };
-
-  function isDigit(val: any) {
-    console.log(`0${String(val)}`);
-    if (String(val).length === 1) {
-      return `0${String(val)}`;
-    }
-  }
-
   return (
-    <div className="w-full bg-color-white-fourth flex flex-col justify-center items-center">
-      <div className="w-full h-[100vh] bg-color-white-secondary flex justify-center items-center">
-        <div className="w-2/3 flex flex-col justify-start items-center">
-          <div className="flex flex-col justify-start items-start gap-2">
+    <div className="flex w-full flex-col items-center justify-center bg-color-white-fourth">
+      <div className="flex min-h-[100vh] w-full items-center justify-center bg-color-white-secondary pt-[90px]">
+        <div className="flex w-2/3 flex-col items-center justify-start">
+          <div className="flex flex-col items-start justify-start gap-2">
             <div
-              className="flex justify-center items-center gap-2 opacity-80 hover:opacity-80 hover:cursor-pointer"
+              className="flex items-center justify-center gap-2 opacity-80 hover:cursor-pointer hover:opacity-80"
               onClick={() => navigate(-1)}
             >
-              <BsArrowLeft className="text-color-main text-xl" />
-              <h1 className="font-bold text-lg text-color-main">Geri Dön</h1>
+              <BsArrowLeft className="text-xl text-color-main" />
+              <h1 className="text-lg font-bold text-color-main">Geri Dön</h1>
             </div>
-            <div className="min-w-[400px] flex justify-center items-center">
+            <div className="flex min-w-[400px] items-center justify-center">
               {/* <div className="flex flex-col justify-center items-start col-span-3 w-full bg-color-white rounded-[25px] p-6">
               <h1 className="text-color-dark-primary text-xl font-bold">
                 Kart Bilgisi
@@ -452,37 +481,40 @@ export default function Checkout({}: Props) {
                 </div>
               </form>
             </div> */}
-              <div className="flex flex-col justify-start gap-8 h-full items-start col-span-2 w-full bg-color-white rounded-[25px] p-6">
-                <h1 className="text-color-dark-primary text-xl font-bold">
+              <div className="col-span-2 flex h-full w-full flex-col items-start justify-start gap-8 rounded-[25px] bg-color-white p-6">
+                <h1 className="text-xl font-bold text-color-dark-primary">
                   Randevu Özeti
                 </h1>
-                <div className="w-full flex flex-col justify-start items-start">
-                  <div className="w-full flex justify-start items-start gap-4">
-                    <div className="w-[75px] h-[75px] rounded-[15px] overflow-hidden">
+                <div className="flex w-full flex-col items-start justify-start">
+                  <div className="flex w-full items-start justify-start gap-4">
+                    <div className="h-[75px] w-[75px] overflow-hidden rounded-[15px]">
                       {profileImageBase64 ? (
                         <img
                           src={`data:image/jpeg;base64,${profileImageBase64}`}
                           alt=""
-                          className="w-full h-full rounded-[20px] hover:scale-110 transition-all duration-300"
+                          className="h-full w-full rounded-[20px] transition-all duration-300 hover:scale-110"
                         />
                       ) : (
                         <img
                           src={require("../../../assets/images/doc_pp.jpg")}
                           alt=""
-                          className="w-full h-full rounded-[20px]"
+                          className="h-full w-full rounded-[20px]"
                         />
                       )}
                     </div>
-                    <div className="flex flex-col justify-start items-start">
+                    <div className="flex flex-col items-start justify-start">
                       <Link to={`/doctors/${expert?._id}`}>
-                        <h1 className="hover:text-color-main transition-all duration-300 hover:cursor-pointer text-lg font-bold text-color-dark-primary text-center">
+                        <h1 className="text-center text-lg font-bold text-color-dark-primary transition-all duration-300 hover:cursor-pointer hover:text-color-main">
                           {`${expert?.expert_title.title_title} ${expert?.expert_name}`}
                         </h1>
                       </Link>
-                      <ul className="flex gap-y-0 justify-start items-start gap-4 flex-wrap max-w-[400px]">
+                      <ul className="flex max-w-[400px] flex-wrap items-start justify-start gap-4 gap-y-0">
                         {expert?.expert_branch.map((branch) => {
                           return (
-                            <h1 className="font-bold text-color-dark-primary opacity-50">
+                            <h1
+                              className="font-bold text-color-dark-primary opacity-50"
+                              key={branch._id}
+                            >
                               {branch.branch_title}
                             </h1>
                           );
@@ -491,13 +523,13 @@ export default function Checkout({}: Props) {
                     </div>
                   </div>
                   <div
-                    className="grid grid-cols-2 grid-center gap-4 place-items-center w-full py-10 border-b-[1px] border-solid
-             border-color-dark-primary border-opacity-10"
+                    className="grid-center grid w-full grid-cols-2 place-items-center gap-4 border-b-[1px] border-solid border-color-dark-primary
+             border-opacity-10 py-10"
                   >
-                    <div className="w-full flex justify-start items-center">
-                      <div className="flex flex-col justify-center items-start gap-2">
-                        <div className="flex justify-center items-center gap-1">
-                          <AiFillCalendar className="text-color-main text-[20px]" />
+                    <div className="flex w-full items-center justify-start">
+                      <div className="flex flex-col items-start justify-center gap-2">
+                        <div className="flex items-center justify-center gap-1">
+                          <AiFillCalendar className="text-[20px] text-color-main" />
                           <h1 className="text-color-dark-primary">Tarih</h1>
                         </div>
                         {appointmentDate ? (
@@ -511,10 +543,10 @@ export default function Checkout({}: Props) {
                         )}
                       </div>
                     </div>
-                    <div className="w-full flex justify-start items-center">
-                      <div className="flex flex-col justify-center items-start gap-2">
-                        <div className="flex justify-center items-center gap-1">
-                          <AiFillClockCircle className="text-color-main text-[20px]" />
+                    <div className="flex w-full items-center justify-start">
+                      <div className="flex flex-col items-start justify-center gap-2">
+                        <div className="flex items-center justify-center gap-1">
+                          <AiFillClockCircle className="text-[20px] text-color-main" />
                           <h1 className="text-color-dark-primary">Saat</h1>
                         </div>
                         {appointmentDate ? (
@@ -534,10 +566,10 @@ export default function Checkout({}: Props) {
                         )}
                       </div>
                     </div>
-                    <div className="w-full flex justify-start items-center">
-                      <div className="flex flex-col justify-center items-start gap-2">
-                        <div className="flex justify-center items-center gap-1">
-                          <MdPeopleAlt className="text-color-main text-[20px]" />
+                    <div className="flex w-full items-center justify-start">
+                      <div className="flex flex-col items-start justify-center gap-2">
+                        <div className="flex items-center justify-center gap-1">
+                          <MdPeopleAlt className="text-[20px] text-color-main" />
                           <h1 className="text-color-dark-primary">
                             Seans türü
                           </h1>
@@ -547,10 +579,10 @@ export default function Checkout({}: Props) {
                         </h1>
                       </div>
                     </div>
-                    <div className="w-full flex justify-start items-center">
-                      <div className="flex flex-col justify-center items-start gap-2">
-                        <div className="flex justify-center items-center gap-1">
-                          <AiOutlineFieldTime className="text-color-main text-[20px]" />
+                    <div className="flex w-full items-center justify-start">
+                      <div className="flex flex-col items-start justify-center gap-2">
+                        <div className="flex items-center justify-center gap-1">
+                          <AiOutlineFieldTime className="text-[20px] text-color-main" />
                           <h1 className="text-color-dark-primary">
                             Seans süresi
                           </h1>
@@ -565,30 +597,30 @@ export default function Checkout({}: Props) {
                       </div>
                     </div>
                   </div>
-                  <div className="w-full py-10 flex justify-between items-center">
-                    <h1 className="font-bold text-color-dark-primary text-lg">
+                  <div className="flex w-full items-center justify-between py-10">
+                    <h1 className="text-lg font-bold text-color-dark-primary">
                       Toplam Tutar
                     </h1>
-                    <h1 className="text-color-dark-primary text-3xl">
+                    <h1 className="text-3xl text-color-dark-primary">
                       {expert?.expert_session_fee}
                     </h1>
                   </div>
                 </div>
                 <button
                   onClick={handleSubmit}
-                  className="w-full flex justify-center items-center gap-2 bg-color-third rounded-[15px]
-           py-4 px-8 hover:opacity-80 hover:cursor-pointer transition-all duration-300"
+                  className="flex w-full items-center justify-center gap-2 rounded-[15px] bg-color-third
+           py-4 px-8 transition-all duration-300 hover:cursor-pointer hover:opacity-80"
                 >
                   {loader ? (
                     <div className="animate-spin">
-                      <BiLoaderAlt className="text-color-white text-[24px] text-opacity-80" />
+                      <BiLoaderAlt className="text-[24px] text-color-white text-opacity-80" />
                     </div>
                   ) : (
-                    <div className="flex justify-center items-center gap-2">
-                      <h1 className="text-color-white-secondary font-bold">
+                    <div className="flex items-center justify-center gap-2">
+                      <h1 className="font-bold text-color-white-secondary">
                         Randevu Al
                       </h1>
-                      <BsArrowRight className="text-color-white-secondary text-[24px]" />
+                      <BsArrowRight className="text-[24px] text-color-white-secondary" />
                     </div>
                   )}
                 </button>

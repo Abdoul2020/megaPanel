@@ -13,6 +13,7 @@ import PromotionSection from "../PromotionSection/PromotionSection";
 import TeamSection from "../TeamSection/TeamSection";
 import { Doctor } from "../../../common/types/Doctor.entity";
 import { Branch } from "../../../common/types/Branch.entity";
+import CTAResponsive from "../CTAResponsive/CTAResponsive";
 
 type Props = {
   doctors: Doctor[];
@@ -22,6 +23,10 @@ type Props = {
 export default function Home(props: Props) {
   const forDoctors = useAppSelector((state) => state.options.forDoctors);
   const sticky = useAppSelector((state) => state.options.sticky);
+  const authObject = useAppSelector((state) => state.auth.auth_object);
+  const authExpertObject = useAppSelector(
+    (state) => state.authexpert.auth_expert_object
+  );
   const dispatch = useAppDispatch();
   useEffect(() => {
     if (forDoctors) {
@@ -30,25 +35,29 @@ export default function Home(props: Props) {
   }, []);
   return (
     <div className="relative">
-      <Link to="/for-doctors" onClick={() => dispatch(updateDoctorState())}>
-        <div
-          className={`z-50 fixed top-0 left-0 transition-all duration-500 ${
-            sticky ? "translate-x-0" : "-translate-x-full"
-          }`}
-        >
-          <div className="mt-4 z-50 flex justify-center items-center gap-4 px-8 py-[18px] rounded-r-[15px] shadow-xl bg-color-secondary hover:bg-color-white group transition-all duration-500 cursor-pointer">
-            <FaStethoscope
-              fontSize={15}
-              className="text-color-white group-hover:text-color-secondary transition-all duration-500"
-            />
-            <button className="">
-              <h1 className="text-sm font-normal text-color-white group-hover:text-color-secondary transition-all duration-500">
-                Uzman mısınız?
-              </h1>
-            </button>
+      {authExpertObject !== undefined || authObject !== undefined ? (
+        <div></div>
+      ) : (
+        <Link to="/for-doctors" onClick={() => dispatch(updateDoctorState())}>
+          <div
+            className={`fixed top-0 left-0 z-50 transition-all duration-500 ${
+              sticky ? "translate-x-0" : "-translate-x-full"
+            }`}
+          >
+            <div className="group z-50 mt-4 flex cursor-pointer items-center justify-center gap-4 rounded-r-[15px] bg-color-secondary px-8 py-[18px] shadow-xl transition-all duration-500 hover:bg-color-white">
+              <FaStethoscope
+                fontSize={15}
+                className="text-color-white transition-all duration-500 group-hover:text-color-secondary"
+              />
+              <button className="">
+                <h1 className="text-sm font-normal text-color-white transition-all duration-500 group-hover:text-color-secondary">
+                  Uzman mısınız?
+                </h1>
+              </button>
+            </div>
           </div>
-        </div>
-      </Link>
+        </Link>
+      )}
 
       <BannerSection />
       <PromotionSection />
@@ -56,7 +65,12 @@ export default function Home(props: Props) {
       <CTASection />
       <ProcessSection />
       <PromotionDoctor />
-      <TeamSection doctors={props.doctors} />
+      <CTAResponsive />
+      {props.doctors.length > 0 ? (
+        <TeamSection doctors={props.doctors} />
+      ) : (
+        <div></div>
+      )}
       <QASection />
     </div>
   );
