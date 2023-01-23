@@ -9,14 +9,16 @@ import { FaClinicMedical } from "react-icons/fa";
 import { FaFilePrescription } from "react-icons/fa";
 import { FaHeartbeat } from "react-icons/fa";
 import { SiGooglemeet } from "react-icons/si";
+import CountUp from "react-countup";
+import { motion } from "framer-motion";
 
 type Props = {};
 
 export default function PromotionSection({}: Props) {
   return (
-    <div className="w-full flex justify-center items-center bg-doctor-color-main bg-opacity-50">
-      <div className="relative flex lg:py-0 py-20 lg:grid xl:w-3/4 xl:px-0 w-full px-10 grid-cols-2 gap-10">
-        <div className="z-20 lg:inline-block hidden">
+    <div className="flex w-full items-center justify-center bg-doctor-color-main bg-opacity-50">
+      <div className="relative flex w-full grid-cols-2 gap-10 py-20 px-10 lg:grid lg:py-0 xl:w-3/4 xl:px-0">
+        <div className="z-20 hidden lg:inline-block">
           <img src={require("../../../assets/images/people.png")} alt="" />
           {/* <div className="absolute -top-10 -right-16 shadow-lg bg-color-white rounded-3xl px-2 py-4 w-[150px] flex flex-col justify-center items-center gap-6">
           <MdQuestionAnswer className="text-color-main text-[48px]" />
@@ -31,23 +33,37 @@ export default function PromotionSection({}: Props) {
         </div> */}
         </div>
         <div className="z-20 flex h-full w-full items-center justify-center">
-          <div className="grid grid-cols-1 md:grid-cols-2 items-center justify-around gap-10">
+          <div className="grid grid-cols-1 items-center justify-around gap-10 md:grid-cols-2">
             <div className="flex flex-col items-start justify-center gap-4">
               <div className="flex items-center justify-center gap-6">
                 <div className="rounded-xl border-4 border-solid border-color-main p-2">
-                  <GiDoctorFace className="text-[36px] text-color-main" />
+                  <img
+                    src={require("../../../assets/images/doktorbul.png")}
+                    alt=""
+                    className="w-[36px]"
+                  />
                 </div>
                 <div className="flex flex-col items-start justify-center">
-                  <h1 className="text-xl font-bold text-color-dark-primary">
-                    8712
-                  </h1>
+                  <motion.h1
+                    initial={{ opacity: 0 }}
+                    whileInView={{ opacity: 1 }}
+                    transition={{
+                      ease: "backInOut",
+                      duration: 0.3,
+                      reapat: 1,
+                    }}
+                    viewport={{ once: true }}
+                    className="text-xl font-bold text-color-dark-primary"
+                  >
+                    <CountUp end={8712} duration={1} />
+                  </motion.h1>
                   <h1 className="text-color-dark-primary opacity-70">
-                    Aktif Danışman
+                    Aktif Uzman
                   </h1>
                 </div>
               </div>
               <h1 className="text-color-dark-primary opacity-70">
-                Hizmet veren aktif danışman sayımız.
+                Hizmet veren aktif uzman sayımız.
               </h1>
             </div>
             <div className="flex flex-col items-start justify-center gap-4">
@@ -57,11 +73,21 @@ export default function PromotionSection({}: Props) {
                 </div>
                 <div className="flex flex-col items-start justify-center">
                   <h1 className="text-xl font-bold text-color-dark-primary">
-                    2790270
+                    <CountUp end={2790270} duration={1} />
                   </h1>
-                  <h1 className="text-color-dark-primary opacity-70">
+                  <motion.h1
+                    initial={{ opacity: 0 }}
+                    whileInView={{ opacity: 1 }}
+                    transition={{
+                      ease: "backInOut",
+                      duration: 0.3,
+                      reapat: 1,
+                    }}
+                    viewport={{ once: true }}
+                    className="text-color-dark-primary opacity-70"
+                  >
                     Danışan
-                  </h1>
+                  </motion.h1>
                 </div>
               </div>
               <h1 className="text-color-dark-primary opacity-70">
@@ -71,15 +97,29 @@ export default function PromotionSection({}: Props) {
             <div className="flex flex-col items-start justify-center gap-4">
               <div className="flex items-center justify-center gap-6">
                 <div className="rounded-xl border-4 border-solid border-color-main p-2">
-                  <TbCalendarPlus className="text-[36px] text-color-main" />
+                  <img
+                    src={require("../../../assets/images/yuzyuzerandevu.png")}
+                    alt=""
+                    className="w-[36px]"
+                  />
                 </div>
                 <div className="flex flex-col items-start justify-center">
                   <h1 className="text-xl font-bold text-color-dark-primary">
-                    2270127
+                    <CountUp end={2270127} duration={1} />
                   </h1>
-                  <h1 className="text-color-dark-primary opacity-70">
+                  <motion.h1
+                    initial={{ opacity: 0 }}
+                    whileInView={{ opacity: 1 }}
+                    transition={{
+                      ease: "backInOut",
+                      duration: 0.3,
+                      reapat: 1,
+                    }}
+                    viewport={{ once: true }}
+                    className="text-color-dark-primary opacity-70"
+                  >
                     Planlı Randevu
-                  </h1>
+                  </motion.h1>
                 </div>
               </div>
               <h1 className="text-color-dark-primary opacity-70">
@@ -89,12 +129,26 @@ export default function PromotionSection({}: Props) {
             <div className="flex flex-col items-start justify-center gap-4">
               <div className="flex items-center justify-center gap-6">
                 <div className="rounded-xl border-4 border-solid border-color-main p-2">
-                  <SiGooglemeet className="text-[36px] text-color-main" />
+                  <img
+                    src={require("../../../assets/images/onlinegorusme.png")}
+                    alt=""
+                    className="w-[36px]"
+                  />
                 </div>
                 <div className="flex flex-col items-start justify-center">
-                  <h1 className="text-xl font-bold text-color-dark-primary">
-                    41568
-                  </h1>
+                  <motion.h1
+                    initial={{ opacity: 0 }}
+                    whileInView={{ opacity: 1 }}
+                    transition={{
+                      ease: "backInOut",
+                      duration: 0.3,
+                      reapat: 1,
+                    }}
+                    viewport={{ once: true }}
+                    className="text-xl font-bold text-color-dark-primary"
+                  >
+                    <CountUp end={41568} duration={1} />
+                  </motion.h1>
                   <h1 className="text-color-dark-primary opacity-70">Seans</h1>
                 </div>
               </div>

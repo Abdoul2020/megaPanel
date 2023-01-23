@@ -18,6 +18,8 @@ import { authExpertRegister } from "../../../features/authExpert/authExpertAPI";
 import { Branch } from "../../../common/types/Branch.entity";
 import { Firm } from "../../../common/types/Firm.entity";
 import { isAuth } from "../../../helpers/authHelper";
+import CountUp from "react-countup";
+import { motion } from "framer-motion";
 
 type Props = {};
 
@@ -203,7 +205,7 @@ export default function Register({}: Props) {
   };
   return (
     <div className="relative flex min-h-screen w-full items-center justify-center bg-color-white-secondary py-10 px-10 pt-[130px] xl:px-0">
-      <div className="z-20 flex justify-center items-center lg:grid w-full grid-cols-2 gap-10 xl:w-2/3">
+      <div className="z-20 flex w-full grid-cols-2 items-start justify-start gap-10 lg:grid xl:w-2/3">
         <div className="flex w-full flex-col items-center justify-center gap-8">
           <div className="flex w-full flex-col items-start justify-center gap-6 rounded-[25px] bg-color-white p-8 px-10 shadow-lg">
             <h1 className="text-xl font-bold text-color-dark-primary opacity-80">
@@ -506,7 +508,7 @@ export default function Register({}: Props) {
             </Link>
           </div>
         </div>
-        <div className="lg:flex hidden flex-col items-start justify-start gap-10 rounded-[15px] p-4">
+        <div className="hidden flex-col items-start justify-start gap-10 rounded-[15px] p-4 lg:flex">
           <h1 className="text-xl font-bold">
             Her branştan alanında uzmanlar ile{" "}
             <span className="text-color-main">
@@ -517,19 +519,33 @@ export default function Register({}: Props) {
             <li className="flex flex-col items-start justify-center gap-4">
               <div className="flex items-center justify-center gap-6">
                 <div className="rounded-xl border-4 border-solid border-color-main p-2">
-                  <FaClinicMedical className="text-[36px] text-color-main" />
+                  <img
+                    src={require("../../../assets/images/doktorbul.png")}
+                    alt=""
+                    className="w-[36px]"
+                  />
                 </div>
                 <div className="flex flex-col items-start justify-center">
-                  <h1 className="text-xl font-bold text-color-dark-primary">
-                    8712
-                  </h1>
+                  <motion.h1
+                    initial={{ opacity: 0 }}
+                    whileInView={{ opacity: 1 }}
+                    transition={{
+                      ease: "backInOut",
+                      duration: 0.3,
+                      reapat: 1,
+                    }}
+                    viewport={{ once: true }}
+                    className="text-xl font-bold text-color-dark-primary"
+                  >
+                    <CountUp end={8712} duration={1} />
+                  </motion.h1>
                   <h1 className="text-color-dark-primary opacity-70">
-                    Aktif Klinik
+                    Aktif Uzman
                   </h1>
                 </div>
               </div>
               <h1 className="text-color-dark-primary opacity-70">
-                Hizmet vermiş olduğumuz klinik sayısı.
+                Hizmet veren aktif uzman sayımız.
               </h1>
             </li>
             <li className="flex flex-col items-start justify-center gap-4">
@@ -539,47 +555,87 @@ export default function Register({}: Props) {
                 </div>
                 <div className="flex flex-col items-start justify-center">
                   <h1 className="text-xl font-bold text-color-dark-primary">
-                    2790270
+                    <CountUp end={2790270} duration={1} />
                   </h1>
-                  <h1 className="text-color-dark-primary opacity-70">Hasta</h1>
+                  <motion.h1
+                    initial={{ opacity: 0 }}
+                    whileInView={{ opacity: 1 }}
+                    transition={{
+                      ease: "backInOut",
+                      duration: 0.3,
+                      reapat: 1,
+                    }}
+                    viewport={{ once: true }}
+                    className="text-color-dark-primary opacity-70"
+                  >
+                    Danışan
+                  </motion.h1>
                 </div>
               </div>
               <h1 className="text-color-dark-primary opacity-70">
-                Hekimlerimiz tarafından işlem yapılan hasta sayısı.
+                Her geçen gün artan danışan sayımız.
               </h1>
             </li>
             <li className="flex flex-col items-start justify-center gap-4">
               <div className="flex items-center justify-center gap-6">
                 <div className="rounded-xl border-4 border-solid border-color-main p-2">
-                  <FaFilePrescription className="text-[36px] text-color-main" />
+                  <img
+                    src={require("../../../assets/images/yuzyuzerandevu.png")}
+                    alt=""
+                    className="w-[36px]"
+                  />
                 </div>
                 <div className="flex flex-col items-start justify-center">
                   <h1 className="text-xl font-bold text-color-dark-primary">
-                    227172
+                    <CountUp end={2270127} duration={1} />
                   </h1>
-                  <h1 className="text-color-dark-primary opacity-70">Reçete</h1>
+                  <motion.h1
+                    initial={{ opacity: 0 }}
+                    whileInView={{ opacity: 1 }}
+                    transition={{
+                      ease: "backInOut",
+                      duration: 0.3,
+                      reapat: 1,
+                    }}
+                    viewport={{ once: true }}
+                    className="text-color-dark-primary opacity-70"
+                  >
+                    Planlı Randevu
+                  </motion.h1>
                 </div>
               </div>
               <h1 className="text-color-dark-primary opacity-70">
-                e-Reçete sistemine gönderilen reçete sayısı.
+                Gerçekleşecek görüşme sayısı.
               </h1>
             </li>
             <li className="flex flex-col items-start justify-center gap-4">
               <div className="flex items-center justify-center gap-6">
                 <div className="rounded-xl border-4 border-solid border-color-main p-2">
-                  <FaHeartbeat className="text-[36px] text-color-main" />
+                  <img
+                    src={require("../../../assets/images/onlinegorusme.png")}
+                    alt=""
+                    className="w-[36px]"
+                  />
                 </div>
                 <div className="flex flex-col items-start justify-center">
-                  <h1 className="text-xl font-bold text-color-dark-primary">
-                    418866
-                  </h1>
-                  <h1 className="text-color-dark-primary opacity-70">
-                    SağlıkNet
-                  </h1>
+                  <motion.h1
+                    initial={{ opacity: 0 }}
+                    whileInView={{ opacity: 1 }}
+                    transition={{
+                      ease: "backInOut",
+                      duration: 0.3,
+                      reapat: 1,
+                    }}
+                    viewport={{ once: true }}
+                    className="text-xl font-bold text-color-dark-primary"
+                  >
+                    <CountUp end={41568} duration={1} />
+                  </motion.h1>
+                  <h1 className="text-color-dark-primary opacity-70">Seans</h1>
                 </div>
               </div>
               <h1 className="text-color-dark-primary opacity-70">
-                Sağlık Bakanlığ'ına gönderilen hasta sayısı.
+                Şu ana kadar gerçekleştirilen seans sayısı.
               </h1>
             </li>
           </ul>

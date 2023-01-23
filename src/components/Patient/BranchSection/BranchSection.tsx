@@ -3,6 +3,7 @@ import BranchCard from "../BranchCard/BranchCard";
 import { BsArrowRight, BsArrowLeft } from "react-icons/bs";
 import { motion } from "framer-motion";
 import { Branch } from "../../../common/types/Branch.entity";
+import Slider from "react-slick";
 
 type Props = {
   branches: Branch[];
@@ -21,10 +22,59 @@ export default function BranchSection(props: Props) {
     setWidth(total);
   }, []);
 
+  function SamplePrevArrow(props: any) {
+    const { className, style, onClick } = props;
+    return (
+      <div
+        className={className}
+        style={{
+          ...style,
+        }}
+        onClick={onClick}
+      />
+    );
+  }
+
+  var settings = {
+    dots: false,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 5,
+    slidesToScroll: 1,
+    initialSlide: 0,
+    itemsCenter: true,
+    autoplay: false,
+    responsive: [
+      {
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: 3,
+          slidesToScroll: 3,
+          infinite: true,
+          dots: true,
+        },
+      },
+      {
+        breakpoint: 600,
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 2,
+          initialSlide: 2,
+        },
+      },
+      {
+        breakpoint: 480,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1,
+        },
+      },
+    ],
+  };
   return (
     <div className="flex w-full items-center justify-center bg-color-white-secondary px-10 lg:px-10">
-      <div className="flex w-full lg:w-2/3 flex-col items-start justify-center gap-10 py-20">
-        <div className="gap-21 flex flex-col items-start justify-center">
+      <div className="flex w-full flex-col items-start justify-center gap-10 py-20 lg:w-2/3">
+        <div className="gap-21 flex flex-col items-center justify-center">
           <h1 className="text-2xl font-bold text-color-dark-primary">
             Popüler Branşlar
           </h1>
@@ -33,113 +83,160 @@ export default function BranchSection(props: Props) {
           </p>
         </div>
         <div className="relative w-full">
-          {/* <div
-            className="absolute right-full mr-4 flex h-full flex-col items-center justify-center"
-            onClick={handleScrollLeft}
-          >
-            <div
-              className="group rounded-full bg-color-main-extra bg-opacity-50 p-4 transition-all duration-300
-             hover:cursor-pointer hover:bg-opacity-100"
-            >
-              <BsArrowLeft className="text-[24px] text-color-white" />
-            </div>
-          </div>
-          <div className="absolute left-full ml-4 flex h-full flex-col items-center justify-center">
-            <div
-              className="group rounded-full bg-color-main-extra bg-opacity-50 p-4 transition-all duration-300
-             hover:cursor-pointer hover:bg-opacity-100"
-            >
-              <BsArrowRight className="text-[24px] text-color-white" />
-            </div>
-          </div> */}
-          {/* <div className="scroll-smooth snap-x snap-mandatory w-full flex justify-start items-center gap-8 overflow-x-scroll scrollbar-none">
-            {branches.map((branch) => {
-              return <BranchCard key={branch.id} branch={branch} />;
-            })}
-          </div> */}
-          <ul className="py-10 grid w-full grid-cols-2 lg:grid-cols-3 justify-items-center gap-y-20">
-            <li className="flex flex-col items-center justify-center gap-6">
-              <img
-                src={require("../../../assets/images/kocluk.png")}
-                alt=""
-                className="h-28 w-28"
-              />
-              <h1 className="flex text-center font-bold text-color-dark-primary">
-                Yaşam Koçluğu
-              </h1>
+          <Slider {...settings}>
+            <li className="flex flex-col items-center justify-center gap-6 px-4">
+              <div className="flex flex-col items-center justify-center rounded-[25px] bg-color-white">
+                <div className="flex flex-col items-center justify-center gap-4 p-8">
+                  <img
+                    src={require("../../../assets/images/kocluk.png")}
+                    alt=""
+                    className="h-20 w-20"
+                  />
+                  <h1 className="flex text-center font-bold text-color-dark-primary">
+                    Yaşam Koçluğu
+                  </h1>
+                </div>
+                <div className="w-full px-2 pb-2">
+                  <button className="w-full rounded-[15px] bg-color-secondary py-2">
+                    <h1 className="font-bold text-color-white">38 Uzman</h1>
+                  </button>
+                </div>
+              </div>
             </li>
-            <li className="flex flex-col items-center justify-center gap-6">
-              <img
-                src={require("../../../assets/images/psikolog.png")}
-                alt=""
-                className="h-28 w-28"
-              />
-              <h1 className="text-center font-bold text-color-dark-primary">
-                Psikolog
-              </h1>
+            <li className="flex flex-col items-center justify-center gap-6 px-4">
+              <div className="flex flex-col items-center justify-center rounded-[25px] bg-color-white">
+                <div className="flex flex-col items-center justify-center gap-4 p-8">
+                  <img
+                    src={require("../../../assets/images/aile_dizimi.png")}
+                    alt=""
+                    className="h-20 w-20"
+                  />
+                  <h1 className="flex text-center font-bold text-color-dark-primary">
+                    Aile Dizimi
+                  </h1>
+                </div>
+                <div className="w-full px-2 pb-2">
+                  <button className="w-full rounded-[15px] bg-color-secondary py-2">
+                    <h1 className="font-bold text-color-white">38 Uzman</h1>
+                  </button>
+                </div>
+              </div>
             </li>
-            <li className="flex flex-col items-center justify-center gap-6">
-              <img
-                src={require("../../../assets/images/sifacilik.png")}
-                alt=""
-                className="h-28 w-28"
-              />
-              <h1 className="flex text-center font-bold text-color-dark-primary">
-                Şifacılık
-              </h1>
+            <li className="flex flex-col items-center justify-center gap-6 px-4">
+              <div className="flex flex-col items-center justify-center rounded-[25px] bg-color-white">
+                <div className="flex flex-col items-center justify-center gap-4 p-8">
+                  <img
+                    src={require("../../../assets/images/astrology.png")}
+                    alt=""
+                    className="h-20 w-20"
+                  />
+                  <h1 className="flex text-center font-bold text-color-dark-primary">
+                    Astroloji
+                  </h1>
+                </div>
+                <div className="w-full px-2 pb-2">
+                  <button className="w-full rounded-[15px] bg-color-secondary py-2">
+                    <h1 className="font-bold text-color-white">38 Uzman</h1>
+                  </button>
+                </div>
+              </div>
             </li>
-            <li className="flex flex-col items-center justify-center gap-6">
-              <img
-                src={require("../../../assets/images/nlp.png")}
-                alt=""
-                className="h-28 w-28"
-              />
-              <h1 className="flex text-center font-bold text-color-dark-primary">
-                NLP
-              </h1>
+            <li className="flex flex-col items-center justify-center gap-6 px-4">
+              <div className="flex flex-col items-center justify-center rounded-[25px] bg-color-white">
+                <div className="flex flex-col items-center justify-center gap-4 p-8">
+                  <img
+                    src={require("../../../assets/images/diyetisyen.png")}
+                    alt=""
+                    className="h-20 w-20"
+                  />
+                  <h1 className="flex text-center font-bold text-color-dark-primary">
+                    Diyetisyen
+                  </h1>
+                </div>
+                <div className="w-full px-2 pb-2">
+                  <button className="w-full rounded-[15px] bg-color-secondary py-2">
+                    <h1 className="font-bold text-color-white">38 Uzman</h1>
+                  </button>
+                </div>
+              </div>
             </li>
-            <li className="flex flex-col items-center justify-center gap-6">
-              <img
-                src={require("../../../assets/images/aile_dizimi.png")}
-                alt=""
-                className="h-28 w-28"
-              />
-              <h1 className="flex text-center font-bold text-color-dark-primary">
-                Aile Dizimi
-              </h1>
+            <li className="flex flex-col items-center justify-center gap-6 px-4">
+              <div className="flex flex-col items-center justify-center rounded-[25px] bg-color-white">
+                <div className="flex flex-col items-center justify-center gap-4 p-8">
+                  <img
+                    src={require("../../../assets/images/nlp.png")}
+                    alt=""
+                    className="h-20 w-20"
+                  />
+                  <h1 className="flex text-center font-bold text-color-dark-primary">
+                    NLP
+                  </h1>
+                </div>
+                <div className="w-full px-2 pb-2">
+                  <button className="w-full rounded-[15px] bg-color-secondary py-2">
+                    <h1 className="font-bold text-color-white">38 Uzman</h1>
+                  </button>
+                </div>
+              </div>
             </li>
-            <li className="flex flex-col items-center justify-center gap-6">
-              <img
-                src={require("../../../assets/images/diyetisyen.png")}
-                alt=""
-                className="h-28 w-28"
-              />
-              <h1 className="flex text-center font-bold text-color-dark-primary">
-                Diyetisyen
-              </h1>
+            <li className="flex flex-col items-center justify-center gap-6 px-4">
+              <div className="flex flex-col items-center justify-center rounded-[25px] bg-color-white">
+                <div className="flex flex-col items-center justify-center gap-4 p-8">
+                  <img
+                    src={require("../../../assets/images/psikolog.png")}
+                    alt=""
+                    className="h-20 w-20"
+                  />
+                  <h1 className="flex text-center font-bold text-color-dark-primary">
+                    Psikolog
+                  </h1>
+                </div>
+                <div className="w-full px-2 pb-2">
+                  <button className="w-full rounded-[15px] bg-color-secondary py-2">
+                    <h1 className="font-bold text-color-white">38 Uzman</h1>
+                  </button>
+                </div>
+              </div>
             </li>
-            <li className="flex flex-col items-center justify-center gap-6">
-              <img
-                src={require("../../../assets/images/astrology.png")}
-                alt=""
-                className="h-28 w-28"
-              />
-              <h1 className="flex text-center font-bold text-color-dark-primary">
-                Astroloji
-              </h1>
+            <li className="flex flex-col items-center justify-center gap-6 px-4">
+              <div className="flex flex-col items-center justify-center rounded-[25px] bg-color-white">
+                <div className="flex flex-col items-center justify-center gap-4 p-8">
+                  <img
+                    src={require("../../../assets/images/psikiyatr.png")}
+                    alt=""
+                    className="h-20 w-20"
+                  />
+                  <h1 className="flex text-center font-bold text-color-dark-primary">
+                    Psikiyatr
+                  </h1>
+                </div>
+                <div className="w-full px-2 pb-2">
+                  <button className="w-full rounded-[15px] bg-color-secondary py-2">
+                    <h1 className="font-bold text-color-white">38 Uzman</h1>
+                  </button>
+                </div>
+              </div>
             </li>
-          </ul>
-          {/* <motion.div ref={carousel} className="cursor-grab overflow-x-hidden">
-            <motion.div
-              drag="x"
-              dragConstraints={{ right: 0, left: -width }}
-              className="flex gap-2 py-2"
-            >
-              {props.branches.map((branch) => {
-                return <BranchCard key={branch._id} branch={branch} />;
-              })}
-            </motion.div>
-          </motion.div> */}
+            <li className="flex flex-col items-center justify-center gap-6 px-4">
+              <div className="flex flex-col items-center justify-center rounded-[25px] bg-color-white">
+                <div className="flex flex-col items-center justify-center gap-4 p-8">
+                  <img
+                    src={require("../../../assets/images/sifacilik.png")}
+                    alt=""
+                    className="h-20 w-20"
+                  />
+                  <h1 className="flex text-center font-bold text-color-dark-primary">
+                    Şifacılık
+                  </h1>
+                </div>
+                <div className="w-full px-2 pb-2">
+                  <button className="w-full rounded-[15px] bg-color-secondary py-2">
+                    <h1 className="font-bold text-color-white">38 Uzman</h1>
+                  </button>
+                </div>
+              </div>
+            </li>
+          </Slider>
         </div>
       </div>
     </div>

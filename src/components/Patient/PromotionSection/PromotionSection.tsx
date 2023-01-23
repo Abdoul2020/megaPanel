@@ -23,34 +23,50 @@ export default function PromotionSection({}: Props) {
           <img src={require("../../../assets/images/people.png")} alt="" />
         </div>
         <div className="z-20 flex min-h-full w-full items-center justify-center">
-          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-2 items-center justify-around gap-10">
+          <div className="grid grid-cols-2 items-center justify-around gap-10 md:grid-cols-4 lg:grid-cols-2">
             <div className="flex flex-col items-center justify-center gap-2">
-              <div className="rounded-[30px] bg-color-white p-8 shadow-lg">
-                <TbHandClick className="text-[48px] text-color-main" />
+              <div className="rounded-[30px] bg-color-white-secondary p-8 shadow-lg">
+                <img
+                  src={require("../../../assets/images/uzmansec.png")}
+                  alt=""
+                  className="w-[48px]"
+                />
               </div>
               <h1 className="text-base text-color-white text-opacity-80">
                 Uzman Seç
               </h1>
             </div>
             <div className="flex flex-col items-center justify-center gap-2">
-              <div className="rounded-[30px] bg-color-white p-8 shadow-lg">
-                <GiDoctorFace className="text-[48px] text-color-main" />
+              <div className="rounded-[30px] bg-color-white-secondary p-8 shadow-lg">
+                <img
+                  src={require("../../../assets/images/doktorbul.png")}
+                  alt=""
+                  className="w-[48px]"
+                />
               </div>
               <h1 className="text-base text-color-white text-opacity-80">
-                Doktor Bul
+                Uzman Bul
               </h1>
             </div>
             <div className="flex flex-col items-center justify-center gap-2">
-              <div className="rounded-[30px] bg-color-white p-8 shadow-lg">
-                <GiFaceToFace className="text-[48px] text-color-main" />
+              <div className="rounded-[30px] bg-color-white-secondary p-8 shadow-lg">
+                <img
+                  src={require("../../../assets/images/yuzyuzerandevu.png")}
+                  alt=""
+                  className="w-[48px]"
+                />
               </div>
               <h1 className="text-base text-color-white text-opacity-80">
                 Yüz yüze Randevu
               </h1>
             </div>
             <div className="flex flex-col items-center justify-center gap-2">
-              <div className="rounded-[30px] bg-color-white p-8 shadow-lg">
-                <SiGooglemeet className="text-[48px] text-color-main" />
+              <div className="rounded-[30px] bg-color-white-secondary p-8 shadow-lg">
+                <img
+                  src={require("../../../assets/images/onlinegorusme.png")}
+                  alt=""
+                  className="w-[48px]"
+                />
               </div>
               <h1 className="text-base text-color-white text-opacity-80">
                 Online Görüşme

@@ -15,44 +15,44 @@ export default function CTAResponsive({}: Props) {
             ulaşım sağlayabilirsiniz.
           </p>
         </div>
-        <ul className="relative z-10 grid w-full grid-cols-1 sm:grid-cols-2 gap-y-20 py-20">
-          <li className="relative flex flex-col items-center justify-between gap-10">
+        <ul className="relative z-10 grid w-full grid-cols-1 md:grid-cols-2 content-center items-center gap-y-10 py-20 2xl:grid-cols-4">
+          <li className="relative flex flex-col items-center justify-center gap-10">
             <img
-              src={require("../../../assets/images/computer_mockup.png")}
+              src={require("../../../assets/images/megaverse_mockups-03.png")}
               alt=""
-              className="w-[250px]"
+              className="h-[200px]"
             />
-            <h1 className="font-bold text-color-dark-primary opacity-80">
+            <h1 className="-ml-8 font-bold text-color-dark-primary opacity-80">
               Bilgisayarda
             </h1>
           </li>
-          <li className="relative flex flex-col items-center justify-between gap-10">
+          <li className="relative flex flex-col items-center justify-center gap-10">
             <img
-              src={require("../../../assets/images/laptop.png")}
+              src={require("../../../assets/images/megaverse_mockups-04.png")}
               alt=""
-              className="w-[250px]"
+              className="h-[200px]"
             />
-            <h1 className="font-bold text-color-dark-primary opacity-80">
+            <h1 className="-ml-8 font-bold text-color-dark-primary opacity-80">
               Notebook'ta
             </h1>
           </li>
-          <li className="relative flex flex-col items-center justify-between gap-10">
+          <li className="relative flex flex-col items-center justify-center gap-10">
             <img
-              src={require("../../../assets/images/tablet_mockup.png")}
+              src={require("../../../assets/images/megaverse_mockups-05.png")}
               alt=""
-              className="w-[250px]"
+              className="h-[200px]"
             />
-            <h1 className="font-bold text-color-dark-primary opacity-80">
+            <h1 className="-ml-8 font-bold text-color-dark-primary opacity-80">
               Tablette
             </h1>
           </li>
-          <li className="relative flex flex-col items-center justify-between gap-10">
+          <li className="relative flex flex-col items-center justify-center gap-10">
             <img
-              src={require("../../../assets/images/phone_mockup.png")}
+              src={require("../../../assets/images/megaverse_mockups-06.png")}
               alt=""
-              className="w-[100px]"
+              className="h-[200px]"
             />
-            <h1 className="font-bold text-color-dark-primary opacity-80">
+            <h1 className="-ml-8 font-bold text-color-dark-primary opacity-80">
               Telefonda
             </h1>
           </li>

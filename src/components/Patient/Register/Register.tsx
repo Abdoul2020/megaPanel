@@ -133,8 +133,8 @@ export default function Register({}: Props) {
     setPasswordRetypeHide((value) => !value);
   };
   return (
-    <div className="relative flex h-screen w-full items-center justify-center bg-color-white-secondary py-20 pt-[170px] px-10 lg:px-0">
-      <div className="z-20 flex w-full grid-cols-2 content-start items-center justify-center gap-10 lg:grid lg:w-2/3">
+    <div className="relative flex h-screen w-full items-center justify-center bg-color-white-secondary py-20 px-10 pt-[170px] lg:px-0">
+      <div className="z-20 flex w-full grid-cols-2 content-start items-start justify-start gap-10 lg:grid lg:w-2/3">
         <div className="flex w-full flex-col items-center justify-center gap-8">
           <div className="flex w-full flex-col items-start justify-center gap-6 rounded-[25px] bg-color-white p-8 px-10 shadow-lg">
             <h1 className="text-xl font-bold text-color-dark-primary opacity-80">
@@ -295,7 +295,7 @@ export default function Register({}: Props) {
             </Link>
           </div>
         </div>
-        <div className="hidden lg:flex flex-col items-start justify-start gap-10 rounded-[15px] p-4">
+        <div className="hidden flex-col items-start justify-start gap-10 rounded-[15px] p-4 lg:flex">
           <h1 className="text-xl font-bold">
             Her branştan alanında uzmanlar ile{" "}
             <span className="text-color-main">
@@ -305,11 +305,15 @@ export default function Register({}: Props) {
           <ul className="flex flex-col items-start justify-center gap-10">
             <li className="flex items-start justify-center gap-4">
               <div className="rounded-xl border-4 border-solid border-color-main p-2">
-                <BsPlusLg className="text-[36px] text-color-main" />
+                <img
+                  src={require("../../../assets/images/uzmansec.png")}
+                  alt=""
+                  className="w-[36px]"
+                />
               </div>
               <div className="flex flex-col items-start justify-center">
                 <h1 className="text-xl font-bold text-color-dark-primary">
-                  Branş Seç
+                  Uzman Seç
                 </h1>
                 <h1 className="text-color-dark-primary opacity-70">
                   Onlarca branş arasından istediğini seç.
@@ -318,7 +322,11 @@ export default function Register({}: Props) {
             </li>
             <li className="flex items-start justify-center gap-4">
               <div className="rounded-xl border-4 border-solid border-color-main p-2">
-                <GiDoctorFace className="text-[36px] text-color-main" />
+                <img
+                  src={require("../../../assets/images/doktorbul.png")}
+                  alt=""
+                  className="w-[36px]"
+                />
               </div>
               <div className="flex flex-col items-start justify-center">
                 <h1 className="text-xl font-bold text-color-dark-primary">
@@ -331,7 +339,11 @@ export default function Register({}: Props) {
             </li>
             <li className="flex items-start justify-center gap-4">
               <div className="rounded-xl border-4 border-solid border-color-main p-2">
-                <TbCalendarPlus className="text-[36px] text-color-main" />
+                <img
+                  src={require("../../../assets/images/yuzyuzerandevu.png")}
+                  alt=""
+                  className="w-[36px]"
+                />
               </div>
               <div className="flex flex-col items-start justify-center">
                 <h1 className="text-xl font-bold text-color-dark-primary">
@@ -344,7 +356,11 @@ export default function Register({}: Props) {
             </li>
             <li className="flex items-start justify-center gap-4">
               <div className="rounded-xl border-4 border-solid border-color-main p-2">
-                <FiSmartphone className="text-[36px] text-color-main" />
+                <img
+                  src={require("../../../assets/images/onlinegorusme.png")}
+                  alt=""
+                  className="w-[36px]"
+                />
               </div>
               <div className="flex flex-col items-start justify-center">
                 <h1 className="text-xl font-bold text-color-dark-primary">

@@ -43,6 +43,13 @@ export default function DashboardAppointmentsChartExpert({}: Props) {
     setSpecialConditionAppointmentDuration,
   ] = useState(10);
 
+  // Between appointments break
+  const [betweenAppointmentsBreak, setBetweenAppointmentsBreak] = useState(5);
+  const [
+    betweenSpecialConditionAppointmentsBreak,
+    setBetweenSpecialConditionAppointmentsBreak,
+  ] = useState(5);
+
   // Special Condition Shift Days & Hours
   const [
     specialConditionShiftDaysWithTime,
@@ -180,7 +187,6 @@ export default function DashboardAppointmentsChartExpert({}: Props) {
     const shiftBreakEndMinuteInt = parseInt(shiftBreakEndMinute);
 
     let today = new Date();
-
 
     const hoursWithBreak: string[] = ItHasBreak(
       today,
@@ -477,6 +483,7 @@ export default function DashboardAppointmentsChartExpert({}: Props) {
       )}:${ifLessThanTen(new Date(dateXTime).getMinutes())}`;
       finalArray.push(theTime);
       dateXTime += appointmentDuration * 10 * 60 * 100;
+      dateXTime += betweenAppointmentsBreak;
     }
 
     return finalArray;
@@ -543,6 +550,7 @@ export default function DashboardAppointmentsChartExpert({}: Props) {
       )}:${ifLessThanTen(new Date(dateXTime).getMinutes())}`;
       beforeBreak.push(theTime);
       dateXTime += appointmentDuration * 10 * 60 * 100;
+      dateXTime += betweenAppointmentsBreak;
     }
 
     while (dateTTime <= dateYTime - appointmentDuration * 60000) {
@@ -551,6 +559,7 @@ export default function DashboardAppointmentsChartExpert({}: Props) {
       )}:${ifLessThanTen(new Date(dateTTime).getMinutes())}`;
       afterBreak.push(theTime);
       dateTTime += appointmentDuration * 10 * 60 * 100;
+      dateXTime += betweenAppointmentsBreak;
     }
     let finalArray: string[] = beforeBreak.concat(afterBreak);
     return finalArray;
@@ -1074,11 +1083,11 @@ export default function DashboardAppointmentsChartExpert({}: Props) {
                     Randevu Günlerini Belirle
                   </h1>
                   <p className="text-color-dark-primary text-opacity-50">
-                    Doktorun hangi günlerde hasta kabulü yapacağını belirtiniz.
+                    Uzmanın hangi günlerde hasta kabulü yapacağını belirtiniz.
                     (gerekli)
                   </p>
                 </div>
-                <ul className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-6">
+                <ul className="grid grid-cols-3 gap-6 sm:grid-cols-4 md:grid-cols-5">
                   <li
                     className={`p-2 px-6 ${
                       shiftDays.includes("monday")
@@ -1186,11 +1195,11 @@ export default function DashboardAppointmentsChartExpert({}: Props) {
                     Randevu Günlerini Belirle
                   </h1>
                   <p className="text-color-dark-primary text-opacity-50">
-                    Doktorun hangi günlerde hasta kabulü yapacağını belirtiniz.
+                    Uzmanın hangi günlerde hasta kabulü yapacağını belirtiniz.
                     (gerekli)
                   </p>
                 </div>
-                <ul className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-6">
+                <ul className="grid grid-cols-3 gap-6 sm:grid-cols-4 md:grid-cols-5">
                   <li
                     className={`p-2 px-6 ${
                       specialConditionShiftDays.includes("monday")
@@ -1314,11 +1323,11 @@ export default function DashboardAppointmentsChartExpert({}: Props) {
                       Mesai Saatlerini Belirle
                     </h1>
                     <p className="text-color-dark-primary text-opacity-50">
-                      Doktorunuzun mesaiye başlama ve bitiş saatlerini
-                      belirleyiniz. (gerekli)
+                      Mesaiye başlama ve bitiş saatlerinizi belirleyiniz.
+                      (gerekli)
                     </p>
                   </div>
-                  <div className="flex sm:flex-row flex-col items-center justify-center gap-2">
+                  <div className="flex flex-col items-center justify-center gap-2 sm:flex-row">
                     <div
                       className="min-w-4 border-[2px] border-solid border-color-dark-primary border-opacity-20 
                     py-2"
@@ -1815,8 +1824,7 @@ export default function DashboardAppointmentsChartExpert({}: Props) {
                       Mola Saatlerini Belirle
                     </h1>
                     <p className="text-color-dark-primary text-opacity-50">
-                      Doktorunuz için mola başlama ve bitiş saatlerini
-                      belirleyiniz. (gerekli)
+                      Mola başlama ve bitiş saatlerini belirleyiniz. (gerekli)
                     </p>
                   </div>
                   <div
@@ -1846,7 +1854,7 @@ export default function DashboardAppointmentsChartExpert({}: Props) {
                         duration: 0.5,
                         reapat: 1,
                       }}
-                      className="flex flex-col sm:flex-row items-center justify-center gap-2"
+                      className="flex flex-col items-center justify-center gap-2 sm:flex-row"
                     >
                       <div
                         className="min-w-4 border-[2px] border-solid border-color-dark-primary border-opacity-20 
@@ -2426,6 +2434,67 @@ export default function DashboardAppointmentsChartExpert({}: Props) {
                     </h1>
                     <p className="text-color-dark-primary text-opacity-50">
                       Bir randevu için ayrılacak süreyi belirleyiniz. (gerekli)
+                    </p>
+                  </div>
+                  <div
+                    className="min-w-4 border-[2px] border-solid border-color-dark-primary border-opacity-20 
+        py-2"
+                  >
+                    <select
+                      name=""
+                      id=""
+                      className="w-full text-lg text-opacity-50 outline-none"
+                      onChange={onAppointmentDurationChange}
+                    >
+                      <option value="10" selected={appointmentDuration === 10}>
+                        10 Dakika
+                      </option>
+                      <option value="15" selected={appointmentDuration === 15}>
+                        15 Dakika
+                      </option>
+                      <option value="20" selected={appointmentDuration === 20}>
+                        20 Dakika
+                      </option>
+                      <option value="25" selected={appointmentDuration === 25}>
+                        25 Dakika
+                      </option>
+                      <option value="30" selected={appointmentDuration === 30}>
+                        30 Dakika
+                      </option>
+                      <option value="35" selected={appointmentDuration === 35}>
+                        35 Dakika
+                      </option>
+                      <option value="40" selected={appointmentDuration === 40}>
+                        40 Dakika
+                      </option>
+                      <option value="50" selected={appointmentDuration === 50}>
+                        50 Dakika
+                      </option>
+                      <option value="60" selected={appointmentDuration === 60}>
+                        60 Dakika
+                      </option>
+                      <option value="90" selected={appointmentDuration === 90}>
+                        90 Dakika
+                      </option>
+                      <option
+                        value="120"
+                        selected={appointmentDuration === 120}
+                      >
+                        120 Dakika
+                      </option>
+                    </select>
+                  </div>
+                </div>
+                <div
+                  className="flex w-full flex-col items-start justify-start gap-10 border-t-[1px] border-solid border-color-dark-primary border-opacity-10 
+      py-5"
+                >
+                  <div className="flex flex-col items-start justify-start gap-1">
+                    <h1 className="font-bold text-color-dark-primary">
+                      Kısa Mola Saatlerini Belirle
+                    </h1>
+                    <p className="text-color-dark-primary text-opacity-50">
+                      Randevular arası mola için ayrılacak süreyi belirleyiniz. (gerekli)
                     </p>
                   </div>
                   <div

@@ -39,6 +39,8 @@ import { fetchFirms } from "./features/firms/firmsAPI";
 import { addFirms } from "./features/firms/firmsSlice";
 import { Doctor } from "./common/types/Doctor.entity";
 import { Branch } from "./common/types/Branch.entity";
+import "slick-carousel/slick/slick.css"; 
+import "slick-carousel/slick/slick-theme.css";
 
 function App() {
   const appRef = useRef<HTMLInputElement>(null);
