@@ -11,8 +11,7 @@ import {
 import { BiLoaderAlt } from "react-icons/bi";
 import { BsFillClockFill } from "react-icons/bs";
 import { MdLocationPin, MdPeopleAlt } from "react-icons/md";
-import { SiStatuspage } from "react-icons/si";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useAppDispatch } from "../../../../../app/hooks";
 import { Alert } from "../../../../../common/types/Alert";
 import { Appointment } from "../../../../../common/types/Appointment.entity";
@@ -20,10 +19,14 @@ import {
   acceptAppointment,
   declineAppointment,
 } from "../../../../../features/appointments/appointmentsAPI";
-import { updateAuthExpertAppointment } from "../../../../../features/authExpert/authExpertSlice";
+import {
+  addAuthExpertObject,
+  updateAuthExpertAppointment,
+} from "../../../../../features/authExpert/authExpertSlice";
 import { fetchClientProfilePicture } from "../../../../../features/clients/clientsAPI";
 import { fetchExpertProfilePicture } from "../../../../../features/doctorSlice/doctorAPI";
 import { updateAlert } from "../../../../../features/options/optionsSlice";
+import { unauthenticateExpert } from "../../../../../helpers/authExpertHelper";
 import { getCookie } from "../../../../../helpers/authHelper";
 
 type Props = {
@@ -32,6 +35,7 @@ type Props = {
 };
 
 export default function DashboardAppointmentExpert(props: Props) {
+  const navigate = useNavigate();
   const [appointmentDate, setAppointmentDate] = useState<Date | null>(null);
   const [loader, setLoader] = useState(false);
   const [submitDisable, setSubmitDisable] = useState(false);
@@ -68,14 +72,29 @@ export default function DashboardAppointmentExpert(props: Props) {
         const data = acceptAppointmentResponse.data.data;
         dispatch(updateAuthExpertAppointment(data));
       } else {
-        const alert: Alert = {
-          type: "danger",
-          text: acceptAppointmentResponse.data.response.data.message,
-          active: true,
-          statusCode: acceptAppointmentResponse.data.response.data.statusCode,
-        };
-        dispatch(updateAlert(alert));
-        console.log({ acceptAppointmentResponse });
+        if (
+          acceptAppointmentResponse.data.response.data.message &&
+          acceptAppointmentResponse.data.response.data.message ===
+            "error:TokenExpiredError: jwt expired"
+        ) {
+          const alert: Alert = {
+            type: "warning",
+            text: "Oturum zaman aşımına uğradı",
+            active: true,
+            statusCode: acceptAppointmentResponse.data.statusCode,
+          };
+          dispatch(updateAlert(alert));
+          dispatch(addAuthExpertObject(undefined));
+          unauthenticateExpert(navigate("/for-doctors/login"));
+        } else {
+          const alert: Alert = {
+            type: "danger",
+            text: acceptAppointmentResponse.data.response.data.message,
+            active: true,
+            statusCode: acceptAppointmentResponse.data.statusCode,
+          };
+          dispatch(updateAlert(alert));
+        }
       }
     }
     async function fetchDataDecline() {
@@ -101,14 +120,29 @@ export default function DashboardAppointmentExpert(props: Props) {
         const data = declineAppointmentResponse.data.data;
         dispatch(updateAuthExpertAppointment(data));
       } else {
-        const alert: Alert = {
-          type: "danger",
-          text: declineAppointmentResponse.data.response.data.message,
-          active: true,
-          statusCode: declineAppointmentResponse.data.response.data.statusCode,
-        };
-        dispatch(updateAlert(alert));
-        console.log({ declineAppointmentResponse });
+        if (
+          declineAppointmentResponse.data.response.data.message &&
+          declineAppointmentResponse.data.response.data.message ===
+            "error:TokenExpiredError: jwt expired"
+        ) {
+          const alert: Alert = {
+            type: "warning",
+            text: "Oturum zaman aşımına uğradı",
+            active: true,
+            statusCode: declineAppointmentResponse.data.statusCode,
+          };
+          dispatch(updateAlert(alert));
+          dispatch(addAuthExpertObject(undefined));
+          unauthenticateExpert(navigate("/for-doctors/login"));
+        } else {
+          const alert: Alert = {
+            type: "danger",
+            text: declineAppointmentResponse.data.response.data.message,
+            active: true,
+            statusCode: declineAppointmentResponse.data.statusCode,
+          };
+          dispatch(updateAlert(alert));
+        }
       }
     }
     if (!submitDisable) {
@@ -205,7 +239,7 @@ export default function DashboardAppointmentExpert(props: Props) {
           const base64 = authExpertDownloadProfilePictureResponse.data.data;
           setProfileImageBase64(base64);
         } else {
-          console.log({ authExpertDownloadProfilePictureResponse });
+          // console.log({ authExpertDownloadProfilePictureResponse });
         }
       } else if (
         props.appointment.appointment_client_client &&
@@ -224,7 +258,7 @@ export default function DashboardAppointmentExpert(props: Props) {
           const base64 = authClientDownloadProfilePictureResponse.data.data;
           setProfileImageBase64(base64);
         } else {
-          console.log({ authClientDownloadProfilePictureResponse });
+          // console.log({ authClientDownloadProfilePictureResponse });
         }
       }
     }
@@ -233,100 +267,100 @@ export default function DashboardAppointmentExpert(props: Props) {
 
   return (
     <div
-      className="h-[200px] border-[1px]
-    border-solid border-color-dark-primary border-opacity-10 bg-opacity-10 shadow-lg 
-    flex justify-between items-center w-full pr-10 rounded-[15px]"
+      className="flex h-[400px] w-full items-center justify-between
+    rounded-[15px] border-[1px] border-solid border-color-dark-primary border-opacity-10 
+    bg-opacity-10 shadow-lg md:h-[350px] lg:h-[300px] xl:h-[250px]"
     >
       <div className="h-full">
         {props.appointment.appointment_status === 0 ? (
           <div
-            className="cursor-pointer transition-all duration-300 hover:opacity-80
-           bg-color-warning-primary h-full px-4 flex flex-col justify-center items-center rounded-l-[15px]"
+            className="flex h-full cursor-pointer flex-col
+           items-center justify-center rounded-l-[15px] bg-color-warning-primary px-4 transition-all duration-300 hover:opacity-80"
             onClick={handleAppointmentStatus}
           >
             {loader ? (
               <div className="animate-spin">
-                <BiLoaderAlt className="text-color-white text-[24px] text-opacity-80" />
+                <BiLoaderAlt className="text-[24px] text-color-white text-opacity-80" />
               </div>
             ) : (
-              <BsFillClockFill className="text-color-white text-[24px]" />
+              <BsFillClockFill className="text-[24px] text-color-white" />
             )}
           </div>
         ) : props.appointment.appointment_status === 1 ? (
           <div
-            className="cursor-pointer transition-all duration-300 hover:opacity-80
-           bg-color-success-primary h-full px-4 flex flex-col justify-center items-center rounded-l-[15px]"
+            className="flex h-full cursor-pointer flex-col
+           items-center justify-center rounded-l-[15px] bg-color-success-primary px-4 transition-all duration-300 hover:opacity-80"
             onClick={handleAppointmentStatus}
           >
             {loader ? (
               <div className="animate-spin">
-                <BiLoaderAlt className="text-color-white text-[24px] text-opacity-80" />
+                <BiLoaderAlt className="text-[24px] text-color-white text-opacity-80" />
               </div>
             ) : (
-              <AiFillCheckCircle className="text-color-white text-[24px]" />
+              <AiFillCheckCircle className="text-[24px] text-color-white" />
             )}
           </div>
         ) : (
           <div
-            className="cursor-pointer transition-all duration-300 hover:opacity-80 bg-color-danger-primary
-           h-full px-4 flex flex-col justify-center items-center rounded-l-[15px]"
+            className="flex h-full cursor-pointer flex-col items-center
+           justify-center rounded-l-[15px] bg-color-danger-primary px-4 transition-all duration-300 hover:opacity-80"
             onClick={handleAppointmentStatus}
           >
             {loader ? (
               <div className="animate-spin">
-                <BiLoaderAlt className="text-color-white text-[24px] text-opacity-80" />
+                <BiLoaderAlt className="text-[24px] text-color-white text-opacity-80" />
               </div>
             ) : (
-              <AiFillCloseCircle className="text-color-white text-[24px]" />
+              <AiFillCloseCircle className="text-[24px] text-color-white" />
             )}
           </div>
         )}
       </div>
-      <div className="h-full w-full flex justify-between items-center">
-        <div className="flex justify-center items-center gap-10 pl-10 bg-color-white-secondary h-full">
+      <div className="flex h-full w-full grid-cols-6 flex-col items-start justify-start 2xl:grid">
+        <div className="col-span-2 flex h-full w-full items-center justify-center gap-10 self-center rounded-r-[15px] bg-color-white-secondary py-2 2xl:py-0">
           {props.appointment.appointment_client_expert ? (
-            <div className="h-full py-4 flex flex-col justify-start items-start gap-2">
-              <h1 className="text-color-dark-primary opacity-50 font-bold">
+            <div className="flex h-full flex-col items-start justify-start gap-2 py-4">
+              <h1 className="font-bold text-color-dark-primary opacity-50">
                 Danışan
               </h1>
-              <div className="flex justify-start items-start gap-4">
-                <div className="w-[75px] h-[75px] rounded-[15px] overflow-hidden">
+              <div className="flex items-start justify-start gap-4">
+                <div className="h-[75px] w-[75px] overflow-hidden rounded-[15px]">
                   {profileImageBase64 ? (
                     <img
                       src={`data:image/jpeg;base64,${profileImageBase64}`}
                       alt=""
-                      className="w-full h-full rounded-[20px] hover:scale-110 transition-all duration-300"
+                      className="h-full w-full rounded-[20px] transition-all duration-300 hover:scale-110"
                     />
                   ) : (
                     <img
                       src={require("../../../../../assets/images/doc_pp.jpg")}
                       alt=""
-                      className="w-full h-full rounded-[20px]"
+                      className="h-full w-full rounded-[20px]"
                     />
                   )}
                 </div>
-                <div className="flex flex-col justify-start items-start gap-2">
+                <div className="flex flex-col items-start justify-start gap-2">
                   <div
-                    className="group hover:cursor-pointer 
-            flex justify-center items-center gap-2"
+                    className="group flex 
+            items-center justify-center gap-2 hover:cursor-pointer"
                   >
                     <h1
-                      className="group-hover:text-color-main transition-all duration-300 text-lg font-bold
-               text-color-dark-primary text-center"
+                      className="text-center text-lg font-bold text-color-dark-primary transition-all
+               duration-300 group-hover:text-color-main"
                     >
                       {
                         props.appointment.appointment_client_expert
                           ?.expert_title.title_title
                       }
                     </h1>
-                    <div className="flex justify-center items-center">
-                      <h1 className="group-hover:text-color-main transition-all duration-300 text-color-dark-primary opacity-80 text-center">
+                    <div className="flex items-center justify-center">
+                      <h1 className="text-center text-color-dark-primary opacity-80 transition-all duration-300 group-hover:text-color-main">
                         {
                           props.appointment.appointment_client_expert
                             ?.expert_name
                         }
                       </h1>
-                      <h1 className="group-hover:text-color-main transition-all duration-300 text-color-dark-primary opacity-80 text-center">
+                      <h1 className="text-center text-color-dark-primary opacity-80 transition-all duration-300 group-hover:text-color-main">
                         {
                           props.appointment.appointment_client_expert
                             ?.expert_surname
@@ -334,8 +368,8 @@ export default function DashboardAppointmentExpert(props: Props) {
                       </h1>
                     </div>
                   </div>
-                  <div className="flex flex-col justify-start items-start gap-1">
-                    <div className="flex justify-center items-center gap-1">
+                  <div className="flex flex-col items-start justify-start gap-1">
+                    <div className="flex items-center justify-center gap-1">
                       <MdLocationPin className="text-color-main opacity-80" />
                       <h1 className="text-color-dark-primary opacity-80">
                         {
@@ -344,7 +378,7 @@ export default function DashboardAppointmentExpert(props: Props) {
                         }
                       </h1>
                     </div>
-                    <div className="flex justify-center items-center gap-1">
+                    <div className="flex items-center justify-center gap-1">
                       <AiTwotoneMail className="text-color-main opacity-80" />
                       <h1 className="text-color-dark-primary opacity-80">
                         {
@@ -353,7 +387,7 @@ export default function DashboardAppointmentExpert(props: Props) {
                         }
                       </h1>
                     </div>
-                    <div className="flex justify-center items-center gap-1">
+                    <div className="flex items-center justify-center gap-1">
                       <AiFillPhone className="text-color-main opacity-80" />
                       <h1 className="text-color-dark-primary opacity-80">
                         {
@@ -367,39 +401,39 @@ export default function DashboardAppointmentExpert(props: Props) {
               </div>
             </div>
           ) : (
-            <div className="h-full py-4 flex flex-col justify-start items-start gap-2">
-              <h1 className="text-color-dark-primary opacity-50 font-bold">
+            <div className="flex h-full flex-col items-start justify-start gap-2 py-4">
+              <h1 className="font-bold text-color-dark-primary opacity-50">
                 Danışan
               </h1>
-              <div className="flex justify-start items-start gap-4">
-                <div className="w-[75px] h-[75px] rounded-[15px] overflow-hidden">
+              <div className="flex items-start justify-start gap-4">
+                <div className="h-[75px] w-[75px] overflow-hidden rounded-[15px]">
                   {profileImageBase64 ? (
                     <img
                       src={`data:image/jpeg;base64,${profileImageBase64}`}
                       alt=""
-                      className="w-full h-full rounded-[20px] hover:scale-110 transition-all duration-300"
+                      className="h-full w-full rounded-[20px] transition-all duration-300 hover:scale-110"
                     />
                   ) : (
                     <img
                       src={require("../../../../../assets/images/client_pp.jpg")}
                       alt=""
-                      className="w-full h-full rounded-[20px]"
+                      className="h-full w-full rounded-[20px]"
                     />
                   )}
                 </div>
-                <div className="flex flex-col justify-start items-start gap-2">
+                <div className="flex flex-col items-start justify-start gap-2">
                   <div
-                    className="group hover:cursor-pointer 
-          flex justify-center items-center gap-2"
+                    className="group flex 
+          items-center justify-center gap-2 hover:cursor-pointer"
                   >
-                    <div className="flex justify-center items-center">
-                      <h1 className="group-hover:text-color-main transition-all duration-300 text-color-dark-primary opacity-80 text-center">
+                    <div className="flex items-center justify-center">
+                      <h1 className="text-center text-color-dark-primary opacity-80 transition-all duration-300 group-hover:text-color-main">
                         {
                           props.appointment.appointment_client_client
                             ?.client_name
                         }
                       </h1>
-                      <h1 className="group-hover:text-color-main transition-all duration-300 text-color-dark-primary opacity-80 text-center">
+                      <h1 className="text-center text-color-dark-primary opacity-80 transition-all duration-300 group-hover:text-color-main">
                         {
                           props.appointment.appointment_client_client
                             ?.client_surname
@@ -407,7 +441,7 @@ export default function DashboardAppointmentExpert(props: Props) {
                       </h1>
                     </div>
                   </div>
-                  <div className="flex flex-col justify-start items-start gap-1">
+                  <div className="flex flex-col items-start justify-start gap-1">
                     {/* <div className="flex justify-center items-center gap-1">
                   <MdLocationPin className="text-color-main opacity-80" />
                   <h1 className="text-color-dark-primary opacity-80">
@@ -417,7 +451,7 @@ export default function DashboardAppointmentExpert(props: Props) {
                     }
                   </h1>
                 </div> */}
-                    <div className="flex justify-center items-center gap-1">
+                    <div className="flex items-center justify-center gap-1">
                       <AiTwotoneMail className="text-color-main opacity-80" />
                       <h1 className="text-color-dark-primary opacity-80">
                         {
@@ -437,15 +471,8 @@ export default function DashboardAppointmentExpert(props: Props) {
               </div>
             </div>
           )}
-          <div
-            className="relative w-[200px] h-full"
-            style={{
-              backgroundImage:
-                "linear-gradient(to right top, #EBF7F6 0%, #EBF7F6 50%, #ffffff 50%, #ffffff 100%)",
-            }}
-          ></div>
         </div>
-        <div className="flex justify-start items-start gap-10 place-items-center py-10">
+        <div className="col-span-4 grid w-full grid-cols-3 place-items-center items-center justify-around gap-y-10 self-center py-10 md:flex">
           {/* <div className="flex justify-start items-center">
             <div className="flex flex-col justify-center items-start gap-2">
               <div className="flex justify-center items-center gap-1">
@@ -469,10 +496,10 @@ export default function DashboardAppointmentExpert(props: Props) {
               )}
             </div>
           </div> */}
-          <div className="flex justify-start items-center">
-            <div className="flex flex-col justify-center items-start gap-2">
-              <div className="flex justify-center items-center gap-1">
-                <AiFillCalendar className="text-color-main text-[20px]" />
+          <div className="flex items-center justify-start">
+            <div className="flex flex-col items-start justify-center gap-2">
+              <div className="flex items-center justify-center gap-1">
+                <AiFillCalendar className="text-[20px] text-color-main" />
                 <h1 className="text-color-dark-primary">Tarih</h1>
               </div>
               {appointmentDate ? (
@@ -486,10 +513,10 @@ export default function DashboardAppointmentExpert(props: Props) {
               )}
             </div>
           </div>
-          <div className="flex justify-start items-center">
-            <div className="flex flex-col justify-center items-start gap-2">
-              <div className="flex justify-center items-center gap-1">
-                <AiFillClockCircle className="text-color-main text-[20px]" />
+          <div className="flex items-center justify-start">
+            <div className="flex flex-col items-start justify-center gap-2">
+              <div className="flex items-center justify-center gap-1">
+                <AiFillClockCircle className="text-[20px] text-color-main" />
                 <h1 className="text-color-dark-primary">Saat</h1>
               </div>
               {appointmentDate ? (
@@ -509,10 +536,10 @@ export default function DashboardAppointmentExpert(props: Props) {
               )}
             </div>
           </div>
-          <div className="flex justify-start items-center">
-            <div className="flex flex-col justify-center items-start gap-2">
-              <div className="flex justify-center items-center gap-1">
-                <MdPeopleAlt className="text-color-main text-[20px]" />
+          <div className="flex items-center justify-start">
+            <div className="flex flex-col items-start justify-center gap-2">
+              <div className="flex items-center justify-center gap-1">
+                <MdPeopleAlt className="text-[20px] text-color-main" />
                 <h1 className="text-color-dark-primary">Seans türü</h1>
               </div>
               <h1 className="text-color-dark-primary opacity-50">
@@ -523,10 +550,10 @@ export default function DashboardAppointmentExpert(props: Props) {
               </h1>
             </div>
           </div>
-          <div className="flex justify-start items-center">
-            <div className="flex flex-col justify-center items-start gap-2">
-              <div className="flex justify-center items-center gap-1">
-                <AiOutlineFieldTime className="text-color-main text-[20px]" />
+          <div className="flex items-center justify-start">
+            <div className="flex flex-col items-start justify-center gap-2">
+              <div className="flex items-center justify-center gap-1">
+                <AiOutlineFieldTime className="text-[20px] text-color-main" />
                 <h1 className="text-color-dark-primary">Seans süresi</h1>
               </div>
               <h1 className="text-color-dark-primary opacity-50">

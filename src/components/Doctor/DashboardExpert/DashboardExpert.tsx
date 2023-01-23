@@ -5,16 +5,27 @@ import DashboardAppointmentsExpert from "./DashboardAppointmentsExpert/Dashboard
 import DashboardAppointmentsMeExpert from "./DashboardAppointmentsMeExpert/DashboardAppointmentsMeExpert";
 import DashboardCertificatesExpert from "./DashboardCertificatesExpert/DashboardCertificatesExpert";
 import DashboardHeaderExpert from "./DashboardHeaderExpert/DashboardHeaderExpert";
+import DashboardHeaderExpertMobile from "./DashboardHeaderExpertMobile/DashboardHeaderExpertMobile";
 import DashboardHomeExpert from "./DashboardHomeExpert/DashboardHomeExpert";
 import DashboardSettingsExpert from "./DashboardSettingsExpert/DashboardSettingsExpert";
+import Drawer from "@mui/material/Drawer";
+import { useAppSelector } from "../../../app/hooks";
+import { updateHeaderMobileExpertDashboard } from "../../../features/options/optionsSlice";
+import { useDispatch } from "react-redux";
+import DashboardHeaderExpertMobileNavbar from "./DashboardHeaderExpertMobileNavbar/DashboardHeaderExpertMobileNavbar";
 
 type Props = {};
 
 export default function DashboardExpert({}: Props) {
+  const dispatch = useDispatch();
+  const headerMobileExpertDashboard = useAppSelector(
+    (state) => state.options.headerMobileExpertDashboard
+  );
   return (
-    <div className="w-full flex justify-start items-start bg-color-white-secondary">
+    <div className="flex w-full items-start justify-start bg-color-white-secondary">
       <DashboardHeaderExpert />
-      <div className="w-full h-screen p-10 overflow-y-scroll bg-color-gray-secondary">
+      <DashboardHeaderExpertMobile />
+      <div className="h-screen w-full overflow-y-scroll bg-color-gray-secondary px-2 sm:p-10">
         <Routes>
           <Route index element={<DashboardHomeExpert />} />
           <Route
@@ -36,6 +47,15 @@ export default function DashboardExpert({}: Props) {
           <Route path="/settings/*" element={<DashboardSettingsExpert />} />
         </Routes>
       </div>
+      <Drawer
+        open={headerMobileExpertDashboard}
+        onClose={() => {
+          dispatch(updateHeaderMobileExpertDashboard(false));
+        }}
+        anchor="left"
+      >
+        <DashboardHeaderExpertMobileNavbar />
+      </Drawer>
     </div>
   );
 }

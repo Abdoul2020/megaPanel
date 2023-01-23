@@ -1,16 +1,17 @@
 import React from "react";
 import { BsArrowRight } from "react-icons/bs";
+import { Link } from "react-router-dom";
 
 type Props = {};
 
 export default function CTASecondSection({}: Props) {
   return (
-    <div className="w-full bg-color-white-secondary flex justify-center items-center py-20 pt-40">
-      <div className="w-2/3 relative bg-doctor-color-main rounded-[30px] grid grid-cols-2 px-10 py-20">
+    <div className="flex w-full items-center justify-center bg-color-white-secondary py-20 pt-40 px-10 lg:px-0">
+      <div className="relative flex lg:grid w-full lg:w-2/3 grid-cols-2 rounded-[30px] bg-doctor-color-main px-10 py-20">
         <div></div>
-        <div className="flex flex-col justify-center items-start gap-10 z-20">
-          <div className="flex flex-col justify-center items-start gap-4">
-            <div className="flex flex-col justify-center items-start">
+        <div className="z-20 flex flex-col items-start justify-center gap-10">
+          <div className="flex flex-col items-start justify-center gap-4">
+            <div className="flex flex-col items-start justify-center">
               <h1 className="text-3xl font-bold text-color-dark-primary">
                 Uzmanlar için Megaverse!
               </h1>
@@ -21,16 +22,20 @@ export default function CTASecondSection({}: Props) {
               platformdur.
             </p>
           </div>
-          <button
-            className="flex justify-center items-center gap-2 bg-color-third rounded-[15px]
-           py-4 px-8 hover:opacity-80 hover:cursor-pointer transition-all duration-300"
-          >
-            <h1 className="text-color-white-secondary font-bold">Hemen Dene</h1>
-            <BsArrowRight className="text-color-white-secondary text-[24px]" />
-          </button>
+          <Link to="#banner">
+            <button
+              className="flex items-center justify-center gap-2 rounded-[15px] bg-color-third
+           py-4 px-8 transition-all duration-300 hover:cursor-pointer hover:opacity-80"
+            >
+              <h1 className="font-bold text-color-white-secondary">
+                Hemen Dene
+              </h1>
+              <BsArrowRight className="text-[24px] text-color-white-secondary" />
+            </button>
+          </Link>
         </div>
-        <div className="absolute w-full h-full grid grid-cols-2">
-          <div className="relative flex justify-center items-center">
+        <div className="absolute grid h-full w-full grid-cols-2">
+          <div className="lg:flex hidden relative items-center justify-center">
             <img
               src={require("../../../assets/images/gorsel_3.png")}
               alt=""

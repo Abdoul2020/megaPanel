@@ -49,26 +49,30 @@ export default function DoctorCard(props: Props) {
         const base64 = authExpertDownloadProfilePictureResponse.data.data;
         setProfileImageBase64(base64);
       } else {
-        console.log({ authExpertDownloadProfilePictureResponse });
+        // console.log({ authExpertDownloadProfilePictureResponse });
       }
     }
-    if (props.expert && props.expert.expert_avatar_path !== "") {
+    if (
+      props.expert &&
+      props.expert.expert_avatar_path !== "" &&
+      props.expert.expert_avatar_path !== undefined
+    ) {
       fetchData();
     }
   }, []);
   return (
-    <div className="w-full bg-color-white rounded-[15px] grid grid-cols-2">
+    <div className="grid w-full grid-cols-1 lg:grid-cols-2 rounded-[15px] bg-color-white">
       <div
-        className="relative w-full flex flex-col justify-start items-start gap-4 p-6
-      border-r-[1px] border-solid border-color-dark-primary border-opacity-10"
+        className="relative flex w-full flex-col items-start justify-start gap-4 border-r-[1px]
+      border-solid border-color-dark-primary border-opacity-10 p-6"
       >
-        <div className="w-full flex justify-start items-start gap-4">
-          <div className="w-[100px] h-[100px] rounded-[20px] overflow-hidden">
+        <div className="flex w-full items-start justify-start gap-4">
+          <div className="h-[100px] w-[100px] overflow-hidden rounded-[20px]">
             {profileImageBase64 ? (
               <img
                 src={`data:image/jpeg;base64,${profileImageBase64}`}
                 alt=""
-                className="h-full w-full rounded-[20px] hover:scale-110 transition-all duration-300"
+                className="h-full w-full rounded-[20px] transition-all duration-300 hover:scale-110"
               />
             ) : (
               <img
@@ -78,10 +82,10 @@ export default function DoctorCard(props: Props) {
               />
             )}
           </div>
-          <div className="flex flex-col justify-start items-start">
-            <div className="flex justify-center items-center gap-2">
+          <div className="flex flex-col items-start justify-start">
+            <div className="flex items-center justify-center gap-2">
               <Link to={`/doctors/${props.expert._id}`}>
-                <h1 className="hover:text-color-main transition-all duration-300 hover:cursor-pointer text-lg font-bold text-color-dark-primary text-center">
+                <h1 className="text-center text-lg font-bold text-color-dark-primary transition-all duration-300 hover:cursor-pointer hover:text-color-main">
                   {`${JSON.stringify(props.expert.expert_title)
                     .split(",")[1]
                     .replace('"title_title"', "")
@@ -92,10 +96,13 @@ export default function DoctorCard(props: Props) {
               <AiFillCheckCircle className="text-[24px] text-color-success-primary" />
             </div>
 
-            <ul className="flex gap-y-0 justify-start items-start gap-4 flex-wrap max-w-[400px]">
+            <ul className="flex max-w-[400px] flex-wrap items-start justify-start gap-4 gap-y-0">
               {props.expert.expert_branch.map((branch) => {
                 return (
-                  <h1 className="font-bold text-color-dark-primary opacity-50">
+                  <h1
+                    className="font-bold text-color-dark-primary opacity-50"
+                    key={branch._id}
+                  >
                     {branch.branch_title}
                   </h1>
                 );
@@ -104,10 +111,10 @@ export default function DoctorCard(props: Props) {
           </div>
         </div>
         <div
-          className="border-t-[1px] py-4 w-full
-            border-solid border-color-dark-primary border-opacity-10 flex flex-col justify-start items-start gap-4"
+          className="flex w-full flex-col
+            items-start justify-start gap-4 border-t-[1px] border-solid border-color-dark-primary border-opacity-10 py-4"
         >
-          <div className="flex justify-center items-center gap-1">
+          <div className="flex items-center justify-center gap-1">
             <MdLocationPin
               className={`${
                 props.expert.expert_operating_type !== 2
@@ -121,7 +128,7 @@ export default function DoctorCard(props: Props) {
                 : ""}
             </h1>
           </div>
-          <div className="flex justify-center items-center gap-1">
+          <div className="flex items-center justify-center gap-1">
             <BsCameraVideoFill
               className={`${
                 props.expert.expert_operating_type === 2 ||
@@ -138,21 +145,21 @@ export default function DoctorCard(props: Props) {
             </h1>
           </div>
         </div>
-        <div className="w-full flex flex-col justify-start items-start">
+        <div className="flex w-full flex-col items-start justify-start">
           <p className="w-full text-color-dark-primary opacity-50">
             {props.expert.expert_about_me ? props.expert.expert_about_me : ""}
           </p>
-          <h1 className="text-color-main cursor-pointer">Daha Fazla Gör</h1>
+          <h1 className="cursor-pointer text-color-main">Daha Fazla Gör</h1>
         </div>
-        <div className="absolute top-0 left-full h-full flex flex-col justify-center items-center gap-4 z-20">
+        <div className="absolute top-0 left-full z-20 flex h-full flex-col items-center justify-center gap-4">
           <div
-            className={`px-2 py-4 rounded-r-lg border-[1px] border-l-[0px]
-            border-solid border-color-dark-primary border-opacity-10 bg-opacity-10
+            className={`rounded-r-lg border-[1px] border-l-[0px] border-solid border-color-dark-primary
+            border-opacity-10 bg-opacity-10 px-2 py-4
             transition-all duration-300
             ${
               props.expert.expert_operating_type === 1
-                ? "opacity-50 cursor-auto"
-                : "opacity-100 cursor-pointer"
+                ? "cursor-auto opacity-50"
+                : "cursor-pointer opacity-100"
             }
              ${
                props.expert.expert_operating_type !== 1
@@ -164,13 +171,13 @@ export default function DoctorCard(props: Props) {
             <BsCameraVideoFill className="text-color-main" />
           </div>
           <div
-            className={`px-2 py-4 rounded-r-lg border-[1px] border-l-[0px]
-            border-solid border-color-dark-primary border-opacity-10 bg-opacity-10
+            className={`rounded-r-lg border-[1px] border-l-[0px] border-solid border-color-dark-primary
+            border-opacity-10 bg-opacity-10 px-2 py-4
             transition-all duration-300
             ${
               props.expert.expert_operating_type === 2
-                ? "opacity-50 cursor-auto"
-                : "opacity-100 cursor-pointer"
+                ? "cursor-auto opacity-50"
+                : "cursor-pointer opacity-100"
             }
              ${
                props.expert.expert_operating_type !== 2
@@ -183,9 +190,9 @@ export default function DoctorCard(props: Props) {
           </div>
         </div>
       </div>
-      <div className="relative flex justify-center items-center w-full h-full">
+      <div className="relative flex h-full w-full items-center justify-center">
         <div
-          className="h-full w-full px-12 py-6 max-h-[420px] overflow-y-scroll 
+          className="h-full max-h-[420px] w-full overflow-y-scroll px-12 py-6 
         scrollbar-thin scrollbar-track-color-white scrollbar-thumb-color-main"
         >
           {online ? (
@@ -197,11 +204,11 @@ export default function DoctorCard(props: Props) {
         <div
           className={`${
             calendarLoading ? "flex" : "hidden"
-          } absolute top-0 left-0 h-full w-full bg-color-white z-10`}
+          } absolute top-0 left-0 z-10 h-full w-full bg-color-white`}
         >
-          <div className="h-full w-full flex justify-center items-center">
+          <div className="flex h-full w-full items-center justify-center">
             <div className="animate-spin">
-              <BiLoaderAlt className="text-color-main text-[48px] text-opacity-80" />
+              <BiLoaderAlt className="text-[48px] text-color-main text-opacity-80" />
             </div>
           </div>
         </div>

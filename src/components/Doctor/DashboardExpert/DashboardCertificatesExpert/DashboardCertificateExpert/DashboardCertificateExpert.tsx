@@ -10,7 +10,12 @@ import { AiFillCloseCircle } from "react-icons/ai";
 import { Alert } from "../../../../../common/types/Alert";
 import { updateAlert } from "../../../../../features/options/optionsSlice";
 import { useAppDispatch } from "../../../../../app/hooks";
-import { removeAuthExpertCertificate } from "../../../../../features/authExpert/authExpertSlice";
+import {
+  addAuthExpertObject,
+  removeAuthExpertCertificate,
+} from "../../../../../features/authExpert/authExpertSlice";
+import { unauthenticateExpert } from "../../../../../helpers/authExpertHelper";
+import { useNavigate } from "react-router-dom";
 
 type Props = {
   key: string;
@@ -18,6 +23,8 @@ type Props = {
 };
 
 export default function DashboardCertificateExpert(props: Props) {
+  const navigate = useNavigate();
+
   const [certificatePdf, setCertificatePdf] = useState();
   const [certificatePdfLoader, setCertificatePdfLoader] = useState(false);
   const [removeButtonDisable, setRemoveButtonDisable] = useState(false);
@@ -46,7 +53,32 @@ export default function DashboardCertificateExpert(props: Props) {
         const base64 = authExpertDownloadCertificatePdfResponse.data.data;
         setCertificatePdf(base64);
       } else {
-        console.log({ authExpertDownloadCertificatePdfResponse });
+        if (
+          authExpertDownloadCertificatePdfResponse.data.response.data.message &&
+          authExpertDownloadCertificatePdfResponse.data.response.data
+            .message === "error:TokenExpiredError: jwt expired"
+        ) {
+          const alert: Alert = {
+            type: "warning",
+            text: "Oturum zaman aşımına uğradı",
+            active: true,
+            statusCode:
+              authExpertDownloadCertificatePdfResponse.data.statusCode,
+          };
+          dispatch(updateAlert(alert));
+          dispatch(addAuthExpertObject(undefined));
+          unauthenticateExpert(navigate("/for-doctors/login"));
+        } else {
+          const alert: Alert = {
+            type: "danger",
+            text: authExpertDownloadCertificatePdfResponse.data.response.data
+              .message,
+            active: true,
+            statusCode:
+              authExpertDownloadCertificatePdfResponse.data.statusCode,
+          };
+          dispatch(updateAlert(alert));
+        }
       }
     }
     if (props.certificate && props.certificate.certificate_file_path !== "") {
@@ -75,22 +107,39 @@ export default function DashboardCertificateExpert(props: Props) {
         };
         dispatch(updateAlert(alert));
       } else {
-        console.log({ removeCertificatePdfResponse });
-        const alert: Alert = {
-          type: "danger",
-          text: "Bir sorun oluştu.",
-          active: true,
-          statusCode: 500,
-        };
-        dispatch(updateAlert(alert));
+        if (
+          removeCertificatePdfResponse.data.response.data.message &&
+          removeCertificatePdfResponse.data.response.data.message ===
+            "error:TokenExpiredError: jwt expired"
+        ) {
+          const alert: Alert = {
+            type: "warning",
+            text: "Oturum zaman aşımına uğradı",
+            active: true,
+            statusCode: removeCertificatePdfResponse.data.statusCode,
+          };
+          dispatch(updateAlert(alert));
+          dispatch(addAuthExpertObject(undefined));
+          unauthenticateExpert(navigate("/for-doctors/login"));
+        } else {
+          const alert: Alert = {
+            type: "danger",
+            text: removeCertificatePdfResponse.data.response.data.message,
+            active: true,
+            statusCode: removeCertificatePdfResponse.data.statusCode,
+          };
+          dispatch(updateAlert(alert));
+        }
       }
     }
-    fetchData();
+    if (window.confirm("Bu sertifikayı silmek istediğinize emin misiniz?")) {
+      fetchData();
+    }
   };
   return (
     <div
-      className={`min-w-[190px] p-4 border-[5px] border-solid
-    flex justify-center items-center
+      className={`flex w-full items-center justify-center
+    border-[5px] border-solid p-4
    ${
      props.certificate.certificate_status === 0
        ? "border-color-warning-primary"
@@ -99,39 +148,56 @@ export default function DashboardCertificateExpert(props: Props) {
        : "border-color-danger-primary"
    } rounded-[15px]`}
     >
-      <div className="w-full relative flex flex-col justify-start items-center gap-2">
+      <div className="relative flex w-full items-start justify-start gap-10">
         <img
           src={require("../../../../../assets/images/PDF_file_icon.svg.png")}
-          className="w-[75px] h-[75px] 
+          className="h-[150px] w-[150px] 
           hover:cursor-pointer"
           alt=""
           onClick={handleOpenPdf}
         />
-        <h1 className="text-color-dark-primary opacity-80 font-bold">
-          {props.certificate.certificate_title}
-        </h1>
-        {props.certificate.certificate_status === 0 ? (
-          <div className="p-1 px-3 rounded-[15px] bg-color-warning-primary">
-            <h1 className="font-bold text-color-white">Onay Bekleniyor</h1>
+        <div className="flex flex-col items-start justify-start gap-6">
+          <div className="flex flex-col items-start justify-start gap-2">
+            <div className="flex flex-wrap items-start justify-start gap-2">
+              <h1 className="font-bold text-color-dark-primary opacity-50">
+                Başlık:
+              </h1>
+              <h1 className="font-bold text-color-dark-primary opacity-80">
+                {props.certificate.certificate_title}
+              </h1>
+            </div>
+            <div className="flex flex-wrap items-start justify-start gap-2">
+              <h1 className="font-bold text-color-dark-primary opacity-50">
+                Kurum:
+              </h1>
+              <h1 className="font-bold text-color-dark-primary opacity-80">
+                {props.certificate.certificate_company}
+              </h1>
+            </div>
           </div>
-        ) : props.certificate.certificate_status === 1 ? (
-          <div className="p-1 px-3 rounded-[15px] bg-color-success-primary">
-            <h1 className="font-bold text-color-white">Onaylandı</h1>
-          </div>
-        ) : (
-          <div className="p-1 px-3 rounded-[15px] bg-color-danger-primary">
-            <h1 className="font-bold text-color-white">Reddedildi</h1>
-          </div>
-        )}
-        <button
-          className={`absolute bottom-full left-full flex justify-center
-          items-center p-1 rounded-full bg-color-white hover:cursor-pointer
+          {props.certificate.certificate_status === 0 ? (
+            <div className="rounded-[15px] bg-color-warning-primary p-1 px-3">
+              <h1 className="font-bold text-color-white">Onay Bekleniyor</h1>
+            </div>
+          ) : props.certificate.certificate_status === 1 ? (
+            <div className="rounded-[15px] bg-color-success-primary p-1 px-3">
+              <h1 className="font-bold text-color-white">Onaylandı</h1>
+            </div>
+          ) : (
+            <div className="rounded-[15px] bg-color-danger-primary p-1 px-3">
+              <h1 className="font-bold text-color-white">Reddedildi</h1>
+            </div>
+          )}
+          <button
+            className={`absolute bottom-full left-full flex items-center
+          justify-center rounded-full bg-color-white p-1 hover:cursor-pointer
           ${removeButtonDisable ? "opacity-80" : "opacity-100"}`}
-          onClick={handleRemoveCertificate}
-          disabled={removeButtonDisable}
-        >
-          <AiFillCloseCircle className="text-[24px] text-color-danger-dark" />
-        </button>
+            onClick={handleRemoveCertificate}
+            disabled={removeButtonDisable}
+          >
+            <AiFillCloseCircle className="text-[28px] text-color-danger-dark" />
+          </button>
+        </div>
       </div>
     </div>
   );

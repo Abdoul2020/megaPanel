@@ -6,6 +6,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useAppDispatch } from "../../../app/hooks";
 import { AuthExpertLoginDto } from "../../../common/dtos/auth/expert/authExpertLoginDto.dto";
 import { Alert } from "../../../common/types/Alert";
+import { addAuthObject } from "../../../features/auth/authSlice";
 import { authExpertLogin } from "../../../features/authExpert/authExpertAPI";
 import {
   addAuthExpertObject,
@@ -15,7 +16,10 @@ import { updateAlert } from "../../../features/options/optionsSlice";
 import {
   authenticateExpert,
   isAuthExpert,
+  setLocalStorage,
+  getLocalStorage,
 } from "../../../helpers/authExpertHelper";
+import { isAuth } from "../../../helpers/authHelper";
 
 type Props = {};
 
@@ -29,14 +33,73 @@ export default function Login({}: Props) {
   const [loader, setLoader] = useState(false);
   const [submitDisable, setSubmitDisable] = useState(false);
 
+  const [remindMe, setRemindMe] = useState(false);
+
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    if (isAuthExpert()) {
-      navigate("/for-doctors/");
+    if (isAuthExpert() || isAuth()) {
+      if (isAuthExpert()) {
+        navigate("/for-doctors");
+      }
+      if (isAuth()) {
+        navigate("/");
+      }
+    }
+    const rmm = getLocalStorage("rmm_e");
+    if (rmm !== undefined && rmm !== null) {
+      const rmm_revised = JSON.parse(rmm);
+      if (rmm_revised.rmm !== undefined && rmm_revised.rmm !== null) {
+        setRemindMe(rmm_revised.rmm);
+      }
+      if (
+        rmm_revised.rmm_t !== undefined &&
+        rmm_revised.rmm_t !== "" &&
+        rmm_revised.rmm
+      ) {
+        setTimeout(() => {
+          handleSubmitWithoutForm(rmm_revised.rmm_t);
+        }, 2000);
+      }
     }
   }, []);
-
+  const handleSubmitWithoutForm = async (token: string) => {
+    const body: AuthExpertLoginDto = {
+      expert_remind_me_token: token,
+    };
+    setLoader(true);
+    setSubmitDisable(true);
+    const response = await authExpertLogin(body);
+    setLoader(false);
+    setSubmitDisable(false);
+    if (response.success === true) {
+      const alert: Alert = {
+        type: "success",
+        text: "Giriş Başarılı",
+        active: true,
+        statusCode: response.data.statusCode,
+      };
+      dispatch(updateAlert(alert));
+      dispatch(addAuthObject(undefined));
+      dispatch(addAuthExpertObject(response.data.data.user));
+      dispatch(addAuthExpertToken(response.data.data.token));
+      authenticateExpert(
+        response.data,
+        () => {
+          navigate("/for-doctors/dashboard");
+        },
+        true
+      );
+    } else {
+      const alert: Alert = {
+        type: "warning",
+        text: response.data.response.data.message,
+        active: true,
+        statusCode: response.data.statusCode,
+      };
+      dispatch(updateAlert(alert));
+    }
+  };
   // Submit
   const handleSubmit = async (e: any) => {
     e.preventDefault();
@@ -65,12 +128,17 @@ export default function Login({}: Props) {
           active: true,
           statusCode: response.data.statusCode,
         };
+        dispatch(addAuthObject(undefined));
         dispatch(addAuthExpertObject(response.data.data.user));
         dispatch(updateAlert(alert));
         dispatch(addAuthExpertToken(response.data.data.token));
-        authenticateExpert(response.data, () => {
-          navigate("/for-doctors/dashboard");
-        });
+        authenticateExpert(
+          response.data,
+          () => {
+            navigate("/for-doctors/dashboard");
+          },
+          remindMe
+        );
       } else {
         const alert: Alert = {
           type: "danger",
@@ -95,22 +163,33 @@ export default function Login({}: Props) {
   const handlePasswordHide = () => {
     setPasswordHide((value) => !value);
   };
+  const handleRemindMeChange = () => {
+    let rmm = getLocalStorage("rmm_e");
+    if (rmm !== null && rmm !== undefined) {
+      let rmm_revised = JSON.parse(rmm);
+      rmm_revised.rmm = !remindMe;
+      setLocalStorage("rmm_e", rmm_revised);
+    } else {
+      setLocalStorage("rmm_e", { rmm: !remindMe, rmm_t: undefined });
+    }
+    setRemindMe((value) => !value);
+  };
   return (
-    <div className="relative h-screen w-full flex justify-center items-center bg-color-white-secondary pt-20">
-      <div className="z-20 w-1/4 flex justify-center items-center">
-        <div className="flex flex-col justify-center items-center gap-8 w-full">
-          <div className="flex flex-col justify-center items-start gap-8 p-8 px-10 bg-color-white shadow-lg rounded-[25px] w-full">
-            <h1 className="text-xl text-color-dark-primary font-bold opacity-80">
+    <div className="relative flex min-h-screen w-full items-center justify-center bg-color-white-secondary py-10 pt-[130px] px-10 lg:px-0">
+      <div className="z-20 flex w-full lg:w-2/4 xl:w-1/4 items-center justify-center">
+        <div className="flex w-full flex-col items-center justify-center gap-8">
+          <div className="flex w-full flex-col items-start justify-center gap-8 rounded-[25px] bg-color-white p-8 px-10 shadow-lg">
+            <h1 className="text-xl font-bold text-color-dark-primary opacity-80">
               Uzman Girişi
             </h1>
             <form
-              className="flex flex-col justify-center items-start gap-8 w-full"
+              className="flex w-full flex-col items-start justify-center gap-8"
               onSubmit={handleSubmit}
             >
-              <div className="flex flex-col justify-center items-start gap-1 w-full">
+              <div className="flex w-full flex-col items-start justify-center gap-1">
                 <label
                   htmlFor="email"
-                  className="text-color-dark-primary opacity-50 font-bold"
+                  className="font-bold text-color-dark-primary opacity-50"
                 >
                   E-posta
                 </label>
@@ -121,16 +200,16 @@ export default function Login({}: Props) {
                   name="email"
                   id="email"
                   placeholder="E-postanı Gir"
-                  className="w-full transition-all duration-300 focus:border-color-main font-medium outline-none bg-color-white-third text-[16px]
-                py-[15px] px-[22px] border-[1px] border-color-dark-primary rounded-[20px] border-opacity-10"
+                  className="w-full rounded-[20px] border-[1px] border-color-dark-primary border-opacity-10 bg-color-white-third py-[15px] px-[22px]
+                text-[16px] font-medium outline-none transition-all duration-300 focus:border-color-main"
                 />
               </div>
-              <div className="flex flex-col justify-center items-start gap-1 w-full">
+              <div className="flex w-full flex-col items-start justify-center gap-1">
                 <label
                   htmlFor="password"
-                  className="w-full flex justify-between items-center"
+                  className="flex w-full items-center justify-between"
                 >
-                  <h1 className="text-color-dark-primary opacity-50 font-bold">
+                  <h1 className="font-bold text-color-dark-primary opacity-50">
                     Şifreniz
                   </h1>
                   <Link to="/for-doctors/forgot-password">
@@ -139,7 +218,7 @@ export default function Login({}: Props) {
                     </h1>
                   </Link>
                 </label>
-                <div className="w-full relative">
+                <div className="relative w-full">
                   <input
                     onChange={handlePasswordChange}
                     value={password}
@@ -147,37 +226,38 @@ export default function Login({}: Props) {
                     name="password"
                     id="password"
                     placeholder="Şifreniz"
-                    className="w-full transition-all duration-300 focus:border-color-main font-medium outline-none bg-color-white-third text-[16px]
-                py-[15px] px-[22px] border-[1px] border-color-dark-primary rounded-[20px] border-opacity-10"
+                    className="w-full rounded-[20px] border-[1px] border-color-dark-primary border-opacity-10 bg-color-white-third py-[15px] px-[22px]
+                text-[16px] font-medium outline-none transition-all duration-300 focus:border-color-main"
                   />
-                  <div className="absolute top-0 right-0 h-full flex justify-center items-center pr-4">
+                  <div className="absolute top-0 right-0 flex h-full items-center justify-center pr-4">
                     {passwordHide ? (
                       <AiFillEye
-                        className="text-color-dark-primary opacity-50 hover:opacity-80 transition-all duration-300 hover:cursor-pointer text-[24px]"
+                        className="text-[24px] text-color-dark-primary opacity-50 transition-all duration-300 hover:cursor-pointer hover:opacity-80"
                         onClick={handlePasswordHide}
                       />
                     ) : (
                       <AiFillEye
-                        className="text-color-main hover:cursor-pointer text-[24px]"
+                        className="text-[24px] text-color-main hover:cursor-pointer"
                         onClick={handlePasswordHide}
                       />
                     )}
                   </div>
                 </div>
               </div>
-              <div className="flex justify-center items-center gap-2">
+              <div className="flex items-center justify-center gap-2">
                 <input
-                  className="form-check-input focus:outline-none
-                   bg-no-repeat bg-center bg-contain float-left cursor-pointer
-                   appearance-none h-6 w-6 border border-solid border-color-main rounded-md
-                   checked:border-none
-                   transition-all duration-300 checked:bg-color-main bg-color-white"
+                  onChange={handleRemindMeChange}
+                  className="form-check-input float-left
+                   h-6 w-6 cursor-pointer appearance-none rounded-md
+                   border border-solid border-color-main bg-color-white bg-contain bg-center bg-no-repeat
+                   transition-all
+                   duration-300 checked:border-none checked:bg-color-main focus:outline-none"
                   type="checkbox"
-                  value=""
+                  checked={remindMe}
                   id="remindme"
                 />
                 <label htmlFor="remindme">
-                  <h1 className="text-color-dark-primary font-semibold text opacity-80">
+                  <h1 className="text font-semibold text-color-dark-primary opacity-80">
                     Beni hatırla
                   </h1>
                 </label>
@@ -185,26 +265,26 @@ export default function Login({}: Props) {
               <button
                 type="submit"
                 disabled={submitDisable}
-                className="w-full flex justify-center items-center gap-2 bg-color-third rounded-[15px]
-           py-4 px-8 hover:opacity-80 hover:cursor-pointer transition-all duration-300"
+                className="flex w-full items-center justify-center gap-2 rounded-[15px] bg-color-third
+           py-4 px-8 transition-all duration-300 hover:cursor-pointer hover:opacity-80"
               >
                 {loader ? (
                   <div className="animate-spin">
-                    <BiLoaderAlt className="text-color-white text-[24px] text-opacity-80" />
+                    <BiLoaderAlt className="text-[24px] text-color-white text-opacity-80" />
                   </div>
                 ) : (
-                  <div className="flex justify-center items-center gap-2">
-                    <h1 className="text-color-white-secondary font-bold">
+                  <div className="flex items-center justify-center gap-2">
+                    <h1 className="font-bold text-color-white-secondary">
                       Giriş Yap
                     </h1>
-                    <BsArrowRight className="text-color-white-secondary text-[24px]" />
+                    <BsArrowRight className="text-[24px] text-color-white-secondary" />
                   </div>
                 )}
               </button>
             </form>
           </div>
-          <div className="flex justify-center items-center gap-2">
-            <h1 className="text-color-dark-primary opacity-50 text-base">
+          <div className="flex items-center justify-center gap-2">
+            <h1 className="text-base text-color-dark-primary opacity-50">
               Hesabın yok mu?
             </h1>
             <Link to="/for-doctors/register">

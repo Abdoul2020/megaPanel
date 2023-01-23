@@ -15,7 +15,6 @@ const generalQuery = {
 };
 
 export const fetchExperts = async (query?: ExpertFilterDto) => {
-  console.log({ query });
   const searchValue = await { ...generalQuery, ...query };
   const response = await axios({
     method: "get",
@@ -97,7 +96,7 @@ export const fetchExpertsCount = async (query?: ExpertFilterDto) => {
   return response;
 };
 
-export const fetchExpertProfilePicture = async (id: string) => {
+export const fetchExpertProfilePicture = async (id?: string) => {
   const response = await axios({
     method: "get",
     url: `${BASE_URL}/experts/${id}/download`,

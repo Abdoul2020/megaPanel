@@ -4,6 +4,10 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@emotion/react": "^11.10.5",
+    "@emotion/styled": "^11.10.5",
+    "@mui/icons-material": "^5.11.0",
+    "@mui/material": "^5.11.4",
     "@reduxjs/toolkit": "^1.9.1",
     "@tailwindui/react": "^0.1.1",
     "@testing-library/jest-dom": "^5.16.5",
@@ -57,6 +61,8 @@
   "devDependencies": {
     "autoprefixer": "^10.4.13",
     "postcss": "^8.4.19",
+    "prettier": "^2.8.3",
+    "prettier-plugin-tailwindcss": "^0.2.1",
     "react-credit-card-input": "^1.1.5",
     "react-router-dom": "^6.4.4",
     "styled-components": "^5.3.6",

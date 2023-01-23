@@ -16,6 +16,8 @@ import { BiLoaderAlt } from "react-icons/bi";
 import { AuthExpertRegisterDto } from "../../../common/dtos/auth/expert/authExpertRegisterDto.dto";
 import { authExpertRegister } from "../../../features/authExpert/authExpertAPI";
 import { Branch } from "../../../common/types/Branch.entity";
+import { Firm } from "../../../common/types/Firm.entity";
+import { isAuth } from "../../../helpers/authHelper";
 
 type Props = {};
 
@@ -27,6 +29,9 @@ export default function Register({}: Props) {
   const [surname, setSurname] = useState("");
   const [email, setEmail] = useState("");
   const [company, setCompany] = useState("");
+  const [companyObject, setCompanyObject] = useState<Firm | undefined>(
+    undefined
+  );
   const [currentBranches, setCurrentBranches] = useState<Branch[] | []>([]);
   const [password, setPassword] = useState("");
   const [passwordRetype, setPasswordRetype] = useState("");
@@ -37,12 +42,18 @@ export default function Register({}: Props) {
   const [branchDropdownOpen, setBranchDropdownOpen] = useState(false);
 
   const branches = useAppSelector((state) => state.branches.branchesList);
+  const firms = useAppSelector((state) => state.firms.firmsList);
 
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    if (isAuthExpert()) {
-      navigate("/for-doctors");
+    if (isAuthExpert() || isAuth()) {
+      if (isAuthExpert()) {
+        navigate("/for-doctors");
+      }
+      if (isAuth()) {
+        navigate("/");
+      }
     }
     const paramName = searchParams.get("name");
     const paramSurname = searchParams.get("surname");
@@ -62,7 +73,6 @@ export default function Register({}: Props) {
       name === "" ||
       surname === "" ||
       email === "" ||
-      company === "" ||
       currentBranches.length === 0 ||
       password === "" ||
       passwordRetype === ""
@@ -134,6 +144,9 @@ export default function Register({}: Props) {
     setEmail(value);
   };
   const handleCompanyChange = (e: any) => {
+    if (companyObject !== undefined) {
+      setCompanyObject(undefined);
+    }
     const value = e.target.value;
     setCompany(value);
   };
@@ -180,25 +193,31 @@ export default function Register({}: Props) {
         dispatch(updateAlert(alert));
       }
     }
-    console.log(currentBranches);
+  };
+  // Firm
+  const onFirmChange = (e: any) => {
+    const valueRaw = e.target.value;
+    const value: Firm = JSON.parse(valueRaw);
+    setCompanyObject(value);
+    setCompany(value.firm_title);
   };
   return (
-    <div className="relative h-screen w-full flex justify-center items-center bg-color-white-secondary pt-20">
-      <div className="z-20 w-2/3 grid grid-cols-2 gap-10">
-        <div className="flex flex-col justify-center items-center gap-8 w-full">
-          <div className="flex flex-col justify-center items-start gap-6 p-8 px-10 bg-color-white shadow-lg rounded-[25px] w-full">
-            <h1 className="text-xl text-color-dark-primary font-bold opacity-80">
+    <div className="relative flex min-h-screen w-full items-center justify-center bg-color-white-secondary py-10 px-10 pt-[130px] xl:px-0">
+      <div className="z-20 flex justify-center items-center lg:grid w-full grid-cols-2 gap-10 xl:w-2/3">
+        <div className="flex w-full flex-col items-center justify-center gap-8">
+          <div className="flex w-full flex-col items-start justify-center gap-6 rounded-[25px] bg-color-white p-8 px-10 shadow-lg">
+            <h1 className="text-xl font-bold text-color-dark-primary opacity-80">
               Ücretsiz Dene
             </h1>
             <form
-              className="flex flex-col justify-center items-start gap-4 w-full"
+              className="flex w-full flex-col items-start justify-center gap-4"
               onSubmit={handleSubmit}
             >
-              <div className="w-full flex justify-center items-center gap-4">
-                <div className="flex flex-col justify-center items-start gap-1 w-full">
+              <div className="flex w-full items-center justify-center gap-4">
+                <div className="flex w-full flex-col items-start justify-center gap-1">
                   <label
                     htmlFor="name"
-                    className="text-color-dark-primary opacity-50 font-bold"
+                    className="font-bold text-color-dark-primary opacity-50"
                   >
                     Adı
                   </label>
@@ -209,14 +228,14 @@ export default function Register({}: Props) {
                     name="name"
                     id="name"
                     placeholder="Adını Gir"
-                    className="w-full transition-all duration-300 focus:border-color-main font-medium outline-none bg-color-white-third text-[16px]
-                py-[15px] px-[22px] border-[1px] border-color-dark-primary rounded-[20px] border-opacity-10"
+                    className="w-full rounded-[20px] border-[1px] border-color-dark-primary border-opacity-10 bg-color-white-third py-[15px] px-[22px]
+                text-[16px] font-medium outline-none transition-all duration-300 focus:border-color-main"
                   />
                 </div>
-                <div className="flex flex-col justify-center items-start gap-1 w-full">
+                <div className="flex w-full flex-col items-start justify-center gap-1">
                   <label
                     htmlFor="surname"
-                    className="text-color-dark-primary opacity-50 font-bold"
+                    className="font-bold text-color-dark-primary opacity-50"
                   >
                     Soyadı
                   </label>
@@ -227,15 +246,15 @@ export default function Register({}: Props) {
                     name="surname"
                     id="surname"
                     placeholder="Soyadını Gir"
-                    className="w-full transition-all duration-300 focus:border-color-main font-medium outline-none bg-color-white-third text-[16px]
-                py-[15px] px-[22px] border-[1px] border-color-dark-primary rounded-[20px] border-opacity-10"
+                    className="w-full rounded-[20px] border-[1px] border-color-dark-primary border-opacity-10 bg-color-white-third py-[15px] px-[22px]
+                text-[16px] font-medium outline-none transition-all duration-300 focus:border-color-main"
                   />
                 </div>
               </div>
-              <div className="flex flex-col justify-center items-start gap-1 w-full">
+              <div className="flex w-full flex-col items-start justify-center gap-1">
                 <label
                   htmlFor="email"
-                  className="text-color-dark-primary opacity-50 font-bold"
+                  className="font-bold text-color-dark-primary opacity-50"
                 >
                   E-posta
                 </label>
@@ -246,56 +265,57 @@ export default function Register({}: Props) {
                   name="email"
                   id="email"
                   placeholder="E-postanı Gir"
-                  className="w-full transition-all duration-300 focus:border-color-main font-medium outline-none bg-color-white-third text-[16px]
-                py-[15px] px-[22px] border-[1px] border-color-dark-primary rounded-[20px] border-opacity-10"
+                  className="w-full rounded-[20px] border-[1px] border-color-dark-primary border-opacity-10 bg-color-white-third py-[15px] px-[22px]
+                text-[16px] font-medium outline-none transition-all duration-300 focus:border-color-main"
                 />
               </div>
-              <div className="grid grid-cols-2 w-full">
-                <div className="flex flex-col justify-start items-start gap-2 py-4">
-                  <h1 className="text-color-dark-primary opacity-50 font-bold">
+              <div className="grid w-full grid-cols-2">
+                <div className="flex flex-col items-start justify-start gap-2 py-4">
+                  <h1 className="font-bold text-color-dark-primary opacity-50">
                     Branşlarım
                   </h1>
                   {currentBranches.length === 0 ? (
                     <h1>Henüz bir şey yok.</h1>
                   ) : (
-                    <ul className="flex justify-start items-start gap-2 flex-wrap max-w-[450px]">
+                    <ul className="flex max-w-[450px] flex-wrap items-start justify-start gap-2">
                       {currentBranches.map((branch) => {
                         return (
                           <li
-                            className="flex justify-center items-center gap-2 p-2 px-6 bg-color-gray-primary
-                        rounded-[15px] hover:bg-color-main group
-                        transition-all duration-300 cursor-pointer"
+                            className="group flex cursor-pointer items-center justify-center gap-2 rounded-[15px]
+                        bg-color-gray-primary p-2 px-6
+                        transition-all duration-300 hover:bg-color-main"
                             onClick={() => handleRemoveBranch(branch._id)}
+                            key={branch._id}
                           >
                             <h1
-                              className="group-hover:text-color-white text-color-dark-primary 
-                                    transition-all duration-300
-                                  font-bold text-opacity-80 text-sm"
+                              className="text-sm font-bold 
+                                    text-color-dark-primary text-opacity-80
+                                  transition-all duration-300 group-hover:text-color-white"
                             >
                               {branch.branch_title}
                             </h1>
-                            <AiOutlineCloseCircle className="text-color-dark-primary group-hover:text-color-white transition-all duration-300" />
+                            <AiOutlineCloseCircle className="text-color-dark-primary transition-all duration-300 group-hover:text-color-white" />
                           </li>
                         );
                       })}
                     </ul>
                   )}
                 </div>
-                <div className="relative flex flex-col justify-start items-start gap-1 w-full">
+                <div className="relative flex w-full flex-col items-start justify-start gap-1">
                   <label
                     htmlFor="branch"
-                    className="text-color-dark-primary opacity-50 font-bold"
+                    className="font-bold text-color-dark-primary opacity-50"
                   >
                     Branş
                   </label>
                   <div
-                    className="w-full transition-all duration-300 focus:border-color-main py-[15px] px-[22px] min-w-4 border-solid
-              border-[1px] border-color-dark-primary rounded-[20px] border-opacity-10"
+                    className="min-w-4 w-full rounded-[20px] border-[1px] border-solid border-color-dark-primary border-opacity-10 py-[15px]
+              px-[22px] transition-all duration-300 focus:border-color-main"
                   >
                     <select
                       name=""
                       id=""
-                      className="outline-none text-lg w-full text-opacity-50 cursor-pointer"
+                      className="w-full cursor-pointer text-lg text-opacity-50 outline-none"
                       onChange={onBranchChange}
                     >
                       <option value="" selected>
@@ -315,32 +335,89 @@ export default function Register({}: Props) {
                   </div>
                 </div>
               </div>
-              <div className="flex flex-col justify-center items-start gap-1 w-full">
-                <label
-                  htmlFor="company"
-                  className="text-color-dark-primary opacity-50 font-bold"
-                >
-                  Firma Adı
-                </label>
-                <input
-                  onChange={handleCompanyChange}
-                  value={company}
-                  type="text"
-                  name="company"
-                  id="company"
-                  placeholder="Firma Adı"
-                  className="w-full transition-all duration-300 focus:border-color-main font-medium outline-none bg-color-white-third text-[16px]
-                py-[15px] px-[22px] border-[1px] border-color-dark-primary rounded-[20px] border-opacity-10"
-                />
+              <div className="flex w-full flex-col items-start justify-center gap-1">
+                <div className="flex w-full flex-col items-start justify-center gap-1">
+                  <label
+                    htmlFor="company"
+                    className="font-bold text-color-dark-primary opacity-50"
+                  >
+                    Firma Adı
+                  </label>
+                  {company !== "" ? (
+                    <div
+                      className="group flex cursor-pointer items-center justify-center gap-2 rounded-[15px]
+                    bg-color-gray-primary p-2 px-6
+                    transition-all duration-300 hover:bg-color-main"
+                      onClick={() => {
+                        setCompany("");
+                        setCompanyObject(undefined);
+                      }}
+                    >
+                      <h1
+                        className="text-sm font-bold 
+                                    text-color-dark-primary text-opacity-80
+                                  transition-all duration-300 group-hover:text-color-white"
+                      >
+                        {company}
+                      </h1>
+                      <AiOutlineCloseCircle className="text-color-dark-primary transition-all duration-300 group-hover:text-color-white" />
+                    </div>
+                  ) : (
+                    <div
+                      className="min-w-4 w-full rounded-[20px] border-[1px] border-solid border-color-dark-primary border-opacity-10 py-[15px]
+              px-[22px] transition-all duration-300 focus:border-color-main"
+                    >
+                      <select
+                        name=""
+                        id=""
+                        className="w-full cursor-pointer text-lg text-opacity-50 outline-none"
+                        onChange={onFirmChange}
+                      >
+                        <option value="" selected>
+                          Firma Seç
+                        </option>
+                        {firms.map((Firm) => {
+                          return (
+                            <option key={Firm._id} value={JSON.stringify(Firm)}>
+                              {Firm.firm_title}
+                            </option>
+                          );
+                        })}
+                      </select>
+                    </div>
+                  )}
+                </div>
+                {companyObject === undefined ? (
+                  <div className="flex w-full flex-col items-start justify-center gap-1">
+                    <label
+                      htmlFor="company"
+                      className="font-bold text-color-dark-primary opacity-50"
+                    >
+                      Firma Adı(Diğer)
+                    </label>
+                    <input
+                      onChange={handleCompanyChange}
+                      value={company}
+                      type="text"
+                      name="company"
+                      id="company"
+                      placeholder="Firma Adı"
+                      className="w-full rounded-[20px] border-[1px] border-color-dark-primary border-opacity-10 bg-color-white-third py-[15px] px-[22px]
+                text-[16px] font-medium outline-none transition-all duration-300 focus:border-color-main"
+                    />
+                  </div>
+                ) : (
+                  <div></div>
+                )}
               </div>
-              <div className="flex flex-col justify-center items-start gap-1 w-full">
+              <div className="flex w-full flex-col items-start justify-center gap-1">
                 <label
                   htmlFor="password"
-                  className="text-color-dark-primary opacity-50 font-bold"
+                  className="font-bold text-color-dark-primary opacity-50"
                 >
                   Şifreniz
                 </label>
-                <div className="w-full relative">
+                <div className="relative w-full">
                   <input
                     onChange={handlePasswordChange}
                     value={password}
@@ -348,32 +425,32 @@ export default function Register({}: Props) {
                     name="password"
                     id="password"
                     placeholder="Şifreniz"
-                    className="w-full transition-all duration-300 focus:border-color-main font-medium outline-none bg-color-white-third text-[16px]
-                py-[15px] px-[22px] border-[1px] border-color-dark-primary rounded-[20px] border-opacity-10"
+                    className="w-full rounded-[20px] border-[1px] border-color-dark-primary border-opacity-10 bg-color-white-third py-[15px] px-[22px]
+                text-[16px] font-medium outline-none transition-all duration-300 focus:border-color-main"
                   />
-                  <div className="absolute top-0 right-0 h-full flex justify-center items-center pr-4">
+                  <div className="absolute top-0 right-0 flex h-full items-center justify-center pr-4">
                     {passwordHide ? (
                       <AiFillEye
-                        className="text-color-dark-primary opacity-50 hover:opacity-80 transition-all duration-300 hover:cursor-pointer text-[24px]"
+                        className="text-[24px] text-color-dark-primary opacity-50 transition-all duration-300 hover:cursor-pointer hover:opacity-80"
                         onClick={handlePasswordHide}
                       />
                     ) : (
                       <AiFillEye
-                        className="text-color-main hover:cursor-pointer text-[24px]"
+                        className="text-[24px] text-color-main hover:cursor-pointer"
                         onClick={handlePasswordHide}
                       />
                     )}
                   </div>
                 </div>
               </div>
-              <div className="flex flex-col justify-center items-start gap-1 w-full">
+              <div className="flex w-full flex-col items-start justify-center gap-1">
                 <label
                   htmlFor="passwordRetype"
-                  className="text-color-dark-primary opacity-50 font-bold"
+                  className="font-bold text-color-dark-primary opacity-50"
                 >
                   Şifre Tekrar
                 </label>
-                <div className="w-full relative">
+                <div className="relative w-full">
                   <input
                     onChange={handlePasswordRetypeChange}
                     value={passwordRetype}
@@ -381,18 +458,18 @@ export default function Register({}: Props) {
                     name="passwordRetype"
                     id="passwordRetype"
                     placeholder="Şifre Tekrar"
-                    className="w-full transition-all duration-300 focus:border-color-main font-medium outline-none bg-color-white-third text-[16px]
-                py-[15px] px-[22px] border-[1px] border-color-dark-primary rounded-[20px] border-opacity-10"
+                    className="w-full rounded-[20px] border-[1px] border-color-dark-primary border-opacity-10 bg-color-white-third py-[15px] px-[22px]
+                text-[16px] font-medium outline-none transition-all duration-300 focus:border-color-main"
                   />
-                  <div className="absolute top-0 right-0 h-full flex justify-center items-center pr-4">
+                  <div className="absolute top-0 right-0 flex h-full items-center justify-center pr-4">
                     {passwordRetypeHide ? (
                       <AiFillEye
-                        className="text-color-dark-primary opacity-50 hover:opacity-80 transition-all duration-300 hover:cursor-pointer text-[24px]"
+                        className="text-[24px] text-color-dark-primary opacity-50 transition-all duration-300 hover:cursor-pointer hover:opacity-80"
                         onClick={handlePasswordRetypeHide}
                       />
                     ) : (
                       <AiFillEye
-                        className="text-color-main hover:cursor-pointer text-[24px]"
+                        className="text-[24px] text-color-main hover:cursor-pointer"
                         onClick={handlePasswordRetypeHide}
                       />
                     )}
@@ -402,26 +479,26 @@ export default function Register({}: Props) {
               <button
                 type="submit"
                 disabled={submitDisable}
-                className="w-full flex justify-center items-center gap-2 bg-color-third rounded-[15px]
-           py-4 px-8 hover:opacity-80 hover:cursor-pointer transition-all duration-300"
+                className="flex w-full items-center justify-center gap-2 rounded-[15px] bg-color-third
+           py-4 px-8 transition-all duration-300 hover:cursor-pointer hover:opacity-80"
               >
                 {loader ? (
                   <div className="animate-spin">
-                    <BiLoaderAlt className="text-color-white text-[24px] text-opacity-80" />
+                    <BiLoaderAlt className="text-[24px] text-color-white text-opacity-80" />
                   </div>
                 ) : (
-                  <div className="flex justify-center items-center gap-2">
-                    <h1 className="text-color-white-secondary font-bold">
+                  <div className="flex items-center justify-center gap-2">
+                    <h1 className="font-bold text-color-white-secondary">
                       Kayıt Ol
                     </h1>
-                    <BsArrowRight className="text-color-white-secondary text-[24px]" />
+                    <BsArrowRight className="text-[24px] text-color-white-secondary" />
                   </div>
                 )}
               </button>
             </form>
           </div>
-          <div className="flex justify-center items-center gap-2">
-            <h1 className="text-color-dark-primary opacity-50 text-base">
+          <div className="flex items-center justify-center gap-2">
+            <h1 className="text-base text-color-dark-primary opacity-50">
               Zaten üye misiniz?
             </h1>
             <Link to="/for-doctors/login">
@@ -429,21 +506,21 @@ export default function Register({}: Props) {
             </Link>
           </div>
         </div>
-        <div className="flex flex-col justify-start items-start gap-10 p-4 rounded-[15px]">
+        <div className="lg:flex hidden flex-col items-start justify-start gap-10 rounded-[15px] p-4">
           <h1 className="text-xl font-bold">
             Her branştan alanında uzmanlar ile{" "}
             <span className="text-color-main">
               online olarak hemen görüşün!
             </span>
           </h1>
-          <ul className="flex flex-col justify-center items-start gap-10">
-            <li className="flex flex-col justify-center items-start gap-4">
-              <div className="flex justify-center items-center gap-6">
-                <div className="p-2 border-4 border-solid border-color-main rounded-xl">
+          <ul className="flex flex-col items-start justify-center gap-10">
+            <li className="flex flex-col items-start justify-center gap-4">
+              <div className="flex items-center justify-center gap-6">
+                <div className="rounded-xl border-4 border-solid border-color-main p-2">
                   <FaClinicMedical className="text-[36px] text-color-main" />
                 </div>
-                <div className="flex flex-col justify-center items-start">
-                  <h1 className="text-xl text-color-dark-primary font-bold">
+                <div className="flex flex-col items-start justify-center">
+                  <h1 className="text-xl font-bold text-color-dark-primary">
                     8712
                   </h1>
                   <h1 className="text-color-dark-primary opacity-70">
@@ -455,13 +532,13 @@ export default function Register({}: Props) {
                 Hizmet vermiş olduğumuz klinik sayısı.
               </h1>
             </li>
-            <li className="flex flex-col justify-center items-start gap-4">
-              <div className="flex justify-center items-center gap-6">
-                <div className="p-2 border-4 border-solid border-color-main rounded-xl">
+            <li className="flex flex-col items-start justify-center gap-4">
+              <div className="flex items-center justify-center gap-6">
+                <div className="rounded-xl border-4 border-solid border-color-main p-2">
                   <IoIosPerson className="text-[36px] text-color-main" />
                 </div>
-                <div className="flex flex-col justify-center items-start">
-                  <h1 className="text-xl text-color-dark-primary font-bold">
+                <div className="flex flex-col items-start justify-center">
+                  <h1 className="text-xl font-bold text-color-dark-primary">
                     2790270
                   </h1>
                   <h1 className="text-color-dark-primary opacity-70">Hasta</h1>
@@ -471,13 +548,13 @@ export default function Register({}: Props) {
                 Hekimlerimiz tarafından işlem yapılan hasta sayısı.
               </h1>
             </li>
-            <li className="flex flex-col justify-center items-start gap-4">
-              <div className="flex justify-center items-center gap-6">
-                <div className="p-2 border-4 border-solid border-color-main rounded-xl">
+            <li className="flex flex-col items-start justify-center gap-4">
+              <div className="flex items-center justify-center gap-6">
+                <div className="rounded-xl border-4 border-solid border-color-main p-2">
                   <FaFilePrescription className="text-[36px] text-color-main" />
                 </div>
-                <div className="flex flex-col justify-center items-start">
-                  <h1 className="text-xl text-color-dark-primary font-bold">
+                <div className="flex flex-col items-start justify-center">
+                  <h1 className="text-xl font-bold text-color-dark-primary">
                     227172
                   </h1>
                   <h1 className="text-color-dark-primary opacity-70">Reçete</h1>
@@ -487,13 +564,13 @@ export default function Register({}: Props) {
                 e-Reçete sistemine gönderilen reçete sayısı.
               </h1>
             </li>
-            <li className="flex flex-col justify-center items-start gap-4">
-              <div className="flex justify-center items-center gap-6">
-                <div className="p-2 border-4 border-solid border-color-main rounded-xl">
+            <li className="flex flex-col items-start justify-center gap-4">
+              <div className="flex items-center justify-center gap-6">
+                <div className="rounded-xl border-4 border-solid border-color-main p-2">
                   <FaHeartbeat className="text-[36px] text-color-main" />
                 </div>
-                <div className="flex flex-col justify-center items-start">
-                  <h1 className="text-xl text-color-dark-primary font-bold">
+                <div className="flex flex-col items-start justify-center">
+                  <h1 className="text-xl font-bold text-color-dark-primary">
                     418866
                   </h1>
                   <h1 className="text-color-dark-primary opacity-70">

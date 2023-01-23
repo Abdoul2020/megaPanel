@@ -4,14 +4,25 @@ import DashboardAppointmentsPatient from "./DashboardAppointmentsPatient/Dashboa
 import DashboardHeaderPatient from "./DashboardHeaderPatient/DashboardHeaderPatient";
 import DashboardHomePatient from "./DashboardHomePatient/DashboardHomePatient";
 import DashboardSettingsPatient from "./DashboardSettingsPatient/DashboardSettingsPatient";
+import Drawer from "@mui/material/Drawer";
+import DashboardHeaderPatientMobile from "./DashboardHeaderPatientMobile/DashboardHeaderPatientMobile";
+import { useDispatch } from "react-redux";
+import { useAppSelector } from "../../../app/hooks";
+import { updateHeaderMobilePatientDashboard } from "../../../features/options/optionsSlice";
+import DashboardHeaderPatientMobileNavbar from "./DashboardHeaderPatientMobileNavbar/DashboardHeaderPatientMobileNavbar";
 
 type Props = {};
 
 export default function Dashboard({}: Props) {
+  const dispatch = useDispatch();
+  const headerMobilePatientDashboard = useAppSelector(
+    (state) => state.options.headerMobilePatientDashboard
+  );
   return (
-    <div className="w-full flex justify-start items-start bg-color-white-secondary">
+    <div className="flex w-full items-start justify-start bg-color-white-secondary">
       <DashboardHeaderPatient />
-      <div className="w-full h-screen p-10 overflow-y-scroll bg-color-gray-secondary">
+      <DashboardHeaderPatientMobile />
+      <div className="h-screen w-full overflow-y-scroll bg-color-gray-secondary px-2 sm:p-10">
         <Routes>
           <Route index element={<DashboardHomePatient />} />
           <Route
@@ -21,6 +32,15 @@ export default function Dashboard({}: Props) {
           <Route path="/settings/*" element={<DashboardSettingsPatient />} />
         </Routes>
       </div>
+      <Drawer
+        open={headerMobilePatientDashboard}
+        onClose={() => {
+          dispatch(updateHeaderMobilePatientDashboard(false));
+        }}
+        anchor="left"
+      >
+        <DashboardHeaderPatientMobileNavbar />
+      </Drawer>
     </div>
   );
 }

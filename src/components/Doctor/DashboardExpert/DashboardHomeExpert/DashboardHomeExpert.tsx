@@ -3,5 +3,5 @@ import React from "react";
 type Props = {};
 
 export default function DashboardHomeExpert({}: Props) {
-  return <div className="">DashboardHomeExpert</div>;
+  return <div className=""></div>;
 }

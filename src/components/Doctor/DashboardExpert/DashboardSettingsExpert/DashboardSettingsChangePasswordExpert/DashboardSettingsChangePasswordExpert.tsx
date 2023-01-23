@@ -8,7 +8,10 @@ import { Alert } from "../../../../../common/types/Alert";
 import { authExpertUpdatePassword } from "../../../../../features/authExpert/authExpertAPI";
 import { addAuthExpertObject } from "../../../../../features/authExpert/authExpertSlice";
 import { updateAlert } from "../../../../../features/options/optionsSlice";
-import { getCookie } from "../../../../../helpers/authExpertHelper";
+import {
+  getCookie,
+  unauthenticateExpert,
+} from "../../../../../helpers/authExpertHelper";
 
 type Props = {};
 
@@ -82,14 +85,29 @@ export default function DashboardSettingsChangePasswordExpert({}: Props) {
         );
         navigate("/for-doctors/dashboard/settings");
       } else {
-        const alert: Alert = {
-          type: "danger",
-          text: authExpertUpdateProfileResponse.data.response.data.message,
-          active: true,
-          statusCode:
-            authExpertUpdateProfileResponse.data.response.data.statusCode,
-        };
-        dispatch(updateAlert(alert));
+        if (
+          authExpertUpdateProfileResponse.data.response.data.message &&
+          authExpertUpdateProfileResponse.data.response.data.message ===
+            "error:TokenExpiredError: jwt expired"
+        ) {
+          const alert: Alert = {
+            type: "warning",
+            text: "Oturum zaman aşımına uğradı",
+            active: true,
+            statusCode: authExpertUpdateProfileResponse.data.statusCode,
+          };
+          dispatch(updateAlert(alert));
+          dispatch(addAuthExpertObject(undefined));
+          unauthenticateExpert(navigate("/for-doctors/login"));
+        } else {
+          const alert: Alert = {
+            type: "danger",
+            text: authExpertUpdateProfileResponse.data.response.data.message,
+            active: true,
+            statusCode: authExpertUpdateProfileResponse.data.statusCode,
+          };
+          dispatch(updateAlert(alert));
+        }
       }
     }
     if (oldPassword === "" || password === "" || passwordRetype === "") {
@@ -116,18 +134,18 @@ export default function DashboardSettingsChangePasswordExpert({}: Props) {
   };
   useEffect(() => {}, []);
   return (
-    <div className="w-full flex flex-col justify-start items-start gap-4">
-      <div className="w-full flex flex-col justify-start items-start gap-12">
-        <h1 className="text-color-dark-primary font-bold">Şifre Değiştirme</h1>
-        <div className="w-full flex flex-col justify-start items-start shadow-lg bg-color-white rounded-[25px] p-5">
+    <div className="flex w-full flex-col items-start justify-start gap-4">
+      <div className="flex w-full flex-col items-start justify-start gap-12">
+        <h1 className="font-bold text-color-dark-primary">Şifre Değiştirme</h1>
+        <div className="flex w-full flex-col items-start justify-start rounded-[25px] bg-color-white p-5 shadow-lg">
           <form
             onSubmit={handleSubmit}
-            className="w-full flex flex-col justify-start items-start gap-4"
+            className="flex w-full flex-col items-start justify-start gap-4"
           >
-            <div className="flex flex-col justify-center items-start gap-1 w-full">
+            <div className="flex w-full flex-col items-start justify-center gap-1">
               <label
                 htmlFor="oldPassword"
-                className="text-color-dark-primary opacity-50 font-bold"
+                className="font-bold text-color-dark-primary opacity-50"
               >
                 Eski Şifre
               </label>
@@ -139,28 +157,28 @@ export default function DashboardSettingsChangePasswordExpert({}: Props) {
                   name="oldPassword"
                   id="oldPassword"
                   placeholder="Şifreniz"
-                  className="w-full transition-all duration-300 focus:border-color-main font-medium outline-none bg-color-white-third text-[16px]
-                py-[15px] px-[22px] border-[1px] border-color-dark-primary rounded-[20px] border-opacity-10"
+                  className="w-full rounded-[20px] border-[1px] border-color-dark-primary border-opacity-10 bg-color-white-third py-[15px] px-[22px]
+                text-[16px] font-medium outline-none transition-all duration-300 focus:border-color-main"
                 />
-                <div className="absolute top-0 right-0 h-full flex justify-center items-center pr-4">
+                <div className="absolute top-0 right-0 flex h-full items-center justify-center pr-4">
                   {passwordHide ? (
                     <AiFillEye
-                      className="text-color-dark-primary opacity-50 hover:opacity-80 transition-all duration-300 hover:cursor-pointer text-[24px]"
+                      className="text-[24px] text-color-dark-primary opacity-50 transition-all duration-300 hover:cursor-pointer hover:opacity-80"
                       onClick={handleOldPasswordHide}
                     />
                   ) : (
                     <AiFillEye
-                      className="text-color-main hover:cursor-pointer text-[24px]"
+                      className="text-[24px] text-color-main hover:cursor-pointer"
                       onClick={handleOldPasswordHide}
                     />
                   )}
                 </div>
               </div>
             </div>
-            <div className="flex flex-col justify-center items-start gap-1 w-full">
+            <div className="flex w-full flex-col items-start justify-center gap-1">
               <label
                 htmlFor="password"
-                className="text-color-dark-primary opacity-50 font-bold"
+                className="font-bold text-color-dark-primary opacity-50"
               >
                 Yeni Şifre
               </label>
@@ -172,28 +190,28 @@ export default function DashboardSettingsChangePasswordExpert({}: Props) {
                   name="password"
                   id="password"
                   placeholder="Şifreniz"
-                  className="w-full transition-all duration-300 focus:border-color-main font-medium outline-none bg-color-white-third text-[16px]
-                py-[15px] px-[22px] border-[1px] border-color-dark-primary rounded-[20px] border-opacity-10"
+                  className="w-full rounded-[20px] border-[1px] border-color-dark-primary border-opacity-10 bg-color-white-third py-[15px] px-[22px]
+                text-[16px] font-medium outline-none transition-all duration-300 focus:border-color-main"
                 />
-                <div className="absolute top-0 right-0 h-full flex justify-center items-center pr-4">
+                <div className="absolute top-0 right-0 flex h-full items-center justify-center pr-4">
                   {passwordHide ? (
                     <AiFillEye
-                      className="text-color-dark-primary opacity-50 hover:opacity-80 transition-all duration-300 hover:cursor-pointer text-[24px]"
+                      className="text-[24px] text-color-dark-primary opacity-50 transition-all duration-300 hover:cursor-pointer hover:opacity-80"
                       onClick={handlePasswordHide}
                     />
                   ) : (
                     <AiFillEye
-                      className="text-color-main hover:cursor-pointer text-[24px]"
+                      className="text-[24px] text-color-main hover:cursor-pointer"
                       onClick={handlePasswordHide}
                     />
                   )}
                 </div>
               </div>
             </div>
-            <div className="flex flex-col justify-center items-start gap-1 w-full">
+            <div className="flex w-full flex-col items-start justify-center gap-1">
               <label
                 htmlFor="passwordRetype"
-                className="text-color-dark-primary opacity-50 font-bold"
+                className="font-bold text-color-dark-primary opacity-50"
               >
                 Yeni Şifre Tekrar
               </label>
@@ -205,37 +223,37 @@ export default function DashboardSettingsChangePasswordExpert({}: Props) {
                   name="passwordRetype"
                   id="passwordRetype"
                   placeholder="Şifre Tekrar"
-                  className="w-full transition-all duration-300 focus:border-color-main font-medium outline-none bg-color-white-third text-[16px]
-                py-[15px] px-[22px] border-[1px] border-color-dark-primary rounded-[20px] border-opacity-10"
+                  className="w-full rounded-[20px] border-[1px] border-color-dark-primary border-opacity-10 bg-color-white-third py-[15px] px-[22px]
+                text-[16px] font-medium outline-none transition-all duration-300 focus:border-color-main"
                 />
-                <div className="absolute top-0 right-0 h-full flex justify-center items-center pr-4">
+                <div className="absolute top-0 right-0 flex h-full items-center justify-center pr-4">
                   {passwordRetypeHide ? (
                     <AiFillEye
-                      className="text-color-dark-primary opacity-50 hover:opacity-80 transition-all duration-300 hover:cursor-pointer text-[24px]"
+                      className="text-[24px] text-color-dark-primary opacity-50 transition-all duration-300 hover:cursor-pointer hover:opacity-80"
                       onClick={handlePasswordRetypeHide}
                     />
                   ) : (
                     <AiFillEye
-                      className="text-color-main hover:cursor-pointer text-[24px]"
+                      className="text-[24px] text-color-main hover:cursor-pointer"
                       onClick={handlePasswordRetypeHide}
                     />
                   )}
                 </div>
               </div>
             </div>
-            <div className="w-full flex justify-end items-center">
+            <div className="flex w-full items-center justify-end">
               <button
                 disabled={submitDisable}
                 type="submit"
-                className="w-[200px] h-[60px] flex justify-center items-center p-4 rounded-[15px] bg-color-third hover:bg-color-secondary 
-                transition-all duration-300"
+                className="flex h-[60px] w-[200px] items-center justify-center rounded-[15px] bg-color-third p-4 transition-all 
+                duration-300 hover:bg-color-secondary"
               >
                 {loader ? (
                   <div className="animate-spin">
-                    <BiLoaderAlt className="text-color-white text-[24px] text-opacity-80" />
+                    <BiLoaderAlt className="text-[24px] text-color-white text-opacity-80" />
                   </div>
                 ) : (
-                  <h1 className="text-color-white text-lg">Şifreyi Güncelle</h1>
+                  <h1 className="text-lg text-color-white">Şifreyi Güncelle</h1>
                 )}
               </button>
             </div>

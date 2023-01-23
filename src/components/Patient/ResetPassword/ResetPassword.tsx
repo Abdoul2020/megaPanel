@@ -34,7 +34,6 @@ export default function ResetPassword({}: Props) {
 
   useEffect(() => {
     const resetPasswordToken = searchParams.get("resetpasswordtoken");
-    console.log(resetPasswordToken);
   }, []);
 
   // Submit
@@ -97,8 +96,8 @@ export default function ResetPassword({}: Props) {
     setRetypeNewPassword(value);
   };
   return (
-    <div className="relative h-screen w-full flex justify-center items-center bg-color-white-secondary pt-20">
-      <div className="z-20 w-1/4 flex justify-center items-center">
+    <div className="relative h-screen w-full flex justify-center items-center px-10 lg:px-0 bg-color-white-secondary py-20 pt-[170px]">
+      <div className="z-20 w-full lg:w-1/2 xl:w-1/4 flex justify-center items-center">
         <div className="flex flex-col justify-center items-center gap-8 w-full">
           <div className="flex flex-col justify-center items-start gap-6 p-8 px-10 bg-color-white shadow-lg rounded-[25px] w-full">
             <h1 className="text-xl text-color-dark-primary font-bold opacity-80">
