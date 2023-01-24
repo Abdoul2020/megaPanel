@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { AiFillCheckCircle } from "react-icons/ai";
 import { BsCameraVideoFill, BsFillTelephoneFill } from "react-icons/bs";
-import { MdLanguage, MdLocationPin } from "react-icons/md";
+import { MdLanguage, MdLocationPin, MdWork } from "react-icons/md";
 import { CgSandClock } from "react-icons/cg";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { motion } from "framer-motion";
@@ -19,10 +19,11 @@ import {
   fetchExpert,
   fetchExpertProfilePicture,
 } from "../../../features/doctorSlice/doctorAPI";
-import { IoTimeSharp } from "react-icons/io5";
+import { IoShareSocialSharp, IoTimeSharp } from "react-icons/io5";
 import { useAppSelector } from "../../../app/hooks";
 import Dialog from "@mui/material/Dialog";
 import { SocialIcon } from "react-social-icons";
+import { IoMdInformationCircle, IoMdSchool } from "react-icons/io";
 
 type Props = {};
 
@@ -530,7 +531,11 @@ export default function DoctorDetail({}: Props) {
                       <div className="flex w-full flex-col items-start justify-center gap-6 rounded-[25px] bg-color-white p-6 shadow-sm">
                         <div className="flex items-start justify-center gap-4">
                           <div className="rounded-xl border-4 border-solid border-color-main p-2">
-                            <GiDoctorFace className="text-[24px] text-color-main" />
+                            <img
+                              src={require("../../../assets/images/doktorbul.png")}
+                              alt=""
+                              className="w-[35px]"
+                            />
                           </div>
                           <div className="flex flex-col items-start justify-start">
                             <h1 className="text-sm text-color-dark-primary opacity-50">
@@ -551,7 +556,7 @@ export default function DoctorDetail({}: Props) {
                           </div>
                         </div>
                         <div className="flex w-full flex-col items-start justify-center">
-                          <div className="flex w-full flex-col items-start justify-center gap-4 py-10">
+                          <div className="flex w-full flex-col items-start justify-center gap-4 py-5">
                             <div className="flex items-center justify-center gap-2">
                               <GoPerson className="text-lg text-color-main" />
                               <h1 className="text-sm font-bold text-color-dark-primary opacity-80">
@@ -562,9 +567,42 @@ export default function DoctorDetail({}: Props) {
                               {expert?.expert_about_me}
                             </p>
                           </div>
-                          <div className="flex w-full flex-col items-start justify-center gap-4 py-10">
+                          <div className="flex w-full flex-col items-start justify-center gap-4 py-5">
                             <div className="flex items-center justify-center gap-2">
-                              <GoPerson className="text-lg text-color-main" />
+                              <IoMdSchool className="text-lg text-color-main" />
+                              <h1 className="text-sm font-bold text-color-dark-primary opacity-80">
+                                Eğitim Geçmişim
+                              </h1>
+                            </div>
+                            <p className="text-base text-color-dark-primary opacity-50">
+                              {expert?.expert_training}
+                            </p>
+                          </div>
+                          <div className="flex w-full flex-col items-start justify-center gap-4 py-5">
+                            <div className="flex items-center justify-center gap-2">
+                              <MdWork className="text-lg text-color-main" />
+                              <h1 className="text-sm font-bold text-color-dark-primary opacity-80">
+                                Tecrübelerim
+                              </h1>
+                            </div>
+                            <p className="text-base text-color-dark-primary opacity-50">
+                              {expert?.expert_experience}
+                            </p>
+                          </div>
+                          <div className="flex w-full flex-col items-start justify-center gap-4 py-5">
+                            <div className="flex items-center justify-center gap-2">
+                              <IoMdInformationCircle className="text-lg text-color-main" />
+                              <h1 className="text-sm font-bold text-color-dark-primary opacity-80">
+                                Ekstra Bilgi
+                              </h1>
+                            </div>
+                            <p className="text-base text-color-dark-primary opacity-50">
+                              {expert?.expert_additional_information}
+                            </p>
+                          </div>
+                          <div className="flex w-full flex-col items-start justify-center gap-4 py-5">
+                            <div className="flex items-center justify-center gap-2">
+                              <IoShareSocialSharp className="text-lg text-color-main" />
                               <h1 className="text-sm font-bold text-color-dark-primary opacity-80">
                                 Sosyal Medyalar
                               </h1>

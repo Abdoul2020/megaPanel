@@ -42,6 +42,9 @@ export default function DashboardSettingsHomeExpert({}: Props) {
   const [companyObject, setCompanyObject] = useState<Firm | undefined>(
     undefined
   );
+  const [experience, setExperience] = useState("");
+  const [training, setTraining] = useState("");
+  const [additionalInformation, setAdditionalInformation] = useState("");
   const [expertise, setExpertise] = useState<Expertise | undefined>(undefined);
   const [title, setTitle] = useState<Title | undefined>(undefined);
   const [operatingType, setOperatingType] = useState(1);
@@ -113,6 +116,18 @@ export default function DashboardSettingsHomeExpert({}: Props) {
     setCurrentBranches((oldArray) =>
       oldArray.filter((branch) => branch._id !== id)
     );
+  };
+  const handleExperienceChange = (e: any) => {
+    const value = e.target.value;
+    setExperience(value);
+  };
+  const handleAdditionalInformationChange = (e: any) => {
+    const value = e.target.value;
+    setAdditionalInformation(value);
+  };
+  const handleTrainingChange = (e: any) => {
+    const value = e.target.value;
+    setTraining(value);
   };
   const onBranchChange = (e: any) => {
     const valueRaw = e.target.value;
@@ -283,6 +298,9 @@ export default function DashboardSettingsHomeExpert({}: Props) {
       expert_about_me: aboutMe,
       expert_city_location: city,
       expert_socials: socials,
+      expert_training: training,
+      expert_additional_information: additionalInformation,
+      expert_experience: experience,
     };
     const token = getCookie("m_e_t");
     setLoader(true);
@@ -415,6 +433,21 @@ export default function DashboardSettingsHomeExpert({}: Props) {
       authExpertObject && authExpertObject?.expert_socials
         ? authExpertObject.expert_socials
         : []
+    );
+    setExperience(
+      authExpertObject && authExpertObject?.expert_experience
+        ? authExpertObject.expert_experience
+        : ""
+    );
+    setAdditionalInformation(
+      authExpertObject && authExpertObject?.expert_additional_information
+        ? authExpertObject.expert_additional_information
+        : ""
+    );
+    setTraining(
+      authExpertObject && authExpertObject?.expert_training
+        ? authExpertObject.expert_training
+        : ""
     );
     if (
       authExpertObject &&
@@ -869,6 +902,63 @@ export default function DashboardSettingsHomeExpert({}: Props) {
                 text-[16px] font-medium outline-none transition-all duration-300 focus:border-color-main"
                   />
                 </div>
+                <div className="flex w-full flex-col items-start justify-center gap-1">
+                  <label
+                    htmlFor="extraInformation"
+                    className="font-bold text-color-dark-primary opacity-50"
+                  >
+                    Ekstra Bilgi(*)
+                  </label>
+                  <textarea
+                    onChange={handleAdditionalInformationChange}
+                    value={additionalInformation}
+                    rows={4}
+                    cols={50}
+                    name="extraInformation"
+                    id="extraInformation"
+                    placeholder="Ekstra Bilgi"
+                    className="w-full rounded-[20px] border-[1px] border-color-dark-primary border-opacity-10 bg-color-white-third py-[15px] px-[22px]
+                text-[16px] font-medium outline-none transition-all duration-300 focus:border-color-main"
+                  />
+                </div>
+                <div className="flex w-full flex-col items-start justify-center gap-1">
+                  <label
+                    htmlFor="training"
+                    className="font-bold text-color-dark-primary opacity-50"
+                  >
+                    Eğitim Geçmişi(*)
+                  </label>
+                  <textarea
+                    onChange={handleTrainingChange}
+                    value={training}
+                    rows={4}
+                    cols={50}
+                    name="training"
+                    id="training"
+                    placeholder="Eğitim Geçmişi"
+                    className="w-full rounded-[20px] border-[1px] border-color-dark-primary border-opacity-10 bg-color-white-third py-[15px] px-[22px]
+                text-[16px] font-medium outline-none transition-all duration-300 focus:border-color-main"
+                  />
+                </div>
+                <div className="flex w-full flex-col items-start justify-center gap-1">
+                  <label
+                    htmlFor="aboutMe"
+                    className="font-bold text-color-dark-primary opacity-50"
+                  >
+                    Tecrübeler(*)
+                  </label>
+                  <textarea
+                    onChange={handleExperienceChange}
+                    value={experience}
+                    rows={4}
+                    cols={50}
+                    name="experience"
+                    id="experience"
+                    placeholder="Tecrübeler"
+                    className="w-full rounded-[20px] border-[1px] border-color-dark-primary border-opacity-10 bg-color-white-third py-[15px] px-[22px]
+                text-[16px] font-medium outline-none transition-all duration-300 focus:border-color-main"
+                  />
+                </div>
                 <div className="flex items-end justify-center gap-4">
                   <div className="flex w-full flex-col items-start justify-start gap-1">
                     <label
@@ -1009,7 +1099,7 @@ export default function DashboardSettingsHomeExpert({}: Props) {
                             transition-all duration-300 hover:bg-color-main"
                             onClick={() => handleRemoveSocial(Social)}
                           >
-                            <div className="flex justify-center items-center gap-2">
+                            <div className="flex items-center justify-center gap-2">
                               <SocialIcon
                                 url={`${Social}`}
                                 className="h-[20px]"
