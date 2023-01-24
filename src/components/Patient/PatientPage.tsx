@@ -23,6 +23,7 @@ import SearchPage from "./SearchPage/SearchPage";
 import Drawer from "@mui/material/Drawer";
 import HeaderExpertMobileNavbar from "../Doctor/HeaderExpertMobileNavbar/HeaderExpertMobileNavbar";
 import HeaderPatientMobileNavbar from "./HeaderPatientMobileNavbar/HeaderPatientMobileNavbar";
+import NotFoundPage from "./NotFoundPage/NotFoundPage";
 
 type Props = {
   doctors: Doctor[];
@@ -62,6 +63,7 @@ export default function PatientPage(props: Props) {
         />
         <Route path="/checkout" element={<Checkout />} />
         <Route path="/doctors/:id" element={<DoctorDetail />} />
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
       <Footer />
       <Drawer

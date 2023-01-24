@@ -39,8 +39,9 @@ import { fetchFirms } from "./features/firms/firmsAPI";
 import { addFirms } from "./features/firms/firmsSlice";
 import { Doctor } from "./common/types/Doctor.entity";
 import { Branch } from "./common/types/Branch.entity";
-import "slick-carousel/slick/slick.css"; 
+import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import NotFoundPage from "./components/Common/NotFoundPage/NotFoundPage";
 
 function App() {
   const appRef = useRef<HTMLInputElement>(null);
@@ -127,11 +128,6 @@ function App() {
         size: 10,
         sort: "ASC",
         sort_by: "expert_name",
-        query_text: "",
-        count: false,
-        city: "",
-        operating_type: 1,
-        location: "",
       };
       const fetchExpertsResponse = await fetchExperts(query);
       const fetchBranchesResponse = await fetchBranches();
@@ -156,6 +152,7 @@ function App() {
         const statusCodeExperts = fetchExpertsResponse.data.status;
         const data = fetchExpertsResponse.data.data;
         setExperts(data);
+        console.log({ data });
         // dispatch(addExperts(data));
       } else {
         // console.log(fetchExpertsResponse);
@@ -215,7 +212,7 @@ function App() {
           <Route
             path="/for-doctors/*"
             element={<DoctorPage doctors={experts} />}
-          />{" "}
+          />
           <Route
             path="/for-doctors/dashboard/*"
             element={
@@ -224,6 +221,7 @@ function App() {
               </ProtectedRouteExpert>
             }
           />
+          <Route path="*" element={<NotFoundPage />} />
         </Routes>
         <div
           className={`fixed bottom-10 right-12 z-50 rounded-lg bg-color-main p-4 shadow-lg transition-all duration-300 hover:cursor-pointer hover:opacity-80 ${

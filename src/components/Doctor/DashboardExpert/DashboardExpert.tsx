@@ -13,6 +13,7 @@ import { useAppSelector } from "../../../app/hooks";
 import { updateHeaderMobileExpertDashboard } from "../../../features/options/optionsSlice";
 import { useDispatch } from "react-redux";
 import DashboardHeaderExpertMobileNavbar from "./DashboardHeaderExpertMobileNavbar/DashboardHeaderExpertMobileNavbar";
+import DashboardNotFoundPageExpert from "./DashboardNotFoundPageExpert/DashboardNotFoundPageExpert";
 
 type Props = {};
 
@@ -45,6 +46,7 @@ export default function DashboardExpert({}: Props) {
             element={<DashboardCertificatesExpert />}
           />
           <Route path="/settings/*" element={<DashboardSettingsExpert />} />
+          <Route path="*" element={<DashboardNotFoundPageExpert />} />
         </Routes>
       </div>
       <Drawer

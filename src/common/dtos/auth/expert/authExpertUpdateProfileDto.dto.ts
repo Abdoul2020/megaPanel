@@ -18,4 +18,5 @@ export interface AuthExpertUpdateProfileDto {
   expert_session_fee?: string;
   expert_tel?: string;
   expert_about_me?: string;
+  expert_socials?:String[]
 }

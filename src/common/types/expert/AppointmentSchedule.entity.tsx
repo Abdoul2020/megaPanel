@@ -17,4 +17,5 @@ export type AppointmentSchedule = {
   appointment_break_start_minute?: any;
   appointment_break_end_hour?: any;
   appointment_break_end_minute?: any;
+  appointment_between_appointments_break?:number;
 };

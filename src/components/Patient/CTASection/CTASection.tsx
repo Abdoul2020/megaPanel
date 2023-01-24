@@ -9,16 +9,16 @@ export default function CTASection({}: Props) {
   return (
     <div className="flex w-full items-center justify-center bg-color-white-secondary py-10 px-10 lg:px-0">
       <div className="flex md:grid w-full lg:w-2/3 grid-cols-2 rounded-[30px] bg-color-main px-10">
-        <div className="relative flex items-center justify-center overflow-hidden">
-          <div className="md:flex hidden h-full w-full items-center justify-center">
+        <div className="relative flex items-center justify-center">
+          <div className="absolute left-0 bottom-0 md:flex hidden h-full w-full items-center justify-center">
             <img
-              src={require("../../../assets/images/dunya.png")}
+              src={require("../../../assets/images/megaverse_nedir.png")}
               alt=""
               className="max-w-[80%]"
             />
           </div>
         </div>
-        <div className="flex flex-col items-start justify-center gap-10 py-10">
+        <div className="flex flex-col items-start justify-center gap-10 py-16">
           <div className="flex flex-col items-start justify-center gap-4">
             <div className="flex flex-col items-start justify-center">
               <h1 className="text-3xl font-bold text-color-white-secondary">

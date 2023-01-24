@@ -22,6 +22,7 @@ import { MdModeEdit } from "react-icons/md";
 import { BsFillPersonFill } from "react-icons/bs";
 import { Firm } from "../../../../../common/types/Firm.entity";
 import { unauthenticate } from "../../../../../helpers/authHelper";
+import { SocialIcon } from "react-social-icons";
 
 type Props = {};
 
@@ -36,6 +37,7 @@ export default function DashboardSettingsHomeExpert({}: Props) {
   const [tel, setTel] = useState("");
   const [physicalLocation, setPhysicalLocation] = useState("");
   const [sessionFee, setSessionFee] = useState("");
+  const [socials, setSocials] = useState<String[]>();
   const [currentBranches, setCurrentBranches] = useState<Branch[] | []>([]);
   const [companyObject, setCompanyObject] = useState<Firm | undefined>(
     undefined
@@ -47,6 +49,8 @@ export default function DashboardSettingsHomeExpert({}: Props) {
   const [file, setFile] = useState<File | null>(null);
   const [profileImageBase64, setProfileImageBase64] = useState(null);
   const [profileImageLoader, setProfileImageLoader] = useState(false);
+
+  const [social, setSocial] = useState("");
 
   const [branchDropdownOpen, setBranchDropdownOpen] = useState(false);
   const [expertiseDropdownOpen, setExpertiseDropdownOpen] = useState(false);
@@ -165,6 +169,19 @@ export default function DashboardSettingsHomeExpert({}: Props) {
     setCity(value);
   };
 
+  const handleSocialChange = (e: any) => {
+    const value = e.target.value;
+    setSocial(value);
+  };
+
+  const handleAddSocial = () => {
+    setSocials((oldArray: any) => [...oldArray, social]);
+  };
+
+  const handleRemoveSocial = (Social: any) => {
+    setSocials((oldArray: any) => oldArray?.filter((el: any) => el !== Social));
+  };
+
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
       const theFile = e.target.files[0];
@@ -265,6 +282,7 @@ export default function DashboardSettingsHomeExpert({}: Props) {
       expert_operating_type: operatingType,
       expert_about_me: aboutMe,
       expert_city_location: city,
+      expert_socials: socials,
     };
     const token = getCookie("m_e_t");
     setLoader(true);
@@ -393,6 +411,11 @@ export default function DashboardSettingsHomeExpert({}: Props) {
         ? authExpertObject?.expert_branch
         : []
     );
+    setSocials(
+      authExpertObject && authExpertObject?.expert_socials
+        ? authExpertObject.expert_socials
+        : []
+    );
     if (
       authExpertObject &&
       authExpertObject?.expert_avatar_path !== "" &&
@@ -446,8 +469,8 @@ export default function DashboardSettingsHomeExpert({}: Props) {
             onSubmit={handleSubmit}
             className="flex w-full flex-col items-start justify-start"
           >
-            <div className="flex flex-col justify-start items-start xl:grid w-full grid-cols-2 gap-10">
-              <div className="flex flex-col justify-center items-center md:grid grid-cols-2 gap-4">
+            <div className="flex w-full grid-cols-2 flex-col items-start justify-start gap-10 xl:grid">
+              <div className="flex grid-cols-2 flex-col items-center justify-center gap-4 md:grid">
                 <div className="flex w-full flex-col items-start justify-start gap-1">
                   <label
                     htmlFor="name"
@@ -846,10 +869,38 @@ export default function DashboardSettingsHomeExpert({}: Props) {
                 text-[16px] font-medium outline-none transition-all duration-300 focus:border-color-main"
                   />
                 </div>
+                <div className="flex items-end justify-center gap-4">
+                  <div className="flex w-full flex-col items-start justify-start gap-1">
+                    <label
+                      htmlFor="social"
+                      className="font-bold text-color-dark-primary opacity-50"
+                    >
+                      Sosyal Medya
+                    </label>
+                    <input
+                      onChange={handleSocialChange}
+                      value={social}
+                      type="text"
+                      name="social"
+                      id="social"
+                      placeholder="Sosyal Medya"
+                      className="w-full rounded-[20px] border-[1px] border-color-dark-primary border-opacity-10 bg-color-white-third py-[15px] px-[22px]
+                text-[16px] font-medium outline-none transition-all duration-300 focus:border-color-main"
+                    />
+                  </div>
+                  <button
+                    type="button"
+                    onClick={handleAddSocial}
+                    className="flex items-center justify-center rounded-[10px] bg-color-secondary p-4 transition-all 
+                duration-300 hover:bg-opacity-80"
+                  >
+                    <h1 className="text-sm font-bold text-color-white">Ekle</h1>
+                  </button>
+                </div>
               </div>
 
               <div className="flex w-full flex-col items-start justify-start gap-4">
-                <div className="flex flex-col md:flex-row w-full items-start justify-start gap-10">
+                <div className="flex w-full flex-col items-start justify-start gap-10 md:flex-row">
                   <div className="relative h-[200px] min-w-[200px] rounded-[20px]">
                     {profileImageBase64 ? (
                       <img
@@ -936,6 +987,42 @@ export default function DashboardSettingsHomeExpert({}: Props) {
                               {branch.branch_title}
                             </h1>
                             <AiOutlineCloseCircle className="text-color-dark-primary transition-all duration-300 group-hover:text-color-white" />
+                          </li>
+                        );
+                      })}
+                    </ul>
+                  )}
+                </div>
+                <div className="flex flex-col items-start justify-start gap-2">
+                  <h1 className="font-bold text-color-dark-primary opacity-50">
+                    Sosyal Medyalarım
+                  </h1>
+                  {socials?.length === 0 ? (
+                    <h1>Henüz bir şey yok.</h1>
+                  ) : (
+                    <ul className="flex max-w-[450px] flex-wrap items-start justify-start gap-2">
+                      {socials?.map((Social) => {
+                        return (
+                          <li
+                            className="group flex cursor-pointer items-center justify-center gap-4 rounded-[15px]
+                            bg-color-gray-primary p-2 px-6
+                            transition-all duration-300 hover:bg-color-main"
+                            onClick={() => handleRemoveSocial(Social)}
+                          >
+                            <div className="flex justify-center items-center gap-2">
+                              <SocialIcon
+                                url={`${Social}`}
+                                className="h-[20px]"
+                              />
+                              <h1
+                                className="text-sm font-bold 
+                                    text-color-dark-primary text-opacity-80
+                                  transition-all duration-300 group-hover:text-color-white"
+                              >
+                                {Social}
+                              </h1>
+                            </div>
+                            <AiOutlineCloseCircle className="text-[24px] text-color-dark-primary transition-all duration-300 group-hover:text-color-white" />
                           </li>
                         );
                       })}

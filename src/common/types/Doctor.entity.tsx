@@ -27,4 +27,5 @@ export type Doctor = {
   expert_about_me: string;
   expert_avatar_path: string;
   expert_certificates: Certificate[];
+  expert_socials: String[];
 };

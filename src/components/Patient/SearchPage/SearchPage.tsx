@@ -318,17 +318,21 @@ export default function SearchPage(props: Props) {
       <div className="flex w-full items-end justify-center bg-color-white-secondary">
         <div className="flex w-full flex-col items-center justify-center lg:w-2/3">
           <div className="w-full flex-col items-center justify-between gap-10 p-4">
-            <div className="w-full">
+            <div className="flex w-full items-center justify-center">
               <form
-                className="flex w-full items-center justify-between gap-2 overflow-hidden rounded-[20px] bg-color-white py-1 pr-1"
+                className="flex w-full items-center justify-between gap-2 overflow-hidden rounded-[20px] bg-color-white py-1 pr-1 lg:w-2/3"
                 onSubmit={handleSubmit}
               >
                 {city !== "" ? (
                   <div
-                    className={`cursor-pointer ${
-                      online ? "hidden" : "flex"
-                    } ml-2 h-full w-[150px] items-center justify-between rounded-[20px] bg-color-main p-4 
-                    opacity-80 transition-all duration-500 hover:opacity-100`}
+                    className={`${
+                      online
+                        ? "ml-0 hidden -translate-x-full"
+                        : "block translate-x-0"
+                    } ml-2 h-full rounded-[20px] bg-color-main 
+                    p-4 px-2
+                    opacity-80 
+                  transition-all duration-500 hover:opacity-100`}
                     onClick={handleCityRemove}
                   >
                     <h1 className="text-lg text-color-white">{city}</h1>
@@ -375,14 +379,14 @@ export default function SearchPage(props: Props) {
                   type="text"
                   name="search"
                   id="search"
-                  className="max-w-[600px] bg-color-white py-2 pl-4 text-sm tracking-wide opacity-80 outline-none lg:text-base"
+                  className="w-full bg-color-white py-2 pl-4 text-sm tracking-wide opacity-80 outline-none lg:text-base"
                   placeholder="Uzman veya branş arayın..."
                 />
                 <button
                   type="submit"
                   className="flex h-[64px] items-center justify-center gap-4 rounded-[20px] bg-color-main py-4 px-6 opacity-80 transition-all duration-500 hover:opacity-100"
                 >
-                  <h1 className="font-bold text-color-white">ara</h1>
+                  <h1 className="text-sm font-bold text-color-white lg:text-sm">ara</h1>
                   <FiSearch className="text-xl font-bold text-color-white" />
                 </button>
               </form>

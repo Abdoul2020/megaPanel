@@ -37,11 +37,11 @@ export default function DashboardAppointmentsChartExpert({}: Props) {
   const [appointmentCondition, setAppointmentCondition] = useState(1);
 
   // Appointment Duration
-  const [appointmentDuration, setAppointmentDuration] = useState(10);
+  const [appointmentDuration, setAppointmentDuration] = useState(60);
   const [
     specialConditionAppointmentDuration,
     setSpecialConditionAppointmentDuration,
-  ] = useState(10);
+  ] = useState(60);
 
   // Between appointments break
   const [betweenAppointmentsBreak, setBetweenAppointmentsBreak] = useState(5);
@@ -103,6 +103,14 @@ export default function DashboardAppointmentsChartExpert({}: Props) {
     //   shiftBreakStartHour + ":" + shiftBreakStartMinute;
     // const shiftBreakEndTime = shiftBreakEndHour + ":" + shiftBreakEndMinute;
   };
+  const onBetweenAppointmentsBreakChange = (e: any) => {
+    const value = parseInt(e.target.value);
+    setBetweenAppointmentsBreak(value);
+  };
+  const onBetweenSpecialConditionAppointmentsBreakChange = (e: any) => {
+    const value = parseInt(e.target.value);
+    setBetweenSpecialConditionAppointmentsBreak(value);
+  };
   const onSpecialConditionAppointmentDurationChange = (e: any) => {
     const value = parseInt(e.target.value);
     setSpecialConditionAppointmentDuration(value);
@@ -125,27 +133,42 @@ export default function DashboardAppointmentsChartExpert({}: Props) {
       setSpecialConditionShiftDays((oldArray) => [...oldArray, day]);
     }
   };
-  const handleAddSpecialConditionStartTime = (day: string) => {
+  const handleAddSpecialConditionStartTime = async (day: string) => {
     const specialConditionDay: SpecialConditionDay = {
       day: day,
       hour: specialConditionShiftStartHour,
       minute: specialConditionShiftStartMinute,
     };
-    setSpecialConditionShiftDaysWithTime((oldArray) => [
-      ...oldArray,
-      specialConditionDay,
-    ]);
+    const newArray = specialConditionShiftDaysWithTime;
+    const valDate = await newArray.filter((date) => {
+      return (
+        date.day === specialConditionDay.day &&
+        parseInt(date.hour) * 60 +
+          parseInt(date.minute) +
+          specialConditionAppointmentDuration +
+          betweenSpecialConditionAppointmentsBreak >
+          parseInt(specialConditionDay.hour) * 60 +
+            parseInt(specialConditionDay.minute)
+      );
+    });
+    if (valDate.length === 0) {
+      setSpecialConditionShiftDaysWithTime((oldArray) => [
+        ...oldArray,
+        specialConditionDay,
+      ]);
+    } else {
+      const alert: Alert = {
+        type: "danger",
+        text: "Randevu ve mola sürelerini dikkate alınız.",
+        active: true,
+        statusCode: 400,
+      };
+      dispatch(updateAlert(alert));
+    }
   };
   const handleRemoveSpecialConditionTime = async (
     specialConditionDay: SpecialConditionDay
   ) => {
-    const newArray = specialConditionShiftDaysWithTime;
-    const val = await newArray.filter((date) => {
-      return (
-        `${date.day} ${date.hour} ${date.minute}` !==
-        `${specialConditionDay.day} ${specialConditionDay.hour} ${specialConditionDay.minute}`
-      );
-    });
     setSpecialConditionShiftDaysWithTime((oldArray) => {
       return oldArray.filter((date) => {
         return (
@@ -219,6 +242,7 @@ export default function DashboardAppointmentsChartExpert({}: Props) {
       appointment_break_start_minute: shiftBreakStartMinute,
       appointment_break_end_hour: shiftBreakEndHour,
       appointment_break_end_minute: shiftBreakEndMinute,
+      appointment_between_appointments_break: betweenAppointmentsBreak,
     };
     if (hasBreak) {
       shiftDays.forEach((day) => {
@@ -341,6 +365,8 @@ export default function DashboardAppointmentsChartExpert({}: Props) {
       appointment_schedule_type: 2,
       appointment_has_break: false,
       appointment_duration: specialConditionAppointmentDuration,
+      appointment_between_appointments_break:
+        betweenSpecialConditionAppointmentsBreak,
     };
     let monday: string[] = [];
     let tuesday: string[] = [];
@@ -483,9 +509,8 @@ export default function DashboardAppointmentsChartExpert({}: Props) {
       )}:${ifLessThanTen(new Date(dateXTime).getMinutes())}`;
       finalArray.push(theTime);
       dateXTime += appointmentDuration * 10 * 60 * 100;
-      dateXTime += betweenAppointmentsBreak;
+      dateXTime += betweenAppointmentsBreak * 1000 * 60;
     }
-
     return finalArray;
   };
   const ItHasBreak = (
@@ -550,7 +575,7 @@ export default function DashboardAppointmentsChartExpert({}: Props) {
       )}:${ifLessThanTen(new Date(dateXTime).getMinutes())}`;
       beforeBreak.push(theTime);
       dateXTime += appointmentDuration * 10 * 60 * 100;
-      dateXTime += betweenAppointmentsBreak;
+      dateXTime += betweenAppointmentsBreak * 1000 * 60;
     }
 
     while (dateTTime <= dateYTime - appointmentDuration * 60000) {
@@ -559,7 +584,7 @@ export default function DashboardAppointmentsChartExpert({}: Props) {
       )}:${ifLessThanTen(new Date(dateTTime).getMinutes())}`;
       afterBreak.push(theTime);
       dateTTime += appointmentDuration * 10 * 60 * 100;
-      dateXTime += betweenAppointmentsBreak;
+      dateXTime += betweenAppointmentsBreak * 1000 * 60;
     }
     let finalArray: string[] = beforeBreak.concat(afterBreak);
     return finalArray;
@@ -579,6 +604,13 @@ export default function DashboardAppointmentsChartExpert({}: Props) {
       authExpertObject?.expert_appointment_schedule
         .appointment_schedule_type === 1
     ) {
+      setBetweenAppointmentsBreak(
+        authExpertObject.expert_appointment_schedule
+          .appointment_between_appointments_break
+          ? authExpertObject.expert_appointment_schedule
+              .appointment_between_appointments_break
+          : 5
+      );
       setAppointmentCondition(1);
       setHasBreak(
         authExpertObject.expert_appointment_schedule.appointment_has_break
@@ -586,7 +618,7 @@ export default function DashboardAppointmentsChartExpert({}: Props) {
       setAppointmentDuration(
         authExpertObject.expert_appointment_schedule.appointment_duration
           ? authExpertObject.expert_appointment_schedule.appointment_duration
-          : 10
+          : 60
       );
       setShiftBreakStartHour(
         authExpertObject.expert_appointment_schedule
@@ -789,10 +821,17 @@ export default function DashboardAppointmentsChartExpert({}: Props) {
       authExpertObject?.expert_appointment_schedule
         .appointment_schedule_type === 2
     ) {
+      setBetweenSpecialConditionAppointmentsBreak(
+        authExpertObject.expert_appointment_schedule
+          .appointment_between_appointments_break
+          ? authExpertObject.expert_appointment_schedule
+              .appointment_between_appointments_break
+          : 5
+      );
       setSpecialConditionAppointmentDuration(
         authExpertObject.expert_appointment_schedule.appointment_duration
           ? authExpertObject.expert_appointment_schedule.appointment_duration
-          : 10
+          : 60
       );
       setAppointmentCondition(2);
       setSpecialConditionShiftDays([]);
@@ -2430,10 +2469,11 @@ export default function DashboardAppointmentsChartExpert({}: Props) {
                 >
                   <div className="flex flex-col items-start justify-start gap-1">
                     <h1 className="font-bold text-color-dark-primary">
-                      Randevu Süresini Belirle
+                      Kısa Mola Süresini Belirle
                     </h1>
                     <p className="text-color-dark-primary text-opacity-50">
-                      Bir randevu için ayrılacak süreyi belirleyiniz. (gerekli)
+                      Randevular arası mola için ayrılacak süreyi belirleyiniz.
+                      (gerekli)
                     </p>
                   </div>
                   <div
@@ -2444,43 +2484,43 @@ export default function DashboardAppointmentsChartExpert({}: Props) {
                       name=""
                       id=""
                       className="w-full text-lg text-opacity-50 outline-none"
-                      onChange={onAppointmentDurationChange}
+                      onChange={onBetweenAppointmentsBreakChange}
                     >
-                      <option value="10" selected={appointmentDuration === 10}>
-                        10 Dakika
-                      </option>
-                      <option value="15" selected={appointmentDuration === 15}>
-                        15 Dakika
-                      </option>
-                      <option value="20" selected={appointmentDuration === 20}>
-                        20 Dakika
-                      </option>
-                      <option value="25" selected={appointmentDuration === 25}>
-                        25 Dakika
-                      </option>
-                      <option value="30" selected={appointmentDuration === 30}>
-                        30 Dakika
-                      </option>
-                      <option value="35" selected={appointmentDuration === 35}>
-                        35 Dakika
-                      </option>
-                      <option value="40" selected={appointmentDuration === 40}>
-                        40 Dakika
-                      </option>
-                      <option value="50" selected={appointmentDuration === 50}>
-                        50 Dakika
-                      </option>
-                      <option value="60" selected={appointmentDuration === 60}>
-                        60 Dakika
-                      </option>
-                      <option value="90" selected={appointmentDuration === 90}>
-                        90 Dakika
+                      <option
+                        value="5"
+                        selected={betweenAppointmentsBreak === 5}
+                      >
+                        5 Dakika
                       </option>
                       <option
-                        value="120"
-                        selected={appointmentDuration === 120}
+                        value="10"
+                        selected={betweenAppointmentsBreak === 10}
                       >
-                        120 Dakika
+                        10 Dakika
+                      </option>
+                      <option
+                        value="15"
+                        selected={betweenAppointmentsBreak === 15}
+                      >
+                        15 Dakika
+                      </option>
+                      <option
+                        value="20"
+                        selected={betweenAppointmentsBreak === 20}
+                      >
+                        20 Dakika
+                      </option>
+                      <option
+                        value="25"
+                        selected={betweenAppointmentsBreak === 25}
+                      >
+                        25 Dakika
+                      </option>
+                      <option
+                        value="30"
+                        selected={betweenAppointmentsBreak === 30}
+                      >
+                        30 Dakika
                       </option>
                     </select>
                   </div>
@@ -2491,10 +2531,10 @@ export default function DashboardAppointmentsChartExpert({}: Props) {
                 >
                   <div className="flex flex-col items-start justify-start gap-1">
                     <h1 className="font-bold text-color-dark-primary">
-                      Kısa Mola Saatlerini Belirle
+                      Randevu Süresini Belirle
                     </h1>
                     <p className="text-color-dark-primary text-opacity-50">
-                      Randevular arası mola için ayrılacak süreyi belirleyiniz. (gerekli)
+                      Bir randevu için ayrılacak süreyi belirleyiniz. (gerekli)
                     </p>
                   </div>
                   <div
@@ -2574,41 +2614,117 @@ export default function DashboardAppointmentsChartExpert({}: Props) {
                       className="w-full text-lg text-opacity-50 outline-none"
                       onChange={onSpecialConditionAppointmentDurationChange}
                     >
-                      <option value="10" selected={appointmentDuration === 10}>
+                      <option value="10" selected={specialConditionAppointmentDuration === 10}>
                         10 Dakika
                       </option>
-                      <option value="15" selected={appointmentDuration === 15}>
+                      <option value="15" selected={specialConditionAppointmentDuration === 15}>
                         15 Dakika
                       </option>
-                      <option value="20" selected={appointmentDuration === 20}>
+                      <option value="20" selected={specialConditionAppointmentDuration === 20}>
                         20 Dakika
                       </option>
-                      <option value="25" selected={appointmentDuration === 25}>
+                      <option value="25" selected={specialConditionAppointmentDuration === 25}>
                         25 Dakika
                       </option>
-                      <option value="30" selected={appointmentDuration === 30}>
+                      <option value="30" selected={specialConditionAppointmentDuration === 30}>
                         30 Dakika
                       </option>
-                      <option value="35" selected={appointmentDuration === 35}>
+                      <option value="35" selected={specialConditionAppointmentDuration === 35}>
                         35 Dakika
                       </option>
-                      <option value="40" selected={appointmentDuration === 40}>
+                      <option value="40" selected={specialConditionAppointmentDuration === 40}>
                         40 Dakika
                       </option>
-                      <option value="50" selected={appointmentDuration === 50}>
+                      <option value="50" selected={specialConditionAppointmentDuration === 50}>
                         50 Dakika
                       </option>
-                      <option value="60" selected={appointmentDuration === 60}>
+                      <option value="60" selected={specialConditionAppointmentDuration === 60}>
                         60 Dakika
                       </option>
-                      <option value="90" selected={appointmentDuration === 90}>
+                      <option value="90" selected={specialConditionAppointmentDuration === 90}>
                         90 Dakika
                       </option>
                       <option
                         value="120"
-                        selected={appointmentDuration === 120}
+                        selected={specialConditionAppointmentDuration === 120}
                       >
                         120 Dakika
+                      </option>
+                    </select>
+                  </div>
+                </div>
+                <div
+                  className="flex w-full flex-col items-start justify-start gap-10 border-t-[1px] border-solid border-color-dark-primary border-opacity-10 
+      py-5"
+                >
+                  <div className="flex flex-col items-start justify-start gap-1">
+                    <h1 className="font-bold text-color-dark-primary">
+                      Kısa Mola Süresini Belirle
+                    </h1>
+                    <p className="text-color-dark-primary text-opacity-50">
+                      Randevular arası mola için ayrılacak süreyi belirleyiniz.
+                      (gerekli)
+                    </p>
+                  </div>
+                  <div
+                    className="min-w-4 border-[2px] border-solid border-color-dark-primary border-opacity-20 
+        py-2"
+                  >
+                    <select
+                      name=""
+                      id=""
+                      className="w-full text-lg text-opacity-50 outline-none"
+                      onChange={
+                        onBetweenSpecialConditionAppointmentsBreakChange
+                      }
+                    >
+                      <option
+                        value="5"
+                        selected={
+                          betweenSpecialConditionAppointmentsBreak === 5
+                        }
+                      >
+                        5 Dakika
+                      </option>
+                      <option
+                        value="10"
+                        selected={
+                          betweenSpecialConditionAppointmentsBreak === 10
+                        }
+                      >
+                        10 Dakika
+                      </option>
+                      <option
+                        value="15"
+                        selected={
+                          betweenSpecialConditionAppointmentsBreak === 15
+                        }
+                      >
+                        15 Dakika
+                      </option>
+                      <option
+                        value="20"
+                        selected={
+                          betweenSpecialConditionAppointmentsBreak === 20
+                        }
+                      >
+                        20 Dakika
+                      </option>
+                      <option
+                        value="25"
+                        selected={
+                          betweenSpecialConditionAppointmentsBreak === 25
+                        }
+                      >
+                        25 Dakika
+                      </option>
+                      <option
+                        value="30"
+                        selected={
+                          betweenSpecialConditionAppointmentsBreak === 30
+                        }
+                      >
+                        30 Dakika
                       </option>
                     </select>
                   </div>
@@ -2765,6 +2881,7 @@ export default function DashboardAppointmentsChartExpert({}: Props) {
               </div>
             )}
           </div>
+
           {appointmentCondition === 1 ? (
             <motion.div
               initial={{ opacity: 0.5 }}

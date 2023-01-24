@@ -18,6 +18,7 @@ import Register from "./Register/Register";
 import ResetPassword from "./ResetPassword/ResetPassword";
 import Drawer from "@mui/material/Drawer";
 import HeaderExpertMobileNavbar from "./HeaderExpertMobileNavbar/HeaderExpertMobileNavbar";
+import NotFoundPage from "./NotFoundPage/NotFoundPage";
 
 type Props = {
   doctors: Doctor[];
@@ -47,6 +48,7 @@ export default function DoctorPage(props: Props) {
         <Route path="/login" element={<Login />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/reset-password" element={<ResetPassword />} />
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
       <Footer />
       <Drawer

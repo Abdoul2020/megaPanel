@@ -7,11 +7,6 @@ const generalQuery = {
   size: 10,
   sort: "ASC",
   sort_by: "expert_name",
-  count: false,
-  query_text: "",
-  city: "",
-  operating_type: 2,
-  location: "",
 };
 
 export const fetchExperts = async (query?: ExpertFilterDto) => {

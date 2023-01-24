@@ -10,6 +10,7 @@ import { useDispatch } from "react-redux";
 import { useAppSelector } from "../../../app/hooks";
 import { updateHeaderMobilePatientDashboard } from "../../../features/options/optionsSlice";
 import DashboardHeaderPatientMobileNavbar from "./DashboardHeaderPatientMobileNavbar/DashboardHeaderPatientMobileNavbar";
+import DashboardNotFoundPagePatient from "./DashboardNotFoundPagePatient/DashboardNotFoundPagePatient";
 
 type Props = {};
 
@@ -30,6 +31,7 @@ export default function Dashboard({}: Props) {
             element={<DashboardAppointmentsPatient />}
           />
           <Route path="/settings/*" element={<DashboardSettingsPatient />} />
+        <Route path="*" element={<DashboardNotFoundPagePatient />} />
         </Routes>
       </div>
       <Drawer
