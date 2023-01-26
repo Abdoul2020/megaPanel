@@ -1,40 +1,12 @@
-import React, { useEffect, useRef, useState } from "react";
-import BranchCard from "../BranchCard/BranchCard";
-import { BsArrowRight, BsArrowLeft } from "react-icons/bs";
-import { motion } from "framer-motion";
-import { Branch } from "../../../common/types/Branch.entity";
+import { useEffect, useRef, useState } from "react";
 import Slider from "react-slick";
+import { Branch } from "../../../common/types/Branch.entity";
 
 type Props = {
   branches: Branch[];
 };
 
 export default function BranchSection(props: Props) {
-  const [width, setWidth] = useState(0);
-
-  const carousel = useRef<HTMLInputElement>(null);
-  const scrolledRef = useRef<HTMLInputElement>(null);
-
-  useEffect(() => {
-    const total =
-      (carousel.current?.scrollWidth || 1) -
-      (carousel.current?.offsetWidth || 1);
-    setWidth(total);
-  }, []);
-
-  function SamplePrevArrow(props: any) {
-    const { className, style, onClick } = props;
-    return (
-      <div
-        className={className}
-        style={{
-          ...style,
-        }}
-        onClick={onClick}
-      />
-    );
-  }
-
   var settings = {
     dots: false,
     infinite: true,
@@ -46,27 +18,55 @@ export default function BranchSection(props: Props) {
     autoplay: false,
     responsive: [
       {
-        breakpoint: 1024,
+        breakpoint: 1700,
         settings: {
-          slidesToShow: 3,
-          slidesToScroll: 3,
+          dots: false,
           infinite: true,
-          dots: true,
+          speed: 500,
+          slidesToShow: 4,
+          slidesToScroll: 1,
+          initialSlide: 0,
+          itemsCenter: true,
+          autoplay: false,
         },
       },
       {
-        breakpoint: 600,
+        breakpoint: 1280,
         settings: {
+          dots: false,
+          infinite: true,
+          speed: 500,
+          slidesToShow: 3,
+          slidesToScroll: 1,
+          initialSlide: 0,
+          itemsCenter: true,
+          autoplay: false,
+        },
+      },
+      {
+        breakpoint: 640,
+        settings: {
+          dots: false,
+          infinite: true,
+          speed: 500,
           slidesToShow: 2,
-          slidesToScroll: 2,
-          initialSlide: 2,
+          slidesToScroll: 1,
+          initialSlide: 0,
+          itemsCenter: true,
+          autoplay: false,
         },
       },
       {
-        breakpoint: 480,
+        breakpoint: 450,
         settings: {
+          dots: false,
+          infinite: true,
+          speed: 500,
           slidesToShow: 1,
           slidesToScroll: 1,
+          initialSlide: 0,
+          itemsCenter: true,
+          autoplay: false,
         },
       },
     ],
@@ -74,7 +74,7 @@ export default function BranchSection(props: Props) {
   return (
     <div className="flex w-full items-center justify-center bg-color-white-secondary px-10 lg:px-10">
       <div className="flex w-full flex-col items-start justify-center gap-10 py-20 lg:w-2/3">
-        <div className="gap-21 flex flex-col items-center justify-center">
+        <div className="gap-21 flex flex-col items-start justify-center">
           <h1 className="text-2xl font-bold text-color-dark-primary">
             Popüler Branşlar
           </h1>
@@ -84,28 +84,28 @@ export default function BranchSection(props: Props) {
         </div>
         <div className="relative w-full">
           <Slider {...settings}>
-            <li className="flex flex-col items-center justify-center gap-6 px-4">
+            <li className="flex w-[250px] flex-col items-center justify-center gap-6 px-4">
               <div className="flex flex-col items-center justify-center rounded-[25px] bg-color-white">
-                <div className="flex flex-col items-center justify-center gap-4 p-8">
+                <div className="flex flex-col items-center justify-center gap-4 p-8 px-6">
                   <img
                     src={require("../../../assets/images/kocluk.png")}
                     alt=""
                     className="h-20 w-20"
                   />
                   <h1 className="flex text-center font-bold text-color-dark-primary">
-                    Yaşam Koçluğu
+                    Yaşam Koçu
                   </h1>
                 </div>
                 <div className="w-full px-2 pb-2">
                   <button className="w-full rounded-[15px] bg-color-secondary py-2">
-                    <h1 className="font-bold text-color-white">38 Uzman</h1>
+                    <h1 className="font-bold text-color-white">22 Uzman</h1>
                   </button>
                 </div>
               </div>
             </li>
-            <li className="flex flex-col items-center justify-center gap-6 px-4">
+            <li className="flex w-[250px] flex-col items-center justify-center gap-6 px-4">
               <div className="flex flex-col items-center justify-center rounded-[25px] bg-color-white">
-                <div className="flex flex-col items-center justify-center gap-4 p-8">
+                <div className="flex flex-col items-center justify-center gap-4 p-8 px-6">
                   <img
                     src={require("../../../assets/images/aile_dizimi.png")}
                     alt=""
@@ -117,14 +117,14 @@ export default function BranchSection(props: Props) {
                 </div>
                 <div className="w-full px-2 pb-2">
                   <button className="w-full rounded-[15px] bg-color-secondary py-2">
-                    <h1 className="font-bold text-color-white">38 Uzman</h1>
+                    <h1 className="font-bold text-color-white">32 Uzman</h1>
                   </button>
                 </div>
               </div>
             </li>
-            <li className="flex flex-col items-center justify-center gap-6 px-4">
+            <li className="flex w-[250px] flex-col items-center justify-center gap-6 px-4">
               <div className="flex flex-col items-center justify-center rounded-[25px] bg-color-white">
-                <div className="flex flex-col items-center justify-center gap-4 p-8">
+                <div className="flex flex-col items-center justify-center gap-4 p-8 px-6">
                   <img
                     src={require("../../../assets/images/astrology.png")}
                     alt=""
@@ -136,14 +136,14 @@ export default function BranchSection(props: Props) {
                 </div>
                 <div className="w-full px-2 pb-2">
                   <button className="w-full rounded-[15px] bg-color-secondary py-2">
-                    <h1 className="font-bold text-color-white">38 Uzman</h1>
+                    <h1 className="font-bold text-color-white">15 Uzman</h1>
                   </button>
                 </div>
               </div>
             </li>
-            <li className="flex flex-col items-center justify-center gap-6 px-4">
+            <li className="flex w-[250px] flex-col items-center justify-center gap-6 px-4">
               <div className="flex flex-col items-center justify-center rounded-[25px] bg-color-white">
-                <div className="flex flex-col items-center justify-center gap-4 p-8">
+                <div className="flex flex-col items-center justify-center gap-4 p-8 px-6">
                   <img
                     src={require("../../../assets/images/diyetisyen.png")}
                     alt=""
@@ -155,14 +155,14 @@ export default function BranchSection(props: Props) {
                 </div>
                 <div className="w-full px-2 pb-2">
                   <button className="w-full rounded-[15px] bg-color-secondary py-2">
-                    <h1 className="font-bold text-color-white">38 Uzman</h1>
+                    <h1 className="font-bold text-color-white">74 Uzman</h1>
                   </button>
                 </div>
               </div>
             </li>
-            <li className="flex flex-col items-center justify-center gap-6 px-4">
+            <li className="flex w-[250px] flex-col items-center justify-center gap-6 px-4">
               <div className="flex flex-col items-center justify-center rounded-[25px] bg-color-white">
-                <div className="flex flex-col items-center justify-center gap-4 p-8">
+                <div className="flex flex-col items-center justify-center gap-4 p-8 px-6">
                   <img
                     src={require("../../../assets/images/nlp.png")}
                     alt=""
@@ -174,14 +174,14 @@ export default function BranchSection(props: Props) {
                 </div>
                 <div className="w-full px-2 pb-2">
                   <button className="w-full rounded-[15px] bg-color-secondary py-2">
-                    <h1 className="font-bold text-color-white">38 Uzman</h1>
+                    <h1 className="font-bold text-color-white">13 Uzman</h1>
                   </button>
                 </div>
               </div>
             </li>
-            <li className="flex flex-col items-center justify-center gap-6 px-4">
+            <li className="flex w-[250px] flex-col items-center justify-center gap-6 px-4">
               <div className="flex flex-col items-center justify-center rounded-[25px] bg-color-white">
-                <div className="flex flex-col items-center justify-center gap-4 p-8">
+                <div className="flex flex-col items-center justify-center gap-4 p-8 px-6">
                   <img
                     src={require("../../../assets/images/psikolog.png")}
                     alt=""
@@ -193,14 +193,14 @@ export default function BranchSection(props: Props) {
                 </div>
                 <div className="w-full px-2 pb-2">
                   <button className="w-full rounded-[15px] bg-color-secondary py-2">
-                    <h1 className="font-bold text-color-white">38 Uzman</h1>
+                    <h1 className="font-bold text-color-white">21 Uzman</h1>
                   </button>
                 </div>
               </div>
             </li>
-            <li className="flex flex-col items-center justify-center gap-6 px-4">
+            <li className="flex w-[250px] flex-col items-center justify-center gap-6 px-4">
               <div className="flex flex-col items-center justify-center rounded-[25px] bg-color-white">
-                <div className="flex flex-col items-center justify-center gap-4 p-8">
+                <div className="flex flex-col items-center justify-center gap-4 p-8 px-6">
                   <img
                     src={require("../../../assets/images/psikiyatr.png")}
                     alt=""
@@ -212,14 +212,14 @@ export default function BranchSection(props: Props) {
                 </div>
                 <div className="w-full px-2 pb-2">
                   <button className="w-full rounded-[15px] bg-color-secondary py-2">
-                    <h1 className="font-bold text-color-white">38 Uzman</h1>
+                    <h1 className="font-bold text-color-white">14 Uzman</h1>
                   </button>
                 </div>
               </div>
             </li>
-            <li className="flex flex-col items-center justify-center gap-6 px-4">
+            <li className="flex w-[250px] flex-col items-center justify-center gap-6 px-4">
               <div className="flex flex-col items-center justify-center rounded-[25px] bg-color-white">
-                <div className="flex flex-col items-center justify-center gap-4 p-8">
+                <div className="flex flex-col items-center justify-center gap-4 p-8 px-6">
                   <img
                     src={require("../../../assets/images/sifacilik.png")}
                     alt=""
@@ -231,7 +231,7 @@ export default function BranchSection(props: Props) {
                 </div>
                 <div className="w-full px-2 pb-2">
                   <button className="w-full rounded-[15px] bg-color-secondary py-2">
-                    <h1 className="font-bold text-color-white">38 Uzman</h1>
+                    <h1 className="font-bold text-color-white">17 Uzman</h1>
                   </button>
                 </div>
               </div>

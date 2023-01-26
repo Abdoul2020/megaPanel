@@ -1,26 +1,21 @@
-import React, { useEffect, useState, useRef } from "react";
-import { useLocation, useSearchParams } from "react-router-dom";
-import SearchFilter from "../SearchFilter/SearchFilter";
-import { FaSlidersH } from "react-icons/fa";
-import { TbArrowsSort } from "react-icons/tb";
-import { Doctor } from "../../../common/types/Doctor.entity";
-import { useAppDispatch, useAppSelector } from "../../../app/hooks";
-import { FiSearch } from "react-icons/fi";
-import {
-  fetchExperts,
-  fetchExpertsCount,
-} from "../../../features/doctorSlice/doctorAPI";
-import { addExperts } from "../../../features/doctorSlice/doctorSlice";
+import { useEffect, useRef, useState } from "react";
 import {
   AiFillCloseCircle,
   AiOutlineArrowLeft,
-  AiOutlineArrowRight,
+  AiOutlineArrowRight
 } from "react-icons/ai";
-import { fetchTotals } from "../../../features/totals/totalsAPI";
-import { addTotals } from "../../../features/totals/totalsSlice";
 import { BiLoaderAlt } from "react-icons/bi";
-import DoctorList from "../../Patient/DoctorList/DoctorList";
+import { FiSearch } from "react-icons/fi";
+import { useSearchParams } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "../../../app/hooks";
+import { Doctor } from "../../../common/types/Doctor.entity";
+import {
+  fetchExperts,
+  fetchExpertsCount
+} from "../../../features/doctorSlice/doctorAPI";
+import { addExperts } from "../../../features/doctorSlice/doctorSlice";
 import { updateScrollToTop } from "../../../features/options/optionsSlice";
+import DoctorList from "../../Patient/DoctorList/DoctorList";
 
 type Props = {
   experts: Doctor[];

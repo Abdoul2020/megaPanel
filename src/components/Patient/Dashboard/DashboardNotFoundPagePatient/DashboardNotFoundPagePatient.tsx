@@ -1,7 +1,3 @@
-import React from "react";
-import { FaStethoscope } from "react-icons/fa";
-import { FiSearch } from "react-icons/fi";
-import { Link } from "react-router-dom";
 
 type Props = {};
 

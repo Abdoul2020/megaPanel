@@ -1,5 +1,4 @@
-import React from "react";
-import { AiFillCheckCircle, AiFillExclamationCircle } from "react-icons/ai";
+import { AiFillExclamationCircle } from "react-icons/ai";
 import { Alert } from "../../../common/types/Alert";
 
 type Props = {

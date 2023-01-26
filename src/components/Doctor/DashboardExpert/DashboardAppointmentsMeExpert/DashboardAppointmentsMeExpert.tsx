@@ -1,13 +1,11 @@
-import React, { useEffect } from "react";
-import { HiArrowUturnLeft, HiArrowUturnRight } from "react-icons/hi2";
+import { useEffect } from "react";
+import { HiArrowUturnLeft } from "react-icons/hi2";
 import { useAppDispatch, useAppSelector } from "../../../../app/hooks";
 import { AppointmentFilterDto } from "../../../../common/dtos/filter/AppointmentFilter";
 import { fetchAppointments } from "../../../../features/appointments/appointmentsAPI";
 import {
-  addAutExperthAppointment,
-  addAutExperthMyAppointment,
+  addAutExperthMyAppointment
 } from "../../../../features/authExpert/authExpertSlice";
-import DashboardAppointmentExpert from "./DashboardAppointmentExpert/DashboardAppointmentExpert";
 import DashboardAppointmentMeExpert from "./DashboardAppointmentMeExpert/DashboardAppointmentMeExpert";
 
 type Props = {};

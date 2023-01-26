@@ -1,47 +1,43 @@
-import React, { useEffect, useRef, useState } from "react";
-import "./App.css";
-import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
-import Footer from "./components/Footer/Footer";
+import { useEffect, useRef, useState } from "react";
 import { AiOutlineArrowUp } from "react-icons/ai";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import "slick-carousel/slick/slick-theme.css";
+import "slick-carousel/slick/slick.css";
+import "./App.css";
 import { useAppDispatch, useAppSelector } from "./app/hooks";
+import { Alert } from "./common/types/Alert";
+import { Branch } from "./common/types/Branch.entity";
+import { Doctor } from "./common/types/Doctor.entity";
+import AlertDanger from "./components/Common/Alerts/AlertDanger";
+import AlertInfo from "./components/Common/Alerts/AlertInfo";
+import AlertSuccess from "./components/Common/Alerts/AlertSuccess";
+import AlertWarning from "./components/Common/Alerts/AlertWarning";
+import NotFoundPage from "./components/Common/NotFoundPage/NotFoundPage";
+import DashboardExpert from "./components/Doctor/DashboardExpert/DashboardExpert";
+import DoctorPage from "./components/Doctor/DoctorPage";
+import Dashboard from "./components/Patient/Dashboard/Dashboard";
+import PatientPage from "./components/Patient/PatientPage";
+import { authGetProfile } from "./features/auth/authAPI";
+import { addAuthObject } from "./features/auth/authSlice";
+import { authExpertGetProfile } from "./features/authExpert/authExpertAPI";
+import { addAuthExpertObject } from "./features/authExpert/authExpertSlice";
+import { fetchBranches } from "./features/branches/branchesAPI";
+import { addBranches } from "./features/branches/branchesSlice";
+import { fetchExperts } from "./features/doctorSlice/doctorAPI";
+import { fetchFirms } from "./features/firms/firmsAPI";
+import { addFirms } from "./features/firms/firmsSlice";
 import {
   updateAlert,
   updateScrollToTop,
-  updateSticky,
+  updateSticky
 } from "./features/options/optionsSlice";
-import AlertSuccess from "./components/Common/Alerts/AlertSuccess";
-import AlertDanger from "./components/Common/Alerts/AlertDanger";
-import AlertWarning from "./components/Common/Alerts/AlertWarning";
-import AlertInfo from "./components/Common/Alerts/AlertInfo";
-import { Alert } from "./common/types/Alert";
-import { fetchExperts } from "./features/doctorSlice/doctorAPI";
-import { addExperts } from "./features/doctorSlice/doctorSlice";
-import { fetchBranches } from "./features/branches/branchesAPI";
-import { addBranches } from "./features/branches/branchesSlice";
-import { getCookie, removeCookie } from "./helpers/authHelper";
-import { authGetProfile } from "./features/auth/authAPI";
-import { addAuthObject } from "./features/auth/authSlice";
-import ProtectedRoute from "./helpers/ProtectedRoute";
-import Dashboard from "./components/Patient/Dashboard/Dashboard";
-import DashboardExpert from "./components/Doctor/DashboardExpert/DashboardExpert";
-import ProtectedRouteExpert from "./helpers/ProtectedRouteExpert";
-import { authExpertGetProfile } from "./features/authExpert/authExpertAPI";
-import { addAuthExpertObject } from "./features/authExpert/authExpertSlice";
-import { fetchTitles } from "./features/titles/titlesAPI";
 import { fetchSpecializations } from "./features/specializations/specializationsAPI";
-import { addTitles } from "./features/titles/titlesSlice";
 import { addSpecializations } from "./features/specializations/specializationsSlice";
-import { fetchTotals } from "./features/totals/totalsAPI";
-import { addTotals } from "./features/totals/totalsSlice";
-import PatientPage from "./components/Patient/PatientPage";
-import DoctorPage from "./components/Doctor/DoctorPage";
-import { fetchFirms } from "./features/firms/firmsAPI";
-import { addFirms } from "./features/firms/firmsSlice";
-import { Doctor } from "./common/types/Doctor.entity";
-import { Branch } from "./common/types/Branch.entity";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
-import NotFoundPage from "./components/Common/NotFoundPage/NotFoundPage";
+import { fetchTitles } from "./features/titles/titlesAPI";
+import { addTitles } from "./features/titles/titlesSlice";
+import { getCookie, removeCookie } from "./helpers/authHelper";
+import ProtectedRoute from "./helpers/ProtectedRoute";
+import ProtectedRouteExpert from "./helpers/ProtectedRouteExpert";
 
 function App() {
   const appRef = useRef<HTMLInputElement>(null);

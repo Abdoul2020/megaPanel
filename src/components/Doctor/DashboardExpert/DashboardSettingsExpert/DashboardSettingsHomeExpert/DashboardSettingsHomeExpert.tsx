@@ -1,28 +1,27 @@
-import React, { useEffect, useState, ChangeEvent } from "react";
-import { BiLoaderAlt } from "react-icons/bi";
+import { ChangeEvent, useEffect, useState } from "react";
 import * as CurrencyFormat from "react-currency-format";
-import { Branch } from "../../../../../common/types/Branch.entity";
-import { Expertise } from "../../../../../common/types/Expertise.entity";
-import { Title } from "../../../../../common/types/Title.entity";
+import { AiOutlineCloseCircle } from "react-icons/ai";
+import { BiLoaderAlt } from "react-icons/bi";
+import { MdModeEdit } from "react-icons/md";
+import { Link, useNavigate } from "react-router-dom";
+import { SocialIcon } from "react-social-icons";
 import { useAppDispatch, useAppSelector } from "../../../../../app/hooks";
 import { AuthExpertUpdateProfileDto } from "../../../../../common/dtos/auth/expert/authExpertUpdateProfileDto.dto";
 import { Alert } from "../../../../../common/types/Alert";
-import { getCookie } from "../../../../../helpers/authExpertHelper";
+import { Branch } from "../../../../../common/types/Branch.entity";
+import { Expertise } from "../../../../../common/types/Expertise.entity";
+import { Firm } from "../../../../../common/types/Firm.entity";
+import { Title } from "../../../../../common/types/Title.entity";
 import {
   authExpertDownloadProfilePicture,
   authExpertUpdateProfile,
-  authExpertUploadProfilePicture,
+  authExpertUploadProfilePicture
 } from "../../../../../features/authExpert/authExpertAPI";
-import { updateAlert } from "../../../../../features/options/optionsSlice";
 import { addAuthExpertObject } from "../../../../../features/authExpert/authExpertSlice";
-import AlertHeaderWarning from "../../../../Common/AlertHeaderWarning/AlertHeaderWarning";
-import { Link, useNavigate } from "react-router-dom";
-import { AiOutlineCloseCircle } from "react-icons/ai";
-import { MdModeEdit } from "react-icons/md";
-import { BsFillPersonFill } from "react-icons/bs";
-import { Firm } from "../../../../../common/types/Firm.entity";
+import { updateAlert } from "../../../../../features/options/optionsSlice";
+import { getCookie } from "../../../../../helpers/authExpertHelper";
 import { unauthenticate } from "../../../../../helpers/authHelper";
-import { SocialIcon } from "react-social-icons";
+import AlertHeaderWarning from "../../../../Common/AlertHeaderWarning/AlertHeaderWarning";
 
 type Props = {};
 
@@ -1102,7 +1101,7 @@ export default function DashboardSettingsHomeExpert({}: Props) {
                             <div className="flex items-center justify-center gap-2">
                               <SocialIcon
                                 url={`${Social}`}
-                                className="h-[20px]"
+                                style={{ height: "25px", width: "25px" }}
                               />
                               <h1
                                 className="text-sm font-bold 

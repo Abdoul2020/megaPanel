@@ -1,18 +1,14 @@
-import React, { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { AiFillEye } from "react-icons/ai";
-import { BsArrowRight, BsPlusLg } from "react-icons/bs";
-import { FiSmartphone } from "react-icons/fi";
-import { GiDoctorFace } from "react-icons/gi";
-import { TbCalendarPlus } from "react-icons/tb";
+import { BiLoaderAlt } from "react-icons/bi";
+import { BsArrowRight } from "react-icons/bs";
 import { Link, useNavigate } from "react-router-dom";
 import { useAppDispatch } from "../../../app/hooks";
 import { Alert } from "../../../common/types/Alert";
 import { authClientRegister } from "../../../features/auth/authAPI";
 import { updateAlert } from "../../../features/options/optionsSlice";
-import { AuthClientRegisterDto } from "../../../common/dtos/auth/client/authClientRegisterDto.dto";
-import { BiLoaderAlt } from "react-icons/bi";
-import { isAuth } from "../../../helpers/authHelper";
 import { isAuthExpert } from "../../../helpers/authExpertHelper";
+import { isAuth } from "../../../helpers/authHelper";
 
 type Props = {};
 
@@ -133,7 +129,7 @@ export default function Register({}: Props) {
     setPasswordRetypeHide((value) => !value);
   };
   return (
-    <div className="relative flex h-screen w-full items-center justify-center bg-color-white-secondary py-20 px-10 pt-[170px] lg:px-0">
+    <div className="relative flex min-h-screen w-full items-center justify-center bg-color-white-secondary py-10 px-10 pt-[130px] xl:px-0">
       <div className="z-20 flex w-full grid-cols-2 content-start items-start justify-start gap-10 lg:grid lg:w-2/3">
         <div className="flex w-full flex-col items-center justify-center gap-8">
           <div className="flex w-full flex-col items-start justify-center gap-6 rounded-[25px] bg-color-white p-8 px-10 shadow-lg">

@@ -1,11 +1,7 @@
-import React, { useState, useEffect } from "react";
-import { AiFillEye } from "react-icons/ai";
+import { useEffect, useState } from "react";
 import { BiLoaderAlt } from "react-icons/bi";
-import { BsArrowRight, BsPlusLg } from "react-icons/bs";
-import { FiSmartphone } from "react-icons/fi";
-import { GiDoctorFace } from "react-icons/gi";
-import { TbCalendarPlus } from "react-icons/tb";
-import { Link, useNavigate } from "react-router-dom";
+import { BsArrowRight } from "react-icons/bs";
+import { useNavigate } from "react-router-dom";
 import { useAppDispatch } from "../../../app/hooks";
 import { AuthClientForgotPasswordDto } from "../../../common/dtos/auth/client/authClientForgotPassword.dto";
 import { Alert } from "../../../common/types/Alert";

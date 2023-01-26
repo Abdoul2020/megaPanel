@@ -1,9 +1,8 @@
-import React from "react";
-import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { GiHamburgerMenu } from "react-icons/gi";
-import { useAppSelector } from "../../../app/hooks";
 import { useDispatch } from "react-redux";
+import { Link } from "react-router-dom";
+import { useAppSelector } from "../../../app/hooks";
 import { updateHeaderMobilePatient } from "../../../features/options/optionsSlice";
 
 type Props = {};

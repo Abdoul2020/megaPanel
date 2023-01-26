@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
-import { FiSearch } from "react-icons/fi";
 import { motion } from "framer-motion";
+import { useState } from "react";
+import { FiSearch } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
 import { useAppSelector } from "../../../app/hooks";
 
@@ -48,13 +48,13 @@ export default function BannerSection() {
           reapat: 1,
         }}
         viewport={{ once: true }}
-        className="z-10 flex w-full flex-col items-center justify-center gap-6 px-10 lg:px-0"
+        className="z-10 flex w-full flex-col items-center justify-center gap-6 px-10 pt-[90px] sm:pt-0 lg:px-0"
       >
         <div className="flex flex-col items-center justify-center">
-          <h1 className="text-center text-[28px] font-bold text-color-white lg:text-[40px]">
+          <h1 className="text-center text-[22px] font-bold text-color-white sm:text-[28px] lg:text-[40px]">
             Uluslararası kişisel gelişim portalı,
           </h1>
-          <h1 className="text-center text-[28px] font-bold text-color-third lg:text-[40px]">
+          <h1 className="text-center text-[22px] font-bold text-color-third sm:text-[28px] lg:text-[40px]">
             <span className="font-bold text-color-white">
               Uzman bul, randevu al,
             </span>{" "}
@@ -64,18 +64,18 @@ export default function BannerSection() {
         <div className="rounded-[30px] bg-color-third p-2">
           <div className="relative grid grid-cols-2 p-2">
             <div
-              className="flex cursor-pointer items-center justify-center p-3 px-6 lg:px-12"
+              className="flex cursor-pointer items-center justify-center py-2 px-3 sm:py-3 sm:px-6 lg:px-12"
               onClick={() => setAppointmenType("online")}
             >
-              <h1 className="z-50 text-sm font-bold text-color-white">
+              <h1 className="z-50 text-xs font-bold text-color-white sm:text-sm">
                 Online Görüşme
               </h1>
             </div>
             <div
-              className="flex cursor-pointer items-center justify-center py-3 px-6 lg:px-12"
+              className="flex cursor-pointer items-center justify-center py-2 px-3 sm:py-3 sm:px-6 lg:px-12"
               onClick={() => setAppointmenType("facetoface")}
             >
-              <h1 className="z-50 text-sm font-bold text-color-white">
+              <h1 className="z-50 text-xs font-bold text-color-white sm:text-sm">
                 Yüz Yüze Randevu
               </h1>
             </div>
@@ -88,7 +88,7 @@ export default function BannerSection() {
             ></div>
           </div>
         </div>
-        <div className="flex w-full lg:w-3/4 items-center justify-center">
+        <div className="flex w-full items-center justify-center lg:w-3/4">
           <form
             className="flex w-full items-center justify-between gap-2 overflow-hidden rounded-[20px] bg-color-white-secondary py-1 pr-1 lg:w-2/3"
             onSubmit={handleSubmit}

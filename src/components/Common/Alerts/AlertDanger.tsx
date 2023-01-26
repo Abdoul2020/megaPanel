@@ -1,4 +1,3 @@
-import React from "react";
 import { AiFillCloseCircle } from "react-icons/ai";
 import { Alert } from "../../../common/types/Alert";
 

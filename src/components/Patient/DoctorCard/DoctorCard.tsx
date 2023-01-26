@@ -1,13 +1,12 @@
-import React, { useState, useEffect } from "react";
-import { AiFillCheckCircle } from "react-icons/ai";
-import { MdLocationPin } from "react-icons/md";
-import { BsCameraVideoFill } from "react-icons/bs";
+import { useEffect, useState } from "react";
 import { BiLoaderAlt } from "react-icons/bi";
-import CalendarLocation from "./CalendarLocation/CalendarLocation";
+import { BsCameraVideoFill } from "react-icons/bs";
+import { MdLocationPin } from "react-icons/md";
 import { Link } from "react-router-dom";
 import { Doctor } from "../../../common/types/Doctor.entity";
-import CalendarOnline from "./CalendarOnline/CalendarOnline";
 import { fetchExpertProfilePicture } from "../../../features/doctorSlice/doctorAPI";
+import CalendarLocation from "./CalendarLocation/CalendarLocation";
+import CalendarOnline from "./CalendarOnline/CalendarOnline";
 
 type Props = {
   key: string;
@@ -93,7 +92,6 @@ export default function DoctorCard(props: Props) {
                     .replaceAll('"', "")} ${props.expert.expert_name}`}
                 </h1>
               </Link>
-              <AiFillCheckCircle className="text-[24px] text-color-success-primary" />
             </div>
 
             <ul className="flex max-w-[400px] flex-wrap items-start justify-start gap-4 gap-y-0">

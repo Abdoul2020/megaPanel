@@ -1,29 +1,25 @@
-import React, { useState, useEffect, useRef } from "react";
-import { AiFillCheckCircle } from "react-icons/ai";
-import { BsCameraVideoFill, BsFillTelephoneFill } from "react-icons/bs";
-import { MdLanguage, MdLocationPin, MdWork } from "react-icons/md";
-import { CgSandClock } from "react-icons/cg";
-import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
+import Dialog from "@mui/material/Dialog";
 import { motion } from "framer-motion";
-import { FiSearch, FiSmartphone } from "react-icons/fi";
-import { FaClinicMedical } from "react-icons/fa";
-import CalendarOnline from "../DoctorCard/CalendarOnline/CalendarOnline";
-import CalendarLocation from "../DoctorCard/CalendarLocation/CalendarLocation";
-import { BiLoaderAlt, BiTimeFive } from "react-icons/bi";
-import { GoPerson } from "react-icons/go";
+import { useEffect, useRef, useState } from "react";
 import { AiFillHome } from "react-icons/ai";
-import { GiDoctorFace, GiRotaryPhone } from "react-icons/gi";
-import { GrLanguage } from "react-icons/gr";
+import { BiLoaderAlt } from "react-icons/bi";
+import { BsCameraVideoFill } from "react-icons/bs";
+import { FaClinicMedical } from "react-icons/fa";
+import { FiSearch, FiSmartphone } from "react-icons/fi";
+import { GoPerson } from "react-icons/go";
+import { IoMdInformationCircle, IoMdSchool } from "react-icons/io";
+import { IoShareSocialSharp, IoTimeSharp } from "react-icons/io5";
+import { MdLocationPin, MdWork } from "react-icons/md";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
+import { SocialIcon } from "react-social-icons";
+import { useAppSelector } from "../../../app/hooks";
 import { Doctor } from "../../../common/types/Doctor.entity";
 import {
   fetchExpert,
-  fetchExpertProfilePicture,
+  fetchExpertProfilePicture
 } from "../../../features/doctorSlice/doctorAPI";
-import { IoShareSocialSharp, IoTimeSharp } from "react-icons/io5";
-import { useAppSelector } from "../../../app/hooks";
-import Dialog from "@mui/material/Dialog";
-import { SocialIcon } from "react-social-icons";
-import { IoMdInformationCircle, IoMdSchool } from "react-icons/io";
+import CalendarLocation from "../DoctorCard/CalendarLocation/CalendarLocation";
+import CalendarOnline from "../DoctorCard/CalendarOnline/CalendarOnline";
 
 type Props = {};
 
@@ -483,9 +479,9 @@ export default function DoctorDetail({}: Props) {
                             <h1 className="text-sm text-color-dark-primary opacity-50">
                               Klinik Bilgisi
                             </h1>
-                            {/* <h1 className="text-base font-bold text-color-dark-primary opacity-80">
-                      MİHRİMAHSULTAN TIP MERKEZİ
-                    </h1> */}
+                            <h1 className="text-base font-bold text-color-dark-primary opacity-80">
+                              {expert?.expert_city_location}
+                            </h1>
                           </div>
                         </div>
                         <div className="flex w-full flex-col items-start justify-center">
@@ -607,15 +603,14 @@ export default function DoctorDetail({}: Props) {
                                 Sosyal Medyalar
                               </h1>
                             </div>
-                            <ul className="flex flex-col items-start justify-start gap-2">
+                            <ul className="flex items-start justify-start gap-2">
                               {expert?.expert_socials.map((social) => {
                                 return (
                                   <li className="flex items-center justify-center gap-2">
                                     <SocialIcon
                                       url={`${social}`}
-                                      style={{ height: "25px", width: "25px" }}
+                                      style={{ height: "30px", width: "30px" }}
                                     />
-                                    <a href={`${social}`}>{social}</a>
                                   </li>
                                 );
                               })}

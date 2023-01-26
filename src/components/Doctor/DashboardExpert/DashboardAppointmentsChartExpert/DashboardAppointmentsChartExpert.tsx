@@ -1,21 +1,19 @@
-import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
 import { AiOutlineCloseCircle } from "react-icons/ai";
-import { ObjectType } from "typescript";
-import { getCookie } from "../../../../helpers/authExpertHelper";
-import { AuthExpertAppointmentScheduleDto } from "../../../../common/dtos/auth/expert/authExpertAppointmentSchedule.dto";
-import { AuthExpertUpdateProfileDto } from "../../../../common/dtos/auth/expert/authExpertUpdateProfileDto.dto";
-import { authExpertUpdateProfile } from "../../../../features/authExpert/authExpertAPI";
-import { AppointmentSchedule } from "../../../../common/types/expert/AppointmentSchedule.entity";
-import { Alert } from "../../../../common/types/Alert";
-import { updateAlert } from "../../../../features/options/optionsSlice";
-import { useAppDispatch, useAppSelector } from "../../../../app/hooks";
 import { BiLoaderAlt } from "react-icons/bi";
-import { addAuthExpertObject } from "../../../../features/authExpert/authExpertSlice";
 import { GrStatusGoodSmall } from "react-icons/gr";
-import AlertHeaderWarning from "../../../Common/AlertHeaderWarning/AlertHeaderWarning";
 import { useNavigate } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "../../../../app/hooks";
+import { AuthExpertUpdateProfileDto } from "../../../../common/dtos/auth/expert/authExpertUpdateProfileDto.dto";
+import { Alert } from "../../../../common/types/Alert";
+import { AppointmentSchedule } from "../../../../common/types/expert/AppointmentSchedule.entity";
+import { authExpertUpdateProfile } from "../../../../features/authExpert/authExpertAPI";
+import { addAuthExpertObject } from "../../../../features/authExpert/authExpertSlice";
+import { updateAlert } from "../../../../features/options/optionsSlice";
+import { getCookie } from "../../../../helpers/authExpertHelper";
 import { unauthenticate } from "../../../../helpers/authHelper";
+import AlertHeaderWarning from "../../../Common/AlertHeaderWarning/AlertHeaderWarning";
 
 type Props = {};
 

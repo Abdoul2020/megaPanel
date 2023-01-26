@@ -1,8 +1,6 @@
-import React, { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { BiChevronLeft, BiChevronRight } from "react-icons/bi";
 import { useNavigate } from "react-router-dom";
-import { ObjectType } from "typescript";
-import { AuthExpertAppointmentScheduleDto } from "../../../../common/dtos/auth/expert/authExpertAppointmentSchedule.dto";
 import { Doctor } from "../../../../common/types/Doctor.entity";
 import { AppointmentSchedule } from "../../../../common/types/expert/AppointmentSchedule.entity";
 

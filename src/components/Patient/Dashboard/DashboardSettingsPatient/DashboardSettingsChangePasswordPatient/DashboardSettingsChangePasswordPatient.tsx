@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { AiFillEye } from "react-icons/ai";
 import { BiLoaderAlt } from "react-icons/bi";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch } from "../../../../../app/hooks";
 import { AuthClientUpdatePasswordDto } from "../../../../../common/dtos/auth/client/authClientUpdatePasswordDto.dto";
-import { AuthExpertUpdatePasswordDto } from "../../../../../common/dtos/auth/expert/authExpertUpdatePassword.dto";
 import { Alert } from "../../../../../common/types/Alert";
 import { authClientUpdatePassword } from "../../../../../features/auth/authAPI";
 import { addAuthObject } from "../../../../../features/auth/authSlice";

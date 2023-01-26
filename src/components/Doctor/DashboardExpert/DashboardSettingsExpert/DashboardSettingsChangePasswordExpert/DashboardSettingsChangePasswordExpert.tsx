@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { AiFillEye } from "react-icons/ai";
 import { BiLoaderAlt } from "react-icons/bi";
 import { useNavigate } from "react-router-dom";
@@ -10,7 +10,7 @@ import { addAuthExpertObject } from "../../../../../features/authExpert/authExpe
 import { updateAlert } from "../../../../../features/options/optionsSlice";
 import {
   getCookie,
-  unauthenticateExpert,
+  unauthenticateExpert
 } from "../../../../../helpers/authExpertHelper";
 
 type Props = {};

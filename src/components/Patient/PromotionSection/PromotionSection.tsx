@@ -1,10 +1,3 @@
-import React from "react";
-import { BsPhone, BsPlusLg } from "react-icons/bs";
-import { GiDoctorFace, GiFaceToFace } from "react-icons/gi";
-import { TbCalendarPlus, TbHandClick } from "react-icons/tb";
-import { FiSmartphone } from "react-icons/fi";
-import { SiGooglemeet } from "react-icons/si";
-import { IoIosPerson } from "react-icons/io";
 
 type Props = {};
 
@@ -32,7 +25,7 @@ export default function PromotionSection({}: Props) {
                   className="w-[48px]"
                 />
               </div>
-              <h1 className="text-base text-color-white text-opacity-80">
+              <h1 className="text-base text-center text-color-white text-opacity-80">
                 Uzman Seç
               </h1>
             </div>
@@ -44,7 +37,7 @@ export default function PromotionSection({}: Props) {
                   className="w-[48px]"
                 />
               </div>
-              <h1 className="text-base text-color-white text-opacity-80">
+              <h1 className="text-base text-center text-color-white text-opacity-80">
                 Uzman Bul
               </h1>
             </div>
@@ -56,7 +49,7 @@ export default function PromotionSection({}: Props) {
                   className="w-[48px]"
                 />
               </div>
-              <h1 className="text-base text-color-white text-opacity-80">
+              <h1 className="text-base text-center text-color-white text-opacity-80">
                 Yüz yüze Randevu
               </h1>
             </div>
@@ -68,7 +61,7 @@ export default function PromotionSection({}: Props) {
                   className="w-[48px]"
                 />
               </div>
-              <h1 className="text-base text-color-white text-opacity-80">
+              <h1 className="text-base text-center text-color-white text-opacity-80">
                 Online Görüşme
               </h1>
             </div>

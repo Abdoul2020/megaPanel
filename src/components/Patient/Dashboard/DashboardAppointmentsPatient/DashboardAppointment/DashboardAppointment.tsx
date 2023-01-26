@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   AiFillCalendar,
   AiFillClockCircle,
@@ -6,7 +6,7 @@ import {
   AiFillLock,
   AiFillPhone,
   AiOutlineFieldTime,
-  AiTwotoneMail,
+  AiTwotoneMail
 } from "react-icons/ai";
 import { BiLoaderAlt } from "react-icons/bi";
 import { MdLocationPin, MdPeopleAlt } from "react-icons/md";
@@ -18,7 +18,7 @@ import { Appointment } from "../../../../../common/types/Appointment.entity";
 import { cancelAppointment } from "../../../../../features/appointments/appointmentsAPI";
 import {
   addAuthObject,
-  removeAuthAppointment,
+  removeAuthAppointment
 } from "../../../../../features/auth/authSlice";
 import { fetchExpertProfilePicture } from "../../../../../features/doctorSlice/doctorAPI";
 import { updateAlert } from "../../../../../features/options/optionsSlice";

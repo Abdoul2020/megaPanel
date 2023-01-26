@@ -1,21 +1,20 @@
-import React, { useEffect, useState } from "react";
-import { Certificate } from "../../../../../common/types/Certificate.entity";
-import { Document, Page, Viewer } from "react-pdf";
-import {
-  fetchCertificatePdf,
-  removeCertificatePdf,
-} from "../../../../../features/certificates/certificatesAPI";
-import { getCookie } from "../../../../../helpers/authHelper";
+import { useEffect, useState } from "react";
 import { AiFillCloseCircle } from "react-icons/ai";
-import { Alert } from "../../../../../common/types/Alert";
-import { updateAlert } from "../../../../../features/options/optionsSlice";
+import { useNavigate } from "react-router-dom";
 import { useAppDispatch } from "../../../../../app/hooks";
+import { Alert } from "../../../../../common/types/Alert";
+import { Certificate } from "../../../../../common/types/Certificate.entity";
 import {
   addAuthExpertObject,
-  removeAuthExpertCertificate,
+  removeAuthExpertCertificate
 } from "../../../../../features/authExpert/authExpertSlice";
+import {
+  fetchCertificatePdf,
+  removeCertificatePdf
+} from "../../../../../features/certificates/certificatesAPI";
+import { updateAlert } from "../../../../../features/options/optionsSlice";
 import { unauthenticateExpert } from "../../../../../helpers/authExpertHelper";
-import { useNavigate } from "react-router-dom";
+import { getCookie } from "../../../../../helpers/authHelper";
 
 type Props = {
   key: string;

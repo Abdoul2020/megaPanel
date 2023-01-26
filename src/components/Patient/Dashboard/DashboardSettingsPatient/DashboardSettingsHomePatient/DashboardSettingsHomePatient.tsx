@@ -1,4 +1,4 @@
-import React, { useState, ChangeEvent, useEffect } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { BiLoaderAlt } from "react-icons/bi";
 import { MdModeEdit } from "react-icons/md";
 import { Link, useNavigate } from "react-router-dom";
@@ -8,7 +8,7 @@ import { Alert } from "../../../../../common/types/Alert";
 import {
   authClientDownloadProfilePicture,
   authClientUpdateProfile,
-  authClientUploadProfilePicture,
+  authClientUploadProfilePicture
 } from "../../../../../features/auth/authAPI";
 import { addAuthObject } from "../../../../../features/auth/authSlice";
 import { updateAlert } from "../../../../../features/options/optionsSlice";

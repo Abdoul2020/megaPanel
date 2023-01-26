@@ -26,8 +26,8 @@ export default function FeaturesSection({}: Props) {
           </p>
         </div>
       </div>
-      <div className="flex w-full flex-col items-center justify-center gap-12 lg:w-2/3">
-        <div className="relative grid-cols-2 grid md:grid-cols-3 lg:flex w-full items-center justify-around gap-8 border-b-[1px] border-color-dark-primary border-opacity-10">
+      <div className="flex w-full flex-col items-center justify-center gap-8 lg:w-2/3">
+        <div className="relative flex w-full items-start justify-between gap-4 gap-y-4 overflow-visible overflow-y-visible overflow-x-scroll border-b-[1px] border-color-dark-primary border-opacity-10 scrollbar-none">
           <div
             className="group relative flex flex-col items-center justify-center gap-2 px-2 pb-6 hover:cursor-pointer"
             onClick={() => setActiveFeature(0)}
@@ -36,7 +36,7 @@ export default function FeaturesSection({}: Props) {
               <RiCalendarCheckFill className="text-[48px] text-color-main transition-all duration-300 group-hover:scale-110" />
             </div>
             <h1
-              className={`text-base font-bold text-color-dark-primary ${
+              className={`text-center text-base font-bold text-color-dark-primary ${
                 activeFeature === 0
                   ? "opacity-80"
                   : "opacity-50 transition-all duration-300"
@@ -69,7 +69,7 @@ export default function FeaturesSection({}: Props) {
               <IoTicket className="absolute bottom-[80%] left-[80%] text-[24px] text-color-warning-primary" />
             </div>
             <h1
-              className={`text-base font-bold text-color-dark-primary ${
+              className={`text-center text-base font-bold text-color-dark-primary ${
                 activeFeature === 1
                   ? "opacity-80"
                   : "opacity-50 transition-all duration-300"
@@ -101,7 +101,7 @@ export default function FeaturesSection({}: Props) {
               <ImSearch className="text-[48px] text-color-main transition-all duration-500 group-hover:scale-110" />
             </div>
             <h1
-              className={`text-base font-bold text-color-dark-primary ${
+              className={`text-center text-base font-bold text-color-dark-primary ${
                 activeFeature === 2
                   ? "opacity-80"
                   : "opacity-50 transition-all duration-300"
@@ -134,7 +134,7 @@ export default function FeaturesSection({}: Props) {
               <IoTicket className="absolute bottom-[80%] left-[80%] text-[24px] text-color-warning-primary" />
             </div>
             <h1
-              className={`text-base font-bold text-color-dark-primary ${
+              className={`text-center text-base font-bold text-color-dark-primary ${
                 activeFeature === 3
                   ? "opacity-80"
                   : "opacity-50 transition-all duration-300"
@@ -167,7 +167,7 @@ export default function FeaturesSection({}: Props) {
               <IoTicket className="absolute bottom-[80%] left-[80%] text-[24px] text-color-warning-primary" />
             </div>
             <h1
-              className={`text-base font-bold text-color-dark-primary ${
+              className={`text-center text-base font-bold text-color-dark-primary ${
                 activeFeature === 4
                   ? "opacity-80"
                   : "opacity-50 transition-all duration-300"
@@ -200,13 +200,13 @@ export default function FeaturesSection({}: Props) {
               <IoTicket className="absolute bottom-[80%] left-[80%] text-[24px] text-color-warning-primary" />
             </div>
             <h1
-              className={`text-base font-bold text-color-dark-primary ${
+              className={`text-center text-base font-bold text-color-dark-primary ${
                 activeFeature === 5
                   ? "opacity-80"
                   : "opacity-50 transition-all duration-300"
               }`}
             >
-              Raporlama/Analiz
+              Raporlama / Analiz
             </h1>
             {activeFeature === 5 ? (
               <motion.div
@@ -232,7 +232,7 @@ export default function FeaturesSection({}: Props) {
               <IoFolder className="text-[48px] text-color-main transition-all duration-500 group-hover:scale-110" />
             </div>
             <h1
-              className={`text-base font-bold text-color-dark-primary ${
+              className={`text-center text-base font-bold text-color-dark-primary ${
                 activeFeature === 6
                   ? "opacity-80"
                   : "opacity-50 transition-all duration-300"
@@ -257,7 +257,7 @@ export default function FeaturesSection({}: Props) {
           </div>
         </div>
         {activeFeature === 0 ? (
-          <div className="flex lg:grid w-full grid-cols-3 gap-10">
+          <div className="flex w-full grid-cols-3 flex-col items-start justify-start gap-4 xl:grid xl:gap-0">
             <div className="col-span-1 flex flex-col items-start justify-start gap-4">
               <h1 className="text-2xl font-bold text-color-main">
                 Randevu Yönetimi
@@ -273,16 +273,16 @@ export default function FeaturesSection({}: Props) {
                 yapabilirsiniz.
               </p>
             </div>
-            <div className="col-span-2 items-center justify-center hidden lg:flex">
+            <div className="col-span-2 hidden items-center justify-center lg:flex">
               <img
                 src={require("../../../assets/images/randevu_yonetimi.png")}
                 alt=""
-                className="h-full w-4/5 rounded-[25px] bg-color-white p-4 opacity-90 shadow-lg"
+                className="w-full rounded-[25px]  bg-color-white p-4 opacity-90 shadow-lg xl:w-4/5"
               />
             </div>
           </div>
         ) : activeFeature === 1 ? (
-          <div className="flex lg:grid w-full grid-cols-3 gap-10">
+          <div className="flex w-full grid-cols-3 flex-col items-start justify-start gap-4 xl:grid xl:gap-0">
             <div className="col-span-1 flex flex-col items-start justify-start gap-4">
               <h1 className="text-2xl font-bold text-color-main">
                 Ajanda ve Notlar
@@ -299,16 +299,16 @@ export default function FeaturesSection({}: Props) {
                 tutun hem de gözden kaçırmayın!
               </p>
             </div>
-            <div className="col-span-2 hidden lg:flex items-center justify-center">
+            <div className="col-span-2 hidden items-center justify-center lg:flex">
               <img
-                src={require("../../../assets/images/no_feature.jpg")}
+                src={require("../../../assets/images/no_feature.png")}
                 alt=""
-                className="h-[400px] w-4/5 rounded-[25px] bg-color-white p-4 opacity-90 shadow-lg"
+                className="w-full rounded-[25px] bg-color-white p-4 opacity-90 shadow-lg xl:w-4/5"
               />
             </div>
           </div>
         ) : activeFeature === 2 ? (
-          <div className="flex lg:grid w-full grid-cols-3 gap-10">
+          <div className="flex w-full grid-cols-3 flex-col items-start justify-start gap-4 xl:grid xl:gap-0">
             <div className="col-span-1 flex flex-col items-start justify-start gap-4">
               <h1 className="text-2xl font-bold text-color-main">
                 Danışan Takibi
@@ -324,16 +324,16 @@ export default function FeaturesSection({}: Props) {
                 Megaverse üzerinden kendi tasarımınıza göre alabilirsiniz.
               </p>
             </div>
-            <div className="col-span-2 hidden lg:flex items-center justify-center">
+            <div className="col-span-2 hidden items-center justify-center lg:flex">
               <img
                 src={require("../../../assets/images/danisan_takibi.png")}
                 alt=""
-                className="h-[400px] w-4/5 rounded-[25px] bg-color-white p-4 opacity-90 shadow-lg"
+                className="w-full rounded-[25px]  bg-color-white p-4 opacity-90 shadow-lg xl:w-4/5"
               />
             </div>
           </div>
         ) : activeFeature === 3 ? (
-          <div className="flex lg:grid w-full grid-cols-3 gap-10">
+          <div className="flex w-full grid-cols-3 flex-col items-start justify-start gap-4 xl:grid xl:gap-0">
             <div className="col-span-1 flex flex-col items-start justify-start gap-4">
               <h1 className="text-2xl font-bold text-color-main">
                 Finansal Bilgiler
@@ -350,16 +350,16 @@ export default function FeaturesSection({}: Props) {
                 kolaylıkla yazdırabilirsiniz.
               </p>
             </div>
-            <div className="col-span-2 hidden lg:flex items-center justify-center">
+            <div className="col-span-2 hidden items-center justify-center lg:flex">
               <img
-                src={require("../../../assets/images/no_feature.jpg")}
+                src={require("../../../assets/images/no_feature.png")}
                 alt=""
-                className="h-[400px] w-4/5 rounded-[25px] bg-color-white p-4 opacity-90 shadow-lg"
+                className="w-full rounded-[25px]  bg-color-white p-4 opacity-90 shadow-lg xl:w-4/5"
               />
             </div>
           </div>
         ) : activeFeature === 4 ? (
-          <div className="flex lg:grid w-full grid-cols-3 gap-10">
+          <div className="flex w-full grid-cols-3 flex-col items-start justify-start gap-4 xl:grid xl:gap-0">
             <div className="col-span-1 flex flex-col items-start justify-start gap-4">
               <h1 className="text-2xl font-bold text-color-main">
                 Personel Yönetimi
@@ -378,16 +378,16 @@ export default function FeaturesSection({}: Props) {
                 tutabilirsiniz.
               </p>
             </div>
-            <div className="col-span-2 hidden lg:flex items-center justify-center">
+            <div className="col-span-2 hidden items-center justify-center lg:flex">
               <img
-                src={require("../../../assets/images/no_feature.jpg")}
+                src={require("../../../assets/images/no_feature.png")}
                 alt=""
-                className="h-[400px] w-4/5 rounded-[25px] bg-color-white p-4 opacity-90 shadow-lg"
+                className="w-full rounded-[25px]  bg-color-white p-4 opacity-90 shadow-lg xl:w-4/5"
               />
             </div>
           </div>
         ) : activeFeature === 5 ? (
-          <div className="flex lg:grid w-full grid-cols-3 gap-10">
+          <div className="flex w-full grid-cols-3 flex-col items-start justify-start gap-4 xl:grid xl:gap-0">
             <div className="col-span-1 flex flex-col items-start justify-start gap-4">
               <h1 className="text-2xl font-bold text-color-main">
                 Raporlama/Analiz
@@ -407,16 +407,16 @@ export default function FeaturesSection({}: Props) {
                 şekillendirin.
               </p>
             </div>
-            <div className="col-span-2 hidden lg:flex items-center justify-center">
+            <div className="col-span-2 hidden items-center justify-center lg:flex">
               <img
-                src={require("../../../assets/images/no_feature.jpg")}
+                src={require("../../../assets/images/no_feature.png")}
                 alt=""
-                className="h-[400px] w-4/5 rounded-[25px] bg-color-white p-4 opacity-90 shadow-lg"
+                className="w-full rounded-[25px]  bg-color-white p-4 opacity-90 shadow-lg xl:w-4/5"
               />
             </div>
           </div>
         ) : activeFeature === 6 ? (
-          <div className="flex lg:grid w-full grid-cols-3 gap-10">
+          <div className="flex w-full grid-cols-3 flex-col items-start justify-start gap-4 xl:grid xl:gap-0">
             <div className="col-span-1 flex flex-col items-start justify-start gap-4">
               <h1 className="text-2xl font-bold text-color-main">
                 Döküman Yönetimi
@@ -432,16 +432,16 @@ export default function FeaturesSection({}: Props) {
                 içerisinde eklenmiş dokümanlara rahatlıkla ulaşabilirsiniz.
               </p>
             </div>
-            <div className="col-span-2 hidden lg:flex items-center justify-center">
+            <div className="col-span-2 hidden items-center justify-center lg:flex">
               <img
                 src={require("../../../assets/images/dokuman_yonetimi.png")}
                 alt=""
-                className="h-[400px] w-4/5 rounded-[25px] bg-color-white p-4 opacity-90 shadow-lg"
+                className="w-full rounded-[25px]  bg-color-white p-4 opacity-90 shadow-lg xl:w-4/5"
               />
             </div>
           </div>
         ) : (
-          <div className="flex lg:grid w-full grid-cols-3 gap-10">
+          <div className="flex w-full grid-cols-3 flex-col items-start justify-start gap-4 xl:grid xl:gap-0">
             <div className="col-span-1 flex flex-col items-start justify-start gap-4">
               <h1 className="text-2xl font-bold text-color-main">
                 Randevu Yönetimi
@@ -457,11 +457,11 @@ export default function FeaturesSection({}: Props) {
                 yapabilirsiniz.
               </p>
             </div>
-            <div className="col-span-2 hidden lg:flex items-center justify-center">
+            <div className="col-span-2 hidden items-center justify-center lg:flex">
               <img
                 src={require("../../../assets/images/randevu_yonetimi.png")}
                 alt=""
-                className="h-[400px] w-4/5 rounded-[25px] bg-color-white p-4 opacity-90 shadow-lg"
+                className="w-full rounded-[25px]  bg-color-white p-4 opacity-90 shadow-lg xl:w-4/5"
               />
             </div>
           </div>

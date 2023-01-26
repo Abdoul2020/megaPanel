@@ -1,25 +1,24 @@
-import React, { ChangeEvent, useEffect, useState } from "react";
+import Dialog from "@mui/material/Dialog";
+import { ChangeEvent, useEffect, useState } from "react";
+import { AiFillFilePdf, AiOutlineCloseCircle } from "react-icons/ai";
 import { BiLoaderAlt } from "react-icons/bi";
 import { BsPlusLg } from "react-icons/bs";
+import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../../../app/hooks";
 import { Alert } from "../../../../common/types/Alert";
+import { Firm } from "../../../../common/types/Firm.entity";
 import { authExpertUploadCertificatePdf } from "../../../../features/authExpert/authExpertAPI";
 import {
   addAuthExpertCertificates,
-  addAuthExpertObject,
+  addAuthExpertObject
 } from "../../../../features/authExpert/authExpertSlice";
 import { fetchCertificates } from "../../../../features/certificates/certificatesAPI";
 import { updateAlert } from "../../../../features/options/optionsSlice";
 import {
   getCookie,
-  unauthenticateExpert,
+  unauthenticateExpert
 } from "../../../../helpers/authExpertHelper";
-import AlertHeaderWarning from "../../../Common/AlertHeaderWarning/AlertHeaderWarning";
 import DashboardCertificateExpert from "./DashboardCertificateExpert/DashboardCertificateExpert";
-import Dialog from "@mui/material/Dialog";
-import { AiFillFilePdf, AiOutlineCloseCircle } from "react-icons/ai";
-import { Firm } from "../../../../common/types/Firm.entity";
-import { useNavigate } from "react-router-dom";
 
 type Props = {};
 

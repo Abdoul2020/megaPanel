@@ -1,8 +1,7 @@
-import React from "react";
-import { GiHamburgerMenu } from "react-icons/gi";
-import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
+import { GiHamburgerMenu } from "react-icons/gi";
 import { useDispatch } from "react-redux";
+import { Link } from "react-router-dom";
 import { updateHeaderMobileExpert } from "../../../features/options/optionsSlice";
 
 type Props = {};

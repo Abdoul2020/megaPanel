@@ -1,58 +1,82 @@
-import React from "react";
-import {
-  AiFillInstagram,
-  AiFillFacebook,
-  AiFillTwitterCircle,
-  AiFillYoutube,
-  AiFillLinkedin,
-} from "react-icons/ai";
+import { AiFillInstagram } from "react-icons/ai";
+import { FaPinterestP, FaTelegramPlane, FaTiktok } from "react-icons/fa";
+import { RiLinkedinFill, RiTwitterFill, RiYoutubeFill } from "react-icons/ri";
 import { Link } from "react-router-dom";
-import { useAppSelector } from "../../app/hooks";
 
 type Props = {};
 
 export default function Footer({}: Props) {
-  const forDoctors = useAppSelector((state) => state.options.forDoctors);
   return (
-    <div
-      className={`relative flex w-full items-center justify-center bg-color-white py-20`}
-    >
-      <div className="flex w-2/3 flex-col items-start justify-center">
-        <div className="grid grid-flow-col grid-cols-5 gap-20 pb-20">
+    <div className="relative flex w-full items-center justify-center bg-color-white px-4 py-10 sm:py-20 sm:px-0">
+      <div className="flex w-full flex-col items-start justify-center sm:w-2/3">
+        <div className="flex grid-flow-col grid-cols-5 flex-col items-start justify-start gap-10 sm:gap-20 pb-10 sm:pb-20 sm:grid">
           <div className="col-span-3 flex flex-col items-start justify-center gap-6">
-            <img
-              src={require("../../assets/images/megaverse_logo_7.png")}
-              alt=""
-              className="h-20"
-            />
+            <div className="w-full flex sm:justify-start items-start justify-center">
+              <img
+                src={require("../../assets/images/megaverse_logo_7.png")}
+                alt=""
+                className="h-20"
+              />
+            </div>
             <p className="text-color-dark-primary opacity-50">
               Megaverse Uluslararası Kişisel Gelişim Portalı, Bülent
               Gardiyaoğlu’nun 10 yılı aşkın emeği ve birikimini tek bir çatıda
               toplayan, danışan ve danışmanları bir araya ge- tiren, her iki
               tarafa da kolaylıklar sağlayan bir kişisel gelişim portalıdır.
             </p>
-            {/* <div className="flex flex-col items-start justify-center gap-2">
+            <div className="flex flex-col items-start justify-center gap-2">
               <h1 className="text-lg font-bold text-color-dark-primary opacity-80">
                 Bizi takip edin
               </h1>
-              <ul className="flex items-center justify-center gap-4">
+              <ul className="flex items-center justify-start gap-4 flex-wrap">
                 <li>
-                  <AiFillInstagram className="h-[30px] w-[30px] text-color-main opacity-30" />
+                  <a href="https://twitter.com/megaversecoach">
+                    <RiTwitterFill className="text-[32px] text-color-main opacity-50" />
+                  </a>
                 </li>
                 <li>
-                  <AiFillTwitterCircle className="h-[30px] w-[30px] text-color-main opacity-30" />
+                  <a
+                    href="https://instagram.com/megaversecoach"
+                    target="_blank"
+                  >
+                    <AiFillInstagram className="text-[32px] text-color-main opacity-50" />
+                  </a>
                 </li>
                 <li>
-                  <AiFillFacebook className="h-[30px] w-[30px] text-color-main opacity-30" />
+                  <a href="https://youtube.com/@megaversecoach" target="_blank">
+                    <RiYoutubeFill className="text-[32px] text-color-main opacity-50" />
+                  </a>
                 </li>
                 <li>
-                  <AiFillYoutube className="h-[30px] w-[30px] text-color-main opacity-30" />
+                  <a
+                    href="https://www.linkedin.com/company/megaversecoach"
+                    target="_blank"
+                  >
+                    <RiLinkedinFill className="text-[32px] text-color-main opacity-50" />
+                  </a>
                 </li>
                 <li>
-                  <AiFillLinkedin className="h-[30px] w-[30px] text-color-main opacity-30" />
+                  <a
+                    href="https://tr.pinterest.com/megaversecoach"
+                    target="_blank"
+                  >
+                    <FaPinterestP className="text-[32px] text-color-main opacity-50" />
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="https://www.tiktok.com/@megaversecoach"
+                    target="_blank"
+                  ></a>
+                  <FaTiktok className="text-[30px] text-color-main opacity-50" />
+                </li>
+                <li>
+                  <a href="https://t.me/megaversecoach" target="_blank">
+                    <FaTelegramPlane className="text-[32px] text-color-main opacity-50" />
+                  </a>
                 </li>
               </ul>
-            </div> */}
+            </div>
             {/* <div className="flex items-center justify-center gap-2">
               <div className="flex items-center justify-center gap-2 rounded-[15px] bg-color-main py-2 px-6">
                 <img

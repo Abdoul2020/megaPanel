@@ -1,34 +1,30 @@
-import React, { useState, useEffect } from "react";
-import { BsArrowLeft, BsArrowRight } from "react-icons/bs";
-import Cards from "react-credit-cards";
+import { useEffect, useState } from "react";
 import "react-credit-cards/es/styles-compiled.css";
 import {
-  AiFillCalendar,
-  AiFillCheckCircle,
-  AiFillClockCircle,
-  AiOutlineFieldTime,
+  AiFillCalendar, AiFillClockCircle,
+  AiOutlineFieldTime
 } from "react-icons/ai";
-import { Link, useNavigate, useSearchParams } from "react-router-dom";
-import { MdPeopleAlt } from "react-icons/md";
-import { Doctor } from "../../../common/types/Doctor.entity";
-import {
-  fetchExpert,
-  fetchExpertProfilePicture,
-} from "../../../features/doctorSlice/doctorAPI";
 import { BiLoaderAlt } from "react-icons/bi";
-import { CreateAppointmentDto } from "../../../common/dtos/createAppointmentDto";
-import { fetchAppointmentTypes } from "../../../features/appointmentTypes/appointmentTypesAPI";
-import { AppointmentType } from "../../../common/types/AppointmentType.entity";
-import { getCookie, unauthenticate } from "../../../helpers/authHelper";
-import { fetchClient } from "../../../features/clients/clientsAPI";
-import { authGetProfile } from "../../../features/auth/authAPI";
-import { Client } from "../../../common/types/Client.entity";
-import { createAppointment } from "../../../features/appointments/appointmentsAPI";
-import { Alert } from "../../../common/types/Alert";
-import { updateAlert } from "../../../features/options/optionsSlice";
+import { BsArrowLeft, BsArrowRight } from "react-icons/bs";
+import { MdPeopleAlt } from "react-icons/md";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../../app/hooks";
+import { CreateAppointmentDto } from "../../../common/dtos/createAppointmentDto";
+import { Alert } from "../../../common/types/Alert";
+import { AppointmentType } from "../../../common/types/AppointmentType.entity";
+import { Client } from "../../../common/types/Client.entity";
+import { Doctor } from "../../../common/types/Doctor.entity";
+import { createAppointment } from "../../../features/appointments/appointmentsAPI";
+import { fetchAppointmentTypes } from "../../../features/appointmentTypes/appointmentTypesAPI";
+import { authGetProfile } from "../../../features/auth/authAPI";
 import { addAuthObject } from "../../../features/auth/authSlice";
 import { authExpertGetProfile } from "../../../features/authExpert/authExpertAPI";
+import {
+  fetchExpert,
+  fetchExpertProfilePicture
+} from "../../../features/doctorSlice/doctorAPI";
+import { updateAlert } from "../../../features/options/optionsSlice";
+import { getCookie, unauthenticate } from "../../../helpers/authHelper";
 
 type Props = {};
 

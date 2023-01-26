@@ -1,16 +1,15 @@
-import React, { useEffect, useRef } from "react";
-import BannerSection from "../BannerSection/BannerSection";
-import PromotionSection from "../PromotionSection/PromotionSection";
-import FeaturesSection from "../FeaturesSection/FeaturesSection";
-import PricingSection from "../PricingSection/PricingSection";
-import QASection from "../QASection/QASection";
-import CTASection from "../CTASection/CTASection";
-import CTASecondSection from "../CTASecondSection/CTASecondSection";
+import { useEffect, useRef } from "react";
+import { FiSearch } from "react-icons/fi";
+import { Link, useLocation } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../../app/hooks";
 import { updateDoctorState } from "../../../features/options/optionsSlice";
-import { Link, useLocation } from "react-router-dom";
-import { FiSearch } from "react-icons/fi";
+import BannerSection from "../BannerSection/BannerSection";
 import CTAResponsive from "../CTAResponsive/CTAResponsive";
+import CTASecondSection from "../CTASecondSection/CTASecondSection";
+import CTASection from "../CTASection/CTASection";
+import FeaturesSection from "../FeaturesSection/FeaturesSection";
+import PromotionSection from "../PromotionSection/PromotionSection";
+import QASection from "../QASection/QASection";
 
 type Props = {};
 

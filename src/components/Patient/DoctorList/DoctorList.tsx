@@ -1,7 +1,6 @@
-import React, { useEffect } from "react";
-import DoctorCard from "../DoctorCard/DoctorCard";
-import { AiOutlineArrowLeft, AiOutlineArrowRight } from "react-icons/ai";
+import { useEffect } from "react";
 import { Doctor } from "../../../common/types/Doctor.entity";
+import DoctorCard from "../DoctorCard/DoctorCard";
 
 type Props = {
   experts: Doctor[];

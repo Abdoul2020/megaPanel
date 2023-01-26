@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { HiArrowUturnRight } from "react-icons/hi2";
 import { useAppDispatch, useAppSelector } from "../../../../app/hooks";
 import { AppointmentFilterDto } from "../../../../common/dtos/filter/AppointmentFilter";

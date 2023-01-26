@@ -1,11 +1,12 @@
-import React, { useEffect } from "react";
+import Drawer from "@mui/material/Drawer";
+import { useEffect } from "react";
 import { Route, Routes, useLocation } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { Branch } from "../../common/types/Branch.entity";
 import { Doctor } from "../../common/types/Doctor.entity";
 import {
   updateHeaderMobilePatient,
-  updatePathname,
+  updatePathname
 } from "../../features/options/optionsSlice";
 import Footer from "../Footer/Footer";
 import AboutPage from "./AboutPage/AboutPage";
@@ -15,15 +16,13 @@ import FaqPage from "./FaqPage/FaqPage";
 import ForgotPassword from "./ForgotPassword/ForgotPassword";
 import HeaderPatient from "./HeaderPatient/HeaderPatient";
 import HeaderPatientMobile from "./HeaderPatientMobile/HeaderPatientMobile";
+import HeaderPatientMobileNavbar from "./HeaderPatientMobileNavbar/HeaderPatientMobileNavbar";
 import Home from "./Home/Home";
 import Login from "./Login/Login";
+import NotFoundPage from "./NotFoundPage/NotFoundPage";
 import Register from "./Register/Register";
 import ResetPassword from "./ResetPassword/ResetPassword";
 import SearchPage from "./SearchPage/SearchPage";
-import Drawer from "@mui/material/Drawer";
-import HeaderExpertMobileNavbar from "../Doctor/HeaderExpertMobileNavbar/HeaderExpertMobileNavbar";
-import HeaderPatientMobileNavbar from "./HeaderPatientMobileNavbar/HeaderPatientMobileNavbar";
-import NotFoundPage from "./NotFoundPage/NotFoundPage";
 
 type Props = {
   doctors: Doctor[];

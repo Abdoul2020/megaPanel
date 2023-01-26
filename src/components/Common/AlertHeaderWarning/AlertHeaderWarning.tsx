@@ -1,7 +1,6 @@
-import React from "react";
+import { motion } from "framer-motion";
 import { AiFillCheckCircle } from "react-icons/ai";
 import { Alertheader } from "../../../common/types/AlertHeader";
-import { motion } from "framer-motion";
 
 type Props = {
   alertHeader: Alertheader;
@@ -19,8 +18,8 @@ export default function AlertHeaderWarning(props: Props) {
       }}
       className="w-full bg-color-warning-primary bg-opacity-30 p-6 flex justify-start items-center gap-4 rounded-[30px]"
     >
-      <AiFillCheckCircle className="text-color-warning-dark text-[24px]" />
-      <h1 className="text-color-warning-dark">{props.alertHeader.text}</h1>
+      <AiFillCheckCircle className="text-color-white text-[24px]" />
+      <h1 className="text-color-white">{props.alertHeader.text}</h1>
     </motion.div>
   );
 }

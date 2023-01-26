@@ -1,20 +1,12 @@
-import React, { useState, useEffect } from "react";
-import { AiFillEye } from "react-icons/ai";
+import { useEffect, useState } from "react";
 import { BiLoaderAlt } from "react-icons/bi";
-import { BsArrowRight, BsPlusLg } from "react-icons/bs";
-import { FiSmartphone } from "react-icons/fi";
-import { GiDoctorFace } from "react-icons/gi";
-import { TbCalendarPlus } from "react-icons/tb";
-import { Link, useNavigate, useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { useAppDispatch } from "../../../app/hooks";
-import { AuthClientResetPasswordDto } from "../../../common/dtos/auth/client/authClientResetPassword.dto";
 import { AuthExpertResetPasswordDto } from "../../../common/dtos/auth/expert/authExpertResetPassword.dto";
 import { Alert } from "../../../common/types/Alert";
-import { authClientResetPassword } from "../../../features/auth/authAPI";
 import { authExpertResetPassword } from "../../../features/authExpert/authExpertAPI";
 import { updateAlert } from "../../../features/options/optionsSlice";
 import { isAuthExpert } from "../../../helpers/authExpertHelper";
-import { isAuth } from "../../../helpers/authHelper";
 
 type Props = {};
 

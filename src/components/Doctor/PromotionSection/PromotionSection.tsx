@@ -1,16 +1,6 @@
-import React from "react";
-import { BsPhone, BsPlusLg } from "react-icons/bs";
-import { GiDoctorFace } from "react-icons/gi";
-import { TbCalendarPlus } from "react-icons/tb";
-import { FiSmartphone } from "react-icons/fi";
-import { MdQuestionAnswer } from "react-icons/md";
-import { IoIosPerson } from "react-icons/io";
-import { FaClinicMedical } from "react-icons/fa";
-import { FaFilePrescription } from "react-icons/fa";
-import { FaHeartbeat } from "react-icons/fa";
-import { SiGooglemeet } from "react-icons/si";
-import CountUp from "react-countup";
 import { motion } from "framer-motion";
+import CountUp from "react-countup";
+import { IoIosPerson } from "react-icons/io";
 
 type Props = {};
 
@@ -33,7 +23,7 @@ export default function PromotionSection({}: Props) {
         </div> */}
         </div>
         <div className="z-20 flex h-full w-full items-center justify-center">
-          <div className="grid grid-cols-1 items-center justify-around gap-10 md:grid-cols-2">
+          <div className="grid grid-cols-1 items-start justify-around content-start gap-10 md:grid-cols-2">
             <div className="flex flex-col items-start justify-center gap-4">
               <div className="flex items-center justify-center gap-6">
                 <div className="rounded-xl border-4 border-solid border-color-main p-2">

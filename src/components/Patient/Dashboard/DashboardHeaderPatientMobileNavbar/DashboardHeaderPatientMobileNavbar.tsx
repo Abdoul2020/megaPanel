@@ -1,31 +1,29 @@
-import React, { useEffect, useState } from "react";
+import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
 import { BsFillPersonFill } from "react-icons/bs";
 import { FaClock } from "react-icons/fa";
+import { FiLogOut } from "react-icons/fi";
 import { IoSettings } from "react-icons/io5";
-import { MdSpaceDashboard } from "react-icons/md";
 import { RiArrowGoBackLine } from "react-icons/ri";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../../../app/hooks";
+import { Alert } from "../../../../common/types/Alert";
 import {
-  authClientDownloadProfilePicture,
-  authGetProfile,
+  authClientDownloadProfilePicture
 } from "../../../../features/auth/authAPI";
 import { addAuthObject } from "../../../../features/auth/authSlice";
+import { addAuthExpertObject } from "../../../../features/authExpert/authExpertSlice";
+import {
+  updateAlert,
+  updateHeaderMobilePatientDashboard
+} from "../../../../features/options/optionsSlice";
+import { unauthenticatehardExpert } from "../../../../helpers/authExpertHelper";
 import {
   getCookie,
   removeCookie,
   unauthenticate,
-  unauthenticatehard,
+  unauthenticatehard
 } from "../../../../helpers/authHelper";
-import { motion } from "framer-motion";
-import { FiLogOut } from "react-icons/fi";
-import {
-  updateAlert,
-  updateHeaderMobilePatientDashboard,
-} from "../../../../features/options/optionsSlice";
-import { Alert } from "../../../../common/types/Alert";
-import { unauthenticatehardExpert } from "../../../../helpers/authExpertHelper";
-import { addAuthExpertObject } from "../../../../features/authExpert/authExpertSlice";
 
 type Props = {};
 

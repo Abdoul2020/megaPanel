@@ -1,33 +1,32 @@
-import React, { useEffect, useState } from "react";
+import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
+import { AiFillSafetyCertificate, AiFillSchedule } from "react-icons/ai";
 import { BsFillPersonFill } from "react-icons/bs";
+import { FaClock } from "react-icons/fa";
 import { FiLogOut } from "react-icons/fi";
+import { GrStatusGoodSmall } from "react-icons/gr";
+import { HiArrowUturnLeft, HiArrowUturnRight } from "react-icons/hi2";
 import { IoSettings } from "react-icons/io5";
-import { MdSpaceDashboard } from "react-icons/md";
 import { RiArrowGoBackLine } from "react-icons/ri";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../../../app/hooks";
+import { Alert } from "../../../../common/types/Alert";
+import { addAuthObject } from "../../../../features/auth/authSlice";
+import { authExpertDownloadProfilePicture } from "../../../../features/authExpert/authExpertAPI";
 import { addAuthExpertObject } from "../../../../features/authExpert/authExpertSlice";
 import {
+  updateAlert,
+  updateHeaderMobileExpertDashboard
+} from "../../../../features/options/optionsSlice";
+import {
   unauthenticateExpert,
-  unauthenticatehardExpert,
+  unauthenticatehardExpert
 } from "../../../../helpers/authExpertHelper";
-import { motion } from "framer-motion";
-import { FaClock } from "react-icons/fa";
-import { AiFillSafetyCertificate, AiFillSchedule } from "react-icons/ai";
-import { GrStatusGoodSmall } from "react-icons/gr";
-import { HiArrowUturnLeft, HiArrowUturnRight } from "react-icons/hi2";
 import {
   getCookie,
   removeCookie,
-  unauthenticatehard,
+  unauthenticatehard
 } from "../../../../helpers/authHelper";
-import { authExpertDownloadProfilePicture } from "../../../../features/authExpert/authExpertAPI";
-import {
-  updateAlert,
-  updateHeaderMobileExpertDashboard,
-} from "../../../../features/options/optionsSlice";
-import { Alert } from "../../../../common/types/Alert";
-import { addAuthObject } from "../../../../features/auth/authSlice";
 
 type Props = {};
 

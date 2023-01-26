@@ -1,25 +1,20 @@
-import React, { useState, useEffect } from "react";
-import { BsArrowRight } from "react-icons/bs";
-import {
-  FaClinicMedical,
-  FaFilePrescription,
-  FaHeartbeat,
-} from "react-icons/fa";
-import { IoIosPerson } from "react-icons/io";
+import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
+import CountUp from "react-countup";
 import { AiFillEye, AiOutlineCloseCircle } from "react-icons/ai";
-import { Link, useNavigate, useSearchParams } from "react-router-dom";
-import { Alert } from "../../../common/types/Alert";
-import { updateAlert } from "../../../features/options/optionsSlice";
-import { useAppDispatch, useAppSelector } from "../../../app/hooks";
-import { isAuthExpert } from "../../../helpers/authExpertHelper";
 import { BiLoaderAlt } from "react-icons/bi";
+import { BsArrowRight } from "react-icons/bs";
+import { IoIosPerson } from "react-icons/io";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "../../../app/hooks";
 import { AuthExpertRegisterDto } from "../../../common/dtos/auth/expert/authExpertRegisterDto.dto";
-import { authExpertRegister } from "../../../features/authExpert/authExpertAPI";
+import { Alert } from "../../../common/types/Alert";
 import { Branch } from "../../../common/types/Branch.entity";
 import { Firm } from "../../../common/types/Firm.entity";
+import { authExpertRegister } from "../../../features/authExpert/authExpertAPI";
+import { updateAlert } from "../../../features/options/optionsSlice";
+import { isAuthExpert } from "../../../helpers/authExpertHelper";
 import { isAuth } from "../../../helpers/authHelper";
-import CountUp from "react-countup";
-import { motion } from "framer-motion";
 
 type Props = {};
 
@@ -215,7 +210,7 @@ export default function Register({}: Props) {
               className="flex w-full flex-col items-start justify-center gap-4"
               onSubmit={handleSubmit}
             >
-              <div className="flex w-full items-center justify-center gap-4">
+              <div className="flex flex-col sm:flex-row w-full items-center justify-center gap-4">
                 <div className="flex w-full flex-col items-start justify-center gap-1">
                   <label
                     htmlFor="name"
@@ -271,8 +266,8 @@ export default function Register({}: Props) {
                 text-[16px] font-medium outline-none transition-all duration-300 focus:border-color-main"
                 />
               </div>
-              <div className="grid w-full grid-cols-2">
-                <div className="flex flex-col items-start justify-start gap-2 py-4">
+              <div className="flex flex-col sm:flex-row gap-y-4 justify-center items-start w-full grid-cols-2">
+                <div className="w-full flex flex-col items-start justify-start gap-2">
                   <h1 className="font-bold text-color-dark-primary opacity-50">
                     Branşlarım
                   </h1>
@@ -337,7 +332,7 @@ export default function Register({}: Props) {
                   </div>
                 </div>
               </div>
-              <div className="flex w-full flex-col items-start justify-center gap-1">
+              <div className="flex w-full flex-col items-start justify-center gap-4">
                 <div className="flex w-full flex-col items-start justify-center gap-1">
                   <label
                     htmlFor="company"

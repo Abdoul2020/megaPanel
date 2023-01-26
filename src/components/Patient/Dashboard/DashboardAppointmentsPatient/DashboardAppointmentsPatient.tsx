@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../../../../app/hooks";
 import { AppointmentFilterDto } from "../../../../common/dtos/filter/AppointmentFilter";
 import { fetchAppointments } from "../../../../features/appointments/appointmentsAPI";

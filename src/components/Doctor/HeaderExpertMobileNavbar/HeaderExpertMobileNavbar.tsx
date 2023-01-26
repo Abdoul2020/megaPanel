@@ -1,28 +1,23 @@
-import React, { useEffect, useState } from "react";
-import { FaStethoscope } from "react-icons/fa";
-import { BsArrowRight, BsFillPersonFill } from "react-icons/bs";
-import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
+import { BsArrowRight, BsFillPersonFill } from "react-icons/bs";
 import { FiLogOut, FiSearch } from "react-icons/fi";
-import { CgProfile } from "react-icons/cg";
+import { Link, useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../../app/hooks";
 import { addAuthObject } from "../../../features/auth/authSlice";
-import {
-  removeCookie,
-  unauthenticate,
-  unauthenticatehard,
-} from "../../../helpers/authHelper";
+import { addAuthExpertObject } from "../../../features/authExpert/authExpertSlice";
+import { fetchClientProfilePicture } from "../../../features/clients/clientsAPI";
+import { fetchExpertProfilePicture } from "../../../features/doctorSlice/doctorAPI";
 import {
   updateDoctorState,
-  updateHeaderMobileExpert,
+  updateHeaderMobileExpert
 } from "../../../features/options/optionsSlice";
-import { addAuthExpertObject } from "../../../features/authExpert/authExpertSlice";
 import {
-  unauthenticateExpert,
-  unauthenticatehardExpert,
+  unauthenticatehardExpert
 } from "../../../helpers/authExpertHelper";
-import { fetchExpertProfilePicture } from "../../../features/doctorSlice/doctorAPI";
-import { fetchClientProfilePicture } from "../../../features/clients/clientsAPI";
+import {
+  removeCookie, unauthenticatehard
+} from "../../../helpers/authHelper";
 
 type Props = {};
 

@@ -1,16 +1,15 @@
-import React from "react";
-import { Route, Routes } from "react-router-dom";
-import DashboardAppointmentsPatient from "./DashboardAppointmentsPatient/DashboardAppointmentsPatient";
-import DashboardHeaderPatient from "./DashboardHeaderPatient/DashboardHeaderPatient";
-import DashboardHomePatient from "./DashboardHomePatient/DashboardHomePatient";
-import DashboardSettingsPatient from "./DashboardSettingsPatient/DashboardSettingsPatient";
 import Drawer from "@mui/material/Drawer";
-import DashboardHeaderPatientMobile from "./DashboardHeaderPatientMobile/DashboardHeaderPatientMobile";
 import { useDispatch } from "react-redux";
+import { Route, Routes } from "react-router-dom";
 import { useAppSelector } from "../../../app/hooks";
 import { updateHeaderMobilePatientDashboard } from "../../../features/options/optionsSlice";
+import DashboardAppointmentsPatient from "./DashboardAppointmentsPatient/DashboardAppointmentsPatient";
+import DashboardHeaderPatient from "./DashboardHeaderPatient/DashboardHeaderPatient";
+import DashboardHeaderPatientMobile from "./DashboardHeaderPatientMobile/DashboardHeaderPatientMobile";
 import DashboardHeaderPatientMobileNavbar from "./DashboardHeaderPatientMobileNavbar/DashboardHeaderPatientMobileNavbar";
+import DashboardHomePatient from "./DashboardHomePatient/DashboardHomePatient";
 import DashboardNotFoundPagePatient from "./DashboardNotFoundPagePatient/DashboardNotFoundPagePatient";
+import DashboardSettingsPatient from "./DashboardSettingsPatient/DashboardSettingsPatient";
 
 type Props = {};
 

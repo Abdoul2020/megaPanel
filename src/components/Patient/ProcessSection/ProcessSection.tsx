@@ -1,4 +1,3 @@
-import React from "react";
 import { motion } from "framer-motion";
 
 type Props = {};
@@ -16,7 +15,7 @@ export default function ProcessSection({}: Props) {
       </div>
       <div className="relative z-10 flex w-full items-center justify-center py-20 lg:w-2/3">
         <div className="absolute hidden h-full w-full items-center justify-center md:flex">
-          <img src={require("../../../assets/images/icons/kusak.png")} alt="" />
+          <img src={require("../../../assets/images/arrow.png")} alt="" />
         </div>
         <div className="z-20 flex w-full flex-col md:gap-0 gap-56 items-center justify-center md:flex-row md:justify-between">
           <div className="relative flex flex-col items-center justify-center gap-8">
@@ -57,7 +56,7 @@ export default function ProcessSection({}: Props) {
                   delay: 0.2,
                 }}
                 viewport={{ once: true }}
-                src={require("../../../assets/images/icons/medical-assistance.png")}
+                src={require("../../../assets/images/medical-assistance.png")}
                 className="w-[50px]"
                 alt=""
               />
@@ -84,7 +83,7 @@ export default function ProcessSection({}: Props) {
                   delay: 0.2,
                 }}
                 viewport={{ once: true }}
-                src={require("../../../assets/images/icons/meeting.png")}
+                src={require("../../../assets/images/meeting.png")}
                 className="w-[50px]"
                 alt=""
               />

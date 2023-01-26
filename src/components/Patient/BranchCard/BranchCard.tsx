@@ -1,12 +1,4 @@
-import React from "react";
-import { MdBusinessCenter, MdOutlinePsychology } from "react-icons/md";
-import { IoFastFoodOutline } from "react-icons/io5";
-import { TbMoodKid } from "react-icons/tb";
-import { RiMentalHealthLine } from "react-icons/ri";
-import { BiBrain } from "react-icons/bi";
-import { GiBarefoot } from "react-icons/gi";
-import { AiOutlineEye } from "react-icons/ai";
-import { FcBusiness } from "react-icons/fc";
+import { MdBusinessCenter } from "react-icons/md";
 import { Branch } from "../../../common/types/Branch.entity";
 
 type Props = {

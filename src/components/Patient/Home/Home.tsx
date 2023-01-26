@@ -1,19 +1,19 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { FaStethoscope } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../../app/hooks";
+import { Branch } from "../../../common/types/Branch.entity";
+import { Doctor } from "../../../common/types/Doctor.entity";
 import { updateDoctorState } from "../../../features/options/optionsSlice";
+import QASection from "../../Doctor/QASection/QASection";
 import BannerSection from "../BannerSection/BannerSection";
 import BranchSection from "../BranchSection/BranchSection";
+import CTAResponsive from "../CTAResponsive/CTAResponsive";
 import CTASection from "../CTASection/CTASection";
-import QASection from "../../Doctor/QASection/QASection";
 import ProcessSection from "../ProcessSection/ProcessSection";
 import PromotionDoctor from "../PromotionDoctor/PromotionDoctor";
 import PromotionSection from "../PromotionSection/PromotionSection";
 import TeamSection from "../TeamSection/TeamSection";
-import { Doctor } from "../../../common/types/Doctor.entity";
-import { Branch } from "../../../common/types/Branch.entity";
-import CTAResponsive from "../CTAResponsive/CTAResponsive";
 
 type Props = {
   doctors: Doctor[];

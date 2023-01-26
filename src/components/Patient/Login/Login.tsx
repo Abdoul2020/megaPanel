@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { AiFillEye } from "react-icons/ai";
 import { BiLoaderAlt } from "react-icons/bi";
 import { BsArrowRight } from "react-icons/bs";
@@ -6,10 +6,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useAppDispatch } from "../../../app/hooks";
 import { AuthClientLoginDto } from "../../../common/dtos/auth/client/authClientLoginDto.dto";
 import { Alert } from "../../../common/types/Alert";
-import {
-  authClientLogin,
-  authGetProfile,
-} from "../../../features/auth/authAPI";
+import { authClientLogin } from "../../../features/auth/authAPI";
 import { addAuthObject, addAuthToken } from "../../../features/auth/authSlice";
 import { addAuthExpertObject } from "../../../features/authExpert/authExpertSlice";
 import { updateAlert } from "../../../features/options/optionsSlice";
@@ -48,8 +45,14 @@ export default function Login({}: Props) {
         navigate("/");
       }
     }
+    const token = getCookie("m_t");
     const rmm = getLocalStorage("rmm_c");
-    if (rmm !== undefined && rmm !== null) {
+    if (
+      rmm !== undefined &&
+      rmm !== null &&
+      token !== undefined &&
+      token !== null
+    ) {
       const rmm_revised = JSON.parse(rmm);
       if (rmm_revised.rmm !== undefined && rmm_revised.rmm !== null) {
         setRemindMe(rmm_revised.rmm);
@@ -177,8 +180,8 @@ export default function Login({}: Props) {
     setRemindMe((value) => !value);
   };
   return (
-    <div className="relative flex h-screen w-full items-center justify-center bg-color-white-secondary py-20 pt-[170px] px-10 lg:px-0">
-      <div className="z-20 flex w-full lg:w-1/2 xl:w-1/4 items-center justify-center">
+    <div className="relative flex min-h-screen w-full items-center justify-center bg-color-white-secondary py-10 px-10 lg:px-0">
+      <div className="z-20 flex w-full items-center justify-center lg:w-1/2 xl:w-1/4">
         <div className="flex w-full flex-col items-center justify-center gap-8">
           <div className="flex w-full flex-col items-start justify-center gap-8 rounded-[25px] bg-color-white p-8 px-10 shadow-lg">
             <h1 className="text-xl font-bold text-color-dark-primary opacity-80">

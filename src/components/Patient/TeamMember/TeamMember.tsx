@@ -1,17 +1,13 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 // import { AiOutlineHeart } from "react-icons/ai";
 // import { AiOutlineCheckCircle } from "react-icons/ai";
 // import { BsShieldCheck } from "react-icons/bs";
 // import { AiFillStar } from "react-icons/ai";
+import { BsCameraVideoFill } from "react-icons/bs";
 import { MdLocationPin } from "react-icons/md";
-import { AiFillCheckCircle } from "react-icons/ai";
-import { Branch } from "../../../common/types/Branch.entity";
-import { Title } from "../../../common/types/Title.entity";
-import { Expertise } from "../../../common/types/Expertise.entity";
+import { Link } from "react-router-dom";
 import { Doctor } from "../../../common/types/Doctor.entity";
 import { fetchExpertProfilePicture } from "../../../features/doctorSlice/doctorAPI";
-import { BsCameraVideoFill } from "react-icons/bs";
-import { Link } from "react-router-dom";
 
 type Props = {
   key: string;
@@ -48,7 +44,7 @@ export default function TeamMember(props: Props) {
     setTitle(props.expert.expert_title.title_title);
   }, []);
   return (
-    <div className="flex min-w-[300px] snap-center flex-col items-start justify-start gap-4 rounded-[25px] bg-color-white shadow-xl ">
+    <div className="flex max-w-[300px] snap-center flex-col items-start justify-start gap-4 rounded-[25px] bg-color-white shadow-xl ">
       <div className="relative flex w-full items-center justify-center p-12">
         <div className="z-20 h-[75px] w-[75px] overflow-hidden rounded-[20px]">
           {profileImageBase64 ? (
