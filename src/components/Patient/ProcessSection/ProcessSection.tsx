@@ -94,7 +94,7 @@ export default function ProcessSection({}: Props) {
               </h1>
               <p className="text-center text-color-dark-primary opacity-80">
                 Randevunuzu aldıktan sonrasında size gelen bildirimle
-                uzmanınızın belir- lenen randevu saati için iletişim bilgilerini
+                uzmanınızın belirlenen randevu saati için iletişim bilgilerini
                 görün
               </p>
             </div>

@@ -7,11 +7,11 @@ type Props = {};
 
 export default function Footer({}: Props) {
   return (
-    <div className="relative flex w-full items-center justify-center bg-color-white px-4 py-10 sm:py-20 sm:px-0">
-      <div className="flex w-full flex-col items-start justify-center sm:w-2/3">
-        <div className="flex grid-flow-col grid-cols-5 flex-col items-start justify-start gap-10 sm:gap-20 pb-10 sm:pb-20 sm:grid">
-          <div className="col-span-3 flex flex-col items-start justify-center gap-6">
-            <div className="w-full flex sm:justify-start items-start justify-center">
+    <div className="relative flex w-full items-center justify-center bg-color-white px-6 py-10 lg:py-20 lg:px-0">
+      <div className="flex w-full flex-col items-start justify-center lg:w-2/3">
+        <div className="flex grid-flow-col grid-cols-4 flex-col items-start justify-start gap-10 pb-10 lg:grid lg:gap-20 lg:pb-20">
+          <div className="col-span-2 flex flex-col items-start justify-center gap-6">
+            <div className="flex w-full items-start justify-start">
               <img
                 src={require("../../assets/images/megaverse_logo_7.png")}
                 alt=""
@@ -21,14 +21,14 @@ export default function Footer({}: Props) {
             <p className="text-color-dark-primary opacity-50">
               Megaverse Uluslararası Kişisel Gelişim Portalı, Bülent
               Gardiyaoğlu’nun 10 yılı aşkın emeği ve birikimini tek bir çatıda
-              toplayan, danışan ve danışmanları bir araya ge- tiren, her iki
+              toplayan, danışan ve danışmanları bir araya getiren, her iki
               tarafa da kolaylıklar sağlayan bir kişisel gelişim portalıdır.
             </p>
             <div className="flex flex-col items-start justify-center gap-2">
               <h1 className="text-lg font-bold text-color-dark-primary opacity-80">
                 Bizi takip edin
               </h1>
-              <ul className="flex items-center justify-start gap-4 flex-wrap">
+              <ul className="flex flex-wrap items-center justify-start gap-4">
                 <li>
                   <a href="https://twitter.com/megaversecoach">
                     <RiTwitterFill className="text-[32px] text-color-main opacity-50" />
@@ -133,48 +133,44 @@ export default function Footer({}: Props) {
                 </li> */}
               </ul>
             </div>
-            {/* <div className="flex flex-col justify-center items-start gap-4">
-              <h1 className="text-lg text-color-dark-primary font-bold opacity-80">
-                Megaverse
+            <div className="flex flex-col items-start justify-center gap-4">
+              <h1 className="text-lg font-bold text-color-dark-primary opacity-80">
+                Kurumsal
               </h1>
-              <ul className="flex flex-col justify-start items-start gap-2">
+              <ul className="flex flex-col items-start justify-start gap-2">
                 <li className="text-base text-color-dark-primary opacity-50">
-                  Hakkımızda
+                  Gizlilik Koşulları
                 </li>
                 <li className="text-base text-color-dark-primary opacity-50">
-                  İletişim
+                  Kullanım Sözleşmesi
                 </li>
                 <li className="text-base text-color-dark-primary opacity-50">
-                  Çerezlere İlişkin Aydınlatma Metni
-                </li>
-                <li className="text-base text-color-dark-primary opacity-50">
-                  Kariyer
+                  KVKK
                 </li>
               </ul>
             </div>
-            <div className="flex flex-col justify-center items-start gap-4">
-              <h1 className="text-lg text-color-dark-primary font-bold opacity-80s">
-                Megaverse
+            <div className="flex flex-col items-start justify-center gap-4">
+              <h1 className="opacity-80 text-lg font-bold text-color-dark-primary">
+                Bize ulaşın
               </h1>
-              <ul className="flex flex-col justify-start items-start gap-2">
+              <ul className="flex flex-col items-start justify-start gap-2">
                 <li className="text-base text-color-dark-primary opacity-50">
-                  Hakkımızda
+                  +90 (555)-444-3322
                 </li>
                 <li className="text-base text-color-dark-primary opacity-50">
-                  İletişim
-                </li>
-                <li className="text-base text-color-dark-primary opacity-50">
-                  Çerezlere İlişkin Aydınlatma Metni
-                </li>
-                <li className="text-base text-color-dark-primary opacity-50">
-                  Kariyer
+                  info@megaverse.coach
                 </li>
               </ul>
-            </div> */}
+            </div>
           </div>
         </div>
-        <div className="flex w-full items-start justify-start border-t-2 border-solid border-color-dark-primary border-opacity-10 pt-10 opacity-50">
+        <div className="flex w-full items-center justify-between border-t-2 border-solid border-color-dark-primary border-opacity-10 pt-10 opacity-50">
           <h1>© 2022 Megaverse Teknoloji A.Ş. Tüm hakları saklıdır.</h1>
+          <img
+            src={require("../../assets/images/odeme_yontemleri.webp")}
+            alt=""
+            className="h-[42px]"
+          />
         </div>
       </div>
     </div>

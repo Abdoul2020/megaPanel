@@ -593,14 +593,14 @@ export default function Checkout({}: Props) {
                       </div>
                     </div>
                   </div>
-                  <div className="flex w-full items-center justify-between py-10">
+                  {/* <div className="flex w-full items-center justify-between py-10">
                     <h1 className="text-lg font-bold text-color-dark-primary">
                       Toplam Tutar
                     </h1>
                     <h1 className="text-3xl text-color-dark-primary">
                       {expert?.expert_session_fee}
                     </h1>
-                  </div>
+                  </div> */}
                 </div>
                 <button
                   onClick={handleSubmit}

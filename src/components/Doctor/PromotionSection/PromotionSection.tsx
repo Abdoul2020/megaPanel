@@ -23,7 +23,7 @@ export default function PromotionSection({}: Props) {
         </div> */}
         </div>
         <div className="z-20 flex h-full w-full items-center justify-center">
-          <div className="grid grid-cols-1 items-start justify-around content-start gap-10 md:grid-cols-2">
+          <div className="grid grid-cols-1 content-start items-start justify-around gap-10 md:grid-cols-2">
             <div className="flex flex-col items-start justify-center gap-4">
               <div className="flex items-center justify-center gap-6">
                 <div className="rounded-xl border-4 border-solid border-color-main p-2">
@@ -62,9 +62,6 @@ export default function PromotionSection({}: Props) {
                   <IoIosPerson className="text-[36px] text-color-main" />
                 </div>
                 <div className="flex flex-col items-start justify-center">
-                  <h1 className="text-xl font-bold text-color-dark-primary">
-                    <CountUp end={2790270} duration={1} />
-                  </h1>
                   <motion.h1
                     initial={{ opacity: 0 }}
                     whileInView={{ opacity: 1 }}
@@ -74,10 +71,13 @@ export default function PromotionSection({}: Props) {
                       reapat: 1,
                     }}
                     viewport={{ once: true }}
-                    className="text-color-dark-primary opacity-70"
+                    className="text-xl font-bold text-color-dark-primary"
                   >
-                    Danışan
+                    <CountUp end={2790270} duration={1} />
                   </motion.h1>
+                  <h1 className="text-color-dark-primary opacity-70">
+                    Aktif Uzman
+                  </h1>
                 </div>
               </div>
               <h1 className="text-color-dark-primary opacity-70">
@@ -94,9 +94,6 @@ export default function PromotionSection({}: Props) {
                   />
                 </div>
                 <div className="flex flex-col items-start justify-center">
-                  <h1 className="text-xl font-bold text-color-dark-primary">
-                    <CountUp end={2270127} duration={1} />
-                  </h1>
                   <motion.h1
                     initial={{ opacity: 0 }}
                     whileInView={{ opacity: 1 }}
@@ -106,10 +103,13 @@ export default function PromotionSection({}: Props) {
                       reapat: 1,
                     }}
                     viewport={{ once: true }}
-                    className="text-color-dark-primary opacity-70"
+                    className="text-xl font-bold text-color-dark-primary"
                   >
-                    Planlı Randevu
+                    <CountUp end={2270127} duration={1} />
                   </motion.h1>
+                  <h1 className="text-color-dark-primary opacity-70">
+                    Planlı Randevu
+                  </h1>
                 </div>
               </div>
               <h1 className="text-color-dark-primary opacity-70">

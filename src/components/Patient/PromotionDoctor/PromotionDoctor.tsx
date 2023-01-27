@@ -16,9 +16,10 @@ export default function PromotionDoctor({}: Props) {
               </h1>
             </div>
             <p className="text-color-dark-primary">
-              Bulut tabanlı, Uluslararası kişisel gelişim portalı Megaverse,
-              seans alan ve seans vereni tek portalda birleştiren ilk ve tek
-              platformdur.
+              Megaverse Uluslararası Kişisel Gelişim Portalı, Bülent
+              Gardiyaoğlu’nun 10 yılı aşkın emeği ve birikimini tek bir çatıda
+              toplayan, danışan ve danışmanları bir araya getiren, her iki
+              tarafa da kolaylıklar sağlayan bir kişisel gelişim portalıdır.
             </p>
           </div>
           <Link to="/for-doctors/#banner">

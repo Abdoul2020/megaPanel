@@ -263,7 +263,7 @@ export default function FeaturesSection({}: Props) {
                 Randevu Yönetimi
               </h1>
               <h1 className="text-lg font-bold text-color-dark-primary">
-                Doktor çalışma takviminize ve muayene sürelerinize göre
+                Uzman çalışma takviminize ve muayene sürelerinize göre
                 randevularınızı kolaylıkla yönetebilirsiniz.
               </h1>
               <p className="text-color-dark-primary opacity-80">
