@@ -8,10 +8,12 @@ import { IoIosPerson } from "react-icons/io";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../../app/hooks";
 import { AuthExpertRegisterDto } from "../../../common/dtos/auth/expert/authExpertRegisterDto.dto";
+import { FirmFilterDto } from "../../../common/filters/FirmFilter.dto";
 import { Alert } from "../../../common/types/Alert";
 import { Branch } from "../../../common/types/Branch.entity";
 import { Firm } from "../../../common/types/Firm.entity";
 import { authExpertRegister } from "../../../features/authExpert/authExpertAPI";
+import { fetchFirms } from "../../../features/firms/firmsAPI";
 import { updateAlert } from "../../../features/options/optionsSlice";
 import { isAuthExpert } from "../../../helpers/authExpertHelper";
 import { isAuth } from "../../../helpers/authHelper";
@@ -38,9 +40,10 @@ export default function Register({}: Props) {
 
   const [branchDropdownOpen, setBranchDropdownOpen] = useState(false);
 
-  const branches = useAppSelector((state) => state.branches.branchesList);
-  const firms = useAppSelector((state) => state.firms.firmsList);
+  const [referenceId, setReferenceId] = useState("");
 
+  const branches = useAppSelector((state) => state.branches.branchesList);
+  const [firms, setFirms] = useState<Firm[]>([]);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -58,6 +61,26 @@ export default function Register({}: Props) {
     setName(paramName !== null ? paramName : "");
     setSurname(paramSurname !== null ? paramSurname : "");
     setCompany(paramCompany !== null ? paramCompany : "");
+    async function fetchData() {
+      const query: FirmFilterDto = {
+        page: 1,
+        size: 5,
+        sort: "ASC",
+        sort_by: "branch_title",
+        query_text: "",
+        firmType: "klinik",
+      };
+      const fetchFirmsResponse = await fetchFirms(query);
+      const successFirms = fetchFirmsResponse.success;
+      if (successFirms) {
+        const statusCodeFirms = fetchFirmsResponse.data.status;
+        const data = fetchFirmsResponse.data.data;
+        setFirms(data);
+      } else {
+        // console.log(fetchFirmsResponse);
+      }
+    }
+    fetchData();
   }, []);
 
   const [passwordHide, setPasswordHide] = useState(true);
@@ -91,6 +114,7 @@ export default function Register({}: Props) {
           expert_email: email,
           expert_password: password,
           expert_retype_password: passwordRetype,
+          expert_reference_from: referenceId !== "" ? referenceId : undefined,
         };
         setLoader(true);
         setSubmitDisable(true);
@@ -155,6 +179,10 @@ export default function Register({}: Props) {
     const value = e.target.value;
     setPasswordRetype(value);
   };
+  const handleReferenceIdChange = (e: any) => {
+    const value = e.target.value;
+    setReferenceId(value);
+  };
   // Password Hide
   const handlePasswordHide = () => {
     setPasswordHide((value) => !value);
@@ -210,7 +238,7 @@ export default function Register({}: Props) {
               className="flex w-full flex-col items-start justify-center gap-4"
               onSubmit={handleSubmit}
             >
-              <div className="flex flex-col sm:flex-row w-full items-center justify-center gap-4">
+              <div className="flex w-full flex-col items-center justify-center gap-4 sm:flex-row">
                 <div className="flex w-full flex-col items-start justify-center gap-1">
                   <label
                     htmlFor="name"
@@ -266,8 +294,8 @@ export default function Register({}: Props) {
                 text-[16px] font-medium outline-none transition-all duration-300 focus:border-color-main"
                 />
               </div>
-              <div className="flex flex-col sm:flex-row gap-y-4 justify-center items-start w-full grid-cols-2">
-                <div className="w-full flex flex-col items-start justify-start gap-2">
+              <div className="flex w-full grid-cols-2 flex-col items-start justify-center gap-y-4 sm:flex-row">
+                <div className="flex w-full flex-col items-start justify-start gap-2">
                   <h1 className="font-bold text-color-dark-primary opacity-50">
                     Branşlarım
                   </h1>
@@ -473,6 +501,26 @@ export default function Register({}: Props) {
                   </div>
                 </div>
               </div>
+              <div className="flex w-full items-start justify-start">
+                <div className="flex flex-col items-start justify-center gap-1">
+                  <label
+                    htmlFor="referenceId"
+                    className="font-bold text-color-dark-primary opacity-50"
+                  >
+                    Referans Kodu (Opsiyonel)
+                  </label>
+                  <input
+                    onChange={handleReferenceIdChange}
+                    value={referenceId}
+                    type="text"
+                    name="referenceId"
+                    id="referenceId"
+                    placeholder="Referans Kodunu Gir"
+                    className="w-full rounded-[20px] border-[1px] border-color-dark-primary border-opacity-10 bg-color-white-third py-[15px] px-[22px]
+                text-[16px] font-medium outline-none transition-all duration-300 focus:border-color-main"
+                  />
+                </div>
+              </div>
               <button
                 type="submit"
                 disabled={submitDisable}
@@ -505,10 +553,8 @@ export default function Register({}: Props) {
         </div>
         <div className="hidden flex-col items-start justify-start gap-10 rounded-[15px] p-4 lg:flex">
           <h1 className="text-xl font-bold">
-            Her branştan alanında uzmanlar ile{" "}
-            <span className="text-color-main">
-              online olarak hemen görüşün!
-            </span>
+            Dünyanın her yerinden danışanlara ulaşmak için{" "}
+            <span className="text-color-main">hemen kayıt olun!</span>
           </h1>
           <ul className="flex flex-col items-start justify-center gap-10">
             <li className="flex flex-col items-start justify-center gap-4">

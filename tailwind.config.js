@@ -31,5 +31,9 @@ module.exports = {
         "radial-gradient(circle, rgba(51,169,179,1) 0%, rgba(36,118,125,1) 35%)",
     },
   },
-  plugins: [require("tailwind-scrollbar"), require("tw-elements/dist/plugin")],
+  plugins: [
+    require("tailwind-scrollbar"),
+    require("tw-elements/dist/plugin"),
+    require("@tailwindcss/line-clamp"),
+  ],
 };

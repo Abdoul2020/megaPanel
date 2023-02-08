@@ -1120,7 +1120,7 @@ export default function DashboardAppointmentsChartExpert({}: Props) {
                     Randevu Günlerini Belirle
                   </h1>
                   <p className="text-color-dark-primary text-opacity-50">
-                    Uzmanın hangi günlerde hasta kabulü yapacağını belirtiniz.
+                    Hangi günlerde hasta kabulü yapacağınızı belirtiniz.
                     (gerekli)
                   </p>
                 </div>
@@ -1232,7 +1232,7 @@ export default function DashboardAppointmentsChartExpert({}: Props) {
                     Randevu Günlerini Belirle
                   </h1>
                   <p className="text-color-dark-primary text-opacity-50">
-                    Uzmanın hangi günlerde hasta kabulü yapacağını belirtiniz.
+                    Hangi günlerde hasta kabulü yapacağınızı belirtiniz.
                     (gerekli)
                   </p>
                 </div>
@@ -1861,7 +1861,7 @@ export default function DashboardAppointmentsChartExpert({}: Props) {
                       Mola Saatlerini Belirle
                     </h1>
                     <p className="text-color-dark-primary text-opacity-50">
-                      Mola başlama ve bitiş saatlerini belirleyiniz. (gerekli)
+                      Mola başlama ve bitiş saatlerinizi belirleyiniz. (gerekli)
                     </p>
                   </div>
                   <div

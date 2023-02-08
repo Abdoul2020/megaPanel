@@ -5,18 +5,20 @@ import { BiLoaderAlt } from "react-icons/bi";
 import { BsPlusLg } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../../../app/hooks";
+import { FirmFilterDto } from "../../../../common/filters/FirmFilter.dto";
 import { Alert } from "../../../../common/types/Alert";
 import { Firm } from "../../../../common/types/Firm.entity";
 import { authExpertUploadCertificatePdf } from "../../../../features/authExpert/authExpertAPI";
 import {
   addAuthExpertCertificates,
-  addAuthExpertObject
+  addAuthExpertObject,
 } from "../../../../features/authExpert/authExpertSlice";
 import { fetchCertificates } from "../../../../features/certificates/certificatesAPI";
+import { fetchFirms } from "../../../../features/firms/firmsAPI";
 import { updateAlert } from "../../../../features/options/optionsSlice";
 import {
   getCookie,
-  unauthenticateExpert
+  unauthenticateExpert,
 } from "../../../../helpers/authExpertHelper";
 import DashboardCertificateExpert from "./DashboardCertificateExpert/DashboardCertificateExpert";
 
@@ -31,7 +33,8 @@ export default function DashboardCertificatesExpert({}: Props) {
   const authExpertCertificates = useAppSelector(
     (state) => state.authexpert.auth_expert_certificates
   );
-  const firms = useAppSelector((state) => state.firms.firmsList);
+
+  const [firms, setFirms] = useState<Firm[]>([]);
 
   useEffect(() => {
     async function fetchData() {
@@ -57,6 +60,29 @@ export default function DashboardCertificatesExpert({}: Props) {
     }
     fetchData();
   }, [authExpertObject]);
+
+  useEffect(() => {
+    async function fetchData() {
+      const query: FirmFilterDto = {
+        page: 1,
+        size: 5,
+        sort: "ASC",
+        sort_by: "branch_title",
+        query_text: "",
+        firmType: "akademi",
+      };
+      const fetchFirmsResponse = await fetchFirms(query);
+      const successFirms = fetchFirmsResponse.success;
+      if (successFirms) {
+        const statusCodeFirms = fetchFirmsResponse.data.status;
+        const data = fetchFirmsResponse.data.data;
+        setFirms(data);
+      } else {
+        // console.log(fetchFirmsResponse);
+      }
+    }
+    fetchData();
+  }, []);
 
   const [file, setFile] = useState<File | null>(null);
   const [fileLoader, setFileLoader] = useState(false);
@@ -238,8 +264,8 @@ export default function DashboardCertificatesExpert({}: Props) {
             className="flex items-center justify-center gap-2 rounded-[15px] bg-color-main p-2 px-4"
           >
             <BsPlusLg
-              className="text-[18px] text-color-white
-    hover:cursor-pointer font-bold"
+              className="text-[18px] font-bold
+    text-color-white hover:cursor-pointer"
             />
             <h1 className="text-color-white">Dosya Yükle</h1>
           </button>

@@ -60,7 +60,7 @@ export default function DoctorCard(props: Props) {
     }
   }, []);
   return (
-    <div className="grid w-full grid-cols-1 lg:grid-cols-2 rounded-[15px] bg-color-white">
+    <div className="grid w-full grid-cols-1 rounded-[15px] bg-color-white lg:grid-cols-2">
       <div
         className="relative flex w-full flex-col items-start justify-start gap-4 border-r-[1px]
       border-solid border-color-dark-primary border-opacity-10 p-6"
@@ -144,10 +144,12 @@ export default function DoctorCard(props: Props) {
           </div>
         </div>
         <div className="flex w-full flex-col items-start justify-start">
-          <p className="w-full text-color-dark-primary opacity-50">
+          <p className="w-full text-color-dark-primary opacity-50 line-clamp-3">
             {props.expert.expert_about_me ? props.expert.expert_about_me : ""}
           </p>
-          <h1 className="cursor-pointer text-color-main">Daha Fazla Gör</h1>
+          <Link to={`/doctors/${props.expert._id}`}>
+            <h1 className="cursor-pointer text-color-main">Daha Fazla Gör</h1>
+          </Link>
         </div>
         <div className="absolute top-0 left-full z-20 flex h-full flex-col items-center justify-center gap-4">
           <div

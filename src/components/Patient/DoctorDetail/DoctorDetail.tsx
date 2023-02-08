@@ -3,12 +3,17 @@ import { motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import { AiFillHome } from "react-icons/ai";
 import { BiLoaderAlt } from "react-icons/bi";
-import { BsCameraVideoFill } from "react-icons/bs";
+import { BsCameraVideoFill, BsCheckLg } from "react-icons/bs";
 import { FaClinicMedical } from "react-icons/fa";
 import { FiSearch, FiSmartphone } from "react-icons/fi";
 import { GoPerson } from "react-icons/go";
 import { IoMdInformationCircle, IoMdSchool } from "react-icons/io";
-import { IoShareSocialSharp, IoTimeSharp } from "react-icons/io5";
+import {
+  IoCheckmarkSharp,
+  IoCopy,
+  IoShareSocialSharp,
+  IoTimeSharp,
+} from "react-icons/io5";
 import { MdLocationPin, MdWork } from "react-icons/md";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { SocialIcon } from "react-social-icons";
@@ -16,7 +21,7 @@ import { useAppSelector } from "../../../app/hooks";
 import { Doctor } from "../../../common/types/Doctor.entity";
 import {
   fetchExpert,
-  fetchExpertProfilePicture
+  fetchExpertProfilePicture,
 } from "../../../features/doctorSlice/doctorAPI";
 import CalendarLocation from "../DoctorCard/CalendarLocation/CalendarLocation";
 import CalendarOnline from "../DoctorCard/CalendarOnline/CalendarOnline";
@@ -37,6 +42,8 @@ export default function DoctorDetail({}: Props) {
   const profileRef = useRef<HTMLInputElement>(null);
   const resumeRef = useRef<HTMLInputElement>(null);
   const addressesRef = useRef<HTMLInputElement>(null);
+
+  const [referenceIdCopied, setReferenceIdCopied] = useState(false);
 
   const [online, setOnline] = useState(true);
   const [onlineSearch, setOnlineSearch] = useState(online);
@@ -151,6 +158,15 @@ export default function DoctorDetail({}: Props) {
   const handleAppointmentBoxClose = () => {
     setAppointmentBoxOpen(false);
   };
+  const copyToClipboard = (text?: string) => {
+    if (text) {
+      navigator.clipboard.writeText(text);
+      setReferenceIdCopied(true);
+      setTimeout(() => {
+        setReferenceIdCopied(false);
+      }, 3000);
+    }
+  };
   return (
     <div className="relative flex w-full snap-y snap-center flex-col items-center justify-center bg-color-white-secondary px-10 pt-[90px] xl:px-0">
       <div className="flex w-full items-end justify-center bg-color-white-secondary">
@@ -262,17 +278,42 @@ export default function DoctorDetail({}: Props) {
                   </div>
                   <div className="flex flex-col items-start justify-start">
                     <div className="flex items-center justify-center gap-2">
-                      <div className="flex items-center justify-center gap-2">
-                        <h1 className="text-lg font-bold uppercase text-color-dark-primary text-opacity-50 group-hover:text-opacity-80">
-                          {`${
-                            expert?.expert_title
-                              ? expert?.expert_title.title_title
-                              : ""
-                          }`}
-                        </h1>
-                        <h1 className="text-base uppercase text-color-dark-primary group-hover:text-opacity-80">
-                          {`${expert?.expert_name} ${expert?.expert_surname}`}
-                        </h1>
+                      <div className="flex items-center justify-center gap-4">
+                        <div className="flex items-center justify-center gap-2">
+                          <h1 className="text-lg font-bold uppercase text-color-dark-primary text-opacity-50 group-hover:text-opacity-80">
+                            {`${
+                              expert?.expert_title
+                                ? expert?.expert_title.title_title
+                                : ""
+                            }`}
+                          </h1>
+                          <h1 className="text-base uppercase text-color-dark-primary group-hover:text-opacity-80">
+                            {`${expert?.expert_name} ${expert?.expert_surname}`}
+                          </h1>
+                        </div>
+                        <div
+                          className={`flex cursor-pointer items-center justify-center gap-1 ${
+                            referenceIdCopied ? "opacity-100" : "opacity-30"
+                          } transition-all duration-100 ease-in-out hover:opacity-80`}
+                          onClick={() =>
+                            copyToClipboard(expert?.expert_reference_id)
+                          }
+                        >
+                          <h1
+                            className={`text-base font-bold uppercase ${
+                              referenceIdCopied
+                                ? "text-color-main"
+                                : "text-color-dark-primary"
+                            }`}
+                          >
+                            {expert?.expert_reference_id}
+                          </h1>
+                          {referenceIdCopied ? (
+                            <BsCheckLg className="text-color-main" />
+                          ) : (
+                            <IoCopy className="text-color-dark-primary" />
+                          )}
+                        </div>
                       </div>
                     </div>
                     <ul className="flex max-w-[400px] flex-wrap items-start justify-start gap-4 gap-y-0">
@@ -535,7 +576,7 @@ export default function DoctorDetail({}: Props) {
                           </div>
                           <div className="flex flex-col items-start justify-start">
                             <h1 className="text-sm text-color-dark-primary opacity-50">
-                              Doktor Bilgisi
+                              Uzman Bilgisi
                             </h1>
                             <div className="flex items-center justify-center gap-2">
                               <h1 className="text-lg font-bold uppercase text-color-dark-primary text-opacity-50 group-hover:text-opacity-80">
@@ -683,7 +724,7 @@ export default function DoctorDetail({}: Props) {
                               Online Konsültasyon.
                             </h1>
                             <h1 className="text-sm text-color-dark-primary opacity-50">
-                              Evinden ayrılmadan doktoruna ulaş, görüntülü
+                              Evinden ayrılmadan uzmanına ulaş, görüntülü
                               görüşerek muayene ol.
                             </h1>
                           </div>
@@ -784,7 +825,7 @@ export default function DoctorDetail({}: Props) {
                           Online Konsültasyon.
                         </h1>
                         <h1 className="text-sm text-color-dark-primary opacity-50">
-                          Evinden ayrılmadan doktoruna ulaş, görüntülü görüşerek
+                          Evinden ayrılmadan uzmanına ulaş, görüntülü görüşerek
                           muayene ol.
                         </h1>
                       </div>

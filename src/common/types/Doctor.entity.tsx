@@ -6,6 +6,7 @@ import { Title } from "./Title.entity";
 
 export type Doctor = {
   _id: string;
+  expert_reference_id: string;
   expert_name: string;
   expert_surname: string;
   expert_email: string;

@@ -1,12 +1,12 @@
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { AiFillSafetyCertificate, AiFillSchedule } from "react-icons/ai";
-import { BsFillPersonFill } from "react-icons/bs";
+import { BsCheckLg, BsFillPersonFill } from "react-icons/bs";
 import { FaClock } from "react-icons/fa";
 import { FiLogOut } from "react-icons/fi";
 import { GrStatusGoodSmall } from "react-icons/gr";
 import { HiArrowUturnLeft, HiArrowUturnRight } from "react-icons/hi2";
-import { IoSettings } from "react-icons/io5";
+import { IoCopy, IoSettings } from "react-icons/io5";
 import { RiArrowGoBackLine } from "react-icons/ri";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../../../app/hooks";
@@ -16,16 +16,16 @@ import { authExpertDownloadProfilePicture } from "../../../../features/authExper
 import { addAuthExpertObject } from "../../../../features/authExpert/authExpertSlice";
 import {
   updateAlert,
-  updateHeaderMobileExpertDashboard
+  updateHeaderMobileExpertDashboard,
 } from "../../../../features/options/optionsSlice";
 import {
   unauthenticateExpert,
-  unauthenticatehardExpert
+  unauthenticatehardExpert,
 } from "../../../../helpers/authExpertHelper";
 import {
   getCookie,
   removeCookie,
-  unauthenticatehard
+  unauthenticatehard,
 } from "../../../../helpers/authHelper";
 
 type Props = {};
@@ -41,6 +41,8 @@ export default function DashboardHeaderExpertMobileNavbar({}: Props) {
   const [navElem, setNavElem] = useState(0);
   const [profileImageBase64, setProfileImageBase64] = useState(null);
   const [profileImageLoader, setProfileImageLoader] = useState(false);
+
+  const [referenceIdCopied, setReferenceIdCopied] = useState(false);
   // useEffect(() => {
   //   async function fetchData() {
   //     const token = getCookie("m_t");
@@ -161,6 +163,15 @@ export default function DashboardHeaderExpertMobileNavbar({}: Props) {
   };
   const handleDashboardHeaderMobileExpertClose = () => {
     dispatch(updateHeaderMobileExpertDashboard(false));
+  };
+  const copyToClipboard = (text?: string) => {
+    if (text) {
+      navigator.clipboard.writeText(text);
+      setReferenceIdCopied(true);
+      setTimeout(() => {
+        setReferenceIdCopied(false);
+      }, 3000);
+    }
   };
   return (
     <div className="flex h-full max-w-[300px] flex-col items-center justify-between py-10">
@@ -391,7 +402,7 @@ export default function DashboardHeaderExpertMobileNavbar({}: Props) {
           </Link>
         </ul>
       </div>
-      <div className="flex w-full flex-col items-start justify-center gap-10 px-6">
+      <div className="flex w-full flex-col items-start justify-center gap-6 px-6">
         <div className="group flex cursor-pointer items-center justify-center gap-4 transition-all duration-300">
           {profileImageBase64 ? (
             <img
@@ -431,16 +442,33 @@ export default function DashboardHeaderExpertMobileNavbar({}: Props) {
             </div>
           </div>
         </div>
-        <button
-          className="flex w-full items-center justify-center rounded-[15px] bg-color-third p-4 transition-all 
+        <div className="flex w-full flex-col items-start justify-start">
+          <div
+            className="flex w-full cursor-pointer items-center justify-center gap-1 opacity-80 transition-all duration-100 ease-in-out hover:opacity-50"
+            onClick={() =>
+              copyToClipboard(authExpertObject?.expert_reference_id)
+            }
+          >
+            <h1 className="text-base font-bold uppercase text-color-dark-primary">
+              {authExpertObject?.expert_reference_id}
+            </h1>
+            {referenceIdCopied ? (
+              <BsCheckLg className="text-color-main" />
+            ) : (
+              <IoCopy className="text-color-dark-primary" />
+            )}
+          </div>
+          <button
+            className="flex w-full items-center justify-center rounded-[15px] bg-color-third p-4 transition-all 
                 duration-300 hover:bg-color-secondary"
-          onClick={() => {
-            handleDashboardHeaderMobileExpertClose();
-            handleLogout();
-          }}
-        >
-          <FiLogOut className="text-[24px] text-color-white" />
-        </button>
+            onClick={() => {
+              handleDashboardHeaderMobileExpertClose();
+              handleLogout();
+            }}
+          >
+            <FiLogOut className="text-[24px] text-color-white" />
+          </button>
+        </div>
       </div>
     </div>
   );

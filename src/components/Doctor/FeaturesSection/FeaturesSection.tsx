@@ -1,18 +1,15 @@
-import React, { useState } from "react";
-import { RiCalendarCheckFill } from "react-icons/ri";
-import { ImSearch } from "react-icons/im";
-import { TbReportAnalytics } from "react-icons/tb";
-import { MdDeviceThermostat } from "react-icons/md";
-import { IoFolder, IoTicket } from "react-icons/io5";
-import { TbReport } from "react-icons/tb";
-import { TfiAgenda } from "react-icons/tfi";
 import { motion } from "framer-motion";
+import { useState } from "react";
+import { ImSearch } from "react-icons/im";
 import { IoIosPeople } from "react-icons/io";
+import { IoFolder, IoTicket } from "react-icons/io5";
+import { RiCalendarCheckFill } from "react-icons/ri";
+import { TbReport, TbReportAnalytics } from "react-icons/tb";
+import { TfiAgenda } from "react-icons/tfi";
 
 type Props = {};
 
 export default function FeaturesSection({}: Props) {
-  const array = [1, 2, 3, 4, 5, 6, 7];
   const [activeFeature, setActiveFeature] = useState(0);
   return (
     <div className="relative flex w-full flex-col items-center justify-center gap-12 bg-color-white-secondary py-20 px-10 lg:px-0">
@@ -340,7 +337,7 @@ export default function FeaturesSection({}: Props) {
               </h1>
               <h1 className="text-lg font-bold text-color-dark-primary">
                 Danışanınız ile yaptığınız tüm işlemleri hizmet girişi olarak
-                kayıt altına ala- bilirsiniz. Hizmetlere bağlı olarak oluşacak
+                kayıt altına alabilirsiniz. Hizmetlere bağlı olarak oluşacak
                 finansal bilgiler üzerinden fatura kesimlerini ve ödeme
                 alımlarını gerçekleştirebilirsiniz.
               </h1>
@@ -427,7 +424,7 @@ export default function FeaturesSection({}: Props) {
               </h1>
               <p className="text-color-dark-primary opacity-80">
                 Sürükle-bırak veya kameradan fotograf çekme yöntemi ile
-                kolaylıkla yüklenebilen dokü- manlar, kişisel danışan dosyası
+                kolaylıkla yüklenebilen dökümanlar, kişisel danışan dosyası
                 ile eşleştirilmektedir. Böylelikle bir danışan dosyası
                 içerisinde eklenmiş dokümanlara rahatlıkla ulaşabilirsiniz.
               </p>

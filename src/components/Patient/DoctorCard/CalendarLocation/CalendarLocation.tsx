@@ -304,8 +304,7 @@ export default function CalendarLocation(props: Props) {
                         )
                       }
                       key={i}
-                      className={`cursor-pointer rounded-full p-1 px-2 
-                hover:bg-color-gray-primary hover:bg-opacity-50 ${
+                      className={`cursor-pointer rounded-full p-1 px-2 hover:bg-opacity-50 ${
                   props.expert?.expert_appointment_schedule && cal(i - 1)
                     ? "bg-color-success-primary"
                     : "bg-color-gray-secondary"

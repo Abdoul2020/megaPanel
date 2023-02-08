@@ -7,6 +7,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { SocialIcon } from "react-social-icons";
 import { useAppDispatch, useAppSelector } from "../../../../../app/hooks";
 import { AuthExpertUpdateProfileDto } from "../../../../../common/dtos/auth/expert/authExpertUpdateProfileDto.dto";
+import { FirmFilterDto } from "../../../../../common/filters/FirmFilter.dto";
 import { Alert } from "../../../../../common/types/Alert";
 import { Branch } from "../../../../../common/types/Branch.entity";
 import { Expertise } from "../../../../../common/types/Expertise.entity";
@@ -15,9 +16,11 @@ import { Title } from "../../../../../common/types/Title.entity";
 import {
   authExpertDownloadProfilePicture,
   authExpertUpdateProfile,
-  authExpertUploadProfilePicture
+  authExpertUploadProfilePicture,
 } from "../../../../../features/authExpert/authExpertAPI";
 import { addAuthExpertObject } from "../../../../../features/authExpert/authExpertSlice";
+import { fetchFirms } from "../../../../../features/firms/firmsAPI";
+import { addFirms } from "../../../../../features/firms/firmsSlice";
 import { updateAlert } from "../../../../../features/options/optionsSlice";
 import { getCookie } from "../../../../../helpers/authExpertHelper";
 import { unauthenticate } from "../../../../../helpers/authHelper";
@@ -53,6 +56,7 @@ export default function DashboardSettingsHomeExpert({}: Props) {
   const [profileImageLoader, setProfileImageLoader] = useState(false);
 
   const [social, setSocial] = useState("");
+  const [firms, setFirms] = useState<Firm[] | []>([]);
 
   const [branchDropdownOpen, setBranchDropdownOpen] = useState(false);
   const [expertiseDropdownOpen, setExpertiseDropdownOpen] = useState(false);
@@ -66,7 +70,6 @@ export default function DashboardSettingsHomeExpert({}: Props) {
   const specializations = useAppSelector(
     (state) => state.specializations.specializationsList
   );
-  const firms = useAppSelector((state) => state.firms.firmsList);
   const authExpertObject = useAppSelector(
     (state) => state.authexpert.auth_expert_object
   );
@@ -279,7 +282,28 @@ export default function DashboardSettingsHomeExpert({}: Props) {
       postData();
     }
   }, [file]);
-
+  useEffect(() => {
+    async function fetchData() {
+      const query: FirmFilterDto = {
+        page: 1,
+        size: 5,
+        sort: "ASC",
+        sort_by: "branch_title",
+        query_text: "",
+        firmType: "klinik",
+      };
+      const fetchFirmsResponse = await fetchFirms(query);
+      const successFirms = fetchFirmsResponse.success;
+      if (successFirms) {
+        const statusCodeFirms = fetchFirmsResponse.data.status;
+        const data = fetchFirmsResponse.data.data;
+        setFirms(data);
+      } else {
+        // console.log(fetchFirmsResponse);
+      }
+    }
+    fetchData();
+  }, []);
   const handleSubmit = async (e: any) => {
     e.preventDefault();
     const authExpertUpdateProfileDto: AuthExpertUpdateProfileDto = {

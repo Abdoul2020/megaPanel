@@ -18,15 +18,7 @@ export const authExpertRegister = async (body: AuthExpertRegisterDto) => {
   const response = await axios({
     method: "post",
     url: `${BASE_URL}/auth/expert/register`,
-    data: {
-      expert_name: body.expert_name,
-      expert_surname: body.expert_surname,
-      expert_email: body.expert_email,
-      expert_company: body.expert_company,
-      expert_password: body.expert_password,
-      expert_retype_password: body.expert_retype_password,
-      expert_branch: body.expert_branch,
-    },
+    data: body,
   })
     .then((response) => {
       return {

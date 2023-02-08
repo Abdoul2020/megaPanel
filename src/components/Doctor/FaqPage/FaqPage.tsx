@@ -1,4 +1,3 @@
-
 type Props = {};
 
 export default function FaqPage({}: Props) {
@@ -34,7 +33,7 @@ export default function FaqPage({}: Props) {
                   etkinlik ve toplantı dijital tabanlı olmaya başladı;
                   iyileşmenin yeri ya da zamanı olmaz, iyileşmek bir karardır.
                   Megaverse Uluslararası Kişisel Gelişim Portalı ise her zaman
-                  ve her yerde iy- ileşmeyi, sağlığı amaçlamaktadır.
+                  ve her yerde iyileşmeyi, sağlığı amaçlamaktadır.
                 </p>
               </div>
             </div>
@@ -61,8 +60,8 @@ export default function FaqPage({}: Props) {
                   destek@megaverse.com adresine e-posta göndererek, uygulamanın
                   içinden (sağ üst köşedeki kullanıcı menüsü altında yer al
                   “Destek Al” bölümünden) canlı mesajlaşma ile veya hafta içi
-                  09.30 - 17.00 saatleri arası 0850 711 0 258 no’lu telefonlar-
-                  dan bize ulaşabilirsiniz.
+                  09.30 - 17.00 saatleri arası 0850 711 0 258 no’lu
+                  telefonlardan bize ulaşabilirsiniz.
                 </p>
               </div>
             </div>

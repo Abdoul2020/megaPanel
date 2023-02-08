@@ -9,4 +9,5 @@ export interface AuthExpertRegisterDto {
   expert_email?: string;
   expert_password?: string;
   expert_retype_password?: string;
+  expert_reference_from?: string;
 }

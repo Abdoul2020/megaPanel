@@ -19,6 +19,7 @@ export default function DashboardAppointmentsPatient({}: Props) {
       if (authObject !== undefined) {
         const query: AppointmentFilterDto = {
           appointment_client_client: authObject._id,
+          is_canceled: false,
         };
         const myApoointmentsResponse = await fetchAppointments(query);
         const myApoointmentsSuccess = myApoointmentsResponse.success;
@@ -31,12 +32,12 @@ export default function DashboardAppointmentsPatient({}: Props) {
     fetchData();
   }, [authObject]);
   return (
-    <div className="w-full flex flex-col justify-start items-start gap-4">
-      <div className="w-full flex flex-col justify-start items-start gap-12">
-        <h1 className="text-color-dark-primary font-bold">Randevularım</h1>
+    <div className="flex w-full flex-col items-start justify-start gap-4">
+      <div className="flex w-full flex-col items-start justify-start gap-12">
+        <h1 className="font-bold text-color-dark-primary">Randevularım</h1>
       </div>
       {authAppointments.length !== 0 ? (
-        <div className="w-full min-h-[85vh] flex flex-col justify-start items-start gap-10 shadow-lg bg-color-white rounded-[25px] p-5">
+        <div className="flex min-h-[85vh] w-full flex-col items-start justify-start gap-10 rounded-[25px] bg-color-white p-5 shadow-lg">
           {authAppointments.map((appointment) => {
             return (
               <DashboardAppointment

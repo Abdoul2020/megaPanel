@@ -9,7 +9,7 @@ export default function AboutPage({}: Props) {
           <h1 className="text-2xl font-bold text-color-dark-primary">
             Megaverse Nedir?
           </h1>
-          <div className="flex flex-col items-start justify-start gap-2">
+          <div className="flex flex-col items-start justify-start gap-2 text-color text-color-dark-primary opacity-70">
             <p className="text-lg">
               Geçtiğimiz kısa sürede bütün dünya büyük bir sınav verdi, bu
               sınavın ise günümüzde iletişime büyük etkileri oldu; bu etkileri
@@ -23,7 +23,7 @@ export default function AboutPage({}: Props) {
             </p>
             <p className="text-lg">
               Megaverse Uluslararası Kişisel Gelişim Portalı, sertifikalı
-              uzmanların, profesy- onellerin, koçların sürecine yardımcı olmak
+              uzmanların, profesyonellerin, koçların sürecine yardımcı olmak
               üzere tasarlanırken danışanlar için ise kul- lanıcı dostu, kolay
               kullanımlı ama bir o kadar da fonksiyonel olması hedeflendi.
             </p>
