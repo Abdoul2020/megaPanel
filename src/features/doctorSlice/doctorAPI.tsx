@@ -21,7 +21,7 @@ export const fetchExperts = async (query?: ExpertFilterDto) => {
       sort_by: searchValue?.sort_by,
       count: searchValue.count,
       query_text: searchValue?.query_text,
-      expert_city_location: searchValue?.city,
+      expert_city: searchValue?.city,
       expert_operating_type: searchValue?.operating_type,
     },
   })
@@ -72,7 +72,7 @@ export const fetchExpertsCount = async (query?: ExpertFilterDto) => {
       sort_by: searchValue?.sort_by,
       count: searchValue.count,
       query_text: searchValue?.query_text,
-      expert_city_location: searchValue?.city,
+      expert_city: searchValue?.city,
       expert_operating_type: searchValue?.operating_type,
     },
   })

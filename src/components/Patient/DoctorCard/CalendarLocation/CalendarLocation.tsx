@@ -144,7 +144,7 @@ export default function CalendarLocation(props: Props) {
   };
   const handleHourSectionChange = (i: number, day: number) => {
     const theDay: string = days_string[(i + 1) % 7];
-    if (cal(i)) {
+    if (cal(i) && calSecond(i)) {
       setHourSection(true);
       setSelectedDay(theDay);
       setSelectedDate(day);
@@ -176,6 +176,11 @@ export default function CalendarLocation(props: Props) {
         string as keyof AppointmentSchedule
       ].length > 0
     );
+  };
+
+  const calSecond: any = (i: number) => {
+    const todayDate = new Date().getDate();
+    return i >= todayDate;
   };
 
   const calHours: any = (week_date: string) => {
@@ -305,10 +310,12 @@ export default function CalendarLocation(props: Props) {
                       }
                       key={i}
                       className={`cursor-pointer rounded-full p-1 px-2 hover:bg-opacity-50 ${
-                  props.expert?.expert_appointment_schedule && cal(i - 1)
-                    ? "bg-color-success-primary"
-                    : "bg-color-gray-secondary"
-                }`}
+                        props.expert?.expert_appointment_schedule && cal(i - 1)
+                          ? calSecond(i - 1)
+                            ? "bg-color-success-primary"
+                            : "bg-color-warning-primary"
+                          : "bg-color-gray-secondary"
+                      }`}
                     >
                       <h2 key={i} className="text-base font-bold">
                         {i - days_string.indexOf(weekDate) + 1}

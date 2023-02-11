@@ -2,16 +2,17 @@ import { useEffect, useRef, useState } from "react";
 import {
   AiFillCloseCircle,
   AiOutlineArrowLeft,
-  AiOutlineArrowRight
+  AiOutlineArrowRight,
 } from "react-icons/ai";
 import { BiLoaderAlt } from "react-icons/bi";
 import { FiSearch } from "react-icons/fi";
 import { useSearchParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../../app/hooks";
 import { Doctor } from "../../../common/types/Doctor.entity";
+import { State } from "../../../common/types/State.entity";
 import {
   fetchExperts,
-  fetchExpertsCount
+  fetchExpertsCount,
 } from "../../../features/doctorSlice/doctorAPI";
 import { addExperts } from "../../../features/doctorSlice/doctorSlice";
 import { updateScrollToTop } from "../../../features/options/optionsSlice";
@@ -32,11 +33,13 @@ export default function SearchPage(props: Props) {
 
   const [online, setOnline] = useState(false);
   const [city, setCity] = useState("");
+  const [country, setCountry] = useState("");
   const [queryText, setQueryText] = useState("");
   const [page, setPage] = useState(1);
   const [size, setSize] = useState(10);
   const [sort, setSort] = useState("ASC");
   const [sortBy, setSortBy] = useState("expert_name");
+  const [filteredStates, setFilteredStates] = useState<State[]>();
 
   const paramOnline = searchParams.get("online");
   const paramCity = searchParams.get("city");
@@ -158,7 +161,8 @@ export default function SearchPage(props: Props) {
   };
 
   const onCityChange = (e: any) => {
-    const value = e.target.value;
+    const valueRaw = e.target.value;
+    const value = JSON.parse(valueRaw).name;
     setCity(value);
 
     const paramOnline = searchParams.get("online") || "false";
@@ -300,8 +304,15 @@ export default function SearchPage(props: Props) {
     const value = e.target.value;
     setQueryText(value);
   };
+  const onCountryChange = (e: any) => {
+    const valueRaw = e.target.value;
+    const value = JSON.parse(valueRaw);
+    setCountry(value.name);
+    setFilteredStates(states.filter((state) => state.country_id == value.id));
+  };
 
-  const cities = useAppSelector((state) => state.cities.citiesList);
+  const states = useAppSelector((state) => state.states.statesList);
+  const countries = useAppSelector((state) => state.countries.countriesList);
   const experts = useAppSelector((state) => state.doctors.expertList);
   const totals = useAppSelector((state) => state.totals.totalsList);
 
@@ -318,55 +329,57 @@ export default function SearchPage(props: Props) {
                 className="flex w-full items-center justify-between gap-2 overflow-hidden rounded-[20px] bg-color-white py-1 pr-1 lg:w-2/3"
                 onSubmit={handleSubmit}
               >
-                {city !== "" ? (
-                  <div
-                    className={`${
-                      online
-                        ? "ml-0 hidden -translate-x-full"
-                        : "block translate-x-0"
-                    } ml-2 h-full rounded-[20px] bg-color-main 
-                    p-4 px-2
-                    opacity-80 
-                  transition-all duration-500 hover:opacity-100`}
-                    onClick={handleCityRemove}
-                  >
-                    <h1 className="text-lg text-color-white">{city}</h1>
-                    <AiFillCloseCircle className="text-[24px] text-color-white" />
+                {!online ? (
+                  <div className="flex h-[64px] items-center justify-center gap-1 pl-1">
+                    <div className="flex h-full items-center justify-center rounded-[20px] bg-color-main">
+                      <select
+                        name=""
+                        id=""
+                        className="w-[100px] cursor-pointer bg-color-main text-base text-color-white outline-none"
+                        onChange={onCountryChange}
+                      >
+                        <option value="" selected>
+                          Ülke Seç
+                        </option>
+                        {countries.map((Country) => {
+                          return (
+                            <option
+                              key={Country.id}
+                              selected={country === Country.name}
+                              value={JSON.stringify(Country)}
+                            >
+                              {Country.name}
+                            </option>
+                          );
+                        })}
+                      </select>
+                    </div>
+                    <div className="flex h-full items-center justify-center rounded-[20px] bg-color-main">
+                      <select
+                        name=""
+                        id=""
+                        className="w-[100px] cursor-pointer bg-color-main text-base text-color-white outline-none"
+                        onChange={onCityChange}
+                      >
+                        <option value="" selected>
+                          Şehir Seç
+                        </option>
+                        {filteredStates?.map((State) => {
+                          return (
+                            <option
+                              key={State.id}
+                              selected={city === State.name}
+                              value={JSON.stringify(State)}
+                            >
+                              {State.name}
+                            </option>
+                          );
+                        })}
+                      </select>
+                    </div>
                   </div>
                 ) : (
-                  <div
-                    className={`${
-                      online
-                        ? "ml-0 hidden -translate-x-full"
-                        : "block translate-x-0"
-                    } ml-2 h-full w-[150px] rounded-[20px] bg-color-main 
-              p-4 
-              opacity-80 
-            transition-all duration-500 hover:opacity-100`}
-                  >
-                    <select
-                      name=""
-                      id=""
-                      className="w-full cursor-pointer bg-color-main text-sm text-color-white outline-none scrollbar-thin scrollbar-track-color-white scrollbar-thumb-color-main-extra
-                 lg:text-lg"
-                      onChange={onCityChange}
-                    >
-                      <option value="" selected>
-                        Konum Seç
-                      </option>
-                      {cities.map((City, index) => {
-                        return (
-                          <option
-                            key={index}
-                            value={City}
-                            selected={city === City}
-                          >
-                            {City}
-                          </option>
-                        );
-                      })}
-                    </select>
-                  </div>
+                  <div></div>
                 )}
                 <input
                   onChange={handleSearchValueChange}
@@ -381,7 +394,9 @@ export default function SearchPage(props: Props) {
                   type="submit"
                   className="flex h-[64px] items-center justify-center gap-4 rounded-[20px] bg-color-main py-4 px-6 opacity-80 transition-all duration-500 hover:opacity-100"
                 >
-                  <h1 className="text-sm font-bold text-color-white lg:text-sm">ara</h1>
+                  <h1 className="text-sm font-bold text-color-white lg:text-sm">
+                    ara
+                  </h1>
                   <FiSearch className="text-xl font-bold text-color-white" />
                 </button>
               </form>

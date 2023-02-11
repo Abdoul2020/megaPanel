@@ -11,6 +11,8 @@ import totalsReducer from "../features/totals/totalsSlice";
 import appointmentsReducer from "../features/appointments/appointmentsSlice";
 import appointmentTypesReducer from "../features/appointmentTypes/appointmentTypesSlice";
 import firmsReducer from "../features/firms/firmsSlice";
+import countriesReducer from "../features/countries/countriesSlice";
+import statesReducer from "../features/states/statesSlice";
 
 const store = configureStore({
   reducer: {
@@ -22,6 +24,8 @@ const store = configureStore({
     titles: titlesReducer,
     specializations: specializationsReducer,
     cities: citiesReducer,
+    countries: countriesReducer,
+    states: statesReducer,
     totals: totalsReducer,
     appointments: appointmentsReducer,
     appointmentTypes: appointmentTypesReducer,

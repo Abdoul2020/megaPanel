@@ -18,13 +18,7 @@ export const authClientRegister = async (body: any) => {
   const response = await axios({
     method: "post",
     url: `${BASE_URL}/auth/client/register`,
-    data: {
-      client_name: body.client_name,
-      client_surname: body.client_surname,
-      client_email: body.client_email,
-      client_password: body.client_password,
-      client_retype_password: body.client_retype_password,
-    },
+    data: body,
   })
     .then((response) => {
       return {

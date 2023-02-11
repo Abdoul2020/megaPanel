@@ -19,8 +19,10 @@ export type Doctor = {
   expert_reset_password_expire: Date;
   expert_company: string;
   expert_physical_location: string;
-  expert_city_location: string;
+  expert_city: string;
+  expert_country: string;
   expert_session_fee: string;
+  expert_postal_code: string;
   expert_tel: string;
   expert_status: number;
   expert_creation_date: string;

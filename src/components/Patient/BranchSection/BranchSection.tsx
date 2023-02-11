@@ -15,7 +15,7 @@ export default function BranchSection(props: Props) {
     slidesToScroll: 1,
     initialSlide: 0,
     itemsCenter: true,
-    autoplay: false,
+    autoplay: true,
     responsive: [
       {
         breakpoint: 1700,
@@ -27,7 +27,7 @@ export default function BranchSection(props: Props) {
           slidesToScroll: 1,
           initialSlide: 0,
           itemsCenter: true,
-          autoplay: false,
+          autoplay: true,
         },
       },
       {
@@ -40,7 +40,7 @@ export default function BranchSection(props: Props) {
           slidesToScroll: 1,
           initialSlide: 0,
           itemsCenter: true,
-          autoplay: false,
+          autoplay: true,
         },
       },
       {
@@ -53,7 +53,7 @@ export default function BranchSection(props: Props) {
           slidesToScroll: 1,
           initialSlide: 0,
           itemsCenter: true,
-          autoplay: false,
+          autoplay: true,
         },
       },
       {
@@ -66,7 +66,7 @@ export default function BranchSection(props: Props) {
           slidesToScroll: 1,
           initialSlide: 0,
           itemsCenter: true,
-          autoplay: false,
+          autoplay: true,
         },
       },
     ],
