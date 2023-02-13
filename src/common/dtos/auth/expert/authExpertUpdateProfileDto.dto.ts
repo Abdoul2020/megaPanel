@@ -14,7 +14,9 @@ export interface AuthExpertUpdateProfileDto {
   expert_operating_type?: number;
   expert_company?: string;
   expert_physical_location?: string;
-  expert_city_location?: string;
+  expert_city?: string;
+  expert_country?: string;
+  expert_postal_code?: string;
   expert_session_fee?: string;
   expert_tel?: string;
   expert_about_me?: string;

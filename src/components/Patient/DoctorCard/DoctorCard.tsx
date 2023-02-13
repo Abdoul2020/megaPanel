@@ -121,8 +121,8 @@ export default function DoctorCard(props: Props) {
               } opacity-80`}
             />
             <h1 className="text-color-dark-primary opacity-80">
-              {props.expert.expert_city_location
-                ? props.expert.expert_city_location
+              {props.expert.expert_city
+                ? props.expert.expert_city
                 : ""}
             </h1>
           </div>

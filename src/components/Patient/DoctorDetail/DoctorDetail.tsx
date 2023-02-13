@@ -19,6 +19,7 @@ import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { SocialIcon } from "react-social-icons";
 import { useAppSelector } from "../../../app/hooks";
 import { Doctor } from "../../../common/types/Doctor.entity";
+import { State } from "../../../common/types/State.entity";
 import {
   fetchExpert,
   fetchExpertProfilePicture,
@@ -33,6 +34,7 @@ export default function DoctorDetail({}: Props) {
   const navigate = useNavigate();
   const [informationFeature, setInformationFeature] = useState(0);
   const [city, setCity] = useState("");
+  const [country, setCountry] = useState("");
   const [queryText, setQueryText] = useState("");
 
   const cities = useAppSelector((state) => state.cities.citiesList);
@@ -53,6 +55,8 @@ export default function DoctorDetail({}: Props) {
 
   const [profileImageBase64, setProfileImageBase64] = useState(null);
   const [profileImageLoader, setProfileImageLoader] = useState(false);
+
+  const [filteredStates, setFilteredStates] = useState<State[]>();
 
   const handleCalendarChange = () => {
     if (
@@ -93,7 +97,7 @@ export default function DoctorDetail({}: Props) {
         const base64 = authExpertDownloadProfilePictureResponse.data.data;
         setProfileImageBase64(base64);
       } else {
-        console.log({ authExpertDownloadProfilePictureResponse });
+        // console.log({ authExpertDownloadProfilePictureResponse });
       }
     }
     if (expert && expert.expert_avatar_path !== "") {
@@ -142,7 +146,8 @@ export default function DoctorDetail({}: Props) {
     );
   };
   const onCityChange = (e: any) => {
-    const value = e.target.value;
+    const valueRaw = e.target.value;
+    const value = JSON.parse(valueRaw).name;
     setCity(value);
   };
   const handleQueryTextChange = (e: any) => {
@@ -167,6 +172,14 @@ export default function DoctorDetail({}: Props) {
       }, 3000);
     }
   };
+  const onCountryChange = (e: any) => {
+    const valueRaw = e.target.value;
+    const value = JSON.parse(valueRaw);
+    setCountry(value.name);
+    setFilteredStates(states.filter((state) => state.country_id == value.id));
+  };
+  const states = useAppSelector((state) => state.states.statesList);
+  const countries = useAppSelector((state) => state.countries.countriesList);
   return (
     <div className="relative flex w-full snap-y snap-center flex-col items-center justify-center bg-color-white-secondary px-10 pt-[90px] xl:px-0">
       <div className="flex w-full items-end justify-center bg-color-white-secondary">
@@ -176,35 +189,58 @@ export default function DoctorDetail({}: Props) {
               className="flex w-full items-center justify-between gap-2 overflow-hidden rounded-[20px] bg-color-white py-1 pr-1 lg:w-2/3"
               onSubmit={handleSubmit}
             >
-              <div
-                className={`${
-                  onlineSearch
-                    ? "ml-0 hidden -translate-x-full"
-                    : "block translate-x-0"
-                } ml-2 h-full rounded-[20px] bg-color-main 
-              p-4 px-2
-              opacity-80 
-            transition-all duration-500 hover:opacity-100`}
-              >
-                <select
-                  name=""
-                  id=""
-                  className="w-full cursor-pointer bg-color-main text-sm text-color-white outline-none scrollbar-thin scrollbar-track-color-white scrollbar-thumb-color-main-extra
-                 lg:text-lg"
-                  onChange={onCityChange}
-                >
-                  <option value="" selected>
-                    Konum Seç
-                  </option>
-                  {cities.map((City, index) => {
-                    return (
-                      <option key={index} value={City}>
-                        {City}
+              {!onlineSearch ? (
+                <div className="flex h-[64px] items-center justify-center gap-1 pl-1">
+                  <div className="flex h-full items-center justify-center rounded-[20px] bg-color-main">
+                    <select
+                      name=""
+                      id=""
+                      className="w-[100px] cursor-pointer bg-color-main text-base text-color-white outline-none"
+                      onChange={onCountryChange}
+                    >
+                      <option value="" selected>
+                        Ülke Seç
                       </option>
-                    );
-                  })}
-                </select>
-              </div>
+                      {countries.map((Country) => {
+                        return (
+                          <option
+                            key={Country.id}
+                            selected={country === Country.name}
+                            value={JSON.stringify(Country)}
+                          >
+                            {Country.name}
+                          </option>
+                        );
+                      })}
+                    </select>
+                  </div>
+                  <div className="flex h-full items-center justify-center rounded-[20px] bg-color-main">
+                    <select
+                      name=""
+                      id=""
+                      className="w-[100px] cursor-pointer bg-color-main text-base text-color-white outline-none"
+                      onChange={onCityChange}
+                    >
+                      <option value="" selected>
+                        Şehir Seç
+                      </option>
+                      {filteredStates?.map((State) => {
+                        return (
+                          <option
+                            key={State.id}
+                            selected={city === State.name}
+                            value={JSON.stringify(State)}
+                          >
+                            {State.name}
+                          </option>
+                        );
+                      })}
+                    </select>
+                  </div>
+                </div>
+              ) : (
+                <div></div>
+              )}
               <input
                 onChange={handleQueryTextChange}
                 type="text"
@@ -278,7 +314,7 @@ export default function DoctorDetail({}: Props) {
                   </div>
                   <div className="flex flex-col items-start justify-start">
                     <div className="flex items-center justify-center gap-2">
-                      <div className="flex items-center justify-center gap-4">
+                      <div className="flex flex-col items-start justify-start sm:flex-row sm:items-center sm:gap-4">
                         <div className="flex items-center justify-center gap-2">
                           <h1 className="text-lg font-bold uppercase text-color-dark-primary text-opacity-50 group-hover:text-opacity-80">
                             {`${
@@ -337,9 +373,7 @@ export default function DoctorDetail({}: Props) {
                       } text-[24px] opacity-80`}
                     />
                     <h1 className="text-color-dark-primary opacity-80">
-                      {expert?.expert_city_location
-                        ? expert?.expert_city_location
-                        : ""}
+                      {expert?.expert_city ? expert?.expert_city : ""}
                     </h1>
                   </div>
                   <div className="flex items-center justify-start gap-1">
@@ -521,7 +555,7 @@ export default function DoctorDetail({}: Props) {
                               Klinik Bilgisi
                             </h1>
                             <h1 className="text-base font-bold text-color-dark-primary opacity-80">
-                              {expert?.expert_city_location}
+                              {expert?.expert_city}
                             </h1>
                           </div>
                         </div>

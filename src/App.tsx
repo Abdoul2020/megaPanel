@@ -148,7 +148,6 @@ function App() {
         const statusCodeExperts = fetchExpertsResponse.data.status;
         const data = fetchExpertsResponse.data.data;
         setExperts(data);
-        console.log({ data });
         // dispatch(addExperts(data));
       } else {
         // console.log(fetchExpertsResponse);

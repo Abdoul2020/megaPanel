@@ -10,8 +10,12 @@ import { AuthExpertUpdateProfileDto } from "../../../../../common/dtos/auth/expe
 import { FirmFilterDto } from "../../../../../common/filters/FirmFilter.dto";
 import { Alert } from "../../../../../common/types/Alert";
 import { Branch } from "../../../../../common/types/Branch.entity";
+import { City } from "../../../../../common/types/City.entity";
+import { Country } from "../../../../../common/types/Country.entity";
 import { Expertise } from "../../../../../common/types/Expertise.entity";
 import { Firm } from "../../../../../common/types/Firm.entity";
+import { Region } from "../../../../../common/types/Region";
+import { State } from "../../../../../common/types/State.entity";
 import { Title } from "../../../../../common/types/Title.entity";
 import {
   authExpertDownloadProfilePicture,
@@ -37,6 +41,7 @@ export default function DashboardSettingsHomeExpert({}: Props) {
   const [company, setCompany] = useState("");
   const [aboutMe, setAboutMe] = useState("");
   const [tel, setTel] = useState("");
+  const [postalCode, setPostalCode] = useState("");
   const [physicalLocation, setPhysicalLocation] = useState("");
   const [sessionFee, setSessionFee] = useState("");
   const [socials, setSocials] = useState<String[]>();
@@ -50,7 +55,9 @@ export default function DashboardSettingsHomeExpert({}: Props) {
   const [expertise, setExpertise] = useState<Expertise | undefined>(undefined);
   const [title, setTitle] = useState<Title | undefined>(undefined);
   const [operatingType, setOperatingType] = useState(1);
-  const [city, setCity] = useState("");
+  const [city, setCity] = useState<City>();
+  const [country, setCountry] = useState("");
+  const [state, setState] = useState("");
   const [file, setFile] = useState<File | null>(null);
   const [profileImageBase64, setProfileImageBase64] = useState(null);
   const [profileImageLoader, setProfileImageLoader] = useState(false);
@@ -73,7 +80,14 @@ export default function DashboardSettingsHomeExpert({}: Props) {
   const authExpertObject = useAppSelector(
     (state) => state.authexpert.auth_expert_object
   );
+  const countries = useAppSelector((state) => state.countries.countriesList);
+
+  const states = useAppSelector((state) => state.states.statesList);
+
   const cities = useAppSelector((state) => state.cities.citiesList);
+
+  const [filteredStates, setFilteredStates] = useState<State[]>();
+  const [filteredCities, setFilteredCities] = useState<City[]>();
 
   const dispatch = useAppDispatch();
 
@@ -94,6 +108,10 @@ export default function DashboardSettingsHomeExpert({}: Props) {
   const handleNameChange = (e: any) => {
     const value = e.target.value;
     setName(value);
+  };
+  const handlePostalCodeChange = (e: any) => {
+    const value = e.target.value;
+    setPostalCode(value);
   };
   const handleSurnameChange = (e: any) => {
     const value = e.target.value;
@@ -182,8 +200,21 @@ export default function DashboardSettingsHomeExpert({}: Props) {
   };
 
   const onCityChange = (e: any) => {
-    const value = e.target.value;
+    const valueRaw = e.target.value;
+    const value = JSON.parse(valueRaw);
     setCity(value);
+  };
+  const onStateChange = (e: any) => {
+    const valueRaw = e.target.value;
+    const value = JSON.parse(valueRaw);
+    setState(value.name);
+    // setFilteredCities(cities.filter((city) => city.state_id == value.id));
+  };
+  const onCountryChange = (e: any) => {
+    const valueRaw = e.target.value;
+    const value = JSON.parse(valueRaw);
+    setCountry(value.name);
+    setFilteredStates(states.filter((state) => state.country_id == value.id));
   };
 
   const handleSocialChange = (e: any) => {
@@ -319,7 +350,9 @@ export default function DashboardSettingsHomeExpert({}: Props) {
       expert_tel: tel,
       expert_operating_type: operatingType,
       expert_about_me: aboutMe,
-      expert_city_location: city,
+      expert_city: state,
+      expert_postal_code: postalCode,
+      expert_country: country,
       expert_socials: socials,
       expert_training: training,
       expert_additional_information: additionalInformation,
@@ -442,11 +475,6 @@ export default function DashboardSettingsHomeExpert({}: Props) {
         ? authExpertObject?.expert_about_me
         : ""
     );
-    setCity(
-      authExpertObject && authExpertObject?.expert_city_location
-        ? authExpertObject?.expert_city_location
-        : ""
-    );
     setCurrentBranches(
       authExpertObject && authExpertObject?.expert_branch
         ? authExpertObject?.expert_branch
@@ -470,6 +498,26 @@ export default function DashboardSettingsHomeExpert({}: Props) {
     setTraining(
       authExpertObject && authExpertObject?.expert_training
         ? authExpertObject.expert_training
+        : ""
+    );
+    setPostalCode(
+      authExpertObject && authExpertObject?.expert_training
+        ? authExpertObject.expert_training
+        : ""
+    );
+    setCountry(
+      authExpertObject && authExpertObject?.expert_country
+        ? authExpertObject.expert_country
+        : ""
+    );
+    const countryId: any = countries.find(
+      (Ct) => Ct.name === authExpertObject?.expert_country
+    )?.id;
+    setFilteredStates(states.filter((state) => state.country_id == countryId));
+
+    setState(
+      authExpertObject && authExpertObject?.expert_city
+        ? authExpertObject.expert_city
         : ""
     );
     if (
@@ -503,7 +551,7 @@ export default function DashboardSettingsHomeExpert({}: Props) {
         authExpertObject?.expert_operating_type !== undefined &&
         authExpertObject?.expert_about_me !== undefined &&
         authExpertObject?.expert_about_me !== "" &&
-        authExpertObject?.expert_city_location !== undefined &&
+        authExpertObject?.expert_city !== undefined &&
         authExpertObject?.expert_avatar_path !== undefined &&
         authExpertObject?.expert_avatar_path !== "" ? (
           <div></div>
@@ -780,6 +828,74 @@ export default function DashboardSettingsHomeExpert({}: Props) {
                     htmlFor="title"
                     className="font-bold text-color-dark-primary opacity-50"
                   >
+                    Ülke(*)
+                  </label>
+                  <div
+                    className="min-w-4 w-full rounded-[20px] border-[1px] border-solid border-color-dark-primary border-opacity-10 py-[15px]
+              px-[22px] transition-all duration-300 focus:border-color-main"
+                  >
+                    <select
+                      name=""
+                      id=""
+                      className="w-full cursor-pointer text-lg text-opacity-50 outline-none"
+                      onChange={onCountryChange}
+                    >
+                      <option value="" selected>
+                        Ülke Seç
+                      </option>
+                      {countries.map((Country) => {
+                        return (
+                          <option
+                            key={Country.id}
+                            selected={country === Country.name}
+                            value={JSON.stringify(Country)}
+                          >
+                            {Country.name}
+                          </option>
+                        );
+                      })}
+                    </select>
+                  </div>
+                </div>
+                <div className="relative flex w-full flex-col items-start justify-start gap-1">
+                  <label
+                    htmlFor="title"
+                    className="font-bold text-color-dark-primary opacity-50"
+                  >
+                    Şehir(*)
+                  </label>
+                  <div
+                    className="min-w-4 w-full rounded-[20px] border-[1px] border-solid border-color-dark-primary border-opacity-10 py-[15px]
+              px-[22px] transition-all duration-300 focus:border-color-main"
+                  >
+                    <select
+                      name=""
+                      id=""
+                      className="w-full cursor-pointer text-lg text-opacity-50 outline-none"
+                      onChange={onStateChange}
+                    >
+                      <option value="" selected>
+                        Şehir Seç
+                      </option>
+                      {filteredStates?.map((State) => {
+                        return (
+                          <option
+                            key={State.id}
+                            selected={state === State.name}
+                            value={JSON.stringify(State)}
+                          >
+                            {State.name}
+                          </option>
+                        );
+                      })}
+                    </select>
+                  </div>
+                </div>
+                {/* <div className="relative flex w-full flex-col items-start justify-start gap-1">
+                  <label
+                    htmlFor="title"
+                    className="font-bold text-color-dark-primary opacity-50"
+                  >
                     Şehir(*)
                   </label>
                   <div
@@ -795,19 +911,38 @@ export default function DashboardSettingsHomeExpert({}: Props) {
                       <option value="" selected>
                         Şehir Seç
                       </option>
-                      {cities.map((City, index) => {
+                      {filteredCities?.map((City) => {
                         return (
                           <option
-                            key={index}
+                            key={City.id}
                             selected={city === City}
-                            value={City}
+                            value={JSON.stringify(City)}
                           >
-                            {City}
+                            {City.name}
                           </option>
                         );
                       })}
                     </select>
                   </div>
+                </div> */}
+
+                <div className="flex w-full flex-col items-start justify-start gap-1">
+                  <label
+                    htmlFor="postalCode"
+                    className="font-bold text-color-dark-primary opacity-50"
+                  >
+                    Posta Kodu(*)
+                  </label>
+                  <input
+                    onChange={handlePostalCodeChange}
+                    value={postalCode}
+                    type="text"
+                    name="postalCode"
+                    id="postalCode"
+                    placeholder="Posta Kodu"
+                    className="w-full rounded-[20px] border-[1px] border-color-dark-primary border-opacity-10 bg-color-white-third py-[15px] px-[22px]
+                text-[16px] font-medium outline-none transition-all duration-300 focus:border-color-main"
+                  />
                 </div>
                 <div className="flex w-full flex-col items-start justify-center gap-1">
                   <div className="flex w-full flex-col items-start justify-center gap-1">

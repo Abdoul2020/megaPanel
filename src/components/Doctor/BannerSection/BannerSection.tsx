@@ -4,6 +4,7 @@ import { FiSearch } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../../app/hooks";
 import { Alert } from "../../../common/types/Alert";
+import { State } from "../../../common/types/State.entity";
 import { addAuthObject } from "../../../features/auth/authSlice";
 import { addAuthExpertObject } from "../../../features/authExpert/authExpertSlice";
 import { updateAlert } from "../../../features/options/optionsSlice";
@@ -21,12 +22,14 @@ type Props = {};
 
 export default function BannerSection({}: Props) {
   const [appointmentType, setAppointmenType] = useState("online");
-  const [city, setCity] = useState("");
   const [queryText, setQueryText] = useState("");
+  const [filteredStates, setFilteredStates] = useState<State[]>();
 
   const [company, setCompany] = useState("");
   const [name, setName] = useState("");
   const [surname, setSurname] = useState("");
+  const [city, setCity] = useState("");
+  const [country, setCountry] = useState("");
 
   const dispatch = useAppDispatch();
 
@@ -116,7 +119,8 @@ export default function BannerSection({}: Props) {
     );
   };
   const onCityChange = (e: any) => {
-    const value = e.target.value;
+    const valueRaw = e.target.value;
+    const value = JSON.parse(valueRaw).name;
     setCity(value);
   };
 
@@ -130,7 +134,14 @@ export default function BannerSection({}: Props) {
   );
   const authObject = useAppSelector((state) => state.auth.auth_object);
 
-  const cities = useAppSelector((state) => state.cities.citiesList);
+  const onCountryChange = (e: any) => {
+    const valueRaw = e.target.value;
+    const value = JSON.parse(valueRaw);
+    setCountry(value.name);
+    setFilteredStates(states.filter((state) => state.country_id == value.id));
+  };
+  const states = useAppSelector((state) => state.states.statesList);
+  const countries = useAppSelector((state) => state.countries.countriesList);
 
   return (
     <section className="relative flex h-[70vh] w-full flex-col items-center justify-center bg-doctor-color-main bg-opacity-50 bg-no-repeat pt-[90px] sm:pt-0">
@@ -189,35 +200,58 @@ export default function BannerSection({}: Props) {
               className="flex w-full items-center justify-between gap-2 overflow-hidden rounded-[20px] bg-color-white-secondary py-1 pr-1 lg:w-2/3"
               onSubmit={handleSubmitSearch}
             >
-              <div
-                className={`${
-                  appointmentType === "online"
-                    ? "ml-0 hidden -translate-x-full"
-                    : "block translate-x-0"
-                } ml-2 h-full rounded-[20px] bg-color-main 
-              p-4 px-2
-              opacity-80 
-            transition-all duration-500 hover:opacity-100`}
-              >
-                <select
-                  name=""
-                  id=""
-                  className="w-full cursor-pointer bg-color-main text-sm text-color-white outline-none scrollbar-thin scrollbar-track-color-white scrollbar-thumb-color-main-extra
-                 lg:text-lg"
-                  onChange={onCityChange}
-                >
-                  <option value="" selected>
-                    Konum Seç
-                  </option>
-                  {cities.map((City, index) => {
-                    return (
-                      <option key={index} value={City}>
-                        {City}
+              {appointmentType !== "online" ? (
+                <div className="flex h-[64px] items-center justify-center gap-1 pl-1">
+                  <div className="flex h-full items-center justify-center rounded-[20px] bg-color-main">
+                    <select
+                      name=""
+                      id=""
+                      className="w-[100px] cursor-pointer bg-color-main text-base text-color-white outline-none"
+                      onChange={onCountryChange}
+                    >
+                      <option value="" selected>
+                        Ülke Seç
                       </option>
-                    );
-                  })}
-                </select>
-              </div>
+                      {countries.map((Country) => {
+                        return (
+                          <option
+                            key={Country.id}
+                            selected={country === Country.name}
+                            value={JSON.stringify(Country)}
+                          >
+                            {Country.name}
+                          </option>
+                        );
+                      })}
+                    </select>
+                  </div>
+                  <div className="flex h-full items-center justify-center rounded-[20px] bg-color-main">
+                    <select
+                      name=""
+                      id=""
+                      className="w-[100px] cursor-pointer bg-color-main text-base text-color-white outline-none"
+                      onChange={onCityChange}
+                    >
+                      <option value="" selected>
+                        Şehir Seç
+                      </option>
+                      {filteredStates?.map((State) => {
+                        return (
+                          <option
+                            key={State.id}
+                            selected={city === State.name}
+                            value={JSON.stringify(State)}
+                          >
+                            {State.name}
+                          </option>
+                        );
+                      })}
+                    </select>
+                  </div>
+                </div>
+              ) : (
+                <div></div>
+              )}
               <input
                 onChange={handleQueryTextChange}
                 type="text"

@@ -31,6 +31,7 @@ export default function Register({}: Props) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passwordRetype, setPasswordRetype] = useState("");
+  const [referenceId, setReferenceId] = useState("");
 
   const [passwordHide, setPasswordHide] = useState(true);
   const [passwordRetypeHide, setPasswordRetypeHide] = useState(true);
@@ -65,6 +66,7 @@ export default function Register({}: Props) {
           client_email: email,
           client_password: password,
           client_retype_password: passwordRetype,
+          client_reference_from: referenceId !== "" ? referenceId : undefined,
         };
         setLoader(true);
         setSubmitDisable(true);
@@ -112,6 +114,10 @@ export default function Register({}: Props) {
   const handleEmailChange = (e: any) => {
     const value = e.target.value;
     setEmail(value);
+  };
+  const handleReferenceIdChange = (e: any) => {
+    const value = e.target.value;
+    setReferenceId(value);
   };
   const handlePasswordChange = (e: any) => {
     const value = e.target.value;
@@ -259,6 +265,26 @@ export default function Register({}: Props) {
                       />
                     )}
                   </div>
+                </div>
+              </div>
+              <div className="flex w-full items-start justify-start">
+                <div className="flex flex-col items-start justify-center gap-1">
+                  <label
+                    htmlFor="referenceId"
+                    className="font-bold text-color-dark-primary opacity-50"
+                  >
+                    Referans Kodu (Opsiyonel)
+                  </label>
+                  <input
+                    onChange={handleReferenceIdChange}
+                    value={referenceId}
+                    type="text"
+                    name="referenceId"
+                    id="referenceId"
+                    placeholder="Referans Kodunu Gir"
+                    className="w-full rounded-[20px] border-[1px] border-color-dark-primary border-opacity-10 bg-color-white-third py-[15px] px-[22px]
+                text-[16px] font-medium outline-none transition-all duration-300 focus:border-color-main"
+                  />
                 </div>
               </div>
               <button

@@ -376,7 +376,12 @@ export default function DashboardHeaderExpertMobileNavbar({}: Props) {
                 authExpertObject?.expert_operating_type !== undefined &&
                 authExpertObject?.expert_about_me !== undefined &&
                 authExpertObject?.expert_about_me !== "" &&
-                authExpertObject?.expert_city_location !== undefined &&
+                authExpertObject?.expert_city !== undefined &&
+                authExpertObject?.expert_city !== "" &&
+                authExpertObject?.expert_country !== undefined &&
+                authExpertObject?.expert_country !== "" &&
+                authExpertObject?.expert_postal_code !== undefined &&
+                authExpertObject?.expert_postal_code !== "" &&
                 authExpertObject?.expert_avatar_path !== undefined &&
                 authExpertObject?.expert_avatar_path !== "" ? (
                   <div></div>

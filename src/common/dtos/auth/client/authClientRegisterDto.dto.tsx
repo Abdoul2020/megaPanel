@@ -4,4 +4,5 @@ export interface AuthClientRegisterDto {
   client_email?: string;
   client_password?: string;
   client_retype_password?: string;
+  client_reference_from?: string;
 }
