@@ -1,7 +1,10 @@
-FROM node
+#FRONTEND
+FROM node:alpine AS development
+ENV NODE_ENV development
+WORKDIR /app
+COPY package.json .
+COPY yarn.lock .
+RUN yarn install
 COPY . .
-RUN npm install -g serve
-RUN npm install
-RUN npm run build
-EXPOSE 3000
-CMD ["serve", "-s", "build"]
+EXPOSE 3001
+CMD [ "yarn", "start" ]
