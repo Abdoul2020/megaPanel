@@ -1,6 +1,6 @@
 const BASE_URL =
   process.env.NODE_ENV === "production"
     ? "https://megaverse-backend.onrender.com"
-    : "http://localhost:5000";
+    : process.env.FRONTEND_DOCKER_PORT
 
 export default BASE_URL;
