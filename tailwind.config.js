@@ -25,6 +25,7 @@ module.exports = {
       "color-danger-dark": "#ff0a54",
       "color-info-primary": "#a2d2ff",
       "color-info-dark": "#5c95ff",
+      "color-link": "#0000EE",
     },
     backgroundImage: {
       "hero-pattern":
@@ -36,4 +37,7 @@ module.exports = {
     require("tw-elements/dist/plugin"),
     require("@tailwindcss/line-clamp"),
   ],
+  variants: {
+    scrollbar: ["rounded"],
+  },
 };

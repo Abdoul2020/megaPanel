@@ -42,7 +42,7 @@ export default function TeamSection(props: Props) {
     slidesToScroll: 1,
     initialSlide: 0,
     itemsCenter: true,
-    autoplay: false,
+    autoplay: true,
     responsive: [
       {
         breakpoint: 1024,
@@ -54,7 +54,7 @@ export default function TeamSection(props: Props) {
           slidesToScroll: 1,
           initialSlide: 0,
           itemsCenter: true,
-          autoplay: false,
+          autoplay: true,
         },
       },
       {
@@ -67,7 +67,7 @@ export default function TeamSection(props: Props) {
           slidesToScroll: 1,
           initialSlide: 0,
           itemsCenter: true,
-          autoplay: false,
+          autoplay: true,
         },
       },
       {
@@ -80,7 +80,7 @@ export default function TeamSection(props: Props) {
           slidesToScroll: 1,
           initialSlide: 0,
           itemsCenter: true,
-          autoplay: false,
+          autoplay: true,
         },
       },
     ],
@@ -94,7 +94,7 @@ export default function TeamSection(props: Props) {
             Uzmanlarımızla Tanış
           </h1>
           <p className="text-color-dark-primary opacity-70">
-            Binlerce hekimin arasından tercihini yap, hemen online olarak görüş
+            Binlerce uzmanın arasından tercihini yap, hemen online olarak görüş
             veya soru sor.
           </p>
         </div>

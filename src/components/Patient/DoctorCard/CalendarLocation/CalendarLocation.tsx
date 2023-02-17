@@ -309,15 +309,19 @@ export default function CalendarLocation(props: Props) {
                         )
                       }
                       key={i}
-                      className={`cursor-pointer rounded-full p-1 px-2 hover:bg-opacity-50 ${
-                        props.expert?.expert_appointment_schedule && cal(i - 1)
-                          ? calSecond(i - 1)
-                            ? "bg-color-success-primary"
-                            : "bg-color-warning-primary"
-                          : "bg-color-gray-secondary"
-                      }`}
+                      className={`flex h-[32px] w-[32px] cursor-pointer items-center justify-center rounded-full p-1 px-2`}
                     >
-                      <h2 key={i} className="text-base font-bold">
+                      <h2
+                        key={i}
+                        className={`text-lg font-bold ${
+                          props.expert?.expert_appointment_schedule &&
+                          cal(i - 1)
+                            ? calSecond(i - 1)
+                              ? "text-color-success-primary"
+                              : "text-color-warning-primary"
+                            : "text-color-gray-primary"
+                        }`}
+                      >
                         {i - days_string.indexOf(weekDate) + 1}
                       </h2>
                     </li>

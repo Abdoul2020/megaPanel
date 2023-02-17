@@ -297,7 +297,7 @@ export default function HeaderExpertMobileNavbar({}: Props) {
                   </Link>
                   <button
                     className="rounded-[15px] bg-color-third p-4 transition-all 
-                duration-300 hover:bg-color-secondary"
+                duration-300 hover:bg-color-danger-primary"
                     onClick={handleLogout}
                   >
                     <FiLogOut className="text-[24px] text-color-white" />
@@ -327,7 +327,7 @@ export default function HeaderExpertMobileNavbar({}: Props) {
                   </Link>
                   <button
                     className="rounded-[15px] bg-color-third p-4 transition-all 
-                duration-300 hover:bg-color-secondary"
+                duration-300 hover:bg-color-danger-primary"
                     onClick={handleLogout}
                   >
                     <FiLogOut className="text-[24px] text-color-white" />

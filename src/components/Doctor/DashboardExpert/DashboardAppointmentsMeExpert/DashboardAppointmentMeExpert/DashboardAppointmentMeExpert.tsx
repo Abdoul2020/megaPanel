@@ -6,7 +6,7 @@ import {
   AiFillLock,
   AiFillPhone,
   AiOutlineFieldTime,
-  AiTwotoneMail
+  AiTwotoneMail,
 } from "react-icons/ai";
 import { BiLoaderAlt } from "react-icons/bi";
 import { MdLocationPin, MdPeopleAlt } from "react-icons/md";
@@ -16,7 +16,10 @@ import { useAppDispatch } from "../../../../../app/hooks";
 import { Alert } from "../../../../../common/types/Alert";
 import { Appointment } from "../../../../../common/types/Appointment.entity";
 import { cancelAppointment } from "../../../../../features/appointments/appointmentsAPI";
-import { addAuthExpertObject, removeAuthExpertAppointment } from "../../../../../features/authExpert/authExpertSlice";
+import {
+  addAuthExpertObject,
+  removeAuthExpertAppointment,
+} from "../../../../../features/authExpert/authExpertSlice";
 import { fetchExpertProfilePicture } from "../../../../../features/doctorSlice/doctorAPI";
 import { updateAlert } from "../../../../../features/options/optionsSlice";
 import { unauthenticateExpert } from "../../../../../helpers/authExpertHelper";
@@ -181,7 +184,7 @@ export default function DashboardAppointmentMeExpert(props: Props) {
       rounded-[15px] border-[1px] border-solid border-color-dark-primary border-opacity-10 bg-opacity-10 shadow-lg md:h-[350px] lg:h-[300px] xl:h-[250px]"
     >
       <div className="flex h-full w-full grid-cols-6 flex-col items-start justify-start 2xl:grid">
-        <div className="col-span-2 flex h-full w-full self-center items-center justify-center gap-10 rounded-l-[15px] bg-color-white-secondary py-2 px-10 2xl:py-0">
+        <div className="col-span-2 flex h-full w-full items-center justify-center gap-10 self-center rounded-l-[15px] bg-color-white-secondary py-2 px-10 2xl:py-0">
           <div className="flex h-full flex-col items-start justify-start gap-2 py-4">
             <h1 className="font-bold text-color-dark-primary opacity-50">
               Uzman
@@ -240,18 +243,26 @@ export default function DashboardAppointmentMeExpert(props: Props) {
                         }
                       </h1>
                     </div>
-                    <div className="flex items-center justify-center gap-1">
-                      <AiTwotoneMail className="text-color-main opacity-80" />
-                      <h1 className="text-color-dark-primary opacity-80">
-                        {props.appointment.appointment_owner?.expert_email}
-                      </h1>
-                    </div>
-                    <div className="flex items-center justify-center gap-1">
-                      <AiFillPhone className="text-color-main opacity-80" />
-                      <h1 className="text-color-dark-primary opacity-80">
-                        {props.appointment.appointment_owner?.expert_tel}
-                      </h1>
-                    </div>
+                    <a
+                      href={`mailto:${props.appointment.appointment_owner?.expert_email}`}
+                    >
+                      <div className="flex items-center justify-center gap-1">
+                        <AiTwotoneMail className="text-color-main opacity-80" />
+                        <h1 className="text-color-dark-primary opacity-80">
+                          {props.appointment.appointment_owner?.expert_email}
+                        </h1>
+                      </div>
+                    </a>
+                    <a
+                      href={`tel:${props.appointment.appointment_owner?.expert_tel}`}
+                    >
+                      <div className="flex items-center justify-center gap-1">
+                        <AiFillPhone className="text-color-main opacity-80" />
+                        <h1 className="text-color-dark-primary opacity-80">
+                          {props.appointment.appointment_owner?.expert_tel}
+                        </h1>
+                      </div>
+                    </a>
                   </div>
                 ) : (
                   <div

@@ -7,4 +7,5 @@ export type ExpertFilterDto = {
   count?: boolean;
   city?: string;
   operating_type?: number;
+  branch?: string;
 };

@@ -4,7 +4,7 @@ import { ExpertFilterDto } from "../../common/dtos/filter/ExpertFilter";
 
 const generalQuery = {
   page: 1,
-  size: 10,
+  size: 5,
   sort: "ASC",
   sort_by: "expert_name",
 };
@@ -23,6 +23,7 @@ export const fetchExperts = async (query?: ExpertFilterDto) => {
       query_text: searchValue?.query_text,
       expert_city: searchValue?.city,
       expert_operating_type: searchValue?.operating_type,
+      branch: searchValue?.branch,
     },
   })
     .then((response) => {
@@ -74,6 +75,7 @@ export const fetchExpertsCount = async (query?: ExpertFilterDto) => {
       query_text: searchValue?.query_text,
       expert_city: searchValue?.city,
       expert_operating_type: searchValue?.operating_type,
+      branch: searchValue?.branch,
     },
   })
     .then((response) => {

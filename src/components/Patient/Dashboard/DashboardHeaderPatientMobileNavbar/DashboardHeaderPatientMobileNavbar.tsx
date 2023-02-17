@@ -8,21 +8,19 @@ import { RiArrowGoBackLine } from "react-icons/ri";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../../../app/hooks";
 import { Alert } from "../../../../common/types/Alert";
-import {
-  authClientDownloadProfilePicture
-} from "../../../../features/auth/authAPI";
+import { authClientDownloadProfilePicture } from "../../../../features/auth/authAPI";
 import { addAuthObject } from "../../../../features/auth/authSlice";
 import { addAuthExpertObject } from "../../../../features/authExpert/authExpertSlice";
 import {
   updateAlert,
-  updateHeaderMobilePatientDashboard
+  updateHeaderMobilePatientDashboard,
 } from "../../../../features/options/optionsSlice";
 import { unauthenticatehardExpert } from "../../../../helpers/authExpertHelper";
 import {
   getCookie,
   removeCookie,
   unauthenticate,
-  unauthenticatehard
+  unauthenticatehard,
 } from "../../../../helpers/authHelper";
 
 type Props = {};
@@ -150,7 +148,7 @@ export default function DashboardHeaderPatientMobileNavbar({}: Props) {
     dispatch(updateHeaderMobilePatientDashboard(false));
   };
   return (
-    <div className="max-w-[300px] flex h-full flex-col items-center justify-between py-10">
+    <div className="flex h-full max-w-[300px] flex-col items-center justify-between py-10">
       <Link to="/" onClick={handleDashboardHeaderMobilePatientClose}>
         <img
           src={require("../../../../assets/images/megaverse_logo_2.png")}
@@ -286,7 +284,7 @@ export default function DashboardHeaderPatientMobileNavbar({}: Props) {
         </div>
         <button
           className="flex w-full items-center justify-center rounded-[15px] bg-color-third p-4 transition-all 
-                duration-300 hover:bg-color-secondary"
+                duration-300 hover:bg-color-danger-primary"
           onClick={handleLogout}
         >
           <FiLogOut className="text-[24px] text-color-white" />

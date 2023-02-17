@@ -29,6 +29,7 @@ import { updateAlert } from "../../../../../features/options/optionsSlice";
 import { getCookie } from "../../../../../helpers/authExpertHelper";
 import { unauthenticate } from "../../../../../helpers/authHelper";
 import AlertHeaderWarning from "../../../../Common/AlertHeaderWarning/AlertHeaderWarning";
+import { VscReferences } from "react-icons/vsc";
 
 type Props = {};
 
@@ -501,8 +502,8 @@ export default function DashboardSettingsHomeExpert({}: Props) {
         : ""
     );
     setPostalCode(
-      authExpertObject && authExpertObject?.expert_training
-        ? authExpertObject.expert_training
+      authExpertObject && authExpertObject?.expert_postal_code
+        ? authExpertObject.expert_postal_code
         : ""
     );
     setCountry(
@@ -936,7 +937,7 @@ export default function DashboardSettingsHomeExpert({}: Props) {
                   <input
                     onChange={handlePostalCodeChange}
                     value={postalCode}
-                    type="text"
+                    type="number"
                     name="postalCode"
                     id="postalCode"
                     placeholder="Posta Kodu"
@@ -1185,14 +1186,30 @@ export default function DashboardSettingsHomeExpert({}: Props) {
                   </div>
                   <div className="flex flex-col items-start justify-start gap-2">
                     <div className="flex items-center justify-center gap-2">
-                      <h1 className="text-lg font-bold uppercase text-color-dark-primary text-opacity-50">
-                        {authExpertObject && authExpertObject?.expert_title
-                          ? authExpertObject?.expert_title.title_title
-                          : ""}
-                      </h1>
-                      <h1 className="text-base uppercase text-color-dark-primary">
-                        {authExpertObject?.expert_name}
-                      </h1>
+                      <div className="flex items-center justify-center gap-1">
+                        <h1 className="text-lg font-bold uppercase text-color-dark-primary text-opacity-50">
+                          {authExpertObject && authExpertObject?.expert_title
+                            ? authExpertObject?.expert_title.title_title
+                            : ""}
+                        </h1>
+                        <h1 className="text-base uppercase text-color-dark-primary">
+                          {authExpertObject?.expert_name}
+                        </h1>
+                      </div>
+                      {authExpertObject?.expert_reference_from !== undefined ? (
+                        <div className="flex items-center justify-center gap-2">
+                          <VscReferences className="text-[18px] text-color-main" />
+                          <Link
+                            to={`/doctors/${authExpertObject?.expert_reference_from._id}`}
+                            className="text-color-link"
+                            target="_blank"
+                          >
+                            <h1 className="">{`${authExpertObject?.expert_reference_from.expert_name} ${authExpertObject?.expert_reference_from.expert_surname}`}</h1>
+                          </Link>
+                        </div>
+                      ) : (
+                        <div></div>
+                      )}
                     </div>
                     <div className="flex items-center justify-center gap-2">
                       <h1 className="font-bold text-color-dark-primary opacity-50">

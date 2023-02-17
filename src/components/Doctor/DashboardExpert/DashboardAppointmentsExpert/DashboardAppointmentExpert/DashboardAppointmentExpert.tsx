@@ -6,7 +6,7 @@ import {
   AiFillCloseCircle,
   AiFillPhone,
   AiOutlineFieldTime,
-  AiTwotoneMail
+  AiTwotoneMail,
 } from "react-icons/ai";
 import { BiLoaderAlt } from "react-icons/bi";
 import { BsFillClockFill } from "react-icons/bs";
@@ -17,11 +17,11 @@ import { Alert } from "../../../../../common/types/Alert";
 import { Appointment } from "../../../../../common/types/Appointment.entity";
 import {
   acceptAppointment,
-  declineAppointment
+  declineAppointment,
 } from "../../../../../features/appointments/appointmentsAPI";
 import {
   addAuthExpertObject,
-  updateAuthExpertAppointment
+  updateAuthExpertAppointment,
 } from "../../../../../features/authExpert/authExpertSlice";
 import { fetchClientProfilePicture } from "../../../../../features/clients/clientsAPI";
 import { fetchExpertProfilePicture } from "../../../../../features/doctorSlice/doctorAPI";
@@ -451,15 +451,19 @@ export default function DashboardAppointmentExpert(props: Props) {
                     }
                   </h1>
                 </div> */}
-                    <div className="flex items-center justify-center gap-1">
-                      <AiTwotoneMail className="text-color-main opacity-80" />
-                      <h1 className="text-color-dark-primary opacity-80">
-                        {
-                          props.appointment.appointment_client_client
-                            ?.client_email
-                        }
-                      </h1>
-                    </div>
+                    <a
+                      href={`mailto:${props.appointment.appointment_client_client?.client_email}`}
+                    >
+                      <div className="flex items-center justify-center gap-1">
+                        <AiTwotoneMail className="text-color-main opacity-80" />
+                        <h1 className="text-color-dark-primary opacity-80">
+                          {
+                            props.appointment.appointment_client_client
+                              ?.client_email
+                          }
+                        </h1>
+                      </div>
+                    </a>
                     {/* <div className="flex justify-center items-center gap-1">
                   <AiFillPhone className="text-color-main opacity-80" />
                   <h1 className="text-color-dark-primary opacity-80">

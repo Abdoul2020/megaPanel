@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { BiLoaderAlt } from "react-icons/bi";
 import { BsCameraVideoFill } from "react-icons/bs";
 import { MdLocationPin } from "react-icons/md";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { Doctor } from "../../../common/types/Doctor.entity";
 import { fetchExpertProfilePicture } from "../../../features/doctorSlice/doctorAPI";
 import CalendarLocation from "./CalendarLocation/CalendarLocation";
@@ -14,6 +14,7 @@ type Props = {
 };
 
 export default function DoctorCard(props: Props) {
+  const [searchParams, setSearchParams] = useSearchParams();
   const [online, setOnline] = useState(
     props.expert.expert_operating_type === 2 ||
       props.expert.expert_operating_type === 0
@@ -98,8 +99,20 @@ export default function DoctorCard(props: Props) {
               {props.expert.expert_branch.map((branch) => {
                 return (
                   <h1
-                    className="font-bold text-color-dark-primary opacity-50"
+                    className="cursor-pointer font-bold text-color-dark-primary opacity-50 hover:opacity-40"
                     key={branch._id}
+                    onClick={() => {
+                      setSearchParams({
+                        online: `${false}`,
+                        city: "",
+                        query_text: "",
+                        branch: branch.branch_title,
+                        page: "1",
+                        size: "5",
+                        sort: "ASC",
+                        sort_by: "expert_title",
+                      });
+                    }}
                   >
                     {branch.branch_title}
                   </h1>
@@ -121,9 +134,7 @@ export default function DoctorCard(props: Props) {
               } opacity-80`}
             />
             <h1 className="text-color-dark-primary opacity-80">
-              {props.expert.expert_city
-                ? props.expert.expert_city
-                : ""}
+              {props.expert.expert_city ? props.expert.expert_city : ""}
             </h1>
           </div>
           <div className="flex items-center justify-center gap-1">
@@ -138,8 +149,8 @@ export default function DoctorCard(props: Props) {
             <h1 className="text-color-dark-primary opacity-80">
               {props.expert.expert_operating_type === 2 ||
               props.expert.expert_operating_type === 0
-                ? "Online Görüşmeye Uygun"
-                : "Online Görüşmeye Uygun Değil"}
+                ? "Online"
+                : "Yüz Yüze"}
             </h1>
           </div>
         </div>

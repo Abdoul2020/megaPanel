@@ -8,7 +8,7 @@ export default function PromotionSection({}: Props) {
   return (
     <div className="flex w-full items-center justify-center bg-doctor-color-main bg-opacity-50">
       <div className="relative flex w-full grid-cols-2 gap-10 py-20 px-10 lg:grid lg:py-0 xl:w-3/4 xl:px-0">
-        <div className="z-20 hidden lg:inline-block">
+        <div className="z-0 hidden lg:inline-block">
           <img src={require("../../../assets/images/people.webp")} alt="" />
           {/* <div className="absolute -top-10 -right-16 shadow-lg bg-color-white rounded-3xl px-2 py-4 w-[150px] flex flex-col justify-center items-center gap-6">
           <MdQuestionAnswer className="text-color-main text-[48px]" />
@@ -22,7 +22,7 @@ export default function PromotionSection({}: Props) {
           </div>
         </div> */}
         </div>
-        <div className="z-20 flex h-full w-full items-center justify-center">
+        <div className="z-0 flex h-full w-full items-center justify-center">
           <div className="grid grid-cols-1 content-start items-start justify-around gap-10 md:grid-cols-2">
             <div className="flex flex-col items-start justify-center gap-4">
               <div className="flex items-center justify-center gap-6">

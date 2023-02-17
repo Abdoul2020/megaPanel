@@ -6,7 +6,7 @@ import {
   AiFillLock,
   AiFillPhone,
   AiOutlineFieldTime,
-  AiTwotoneMail
+  AiTwotoneMail,
 } from "react-icons/ai";
 import { BiLoaderAlt } from "react-icons/bi";
 import { MdLocationPin, MdPeopleAlt } from "react-icons/md";
@@ -18,7 +18,7 @@ import { Appointment } from "../../../../../common/types/Appointment.entity";
 import { cancelAppointment } from "../../../../../features/appointments/appointmentsAPI";
 import {
   addAuthObject,
-  removeAuthAppointment
+  removeAuthAppointment,
 } from "../../../../../features/auth/authSlice";
 import { fetchExpertProfilePicture } from "../../../../../features/doctorSlice/doctorAPI";
 import { updateAlert } from "../../../../../features/options/optionsSlice";
@@ -179,11 +179,11 @@ export default function DashboardAppointment(props: Props) {
 
   return (
     <div
-      className="flex xl:h-[250px] lg:h-[300px] md:h-[350px] h-[400px]
-    w-full items-center justify-between rounded-[15px] border-[1px] border-solid border-color-dark-primary border-opacity-10 bg-opacity-10 shadow-lg"
+      className="flex h-[400px] w-full items-center justify-between
+    rounded-[15px] border-[1px] border-solid border-color-dark-primary border-opacity-10 bg-opacity-10 shadow-lg md:h-[350px] lg:h-[300px] xl:h-[250px]"
     >
-      <div className="2xl:grid flex flex-col justify-start items-start grid-cols-6 h-full w-full">
-        <div className="col-span-2 flex h-full w-full 2xl:py-0 py-2 items-center justify-center gap-10 rounded-l-[15px] bg-color-white-secondary px-10">
+      <div className="flex h-full w-full grid-cols-6 flex-col items-start justify-start 2xl:grid">
+        <div className="col-span-2 flex h-full w-full items-center justify-center gap-10 rounded-l-[15px] bg-color-white-secondary py-2 px-10 2xl:py-0">
           <div className="flex items-start justify-start gap-4">
             <div className="h-[75px] w-[75px] overflow-hidden rounded-[20px]">
               {profileImageBase64 ? (
@@ -238,18 +238,26 @@ export default function DashboardAppointment(props: Props) {
                       }
                     </h1>
                   </div>
-                  <div className="flex items-center justify-center gap-1">
-                    <AiTwotoneMail className="text-color-main opacity-80" />
-                    <h1 className="text-color-dark-primary opacity-80">
-                      {props.appointment.appointment_owner?.expert_email}
-                    </h1>
-                  </div>
-                  <div className="flex items-center justify-center gap-1">
-                    <AiFillPhone className="text-color-main opacity-80" />
-                    <h1 className="text-color-dark-primary opacity-80">
-                      {props.appointment.appointment_owner?.expert_tel}
-                    </h1>
-                  </div>
+                  <a
+                    href={`mailto:${props.appointment.appointment_owner?.expert_email}`}
+                  >
+                    <div className="flex items-center justify-center gap-1">
+                      <AiTwotoneMail className="text-color-main opacity-80" />
+                      <h1 className="text-color-dark-primary opacity-80">
+                        {props.appointment.appointment_owner?.expert_email}
+                      </h1>
+                    </div>
+                  </a>
+                  <a
+                    href={`tel:${props.appointment.appointment_owner?.expert_tel}`}
+                  >
+                    <div className="flex items-center justify-center gap-1">
+                      <AiFillPhone className="text-color-main opacity-80" />
+                      <h1 className="text-color-dark-primary opacity-80">
+                        {props.appointment.appointment_owner?.expert_tel}
+                      </h1>
+                    </div>
+                  </a>
                 </div>
               ) : (
                 <div
@@ -265,7 +273,7 @@ export default function DashboardAppointment(props: Props) {
             </div>
           </div>
         </div>
-        <div className="w-full self-center col-span-4 grid grid-cols-3 md:flex place-items-center items-center justify-around gap-y-10 py-10">
+        <div className="col-span-4 grid w-full grid-cols-3 place-items-center items-center justify-around gap-y-10 self-center py-10 md:flex">
           <div className="flex items-center justify-start">
             <div className="flex flex-col items-start justify-center gap-2">
               <div className="flex items-center justify-center gap-1">
@@ -274,17 +282,21 @@ export default function DashboardAppointment(props: Props) {
               </div>
               {props.appointment.appointment_status === 0 ? (
                 <div className="rounded-[15px] bg-color-warning-primary p-1 px-3">
-                  <h1 className="font-bold text-xs sm:text-base text-color-white">
+                  <h1 className="text-xs font-bold text-color-white sm:text-base">
                     Onay Bekleniyor
                   </h1>
                 </div>
               ) : props.appointment.appointment_status === 1 ? (
                 <div className="rounded-[15px] bg-color-success-primary p-1 px-3">
-                  <h1 className="font-bold text-xs sm:text-base text-color-white">Onaylandı</h1>
+                  <h1 className="text-xs font-bold text-color-white sm:text-base">
+                    Onaylandı
+                  </h1>
                 </div>
               ) : (
                 <div className="rounded-[15px] bg-color-danger-primary p-1 px-3">
-                  <h1 className="font-bold text-xs sm:text-base text-color-white">Reddedildi</h1>
+                  <h1 className="text-xs font-bold text-color-white sm:text-base">
+                    Reddedildi
+                  </h1>
                 </div>
               )}
             </div>
@@ -357,7 +369,7 @@ export default function DashboardAppointment(props: Props) {
         </div>
       </div>
       <div
-        className="hover:cursor-pointer flex h-full flex-col items-center justify-center rounded-r-[15px] bg-color-danger-primary px-4"
+        className="flex h-full flex-col items-center justify-center rounded-r-[15px] bg-color-danger-primary px-4 hover:cursor-pointer"
         onClick={handleCancelAppointment}
       >
         {loader ? (

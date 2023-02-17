@@ -11,14 +11,13 @@ import { fetchClientProfilePicture } from "../../../features/clients/clientsAPI"
 import { fetchExpertProfilePicture } from "../../../features/doctorSlice/doctorAPI";
 import {
   updateDoctorState,
-  updateHeaderMobilePatient
+  updateHeaderMobilePatient,
 } from "../../../features/options/optionsSlice";
 import {
-  removeCookie, unauthenticatehardExpert
+  removeCookie,
+  unauthenticatehardExpert,
 } from "../../../helpers/authExpertHelper";
-import {
-  unauthenticatehard
-} from "../../../helpers/authHelper";
+import { unauthenticatehard } from "../../../helpers/authHelper";
 
 type Props = {};
 
@@ -269,7 +268,7 @@ export default function HeaderPatientMobileNavbar({}: Props) {
                   </Link>
                   <button
                     className="rounded-[15px] bg-color-third p-4 transition-all 
-                duration-300 hover:bg-color-secondary"
+                duration-300 hover:bg-color-danger-primary"
                     onClick={() => {
                       handleHeaderMobilePatientClose();
                       handleLogout();
@@ -302,7 +301,7 @@ export default function HeaderPatientMobileNavbar({}: Props) {
                   </Link>
                   <button
                     className="rounded-[15px] bg-color-third p-4 transition-all 
-                duration-300 hover:bg-color-secondary"
+                duration-300 hover:bg-color-danger-primary"
                     onClick={() => {
                       handleHeaderMobilePatientClose();
                       handleLogout();

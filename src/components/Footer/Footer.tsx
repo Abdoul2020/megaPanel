@@ -92,7 +92,7 @@ export default function Footer({}: Props) {
                     S.S.S
                   </li>
                 </Link>
-                <Link to="about">
+                {/* <Link to="about">
                   <li className="text-base text-color-dark-primary opacity-50">
                     KVKK
                   </li>
@@ -106,7 +106,7 @@ export default function Footer({}: Props) {
                   <li className="text-base text-color-dark-primary opacity-50">
                     Kullanıcı Sözleşmesi
                   </li>
-                </Link>
+                </Link> */}
               </ul>
             </div>
             <div className="flex flex-col items-start justify-center gap-4">

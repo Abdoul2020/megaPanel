@@ -1,6 +1,7 @@
 import { ChangeEvent, useEffect, useState } from "react";
 import { BiLoaderAlt } from "react-icons/bi";
 import { MdModeEdit } from "react-icons/md";
+import { VscReferences } from "react-icons/vsc";
 import { Link, useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../../../../app/hooks";
 import { AuthClientUpdateProfileDto } from "../../../../../common/dtos/auth/client/authClientUpdateProfileDto.dto";
@@ -8,7 +9,7 @@ import { Alert } from "../../../../../common/types/Alert";
 import {
   authClientDownloadProfilePicture,
   authClientUpdateProfile,
-  authClientUploadProfilePicture
+  authClientUploadProfilePicture,
 } from "../../../../../features/auth/authAPI";
 import { addAuthObject } from "../../../../../features/auth/authSlice";
 import { updateAlert } from "../../../../../features/options/optionsSlice";
@@ -259,8 +260,8 @@ export default function DashboardSettingsHomePatient({}: Props) {
           onSubmit={handleSubmit}
           className="flex w-full flex-col items-start justify-start"
         >
-          <div className="flex flex-col justify-start items-start xl:grid w-full grid-cols-2 gap-10">
-            <div className="flex flex-col justify-center items-center md:grid grid-cols-2 gap-4">
+          <div className="flex w-full grid-cols-2 flex-col items-start justify-start gap-10 xl:grid">
+            <div className="flex grid-cols-2 flex-col items-center justify-center gap-4 md:grid">
               <div className="flex w-full flex-col items-start justify-start gap-1">
                 <label
                   htmlFor="name"
@@ -373,6 +374,32 @@ export default function DashboardSettingsHomePatient({}: Props) {
                     />
                   </div>
                 </div>
+                {authObject?.client_reference_from !== undefined ? (
+                  <div className="flex flex-col items-start justify-start gap-2">
+                    <div className="flex items-center justify-center gap-2">
+                      <div className="flex items-center justify-center gap-1">
+                        <h1 className="text-base uppercase text-color-dark-primary">
+                          {authObject?.client_name}
+                        </h1>
+                        <h1 className="text-base uppercase text-color-dark-primary">
+                          {authObject?.client_surname}
+                        </h1>
+                      </div>
+                      <div className="flex items-center justify-center gap-2">
+                        <VscReferences className="text-[18px] text-color-main" />
+                        <Link
+                          to={`/doctors/${authObject?.client_reference_from._id}`}
+                          className="text-color-link"
+                          target="_blank"
+                        >
+                          <h1 className="">{`${authObject?.client_reference_from.expert_name} ${authObject?.client_reference_from.expert_surname}`}</h1>
+                        </Link>
+                      </div>
+                    </div>
+                  </div>
+                ) : (
+                  <div></div>
+                )}
                 {/* <div className="flex flex-col justify-start items-start gap-2">
                   <div className="flex justify-center items-center gap-2">
                     <h1 className="text-color-dark-primary uppercase text-lg font-bold text-opacity-50">

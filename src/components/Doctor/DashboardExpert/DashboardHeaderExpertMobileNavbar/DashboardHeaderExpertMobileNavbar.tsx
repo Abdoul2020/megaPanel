@@ -465,7 +465,7 @@ export default function DashboardHeaderExpertMobileNavbar({}: Props) {
           </div>
           <button
             className="flex w-full items-center justify-center rounded-[15px] bg-color-third p-4 transition-all 
-                duration-300 hover:bg-color-secondary"
+                duration-300 hover:bg-color-danger-primary"
             onClick={() => {
               handleDashboardHeaderMobileExpertClose();
               handleLogout();

@@ -1,15 +1,15 @@
 import Dialog from "@mui/material/Dialog";
 import { motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
-import { AiFillHome } from "react-icons/ai";
+import { AiFillCloseCircle, AiFillHome } from "react-icons/ai";
 import { BiLoaderAlt } from "react-icons/bi";
-import { BsCameraVideoFill, BsCheckLg } from "react-icons/bs";
+import { BsCameraVideoFill, BsCaretDownFill, BsCheckLg } from "react-icons/bs";
 import { FaClinicMedical } from "react-icons/fa";
 import { FiSearch, FiSmartphone } from "react-icons/fi";
 import { GoPerson } from "react-icons/go";
 import { IoMdInformationCircle, IoMdSchool } from "react-icons/io";
 import {
-  IoCheckmarkSharp,
+  IoClose,
   IoCopy,
   IoShareSocialSharp,
   IoTimeSharp,
@@ -18,11 +18,14 @@ import { MdLocationPin, MdWork } from "react-icons/md";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { SocialIcon } from "react-social-icons";
 import { useAppSelector } from "../../../app/hooks";
+import { Branch } from "../../../common/types/Branch.entity";
 import { Doctor } from "../../../common/types/Doctor.entity";
 import { State } from "../../../common/types/State.entity";
+import { fetchBranches } from "../../../features/branches/branchesAPI";
 import {
   fetchExpert,
   fetchExpertProfilePicture,
+  fetchExperts,
 } from "../../../features/doctorSlice/doctorAPI";
 import CalendarLocation from "../DoctorCard/CalendarLocation/CalendarLocation";
 import CalendarOnline from "../DoctorCard/CalendarOnline/CalendarOnline";
@@ -32,14 +35,23 @@ type Props = {};
 export default function DoctorDetail({}: Props) {
   const location = useLocation();
   const navigate = useNavigate();
+  const [elementsLoading, setElementsLoading] = useState(false);
+  const [inputSelectLoading, setInputSelectLoading] = useState(false);
+  const [inputSelectOpen, setInputSelectOpen] = useState(false);
+
+  const [inputSelectBranches, setInputSelectBranches] = useState<Branch[]>();
+  const [inputSelectExperts, setInputSelectExperts] = useState<Doctor[]>();
+
+  const inputRef = useRef<HTMLInputElement | null>(null);
   const [informationFeature, setInformationFeature] = useState(0);
   const [city, setCity] = useState("");
-  const [country, setCountry] = useState("");
+  const [country, setCountry] = useState("Turkey");
   const [queryText, setQueryText] = useState("");
 
   const cities = useAppSelector((state) => state.cities.citiesList);
   const [expert, setExpert] = useState<Doctor | null>(null);
   const { id } = useParams();
+  const [sort, setSort] = useState("ASC");
 
   const profileRef = useRef<HTMLInputElement>(null);
   const resumeRef = useRef<HTMLInputElement>(null);
@@ -83,6 +95,10 @@ export default function DoctorDetail({}: Props) {
       }
     }
     fetchData();
+    const value = countries.find((Country) => Country.name === country);
+    setFilteredStates(
+      states.filter((state) => state.country_id == String(value?.id))
+    );
   }, []);
   useEffect(() => {
     async function fetchData() {
@@ -145,10 +161,10 @@ export default function DoctorDetail({}: Props) {
       }
     );
   };
-  const onCityChange = (e: any) => {
-    const valueRaw = e.target.value;
-    const value = JSON.parse(valueRaw).name;
+  const onCityChange = (obj: any) => {
+    const value = JSON.parse(obj).name;
     setCity(value);
+    setCitySelectOpen(false);
   };
   const handleQueryTextChange = (e: any) => {
     const value = e.target.value;
@@ -172,11 +188,140 @@ export default function DoctorDetail({}: Props) {
       }, 3000);
     }
   };
-  const onCountryChange = (e: any) => {
-    const valueRaw = e.target.value;
-    const value = JSON.parse(valueRaw);
+  const handleSearchValueChange = (e: any) => {
+    const value = e.target.value;
+    console.log("aga");
+    setQueryText(value);
+    async function fetchData() {
+      const queryExperts = {
+        page: 1,
+        size: 5,
+        sort: sort,
+        sort_by: "expert_name",
+        query_text: value,
+        city: "",
+        operating_type: 1,
+      };
+      const queryBranches = {
+        page: 1,
+        size: 5,
+        sort: "ASC",
+        sort_by: "branch_title",
+        query_text: value,
+      };
+      setInputSelectLoading(true);
+      const fetchBranchResponse = await fetchBranches(queryBranches);
+      const fetchExpertsResponse = await fetchExperts(queryExperts);
+      setInputSelectLoading(false);
+      setInputSelectBranches(fetchBranchResponse.data.data);
+      setInputSelectExperts(fetchExpertsResponse.data.data);
+    }
+    fetchData();
+  };
+  const handleSearchOnFocus = () => {
+    setInputSelectOpen(true);
+    async function fetchData() {
+      let queryExperts = {
+        page: 1,
+        size: 5,
+        sort: sort,
+        sort_by: "expert_name",
+        query_text: queryText,
+        city: city,
+        operating_type: 1,
+      };
+      let queryBranches = {
+        page: 1,
+        size: 5,
+        sort: "ASC",
+        sort_by: "branch_title",
+        query_text: queryText,
+      };
+      setInputSelectLoading(true);
+      const fetchBranchResponse = await fetchBranches(queryBranches);
+      const fetchExpertsResponse = await fetchExperts(queryExperts);
+      setInputSelectLoading(false);
+      setInputSelectBranches(fetchBranchResponse.data.data);
+      setInputSelectExperts(fetchExpertsResponse.data.data);
+    }
+    fetchData();
+  };
+  const onCountryChange = (obj: any) => {
+    const value = JSON.parse(obj);
     setCountry(value.name);
     setFilteredStates(states.filter((state) => state.country_id == value.id));
+    setCountrySelectOpen(false);
+  };
+
+  function useOutsideAlerter(ref: any) {
+    useEffect(() => {
+      function handleClickOutside(event: any) {
+        if (ref.current && !ref.current.contains(event.target)) {
+          setCountrySelectOpen(false);
+        }
+      }
+      document.addEventListener("mousedown", handleClickOutside);
+      return () => {
+        document.removeEventListener("mousedown", handleClickOutside);
+      };
+    }, [ref]);
+  }
+  function useOutsideAlerterCity(ref: any) {
+    useEffect(() => {
+      function handleClickOutside(event: any) {
+        if (ref.current && !ref.current.contains(event.target)) {
+          setCitySelectOpen(false);
+        }
+      }
+      document.addEventListener("mousedown", handleClickOutside);
+      return () => {
+        document.removeEventListener("mousedown", handleClickOutside);
+      };
+    }, [ref]);
+  }
+  function useOutsideAlerterInput(ref: any) {
+    useEffect(() => {
+      function handleClickOutside(event: any) {
+        if (ref.current && !ref.current.contains(event.target)) {
+          setInputSelectOpen(false);
+        }
+      }
+      document.addEventListener("mousedown", handleClickOutside);
+      return () => {
+        document.removeEventListener("mousedown", handleClickOutside);
+      };
+    }, [ref]);
+  }
+
+  const wrapperRef = useRef(null);
+  const wrapperRefCity = useRef(null);
+  const wrapperRefInput = useRef(null);
+  useOutsideAlerter(wrapperRef);
+  useOutsideAlerterCity(wrapperRefCity);
+  useOutsideAlerterInput(wrapperRefInput);
+  const [countrySelectOpen, setCountrySelectOpen] = useState(false);
+  const handleCountrySelectOpen = () => {
+    setCountrySelectOpen((value) => !value);
+  };
+  const [citySelectOpen, setCitySelectOpen] = useState(false);
+  const handleCitySelectOpen = () => {
+    setCitySelectOpen((value) => !value);
+  };
+
+  const handleInputSelectSubmit = (q: string) => {
+    console.log("maga");
+    setQueryText(q);
+    setInputSelectOpen(false);
+    setCitySelectOpen(false);
+    setInputSelectOpen(false);
+    setCountrySelectOpen(false);
+  };
+
+  const handleCleanInput = () => {
+    setQueryText("");
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
   };
   const states = useAppSelector((state) => state.states.statesList);
   const countries = useAppSelector((state) => state.countries.countriesList);
@@ -184,107 +329,293 @@ export default function DoctorDetail({}: Props) {
     <div className="relative flex w-full snap-y snap-center flex-col items-center justify-center bg-color-white-secondary px-10 pt-[90px] xl:px-0">
       <div className="flex w-full items-end justify-center bg-color-white-secondary">
         <div className="mt-[90px] flex w-full snap-y snap-center flex-col items-start justify-start xl:w-3/4">
-          <div className="flex w-full flex-col items-center justify-start gap-2 py-10 lg:flex-row lg:items-center lg:justify-start">
-            <form
-              className="flex w-full items-center justify-between gap-2 overflow-hidden rounded-[20px] bg-color-white py-1 pr-1 lg:w-2/3"
-              onSubmit={handleSubmit}
-            >
-              {!onlineSearch ? (
-                <div className="flex h-[64px] items-center justify-center gap-1 pl-1">
-                  <div className="flex h-full items-center justify-center rounded-[20px] bg-color-main">
-                    <select
-                      name=""
-                      id=""
-                      className="w-[100px] cursor-pointer bg-color-main text-base text-color-white outline-none"
-                      onChange={onCountryChange}
-                    >
-                      <option value="" selected>
-                        Ülke Seç
-                      </option>
-                      {countries.map((Country) => {
-                        return (
-                          <option
-                            key={Country.id}
-                            selected={country === Country.name}
-                            value={JSON.stringify(Country)}
-                          >
-                            {Country.name}
-                          </option>
-                        );
-                      })}
-                    </select>
-                  </div>
-                  <div className="flex h-full items-center justify-center rounded-[20px] bg-color-main">
-                    <select
-                      name=""
-                      id=""
-                      className="w-[100px] cursor-pointer bg-color-main text-base text-color-white outline-none"
-                      onChange={onCityChange}
-                    >
-                      <option value="" selected>
-                        Şehir Seç
-                      </option>
-                      {filteredStates?.map((State) => {
-                        return (
-                          <option
-                            key={State.id}
-                            selected={city === State.name}
-                            value={JSON.stringify(State)}
-                          >
-                            {State.name}
-                          </option>
-                        );
-                      })}
-                    </select>
-                  </div>
-                </div>
-              ) : (
-                <div></div>
-              )}
-              <input
-                onChange={handleQueryTextChange}
-                type="text"
-                name="search"
-                id="search"
-                className="w-full bg-color-white py-2 pl-4 text-sm tracking-wide opacity-80 outline-none lg:text-base"
-                placeholder="Uzman veya branş arayın..."
-              />
-              <button
-                type="submit"
-                className="flex h-[64px] items-center justify-center gap-4 rounded-[20px] bg-color-main py-4 px-6 opacity-80 transition-all duration-500 hover:opacity-100"
-              >
-                <h1 className="text-sm font-bold text-color-white lg:text-sm">
-                  ara
-                </h1>
-                <FiSearch className="text-xl font-bold text-color-white" />
-              </button>
-            </form>
-            <div className="flex items-center justify-center">
-              <div
-                className={`flex h-[56px] w-[300px] cursor-pointer items-center justify-center
-              gap-2 rounded-[15px] border-[1px] border-solid p-4 
-              ${
-                onlineSearch
-                  ? "border-color-main border-opacity-80"
-                  : "border-color-dark-primary border-opacity-10"
-              } transition-all duration-300`}
-                onClick={handleToggleButton}
-              >
-                <h1 className="text-color-dark-primary opacity-80">
-                  Online Görüşme
-                </h1>
-                <div
-                  className={`relative h-6 w-12 rounded-full ${
-                    onlineSearch
-                      ? "bg-color-secondary"
-                      : "bg-color-gray-primary"
-                  } p-1 transition-all duration-300`}
+          <div className="flex w-full items-start justify-start bg-color-white-secondary">
+            <div className="flex w-full flex-col items-start justify-start gap-4 p-4 lg:w-2/3">
+              <div className="flex w-full items-center justify-center">
+                <form
+                  className="flex w-full items-center justify-between gap-2 rounded-[20px] bg-color-white"
+                  onSubmit={handleSubmit}
                 >
+                  {!onlineSearch ? (
+                    <motion.div
+                      initial={{ opacity: 0, x: -50 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{
+                        ease: "backInOut",
+                        duration: 0.5,
+                        reapat: 1,
+                      }}
+                      className="flex h-[55px] items-center justify-center gap-1 p-1"
+                    >
+                      {country !== "" && country !== undefined ? (
+                        <div
+                          className="relative flex h-full w-[100px] cursor-pointer items-center justify-center rounded-l-[15px] bg-color-main px-1 outline-none transition-all duration-300 ease-out hover:opacity-80"
+                          onClick={() => setCountry("")}
+                        >
+                          <div className="flex w-full items-center justify-center">
+                            <AiFillCloseCircle className="text-[18px] text-color-white" />
+                            <h1 className="text-truncate w-[70px] text-center text-base text-color-white">
+                              {country}
+                            </h1>
+                          </div>
+                        </div>
+                      ) : (
+                        <div
+                          className="relative flex h-full w-[100px] items-center justify-center rounded-l-[15px] bg-color-main px-1 outline-none"
+                          ref={wrapperRef}
+                        >
+                          <div
+                            className="flex w-full cursor-pointer items-center justify-center gap-2"
+                            onClick={() => handleCountrySelectOpen()}
+                          >
+                            <h1 className="text-truncate w-[70px] text-center text-base text-color-white">
+                              {country !== "" && country !== undefined
+                                ? country
+                                : "Ülke Seç"}
+                            </h1>
+                            <BsCaretDownFill className="text-[11px] text-color-white" />
+                          </div>
+                          <div
+                            className={`${
+                              countrySelectOpen ? "absolute" : "hidden"
+                            } top-[120%] left-0 z-20 h-[250px] min-w-[300px] rounded-[15px] bg-color-white p-2 shadow-sm`}
+                          >
+                            <ul className="flex h-full w-full flex-col items-start justify-start gap-2 overflow-y-scroll p-1 pr-4 overflow-x-hidden scrollbar-thin scrollbar-track-color-white-secondary scrollbar-thumb-color-secondary scrollbar-track-rounded-lg scrollbar-thumb-rounded-full">
+                              {countries.map((Country) => {
+                                return (
+                                  <li
+                                    className={`mr-2 rounded-md bg-color-main py-1 px-2 ${
+                                      country === Country.name
+                                        ? "bg-opacity-20"
+                                        : "bg-opacity-0"
+                                    } w-full cursor-pointer hover:bg-opacity-20`}
+                                    onClick={() =>
+                                      onCountryChange(JSON.stringify(Country))
+                                    }
+                                  >
+                                    <h1 className=" text-color-dark-primary">
+                                      {Country.name}
+                                    </h1>
+                                  </li>
+                                );
+                              })}
+                            </ul>
+                          </div>
+                        </div>
+                      )}
+                      {city !== "" && city !== undefined ? (
+                        <div
+                          className="relative flex h-full w-[100px] cursor-pointer items-center justify-center rounded-r-[15px] bg-color-main px-1 outline-none transition-all duration-300 ease-out hover:opacity-80"
+                          onClick={() => setCity("")}
+                        >
+                          <div className="flex w-full items-center justify-center">
+                            <h1 className="text-truncate w-[70px] text-center text-base text-color-white">
+                              {city}
+                            </h1>
+                            <AiFillCloseCircle className="text-[18px] text-color-white" />
+                          </div>
+                        </div>
+                      ) : (
+                        <div
+                          className="relative flex h-full w-[100px] items-center justify-center rounded-r-[15px] bg-color-main px-1 outline-none"
+                          ref={wrapperRefCity}
+                        >
+                          <div
+                            className="flex w-full cursor-pointer items-center justify-center gap-2"
+                            onClick={() => handleCitySelectOpen()}
+                          >
+                            <h1 className="text-truncate w-[70px] text-center text-base text-color-white">
+                              {city !== "" && city !== undefined
+                                ? city
+                                : "Şehir Seç"}
+                            </h1>
+                            <BsCaretDownFill className="text-[11px] text-color-white" />
+                          </div>
+                          <div
+                            className={`${
+                              citySelectOpen ? "absolute" : "hidden"
+                            } top-[120%] left-0 z-20 h-[250px] min-w-[300px] rounded-[15px] bg-color-white p-2 shadow-sm`}
+                          >
+                            <ul className="flex h-full w-full flex-col items-start justify-start gap-2 overflow-y-scroll p-1 pr-4 overflow-x-hidden scrollbar-thin scrollbar-track-color-white-secondary scrollbar-thumb-color-secondary scrollbar-track-rounded-lg scrollbar-thumb-rounded-full">
+                              {filteredStates?.map((City) => {
+                                return (
+                                  <li
+                                    className={`mr-2 rounded-md bg-color-main py-1 px-2 ${
+                                      city === City.name
+                                        ? "bg-opacity-20"
+                                        : "bg-opacity-0"
+                                    } w-full cursor-pointer hover:bg-opacity-20`}
+                                    onClick={() =>
+                                      onCityChange(JSON.stringify(City))
+                                    }
+                                  >
+                                    <h1 className=" text-color-dark-primary">
+                                      {City.name}
+                                    </h1>
+                                  </li>
+                                );
+                              })}
+                            </ul>
+                          </div>
+                        </div>
+                      )}
+                    </motion.div>
+                  ) : (
+                    <div></div>
+                  )}
                   <div
-                    className={`h-full w-4 rounded-full bg-color-white ${
-                      onlineSearch ? "translate-x-[150%]" : "translate-x-0"
-                    } transition-all duration-300`}
-                  ></div>
+                    className="relative flex w-full items-center justify-center"
+                    ref={wrapperRefInput}
+                  >
+                    <input
+                      ref={inputRef}
+                      onChange={handleSearchValueChange}
+                      value={queryText}
+                      onFocus={handleSearchOnFocus}
+                      type="text"
+                      name="search"
+                      id="search"
+                      autoComplete="off"
+                      className="w-full bg-color-white py-2 pl-4 text-sm tracking-wide opacity-80 outline-none lg:text-base"
+                      placeholder="Uzman veya branş arayın..."
+                    />
+                    {queryText.length > 0 ? (
+                      <div
+                        onClick={() => handleCleanInput()}
+                        className="cursor-pointer"
+                      >
+                        <IoClose className="text-color-dark-primary text-opacity-50" />
+                      </div>
+                    ) : (
+                      <div></div>
+                    )}
+                    {inputSelectOpen ? (
+                      <motion.div
+                        initial={{ opacity: 0, y: -50 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{
+                          ease: "backInOut",
+                          duration: 0.5,
+                          reapat: 1,
+                        }}
+                        className="absolute top-[150%] left-0 z-50 w-full rounded-[15px] bg-color-white p-4 shadow-sm"
+                      >
+                        <div className="flex max-h-[300px] w-full flex-col items-start justify-start gap-4 overflow-y-scroll scrollbar-thin scrollbar-track-color-white-secondary scrollbar-thumb-color-secondary scrollbar-track-rounded-lg scrollbar-thumb-rounded-full">
+                          <div className="flex w-full flex-col items-start justify-start gap-2">
+                            <div className="flex items-center justify-center gap-1">
+                              <h1 className="font-bold text-color-dark-primary text-opacity-50">
+                                Branşlar
+                              </h1>
+                              <div
+                                className={`${
+                                  inputSelectLoading ? "inline-block" : "hidden"
+                                } animate-spin`}
+                              >
+                                <BiLoaderAlt className="text-[16px] text-color-dark-primary text-opacity-50" />
+                              </div>
+                            </div>
+                            <ul className="flex w-full flex-col items-start justify-start gap-1">
+                              {inputSelectBranches?.map((Branch) => {
+                                return (
+                                  <li
+                                    className="flex w-full cursor-pointer items-center justify-start gap-1 rounded-[10px] p-1 hover:bg-color-secondary hover:bg-opacity-10"
+                                    onClick={() =>
+                                      handleInputSelectSubmit(
+                                        Branch.branch_title
+                                      )
+                                    }
+                                  >
+                                    <h1 className="text-lg font-bold text-color-dark-primary opacity-80">
+                                      {Branch.branch_title}
+                                    </h1>
+                                  </li>
+                                );
+                              })}
+                            </ul>
+                          </div>
+                          <div className="flex w-full flex-col items-start justify-start gap-2">
+                            <div className="flex items-center justify-center gap-1">
+                              <h1 className="font-bold text-color-dark-primary text-opacity-50">
+                                Uzmanlar
+                              </h1>
+                              <div
+                                className={`${
+                                  inputSelectLoading ? "inline-block" : "hidden"
+                                } animate-spin`}
+                              >
+                                <BiLoaderAlt className="text-[16px] text-color-dark-primary text-opacity-50" />
+                              </div>
+                            </div>
+                            <ul className="flex w-full flex-col items-start justify-start gap-1">
+                              {inputSelectExperts?.map((Expert) => {
+                                return (
+                                  <li
+                                    className="flex w-full cursor-pointer items-end justify-start gap-2 rounded-[10px] p-1 hover:bg-color-secondary hover:bg-opacity-10"
+                                    onClick={() =>
+                                      handleInputSelectSubmit(
+                                        Expert.expert_name
+                                      )
+                                    }
+                                  >
+                                    <div className="flex items-center justify-center">
+                                      <div className="flex items-center justify-center gap-2">
+                                        <h1 className="text-lg font-bold text-color-dark-primary opacity-80">
+                                          {Expert.expert_title.title_title}
+                                        </h1>
+                                        <h1 className="text-lg font-bold text-color-dark-primary opacity-80">
+                                          {Expert.expert_name}
+                                        </h1>
+                                        <h1 className="text-lg font-bold text-color-dark-primary opacity-80">
+                                          {Expert.expert_surname}
+                                        </h1>
+                                      </div>
+                                    </div>
+                                    <h1 className="text-base font-bold text-color-dark-primary opacity-50">
+                                      {Expert.expert_branch[0].branch_title}
+                                    </h1>
+                                  </li>
+                                );
+                              })}
+                            </ul>
+                          </div>
+                        </div>
+                      </motion.div>
+                    ) : (
+                      <div></div>
+                    )}
+                  </div>
+                  <div className="flex h-[55px] items-center justify-center p-1">
+                    <button
+                      type="submit"
+                      className="flex h-full items-center justify-center gap-4 rounded-[15px] bg-color-main py-2 px-4 opacity-80 transition-all duration-500 hover:opacity-100"
+                    >
+                      {/* <h1 className="text-sm font-bold text-color-white lg:text-sm">
+                    ara
+                  </h1> */}
+                      <FiSearch className="text-xl font-bold text-color-white" />
+                    </button>
+                  </div>
+                </form>
+              </div>
+              <div className="flex w-full items-start justify-start pl-4 lg:w-2/3">
+                <div className="flex items-center justify-center gap-2">
+                  <h1 className="text-color-dark-primary opacity-80">
+                    Online Görüşme
+                  </h1>
+                  <div
+                    className={`relative h-6 w-12 rounded-full ${
+                      onlineSearch
+                        ? "bg-color-secondary"
+                        : "bg-color-gray-primary"
+                    } cursor-pointer p-1 transition-all duration-300`}
+                    onClick={() => handleToggleButton()}
+                  >
+                    <div
+                      className={`h-full w-4 rounded-full bg-color-white ${
+                        onlineSearch ? "translate-x-[150%]" : "translate-x-0"
+                      } transition-all duration-300`}
+                    ></div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -355,7 +686,17 @@ export default function DoctorDetail({}: Props) {
                     <ul className="flex max-w-[400px] flex-wrap items-start justify-start gap-4 gap-y-0">
                       {expert?.expert_branch.map((branch) => {
                         return (
-                          <h1 className="font-bold text-color-dark-primary opacity-50">
+                          <h1
+                            className="cursor-pointer font-bold text-color-dark-primary opacity-50"
+                            onClick={() => {
+                              navigate(
+                                `/search?online=${onlineSearch}&query_text=${branch.branch_title}`,
+                                {
+                                  state: { online: onlineSearch },
+                                }
+                              );
+                            }}
+                          >
                             {branch.branch_title}
                           </h1>
                         );
