@@ -12,7 +12,7 @@ services:
     networks:
       - meganet
     extra_hosts:
-      - "host.docker.internal:172.17.0.1"
+      - "host.docker.internal:172.22.0.3"
     volumes:
       - .:/usr/src/frontent
       - /usr/src/frontent/node_modules
