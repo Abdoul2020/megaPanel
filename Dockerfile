@@ -1,10 +1,27 @@
-#FRONTEND
-FROM node:alpine AS development
-ENV NODE_ENV development
-WORKDIR /app
-COPY package.json .
-COPY yarn.lock .
+# BUILD
+
+FROM node:14-alpine as builder
+
+WORKDIR /web
+
+COPY package*.json ./
+
 RUN yarn install
+
 COPY . .
-EXPOSE 8082
-CMD [ "yarn", "start" ]
+
+RUN npm run build
+
+# SERVE
+
+FROM node:14-alpine
+
+RUN npm install -g serve
+
+WORKDIR /web
+
+COPY --from=builder /web/build .
+
+EXPOSE 8083
+
+CMD ["serve", "-p", "8083", "-s", "."]
