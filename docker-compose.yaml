@@ -2,12 +2,12 @@ version: "3.9"
 
 services:
   web:
-    container_name: frontend
+    container_name: web-frontend
     build: .
     restart: unless-stopped
     env_file:
       - .env
-    ports: 
+    ports:
       - ${FRONTEND_LOCAL_PORT}:${FRONTEND_DOCKER_PORT}
     networks:
       - meganet
