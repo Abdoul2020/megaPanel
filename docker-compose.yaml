@@ -1,27 +1,19 @@
 version: "3.9"
 
 services:
-  web:
-<<<<<<< Updated upstream
-    container_name: web-frontend
-=======
-    container_name: frontend
->>>>>>> Stashed changes
+  frontend:
+    container_name: web
     build: .
     restart: unless-stopped
     env_file:
       - .env
-<<<<<<< Updated upstream
     ports:
-=======
-    ports: 
->>>>>>> Stashed changes
       - ${FRONTEND_LOCAL_PORT}:${FRONTEND_DOCKER_PORT}
     networks:
       - meganet
     volumes:
       - ./src:/app/src
-      - ./public/assets:/web/public/assets
+      - ./public/assets:/frontend/public/assets
       - /app/node_modules
     stdin_open: true
     tty: true

@@ -22,6 +22,6 @@ WORKDIR /web
 
 COPY --from=builder /web/build .
 
-EXPOSE 8083
+EXPOSE 8082
 
-CMD ["serve", "-p", "8083", "-s", "."]
+CMD ["serve", "-p", "8082", "-s", "."]
