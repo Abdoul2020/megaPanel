@@ -1,6 +1,2 @@
-const BASE_URL =
-  process.env.NODE_ENV === "production"
-    ? process.env.FRONTEND_DOCKER_PORT
-    : process.env.FRONTEND_DOCKER_PORT
-
+const BASE_URL = "http://localhost:8081";
 export default BASE_URL;

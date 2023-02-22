@@ -12,9 +12,9 @@ services:
     networks:
       - meganet
     volumes:
-      - ./src:/app/src
+      - ./src:/web/src
       - ./public/assets:/frontend/public/assets
-      - /app/node_modules
+      - /web/node_modules
     stdin_open: true
     tty: true
 
