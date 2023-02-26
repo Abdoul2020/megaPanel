@@ -31,6 +31,10 @@ const store = configureStore({
     appointmentTypes: appointmentTypesReducer,
     firms: firmsReducer,
   },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: false,
+    }),
 });
 
 export default store;

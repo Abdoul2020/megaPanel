@@ -1,5 +1,7 @@
 import { useEffect, useRef, useState } from "react";
+import { Link } from "react-router-dom";
 import Slider from "react-slick";
+import { useAppSelector } from "../../../app/hooks";
 import { Branch } from "../../../common/types/Branch.entity";
 
 type Props = {
@@ -71,6 +73,8 @@ export default function BranchSection(props: Props) {
       },
     ],
   };
+  const branches = useAppSelector((state) => state.branches.branchesList);
+  console.log({ branches });
   return (
     <div className="flex w-full items-center justify-center bg-color-white-secondary px-10 lg:px-10">
       <div className="flex w-full flex-col items-start justify-center gap-10 py-20 lg:w-2/3">
@@ -97,9 +101,19 @@ export default function BranchSection(props: Props) {
                   </h1>
                 </div>
                 <div className="w-full px-2 pb-2">
-                  <button className="w-full rounded-[15px] bg-color-secondary py-2">
-                    <h1 className="font-bold text-color-white">22 Uzman</h1>
-                  </button>
+                  <Link to="/search?online=true&query_text=Yaşam Koçu">
+                    <button className="w-full rounded-[15px] bg-color-secondary py-2 transition-all duration-100 hover:opacity-80">
+                      <h1 className="font-bold text-color-white">{`${
+                        branches.find(
+                          (branch) => branch.branch_title === "Yaşam Koçu"
+                        ) !== undefined
+                          ? branches.find(
+                              (branch) => branch.branch_title === "Yaşam Koçu"
+                            )?.branch_expert_count
+                          : 0
+                      } Uzman`}</h1>
+                    </button>
+                  </Link>
                 </div>
               </div>
             </li>
@@ -116,9 +130,19 @@ export default function BranchSection(props: Props) {
                   </h1>
                 </div>
                 <div className="w-full px-2 pb-2">
-                  <button className="w-full rounded-[15px] bg-color-secondary py-2">
-                    <h1 className="font-bold text-color-white">32 Uzman</h1>
-                  </button>
+                  <Link to="/search?online=true&query_text=Aile Dizimi">
+                    <button className="w-full rounded-[15px] bg-color-secondary py-2 transition-all duration-100 hover:opacity-80">
+                      <h1 className="font-bold text-color-white">{`${
+                        branches.find(
+                          (branch) => branch.branch_title === "Aile Dizimi"
+                        ) !== undefined
+                          ? branches.find(
+                              (branch) => branch.branch_title === "Aile Dizimi"
+                            )?.branch_expert_count
+                          : 0
+                      } Uzman`}</h1>
+                    </button>
+                  </Link>
                 </div>
               </div>
             </li>
@@ -135,9 +159,19 @@ export default function BranchSection(props: Props) {
                   </h1>
                 </div>
                 <div className="w-full px-2 pb-2">
-                  <button className="w-full rounded-[15px] bg-color-secondary py-2">
-                    <h1 className="font-bold text-color-white">15 Uzman</h1>
-                  </button>
+                  <Link to="/search?online=true&query_text=Astroloji">
+                    <button className="w-full rounded-[15px] bg-color-secondary py-2 transition-all duration-100 hover:opacity-80">
+                      <h1 className="font-bold text-color-white">{`${
+                        branches.find(
+                          (branch) => branch.branch_title === "Astroloji"
+                        ) !== undefined
+                          ? branches.find(
+                              (branch) => branch.branch_title === "Astroloji"
+                            )?.branch_expert_count
+                          : 0
+                      } Uzman`}</h1>
+                    </button>
+                  </Link>
                 </div>
               </div>
             </li>
@@ -154,9 +188,19 @@ export default function BranchSection(props: Props) {
                   </h1>
                 </div>
                 <div className="w-full px-2 pb-2">
-                  <button className="w-full rounded-[15px] bg-color-secondary py-2">
-                    <h1 className="font-bold text-color-white">74 Uzman</h1>
-                  </button>
+                  <Link to="/search?online=true&query_text=Diyetisyen">
+                    <button className="w-full rounded-[15px] bg-color-secondary py-2 transition-all duration-100 hover:opacity-80">
+                      <h1 className="font-bold text-color-white">{`${
+                        branches.find(
+                          (branch) => branch.branch_title === "Diyetisyen"
+                        ) !== undefined
+                          ? branches.find(
+                              (branch) => branch.branch_title === "Diyetisyen"
+                            )?.branch_expert_count
+                          : 0
+                      } Uzman`}</h1>
+                    </button>
+                  </Link>
                 </div>
               </div>
             </li>
@@ -173,9 +217,19 @@ export default function BranchSection(props: Props) {
                   </h1>
                 </div>
                 <div className="w-full px-2 pb-2">
-                  <button className="w-full rounded-[15px] bg-color-secondary py-2">
-                    <h1 className="font-bold text-color-white">13 Uzman</h1>
-                  </button>
+                  <Link to="/search?online=true&query_text=NLP">
+                    <button className="w-full rounded-[15px] bg-color-secondary py-2 transition-all duration-100 hover:opacity-80">
+                      <h1 className="font-bold text-color-white">{`${
+                        branches.find(
+                          (branch) => branch.branch_title === "NLP"
+                        ) !== undefined
+                          ? branches.find(
+                              (branch) => branch.branch_title === "NLP"
+                            )?.branch_expert_count
+                          : 0
+                      } Uzman`}</h1>
+                    </button>
+                  </Link>
                 </div>
               </div>
             </li>
@@ -192,9 +246,19 @@ export default function BranchSection(props: Props) {
                   </h1>
                 </div>
                 <div className="w-full px-2 pb-2">
-                  <button className="w-full rounded-[15px] bg-color-secondary py-2">
-                    <h1 className="font-bold text-color-white">21 Uzman</h1>
-                  </button>
+                  <Link to="/search?online=true&query_text=Psikolog">
+                    <button className="w-full rounded-[15px] bg-color-secondary py-2 transition-all duration-100 hover:opacity-80">
+                      <h1 className="font-bold text-color-white">{`${
+                        branches.find(
+                          (branch) => branch.branch_title === "Psikolog"
+                        ) !== undefined
+                          ? branches.find(
+                              (branch) => branch.branch_title === "Psikolog"
+                            )?.branch_expert_count
+                          : 0
+                      } Uzman`}</h1>
+                    </button>
+                  </Link>
                 </div>
               </div>
             </li>
@@ -211,9 +275,19 @@ export default function BranchSection(props: Props) {
                   </h1>
                 </div>
                 <div className="w-full px-2 pb-2">
-                  <button className="w-full rounded-[15px] bg-color-secondary py-2">
-                    <h1 className="font-bold text-color-white">14 Uzman</h1>
-                  </button>
+                  <Link to="/search?online=true&query_text=Psikiyatr">
+                    <button className="w-full rounded-[15px] bg-color-secondary py-2 transition-all duration-100 hover:opacity-80">
+                      <h1 className="font-bold text-color-white">{`${
+                        branches.find(
+                          (branch) => branch.branch_title === "Psikiyatr"
+                        ) !== undefined
+                          ? branches.find(
+                              (branch) => branch.branch_title === "Psikiyatr"
+                            )?.branch_expert_count
+                          : 0
+                      } Uzman`}</h1>
+                    </button>
+                  </Link>
                 </div>
               </div>
             </li>
@@ -230,9 +304,19 @@ export default function BranchSection(props: Props) {
                   </h1>
                 </div>
                 <div className="w-full px-2 pb-2">
-                  <button className="w-full rounded-[15px] bg-color-secondary py-2">
-                    <h1 className="font-bold text-color-white">17 Uzman</h1>
-                  </button>
+                  <Link to="/search?online=true&query_text=Şifacılık">
+                    <button className="w-full rounded-[15px] bg-color-secondary py-2 transition-all duration-100 hover:opacity-80">
+                      <h1 className="font-bold text-color-white">{`${
+                        branches.find(
+                          (branch) => branch.branch_title === "Şifacılık"
+                        ) !== undefined
+                          ? branches.find(
+                              (branch) => branch.branch_title === "Şifacılık"
+                            )?.branch_expert_count
+                          : 0
+                      } Uzman`}</h1>
+                    </button>
+                  </Link>
                 </div>
               </div>
             </li>

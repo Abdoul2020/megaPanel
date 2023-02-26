@@ -42,7 +42,7 @@ export default function PatientPage(props: Props) {
     dispatch(updatePathname(location.pathname));
   }, [location]);
   return (
-    <div>
+    <div className="relative">
       <HeaderPatientMobile />
       <HeaderPatient />
       <Routes>

@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import {
   AiFillCloseCircle,
   AiOutlineArrowLeft,
-  AiOutlineArrowRight
+  AiOutlineArrowRight,
 } from "react-icons/ai";
 import { BiLoaderAlt } from "react-icons/bi";
 import { BsCaretDownFill } from "react-icons/bs";
@@ -17,7 +17,7 @@ import { State } from "../../../common/types/State.entity";
 import { fetchBranches } from "../../../features/branches/branchesAPI";
 import {
   fetchExperts,
-  fetchExpertsCount
+  fetchExpertsCount,
 } from "../../../features/doctorSlice/doctorAPI";
 import { addExperts } from "../../../features/doctorSlice/doctorSlice";
 import { updateScrollToTop } from "../../../features/options/optionsSlice";
@@ -138,7 +138,6 @@ export default function SearchPage(props: Props) {
       const paramSize = searchParams.get("size") || 5;
       const paramSort = searchParams.get("sort") || "ASC";
       const paramSortBy = searchParams.get("sortBy") || "expert_name";
-      console.log("3");
       setSearchParams({
         online: `${!online}`,
         city: `${paramCity}`,
@@ -201,7 +200,6 @@ export default function SearchPage(props: Props) {
     const paramSort = searchParams.get("sort") || "ASC";
     const paramSortBy = searchParams.get("sortBy") || "expert_name";
 
-    console.log("4");
     setSearchParams({
       online: `${!paramOnline}`,
       city: `${value}`,
@@ -226,7 +224,6 @@ export default function SearchPage(props: Props) {
     const paramSort = searchParams.get("sort") || "ASC";
     const paramSortBy = searchParams.get("sortBy") || "expert_name";
 
-    console.log("5");
     setSearchParams({
       online: `${!paramOnline}`,
       city: "",
@@ -254,7 +251,6 @@ export default function SearchPage(props: Props) {
       const paramSort = searchParams.get("sort") || "ASC";
       const paramSortBy = searchParams.get("sortBy") || "expert_name";
 
-      console.log("6");
       setSearchParams({
         online: `${paramOnline}`,
         city: `${paramCity}`,
@@ -528,6 +524,7 @@ export default function SearchPage(props: Props) {
       inputRef.current.focus();
     }
   };
+
 
   const states = useAppSelector((state) => state.states.statesList);
   const countries = useAppSelector((state) => state.countries.countriesList);

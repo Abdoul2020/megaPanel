@@ -63,7 +63,7 @@ export default function TeamSection(props: Props) {
           dots: false,
           infinite: true,
           speed: 500,
-          slidesToShow: props.doctors.length < 4 ? props.doctors.length : 2,
+          slidesToShow: 1,
           slidesToScroll: 1,
           initialSlide: 0,
           itemsCenter: true,
