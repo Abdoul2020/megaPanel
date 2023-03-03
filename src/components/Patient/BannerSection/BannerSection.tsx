@@ -33,9 +33,6 @@ export default function BannerSection() {
 
   const navigate = useNavigate();
   const handleSubmit = (e: any) => {
-    console.log(
-      `/search?online=${online}&city=${city}&query_text=${queryText}`
-    );
     e.preventDefault();
     navigate(`/search?online=${online}&city=${city}&query_text=${queryText}`, {
       state: { online: online },

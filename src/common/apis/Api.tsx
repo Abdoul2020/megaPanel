@@ -1,6 +1,6 @@
 const BASE_URL =
   process.env.NODE_ENV.trim() === "development"
-    ? `http://localhost:${process.env.REACT_APP_API_PORT_DEV}`
-    : `http://localhost:${process.env.REACT_APP_API_PORT}`;
+    ? process.env.REACT_APP_API_URI_DEV
+    : process.env.REACT_APP_API_URI;
 
 export default BASE_URL;

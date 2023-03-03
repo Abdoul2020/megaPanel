@@ -17,7 +17,7 @@ export default function CTAResponsive({}: Props) {
         <ul className="relative z-10 grid w-full grid-cols-1 content-end items-end gap-y-10 py-20 md:grid-cols-2 2xl:grid-cols-4">
           <li className="relative flex flex-col items-center justify-center gap-10">
             <img
-              src={require("../../../assets/images/mockups-07.png")}
+              src={require("../../../assets/images/megaverse_patient_monitor.webp")}
               alt=""
               className="h-[275px]"
             />
@@ -27,7 +27,7 @@ export default function CTAResponsive({}: Props) {
           </li>
           <li className="relative flex flex-col items-center justify-center gap-10">
             <img
-              src={require("../../../assets/images/mockups-08.png")}
+              src={require("../../../assets/images/megaverse_patient_laptop.webp")}
               alt=""
               className="h-[220px]"
             />
@@ -37,7 +37,7 @@ export default function CTAResponsive({}: Props) {
           </li>
           <li className="relative flex flex-col items-center justify-center gap-10">
             <img
-              src={require("../../../assets/images/mockups-09.png")}
+              src={require("../../../assets/images/megaverse_patient_tablet.webp")}
               alt=""
               className="h-[190px]"
             />
@@ -47,7 +47,7 @@ export default function CTAResponsive({}: Props) {
           </li>
           <li className="relative flex flex-col items-center justify-center gap-10">
             <img
-              src={require("../../../assets/images/mockups-10.png")}
+              src={require("../../../assets/images/megaverse_patient_phone.webp")}
               alt=""
               className="h-[160px]"
             />

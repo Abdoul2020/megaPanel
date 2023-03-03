@@ -74,7 +74,6 @@ export default function BranchSection(props: Props) {
     ],
   };
   const branches = useAppSelector((state) => state.branches.branchesList);
-  console.log({ branches });
   return (
     <div className="flex w-full items-center justify-center bg-color-white-secondary px-10 lg:px-10">
       <div className="flex w-full flex-col items-start justify-center gap-10 py-20 lg:w-2/3">
@@ -92,7 +91,7 @@ export default function BranchSection(props: Props) {
               <div className="flex flex-col items-center justify-center rounded-[25px] bg-color-white">
                 <div className="flex flex-col items-center justify-center gap-4 p-8 px-6">
                   <img
-                    src={require("../../../assets/images/kocluk.png")}
+                    src={require("../../../assets/images/kocluk.webp")}
                     alt=""
                     className="h-20 w-20"
                   />
@@ -121,7 +120,7 @@ export default function BranchSection(props: Props) {
               <div className="flex flex-col items-center justify-center rounded-[25px] bg-color-white">
                 <div className="flex flex-col items-center justify-center gap-4 p-8 px-6">
                   <img
-                    src={require("../../../assets/images/aile_dizimi.png")}
+                    src={require("../../../assets/images/aile_dizimi.webp")}
                     alt=""
                     className="h-20 w-20"
                   />
@@ -150,7 +149,7 @@ export default function BranchSection(props: Props) {
               <div className="flex flex-col items-center justify-center rounded-[25px] bg-color-white">
                 <div className="flex flex-col items-center justify-center gap-4 p-8 px-6">
                   <img
-                    src={require("../../../assets/images/astrology.png")}
+                    src={require("../../../assets/images/astrology.webp")}
                     alt=""
                     className="h-20 w-20"
                   />
@@ -179,7 +178,7 @@ export default function BranchSection(props: Props) {
               <div className="flex flex-col items-center justify-center rounded-[25px] bg-color-white">
                 <div className="flex flex-col items-center justify-center gap-4 p-8 px-6">
                   <img
-                    src={require("../../../assets/images/diyetisyen.png")}
+                    src={require("../../../assets/images/diyetisyen.webp")}
                     alt=""
                     className="h-20 w-20"
                   />
@@ -208,7 +207,7 @@ export default function BranchSection(props: Props) {
               <div className="flex flex-col items-center justify-center rounded-[25px] bg-color-white">
                 <div className="flex flex-col items-center justify-center gap-4 p-8 px-6">
                   <img
-                    src={require("../../../assets/images/nlp.png")}
+                    src={require("../../../assets/images/nlp.webp")}
                     alt=""
                     className="h-20 w-20"
                   />
@@ -237,7 +236,7 @@ export default function BranchSection(props: Props) {
               <div className="flex flex-col items-center justify-center rounded-[25px] bg-color-white">
                 <div className="flex flex-col items-center justify-center gap-4 p-8 px-6">
                   <img
-                    src={require("../../../assets/images/psikolog.png")}
+                    src={require("../../../assets/images/psikolog.webp")}
                     alt=""
                     className="h-20 w-20"
                   />
@@ -266,7 +265,7 @@ export default function BranchSection(props: Props) {
               <div className="flex flex-col items-center justify-center rounded-[25px] bg-color-white">
                 <div className="flex flex-col items-center justify-center gap-4 p-8 px-6">
                   <img
-                    src={require("../../../assets/images/psikiyatr.png")}
+                    src={require("../../../assets/images/psikiyatr.webp")}
                     alt=""
                     className="h-20 w-20"
                   />
@@ -295,7 +294,7 @@ export default function BranchSection(props: Props) {
               <div className="flex flex-col items-center justify-center rounded-[25px] bg-color-white">
                 <div className="flex flex-col items-center justify-center gap-4 p-8 px-6">
                   <img
-                    src={require("../../../assets/images/sifacilik.png")}
+                    src={require("../../../assets/images/sifacilik.webp")}
                     alt=""
                     className="h-20 w-20"
                   />

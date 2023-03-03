@@ -30,6 +30,8 @@ import { getCookie } from "../../../../../helpers/authExpertHelper";
 import { unauthenticate } from "../../../../../helpers/authHelper";
 import AlertHeaderWarning from "../../../../Common/AlertHeaderWarning/AlertHeaderWarning";
 import { VscReferences } from "react-icons/vsc";
+import PhoneInput from "react-phone-number-input";
+import "react-phone-number-input/style.css";
 
 type Props = {};
 
@@ -50,6 +52,7 @@ export default function DashboardSettingsHomeExpert({}: Props) {
   const [companyObject, setCompanyObject] = useState<Firm | undefined>(
     undefined
   );
+  const [telCountry, setTelCountry] = useState("");
   const [experience, setExperience] = useState("");
   const [training, setTraining] = useState("");
   const [additionalInformation, setAdditionalInformation] = useState("");
@@ -92,9 +95,8 @@ export default function DashboardSettingsHomeExpert({}: Props) {
 
   const dispatch = useAppDispatch();
 
-  const handleTelChange = (e: any) => {
-    const value = e.target.value;
-    setTel(value);
+  const handleTelChange = (str: string) => {
+    setTel(str);
   };
   const handlePhysicalLocationChange = (e: any) => {
     const value = e.target.value;
@@ -215,6 +217,7 @@ export default function DashboardSettingsHomeExpert({}: Props) {
     const valueRaw = e.target.value;
     const value = JSON.parse(valueRaw);
     setCountry(value.name);
+    setTelCountry(value.sortname);
     setFilteredStates(states.filter((state) => state.country_id == value.id));
   };
 
@@ -813,7 +816,16 @@ export default function DashboardSettingsHomeExpert({}: Props) {
                   >
                     Telefon Numarası(*)
                   </label>
-                  <input
+
+                  <PhoneInput
+                    focusInputOnCountrySelection
+                    placeholder="Telefon Numarası"
+                    value={tel}
+                    onChange={handleTelChange}
+                    className="w-full rounded-[20px] border-[1px] border-color-dark-primary border-opacity-10 bg-color-white-third py-[15px] px-[22px]
+                  text-[16px] font-medium outline-none transition-all duration-300 focus:border-color-main"
+                  />
+                  {/* <input
                     onChange={handleTelChange}
                     value={tel}
                     type="tel"
@@ -822,7 +834,7 @@ export default function DashboardSettingsHomeExpert({}: Props) {
                     placeholder="Telefon Numarası"
                     className="w-full rounded-[20px] border-[1px] border-color-dark-primary border-opacity-10 bg-color-white-third py-[15px] px-[22px]
                 text-[16px] font-medium outline-none transition-all duration-300 focus:border-color-main"
-                  />
+                  /> */}
                 </div>
                 <div className="relative flex w-full flex-col items-start justify-start gap-1">
                   <label

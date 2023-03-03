@@ -22,7 +22,6 @@ export default function DashboardAppointmentsPatient({}: Props) {
           is_canceled: false,
         };
         const myApoointmentsResponse = await fetchAppointments(query);
-        console.log({ myApoointmentsResponse });
         const myApoointmentsSuccess = myApoointmentsResponse.success;
         if (myApoointmentsSuccess) {
           const data = myApoointmentsResponse.data.data;

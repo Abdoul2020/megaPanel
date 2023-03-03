@@ -11,7 +11,7 @@ export default function CTASection({}: Props) {
         <div className="relative flex items-center justify-center">
           <div className="absolute left-0 bottom-0 md:flex hidden h-full w-full items-center justify-center">
             <img
-              src={require("../../../assets/images/megaverse_nedir.png")}
+              src={require("../../../assets/images/megaverse_nedir.webp")}
               alt=""
               className="max-w-[80%]"
             />
