@@ -12,9 +12,12 @@ COPY . .
 
 RUN yarn build --silent
 
-# SERVE
+RUN yarn autoclean --force
 
+# SERVE
 FROM node:14-alpine
+
+ENV NODE_ENV=production
 
 RUN npm install -g serve
 
@@ -23,7 +26,5 @@ WORKDIR /web
 COPY --from=builder /web/build .
 
 EXPOSE 80
-
-ENV NODE_ENV=production
 
 CMD ["serve", "-p", "80", "-s", "."]
