@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useState } from "react";
 import TeamMember from "../TeamMember/TeamMember";
-import { BsArrowRight, BsArrowLeft } from "react-icons/bs";
+import { BsArrowRight, BsArrowLeft, BsFillArrowLeftCircleFill, BsFillArrowRightCircleFill } from "react-icons/bs";
 import { motion } from "framer-motion";
 import { Doctor } from "../../../common/types/Doctor.entity";
 import Slider from "react-slick";
@@ -10,29 +10,7 @@ type Props = {
 };
 
 export default function TeamSection(props: Props) {
-  const [width, setWidth] = useState(0);
-
-  const carousel = useRef<HTMLInputElement>(null);
-
-  useEffect(() => {
-    const total =
-      (carousel.current?.scrollWidth || 1) -
-      (carousel.current?.offsetWidth || 1);
-    setWidth(total);
-  }, []);
-
-  function SamplePrevArrow(props: any) {
-    const { className, style, onClick } = props;
-    return (
-      <div
-        className={className}
-        style={{
-          ...style,
-        }}
-        onClick={onClick}
-      />
-    );
-  }
+  const slider = useRef<any>(null);
 
   var settings = {
     dots: false,
@@ -43,6 +21,7 @@ export default function TeamSection(props: Props) {
     initialSlide: 0,
     itemsCenter: true,
     autoplay: true,
+    arrows: false,
     responsive: [
       {
         breakpoint: 1024,
@@ -55,6 +34,7 @@ export default function TeamSection(props: Props) {
           initialSlide: 0,
           itemsCenter: true,
           autoplay: true,
+          arrows: false,
         },
       },
       {
@@ -68,6 +48,7 @@ export default function TeamSection(props: Props) {
           initialSlide: 0,
           itemsCenter: true,
           autoplay: true,
+          arrows: false,
         },
       },
       {
@@ -81,6 +62,7 @@ export default function TeamSection(props: Props) {
           initialSlide: 0,
           itemsCenter: true,
           autoplay: true,
+          arrows: false,
         },
       },
     ],
@@ -99,7 +81,21 @@ export default function TeamSection(props: Props) {
           </p>
         </div>
         <div className="relative w-full">
-          <Slider {...settings}>
+          <div className="absolute left-0 top-0 flex h-full w-full items-center justify-between">
+            <button
+              className="absolute right-full"
+              onClick={() => slider?.current?.slickPrev()}
+            >
+              <BsFillArrowLeftCircleFill className="text-[32px] text-color-main" />
+            </button>
+            <button
+              className="absolute left-full"
+              onClick={() => slider?.current?.slickNext()}
+            >
+              <BsFillArrowRightCircleFill className="text-[32px] text-color-main" />
+            </button>
+          </div>
+          <Slider ref={slider} {...settings}>
             {props.doctors.map((expert) => {
               return (
                 <li key={expert._id} className="px-10">

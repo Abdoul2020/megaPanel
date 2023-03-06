@@ -1,4 +1,8 @@
 import { useEffect, useRef, useState } from "react";
+import {
+  BsFillArrowLeftCircleFill,
+  BsFillArrowRightCircleFill,
+} from "react-icons/bs";
 import { Link } from "react-router-dom";
 import Slider from "react-slick";
 import { useAppSelector } from "../../../app/hooks";
@@ -9,6 +13,7 @@ type Props = {
 };
 
 export default function BranchSection(props: Props) {
+  const slider = useRef<any>(null);
   var settings = {
     dots: false,
     infinite: true,
@@ -18,6 +23,7 @@ export default function BranchSection(props: Props) {
     initialSlide: 0,
     itemsCenter: true,
     autoplay: true,
+    arrows: false,
     responsive: [
       {
         breakpoint: 1700,
@@ -30,6 +36,7 @@ export default function BranchSection(props: Props) {
           initialSlide: 0,
           itemsCenter: true,
           autoplay: true,
+          arrows: false,
         },
       },
       {
@@ -43,6 +50,7 @@ export default function BranchSection(props: Props) {
           initialSlide: 0,
           itemsCenter: true,
           autoplay: true,
+          arrows: false,
         },
       },
       {
@@ -56,6 +64,7 @@ export default function BranchSection(props: Props) {
           initialSlide: 0,
           itemsCenter: true,
           autoplay: true,
+          arrows: false,
         },
       },
       {
@@ -69,6 +78,7 @@ export default function BranchSection(props: Props) {
           initialSlide: 0,
           itemsCenter: true,
           autoplay: true,
+          arrows: false,
         },
       },
     ],
@@ -86,7 +96,21 @@ export default function BranchSection(props: Props) {
           </p>
         </div>
         <div className="relative w-full">
-          <Slider {...settings}>
+          <div className="absolute left-0 top-0 flex h-full w-full items-center justify-between">
+            <button
+              className="absolute right-full"
+              onClick={() => slider?.current?.slickPrev()}
+            >
+              <BsFillArrowLeftCircleFill className="text-[32px] text-color-main" />
+            </button>
+            <button
+              className="absolute left-full"
+              onClick={() => slider?.current?.slickNext()}
+            >
+              <BsFillArrowRightCircleFill className="text-[32px] text-color-main" />
+            </button>
+          </div>
+          <Slider ref={slider} {...settings}>
             <li className="flex w-[250px] flex-col items-center justify-center gap-6 px-4">
               <div className="flex flex-col items-center justify-center rounded-[25px] bg-color-white">
                 <div className="flex flex-col items-center justify-center gap-4 p-8 px-6">
