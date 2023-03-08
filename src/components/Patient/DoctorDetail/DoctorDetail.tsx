@@ -260,7 +260,7 @@ export default function DoctorDetail({}: Props) {
                       {expert?.expert_about_me}
                     </p>
                   </div>
-                  <div className="flex w-full flex-col items-start justify-start gap-2 py-5 border-t-[1px] border-solid border-color-dark-primary border-opacity-10">
+                  <div className="flex w-full flex-col items-start justify-start gap-2 border-t-[1px] border-solid border-color-dark-primary border-opacity-10 py-5">
                     <div className="flex items-end justify-end gap-2">
                       <GiTreeBranch className="text-[24px] text-color-main" />
                       <h1 className="font-bold text-color-dark-primary">
@@ -279,7 +279,7 @@ export default function DoctorDetail({}: Props) {
                       })}
                     </ul>
                   </div>
-                  <div className="flex w-full flex-col items-start justify-start gap-2 py-5 border-t-[1px] border-solid border-color-dark-primary border-opacity-10">
+                  <div className="flex w-full flex-col items-start justify-start gap-2 border-t-[1px] border-solid border-color-dark-primary border-opacity-10 py-5">
                     <div className="flex items-end justify-end gap-2">
                       <HiAcademicCap className="text-[24px] text-color-main" />
                       <h1 className="font-bold text-color-dark-primary">
@@ -290,7 +290,7 @@ export default function DoctorDetail({}: Props) {
                       {expert?.expert_training}
                     </p>
                   </div>
-                  <div className="flex w-full flex-col items-start justify-start gap-2 py-5 border-t-[1px] border-solid border-color-dark-primary border-opacity-10">
+                  <div className="flex w-full flex-col items-start justify-start gap-2 border-t-[1px] border-solid border-color-dark-primary border-opacity-10 py-5">
                     <div className="flex items-end justify-end gap-2">
                       <MdWork className="text-[24px] text-color-main" />
                       <h1 className="font-bold text-color-dark-primary">
@@ -301,7 +301,7 @@ export default function DoctorDetail({}: Props) {
                       {expert?.expert_experience}
                     </p>
                   </div>
-                  <div className="flex w-full flex-col items-start justify-start gap-2 py-5 border-t-[1px] border-solid border-color-dark-primary border-opacity-10">
+                  <div className="flex w-full flex-col items-start justify-start gap-2 border-t-[1px] border-solid border-color-dark-primary border-opacity-10 py-5">
                     <div className="flex items-end justify-end gap-2">
                       <IoMdInformationCircle className="text-[24px] text-color-main" />
                       <h1 className="font-bold text-color-dark-primary">
@@ -325,6 +325,7 @@ export default function DoctorDetail({}: Props) {
                           <SocialIcon
                             url={`${social}`}
                             style={{ height: "25px", width: "25px" }}
+                            target="_blank"
                           />
                         );
                       })}

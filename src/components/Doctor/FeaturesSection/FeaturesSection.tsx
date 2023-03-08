@@ -19,7 +19,7 @@ export default function FeaturesSection({}: Props) {
             Öne Çıkan Özelliklerimiz
           </h1>
           <p className="text-color-dark-primary opacity-70">
-            Klinik yönetimi ve hasta takibi için ihtiyaç duyacağınızdan fazlası.
+            Klinik yönetimi ve danışan takibi için ihtiyaç duyacağınızdan fazlası.
           </p>
         </div>
       </div>
@@ -400,7 +400,7 @@ export default function FeaturesSection({}: Props) {
                 grafikler ve farklı filtrelerle raporlaştırabilirsiniz, tüm
                 koçlarınız için ayrı ayrı raporlar oluşturabilirsiniz. Tüm
                 bilgileri gözünüzün önünde bulundurun ve fiziksel kopyalarını
-                çıkartın. Tarih aralıkları belirley- erek analizlerinizi
+                çıkartın. Tarih aralıkları belirleyerek analizlerinizi
                 şekillendirin.
               </p>
             </div>

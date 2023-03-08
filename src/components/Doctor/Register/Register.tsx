@@ -567,6 +567,9 @@ export default function Register({}: Props) {
                   />
                 </div>
                 <div className="flex flex-col items-start justify-center">
+                  <h1 className="text-xl font-bold text-color-dark-primary">
+                    <CountUp end={8712} duration={1} />
+                  </h1>
                   <motion.h1
                     initial={{ opacity: 0 }}
                     whileInView={{ opacity: 1 }}
@@ -576,13 +579,10 @@ export default function Register({}: Props) {
                       reapat: 1,
                     }}
                     viewport={{ once: true }}
-                    className="text-xl font-bold text-color-dark-primary"
+                    className="text-color-dark-primary opacity-70"
                   >
-                    <CountUp end={8712} duration={1} />
-                  </motion.h1>
-                  <h1 className="text-color-dark-primary opacity-70">
                     Aktif Uzman
-                  </h1>
+                  </motion.h1>
                 </div>
               </div>
               <h1 className="text-color-dark-primary opacity-70">
@@ -659,6 +659,9 @@ export default function Register({}: Props) {
                   />
                 </div>
                 <div className="flex flex-col items-start justify-center">
+                  <h1 className="text-xl font-bold text-color-dark-primary">
+                    <CountUp end={41568} duration={1} />
+                  </h1>
                   <motion.h1
                     initial={{ opacity: 0 }}
                     whileInView={{ opacity: 1 }}
@@ -668,11 +671,10 @@ export default function Register({}: Props) {
                       reapat: 1,
                     }}
                     viewport={{ once: true }}
-                    className="text-xl font-bold text-color-dark-primary"
+                    className="text-color-dark-primary opacity-70"
                   >
-                    <CountUp end={41568} duration={1} />
+                    Seans
                   </motion.h1>
-                  <h1 className="text-color-dark-primary opacity-70">Seans</h1>
                 </div>
               </div>
               <h1 className="text-color-dark-primary opacity-70">

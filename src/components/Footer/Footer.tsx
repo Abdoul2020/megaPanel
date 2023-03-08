@@ -164,9 +164,9 @@ export default function Footer({}: Props) {
               <ul className="flex flex-col items-start justify-start gap-2">
                 <li className="flex items-center justify-center gap-2">
                   <AiFillPhone className="text-color-main" />
-                  <a href="tel:+905554443322">
+                  <a href="tel:+908503907262">
                     <h1 className="text-base text-color-dark-primary opacity-50">
-                      +90 (555)-444-3322
+                      +90 (850) 390 7262
                     </h1>
                   </a>
                 </li>
@@ -174,7 +174,7 @@ export default function Footer({}: Props) {
                   <AiFillMail className="text-color-main" />
                   <a href="mailto:info@megaverse.coach">
                     <h1 className="text-base text-color-dark-primary opacity-50">
-                      info@megaverse.coach
+                      coach.megaverse@gmail.com
                     </h1>
                   </a>
                 </li>
