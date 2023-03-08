@@ -14,7 +14,7 @@ export default function AboutPage({}: Props) {
               Geçtiğimiz kısa sürede bütün dünya büyük bir sınav verdi, bu
               sınavın ise günümüzde iletişime büyük etkileri oldu; bu etkileri
               hala günümüzde devam ediyor, bu sınavın adı pandemiydi. Pandemi
-              döneminin başlangıcıyla fiziksel olarak sosyal ortam- lardan
+              döneminin başlangıcıyla fiziksel olarak sosyal ortamlardan
               koparılan toplum seminerlerden webinarlara, yüzyüze kahve
               sohbetlerinden görüntülü konuşmalara geçti, ruh sağlığımızında en
               az bir o kadar etkilendiği dönemde bütün dünyayı kucaklamak,
@@ -24,7 +24,7 @@ export default function AboutPage({}: Props) {
             <p className="text-lg">
               Megaverse Uluslararası Kişisel Gelişim Portalı, sertifikalı
               uzmanların, profesyonellerin, koçların sürecine yardımcı olmak
-              üzere tasarlanırken danışanlar için ise kul- lanıcı dostu, kolay
+              üzere tasarlanırken danışanlar için ise kullanıcı dostu, kolay
               kullanımlı ama bir o kadar da fonksiyonel olması hedeflendi.
             </p>
             <p className="text-lg">

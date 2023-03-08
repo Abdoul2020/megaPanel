@@ -13,6 +13,7 @@ import appointmentTypesReducer from "../features/appointmentTypes/appointmentTyp
 import firmsReducer from "../features/firms/firmsSlice";
 import countriesReducer from "../features/countries/countriesSlice";
 import statesReducer from "../features/states/statesSlice";
+import faqsReducer from "../features/faqs/faqsSlice";
 
 const store = configureStore({
   reducer: {
@@ -30,6 +31,7 @@ const store = configureStore({
     appointments: appointmentsReducer,
     appointmentTypes: appointmentTypesReducer,
     firms: firmsReducer,
+    faqs: faqsReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
