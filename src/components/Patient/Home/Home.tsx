@@ -38,7 +38,7 @@ export default function Home(props: Props) {
       {authExpertObject !== undefined || authObject !== undefined ? (
         <div></div>
       ) : (
-        <Link to="/for-doctors" onClick={() => dispatch(updateDoctorState())}>
+        <Link to="/experts" onClick={() => dispatch(updateDoctorState())}>
           <div
             className={`fixed top-0 left-0 z-50 transition-all duration-500 ${
               sticky ? "translate-x-0" : "-translate-x-full"

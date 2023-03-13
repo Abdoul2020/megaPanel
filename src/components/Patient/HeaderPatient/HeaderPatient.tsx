@@ -1,6 +1,12 @@
+import { Tooltip } from "@mui/material";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
-import { BsArrowRight, BsFillPersonFill } from "react-icons/bs";
+import {
+  BsArrowRight,
+  BsCheckCircleFill,
+  BsExclamationCircleFill,
+  BsFillPersonFill,
+} from "react-icons/bs";
 import { FaStethoscope } from "react-icons/fa";
 import { FiLogOut, FiSearch } from "react-icons/fi";
 import { Link, useLocation, useNavigate } from "react-router-dom";
@@ -11,11 +17,10 @@ import { fetchClientProfilePicture } from "../../../features/clients/clientsAPI"
 import { fetchExpertProfilePicture } from "../../../features/doctorSlice/doctorAPI";
 import { updateDoctorState } from "../../../features/options/optionsSlice";
 import {
-  removeCookie, unauthenticatehardExpert
+  removeCookie,
+  unauthenticatehardExpert,
 } from "../../../helpers/authExpertHelper";
-import {
-  unauthenticatehard
-} from "../../../helpers/authHelper";
+import { unauthenticatehard } from "../../../helpers/authHelper";
 
 export default function HeaderPatient() {
   const location = useLocation();
@@ -40,7 +45,7 @@ export default function HeaderPatient() {
     if (authExpertObject) {
       dispatch(addAuthExpertObject(undefined));
       unauthenticatehardExpert(() => {
-        navigate("/for-doctors/login");
+        navigate("/experts/login");
       });
       removeCookie("m_t");
     } else if (authObject) {
@@ -113,7 +118,7 @@ export default function HeaderPatient() {
       <div className="flex w-full items-center justify-between py-4 px-10 xl:w-3/4 xl:px-0">
         <div className="flex items-center justify-center gap-10">
           <Link to="/">
-            {pathname === "/" || pathname === "/for-doctors" ? (
+            {pathname === "/" || pathname === "/experts" ? (
               <motion.img
                 initial={{ opacity: 0 }}
                 whileInView={{ opacity: 1 }}
@@ -146,13 +151,10 @@ export default function HeaderPatient() {
           {authExpertObject !== undefined || authObject !== undefined ? (
             <div></div>
           ) : (
-            <Link
-              to="/for-doctors"
-              onClick={() => dispatch(updateDoctorState())}
-            >
+            <Link to="/experts" onClick={() => dispatch(updateDoctorState())}>
               <div
                 className={`${
-                  pathname === "/for-doctors" || pathname === "/"
+                  pathname === "/experts" || pathname === "/"
                     ? "flex"
                     : "hidden"
                 } group z-20 flex cursor-pointer items-center justify-center gap-4 rounded-[15px] bg-color-secondary px-8 py-[18px] transition-all duration-500 hover:bg-color-white`}
@@ -175,7 +177,7 @@ export default function HeaderPatient() {
         pathname.includes("forgot-password") ? (
           pathname.includes("register") ? (
             <Link
-              to={forDoctors ? "/register" : "/for-doctors/register"}
+              to={forDoctors ? "/register" : "/experts/register"}
               onClick={() => dispatch(updateDoctorState())}
             >
               <div
@@ -205,7 +207,7 @@ export default function HeaderPatient() {
             </Link>
           ) : pathname.includes("login") ? (
             <Link
-              to="/for-doctors/login"
+              to="/experts/login"
               onClick={() => dispatch(updateDoctorState())}
             >
               <div
@@ -240,30 +242,88 @@ export default function HeaderPatient() {
               <div>
                 {authExpertObject !== undefined ? (
                   <div className="flex items-center justify-center gap-8">
-                    <Link to="/for-doctors/dashboard">
+                    <Link to="/experts/dashboard">
                       <div className="group flex cursor-pointer items-center justify-center gap-4 transition-all duration-300">
-                        <div className="h-[50px] w-[50px] overflow-hidden rounded-[20px]">
-                          {expertProfileImageBase64 ? (
+                        {expertProfileImageBase64 ? (
+                          <div className="relative h-[50px] w-[50px] rounded-[20px]">
                             <img
                               src={`data:image/jpeg;base64,${expertProfileImageBase64}`}
                               className="h-[50px] w-[50px] rounded-[15px]"
                               alt=""
                             />
-                          ) : (
+                            <div className="absolute -top-[5px] -right-[5px]">
+                              {authExpertObject?.expert_status === 1 ? (
+                                <Tooltip
+                                  title="Hesabınız onaylandı."
+                                  placement="right-start"
+                                >
+                                  <div>
+                                    <BsCheckCircleFill className="text-color-success-primary" />
+                                  </div>
+                                </Tooltip>
+                              ) : authExpertObject?.expert_status === 0 ? (
+                                <Tooltip
+                                  title="Hesabınız onay bekliyor."
+                                  placement="right-start"
+                                >
+                                  <div>
+                                    <BsExclamationCircleFill className="text-color-warning-primary" />
+                                  </div>
+                                </Tooltip>
+                              ) : (
+                                <Tooltip
+                                  title="Hesabınız reddedildi."
+                                  placement="right-start"
+                                >
+                                  <div>
+                                    <BsExclamationCircleFill className="text-color-danger-primary" />
+                                  </div>
+                                </Tooltip>
+                              )}
+                            </div>
+                          </div>
+                        ) : (
+                          <div className="relative">
                             <button className="flex h-full w-full items-center justify-center rounded-[15px] bg-color-secondary p-4 transition-all duration-300 group-hover:bg-color-third">
                               <BsFillPersonFill className="text-[40px] text-color-white" />
                             </button>
-                          )}
-                        </div>
+                            <div className="absolute -top-[5px] -right-[5px]">
+                              {authExpertObject?.expert_status === 1 ? (
+                                <Tooltip
+                                  title="Hesabınız onaylandı."
+                                  placement="right-start"
+                                >
+                                  <div>
+                                    <BsCheckCircleFill className="text-color-success-primary" />
+                                  </div>
+                                </Tooltip>
+                              ) : authExpertObject?.expert_status === 0 ? (
+                                <Tooltip
+                                  title="Hesabınız onay bekliyor."
+                                  placement="right-start"
+                                >
+                                  <BsExclamationCircleFill className="text-color-warning-primary" />
+                                </Tooltip>
+                              ) : (
+                                <Tooltip
+                                  title="Hesabınız reddedildi."
+                                  placement="right-start"
+                                >
+                                  <BsExclamationCircleFill className="text-color-danger-primary" />
+                                </Tooltip>
+                              )}
+                            </div>
+                          </div>
+                        )}
                         <div className="flex items-center justify-center gap-2">
-                          <h1 className="text-lg font-bold uppercase text-color-dark-primary text-opacity-50 group-hover:text-opacity-80">
+                          <h1 className="text-sm font-bold uppercase text-color-dark-primary text-opacity-50 group-hover:text-opacity-80">
                             {`${
                               authExpertObject.expert_title
                                 ? authExpertObject.expert_title.title_title
                                 : ""
                             }`}
                           </h1>
-                          <h1 className="text-base uppercase text-color-dark-primary group-hover:text-opacity-80">
+                          <h1 className="text-sm uppercase text-color-dark-primary group-hover:text-opacity-80">
                             {`${authExpertObject.expert_name} ${authExpertObject.expert_surname}`}
                           </h1>
                         </div>
@@ -294,7 +354,7 @@ export default function HeaderPatient() {
                             </button>
                           )}
                         </div>
-                        <h1 className="text-lg uppercase text-color-white group-hover:text-opacity-80">
+                        <h1 className="text-sm uppercase text-color-white group-hover:text-opacity-80">
                           {`${authObject?.client_name} ${authObject?.client_surname}`}
                         </h1>
                       </div>
@@ -311,14 +371,14 @@ export default function HeaderPatient() {
               </div>
             ) : (
               <div className="flex items-center justify-center gap-4">
-                <Link to={forDoctors ? "/for-doctors/register" : "/register"}>
+                <Link to={forDoctors ? "/experts/register" : "/register"}>
                   <button className="group cursor-pointer rounded-[15px] bg-color-third px-8 py-4 transition-all duration-500 hover:bg-color-secondary">
                     <h1 className="text-sm font-normal text-color-white">
                       Hemen Kaydol
                     </h1>
                   </button>
                 </Link>
-                <Link to={forDoctors ? "/for-doctors/login" : "/login"}>
+                <Link to={forDoctors ? "/experts/login" : "/login"}>
                   <button
                     className={`flex items-center justify-center gap-2 rounded-[15px] border-[1px] border-solid px-8 py-4 ${
                       forDoctors || pathname !== "/"

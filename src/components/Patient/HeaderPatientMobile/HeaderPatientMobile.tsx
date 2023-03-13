@@ -13,7 +13,7 @@ export default function HeaderPatientMobile({}: Props) {
   return (
     <div className="absolute top-0 z-10 flex h-[90px] w-full items-center justify-between px-10 lg:hidden">
       <Link to="/">
-        {pathname === "/" || pathname === "/for-doctors" ? (
+        {pathname === "/" || pathname === "/experts" ? (
           <motion.img
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
@@ -23,9 +23,9 @@ export default function HeaderPatientMobile({}: Props) {
               reapat: 1,
             }}
             viewport={{ once: true }}
-            src={require("../../../assets/images/megaverse_logo_8.png")}
+            src={require("../../../assets/images/megaverse_logo_5.png")}
             alt=""
-            className="h-10"
+            className="h-8"
           />
         ) : (
           <motion.img
@@ -45,7 +45,7 @@ export default function HeaderPatientMobile({}: Props) {
       </Link>
       <GiHamburgerMenu
         className={`text-[48px] ${
-          pathname === "/" || pathname === "/for-doctors"
+          pathname === "/" || pathname === "/experts"
             ? "text-color-white-secondary"
             : "text-color-main"
         } opacity-50 hover:cursor-pointer`}

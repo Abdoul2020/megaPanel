@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { AiFillEye } from "react-icons/ai";
 import { BiLoaderAlt } from "react-icons/bi";
 import { BsArrowRight } from "react-icons/bs";
+import { FaStethoscope } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 import { useAppDispatch } from "../../../app/hooks";
 import { AuthExpertLoginDto } from "../../../common/dtos/auth/expert/authExpertLoginDto.dto";
@@ -10,12 +11,15 @@ import { addAuthObject } from "../../../features/auth/authSlice";
 import { authExpertLogin } from "../../../features/authExpert/authExpertAPI";
 import {
   addAuthExpertObject,
-  addAuthExpertToken
+  addAuthExpertToken,
 } from "../../../features/authExpert/authExpertSlice";
 import { updateAlert } from "../../../features/options/optionsSlice";
 import {
-  authenticateExpert, getCookie, getLocalStorage, isAuthExpert,
-  setLocalStorage
+  authenticateExpert,
+  getCookie,
+  getLocalStorage,
+  isAuthExpert,
+  setLocalStorage,
 } from "../../../helpers/authExpertHelper";
 import { isAuth } from "../../../helpers/authHelper";
 
@@ -38,13 +42,13 @@ export default function Login({}: Props) {
   useEffect(() => {
     if (isAuthExpert() || isAuth()) {
       if (isAuthExpert()) {
-        navigate("/for-doctors");
+        navigate("/experts");
       }
       if (isAuth()) {
         navigate("/");
       }
     }
-    const tokenExpert = getCookie("m_e_t")
+    const tokenExpert = getCookie("m_e_t");
     const rmm = getLocalStorage("rmm_e");
     if (
       rmm !== undefined &&
@@ -90,7 +94,7 @@ export default function Login({}: Props) {
       authenticateExpert(
         response.data,
         () => {
-          navigate("/for-doctors/dashboard");
+          navigate("/experts/dashboard");
         },
         true
       );
@@ -139,7 +143,7 @@ export default function Login({}: Props) {
         authenticateExpert(
           response.data,
           () => {
-            navigate("/for-doctors/dashboard");
+            navigate("/experts/dashboard");
           },
           remindMe
         );
@@ -181,10 +185,13 @@ export default function Login({}: Props) {
   return (
     <div className="relative flex min-h-screen w-full items-center justify-center bg-color-white-secondary py-10 px-10 pt-[130px] lg:px-0">
       <div className="z-20 flex w-full items-center justify-center lg:w-2/4 xl:w-1/4">
-        <div className="flex w-full flex-col items-center justify-center gap-8">
+        <div className="flex w-full relative flex-col items-center justify-center gap-8">
+          <div className="absolute top-[15px] right-[15px] rounded-full bg-doctor-color-main p-2">
+            <FaStethoscope className="text-[12px] text-color-white" />
+          </div>
           <div className="flex w-full flex-col items-start justify-center gap-8 rounded-[25px] bg-color-white p-8 px-10 shadow-lg">
             <h1 className="text-xl font-bold text-color-dark-primary opacity-80">
-              Uzman Girişi
+              <span className="text-color-main">Uzman</span> Girişi
             </h1>
             <form
               className="flex w-full flex-col items-start justify-center gap-8"
@@ -216,7 +223,7 @@ export default function Login({}: Props) {
                   <h1 className="font-bold text-color-dark-primary opacity-50">
                     Şifreniz
                   </h1>
-                  <Link to="/for-doctors/forgot-password">
+                  <Link to="/experts/forgot-password">
                     <h1 className="text-color-main opacity-80">
                       Şifremi unuttum
                     </h1>
@@ -291,7 +298,7 @@ export default function Login({}: Props) {
             <h1 className="text-base text-color-dark-primary opacity-50">
               Hesabın yok mu?
             </h1>
-            <Link to="/for-doctors/register">
+            <Link to="/experts/register">
               <h1 className="text-lg text-color-main opacity-80">
                 Hemen Kaydol
               </h1>

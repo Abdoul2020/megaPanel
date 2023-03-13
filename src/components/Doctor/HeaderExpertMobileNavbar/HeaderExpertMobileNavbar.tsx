@@ -1,6 +1,12 @@
+import { Tooltip } from "@mui/material";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
-import { BsArrowRight, BsFillPersonFill } from "react-icons/bs";
+import {
+  BsArrowRight,
+  BsCheckCircleFill,
+  BsExclamationCircleFill,
+  BsFillPersonFill,
+} from "react-icons/bs";
 import { FiLogOut, FiSearch } from "react-icons/fi";
 import { Link, useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../../app/hooks";
@@ -10,14 +16,10 @@ import { fetchClientProfilePicture } from "../../../features/clients/clientsAPI"
 import { fetchExpertProfilePicture } from "../../../features/doctorSlice/doctorAPI";
 import {
   updateDoctorState,
-  updateHeaderMobileExpert
+  updateHeaderMobileExpert,
 } from "../../../features/options/optionsSlice";
-import {
-  unauthenticatehardExpert
-} from "../../../helpers/authExpertHelper";
-import {
-  removeCookie, unauthenticatehard
-} from "../../../helpers/authHelper";
+import { unauthenticatehardExpert } from "../../../helpers/authExpertHelper";
+import { removeCookie, unauthenticatehard } from "../../../helpers/authHelper";
 
 type Props = {};
 
@@ -44,7 +46,7 @@ export default function HeaderExpertMobileNavbar({}: Props) {
     if (authExpertObject) {
       dispatch(addAuthExpertObject(undefined));
       unauthenticatehardExpert(() => {
-        navigate("/for-doctors/login");
+        navigate("/experts/login");
       });
       removeCookie("m_t");
     } else if (authObject) {
@@ -110,9 +112,9 @@ export default function HeaderExpertMobileNavbar({}: Props) {
     dispatch(updateHeaderMobileExpert(false));
   };
   return (
-    <div className="max-w-[350px] flex h-full flex-col items-center justify-between px-10 py-10">
+    <div className="flex h-full max-w-[350px] flex-col items-center justify-between overflow-hidden px-10 py-10">
       <div className="flex flex-col items-center justify-center gap-4">
-        <Link to="/for-doctors" onClick={handleHeaderMobileExpertClose}>
+        <Link to="/experts" onClick={handleHeaderMobileExpertClose}>
           <motion.img
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
@@ -169,10 +171,7 @@ export default function HeaderExpertMobileNavbar({}: Props) {
               : "flex"
           }`}
         >
-          <Link
-            to="/for-doctors#features"
-            onClick={handleHeaderMobileExpertClose}
-          >
+          <Link to="/experts#features" onClick={handleHeaderMobileExpertClose}>
             <li className="hover:cursor-pointer hover:opacity-80">
               <h1
                 className={forDoctors ? "text-color-main" : "text-color-white"}
@@ -181,7 +180,7 @@ export default function HeaderExpertMobileNavbar({}: Props) {
               </h1>
             </li>
           </Link>
-          <Link to="/for-doctors#faq" onClick={handleHeaderMobileExpertClose}>
+          <Link to="/experts#faq" onClick={handleHeaderMobileExpertClose}>
             <li className="hover:cursor-pointer hover:opacity-80">
               <h1
                 className={forDoctors ? "text-color-main" : "text-color-white"}
@@ -211,7 +210,7 @@ export default function HeaderExpertMobileNavbar({}: Props) {
       pathname.includes("forgot-password") ? (
         pathname.includes("register") ? (
           <Link
-            to={forDoctors ? "/register" : "/for-doctors/register"}
+            to={forDoctors ? "/register" : "/experts/register"}
             onClick={() => {
               dispatch(updateDoctorState());
               handleHeaderMobileExpertClose();
@@ -266,30 +265,92 @@ export default function HeaderExpertMobileNavbar({}: Props) {
             <div>
               {authExpertObject !== undefined ? (
                 <div className="flex items-center justify-center gap-8">
-                  <Link to="/for-doctors/dashboard">
+                  <Link to="/experts/dashboard">
                     <div className="group flex cursor-pointer items-center justify-center gap-4 transition-all duration-300">
-                      <div className="min-h-[50px] min-w-[50px] overflow-hidden rounded-[20px]">
-                        {profileImageBase64 ? (
+                      {profileImageBase64 ? (
+                        <div className="relative h-[50px] w-[50px] rounded-[15px]">
                           <img
                             src={`data:image/jpeg;base64,${profileImageBase64}`}
                             className="h-[50px] w-[50px] rounded-[15px]"
                             alt=""
                           />
-                        ) : (
+                          <div className="absolute -top-[5px] -right-[5px]">
+                            {authExpertObject?.expert_status === 1 ? (
+                              <Tooltip
+                                title="Hesabınız onaylandı."
+                                placement="right-start"
+                              >
+                                <div>
+                                  <BsCheckCircleFill className="text-color-success-primary" />
+                                </div>
+                              </Tooltip>
+                            ) : authExpertObject?.expert_status === 0 ? (
+                              <Tooltip
+                                title="Hesabınız onay bekliyor."
+                                placement="right-start"
+                              >
+                                <div>
+                                  <BsExclamationCircleFill className="text-color-warning-primary" />
+                                </div>
+                              </Tooltip>
+                            ) : (
+                              <Tooltip
+                                title="Hesabınız reddedildi."
+                                placement="right-start"
+                              >
+                                <div>
+                                  <BsExclamationCircleFill className="text-color-danger-primary" />
+                                </div>
+                              </Tooltip>
+                            )}
+                          </div>
+                        </div>
+                      ) : (
+                        <div className="relative">
                           <button className="flex h-full w-full items-center justify-center rounded-[15px] bg-color-secondary p-4 transition-all duration-300 group-hover:bg-color-third">
                             <BsFillPersonFill className="text-[40px] text-color-white" />
                           </button>
-                        )}
-                      </div>
-                      <div className="flex items-center justify-center gap-2">
-                        <h1 className="text-base font-bold uppercase text-color-dark-primary text-opacity-50 group-hover:text-opacity-80">
+                          <div className="absolute -top-[5px] -right-[5px]">
+                            {authExpertObject?.expert_status === 1 ? (
+                              <Tooltip
+                                title="Hesabınız onaylandı."
+                                placement="right-start"
+                              >
+                                <div>
+                                  <BsCheckCircleFill className="text-color-success-primary" />
+                                </div>
+                              </Tooltip>
+                            ) : authExpertObject?.expert_status === 0 ? (
+                              <Tooltip
+                                title="Hesabınız onay bekliyor."
+                                placement="right-start"
+                              >
+                                <div>
+                                  <BsExclamationCircleFill className="text-color-warning-primary" />
+                                </div>
+                              </Tooltip>
+                            ) : (
+                              <Tooltip
+                                title="Hesabınız reddedildi."
+                                placement="right-start"
+                              >
+                                <div>
+                                  <BsExclamationCircleFill className="text-color-danger-primary" />
+                                </div>
+                              </Tooltip>
+                            )}
+                          </div>
+                        </div>
+                      )}
+                      <div className="flex flex-col items-start justify-start">
+                        <h1 className="text-xs font-bold uppercase text-color-dark-primary text-opacity-50 group-hover:text-opacity-80">
                           {`${
                             authExpertObject.expert_title
                               ? authExpertObject.expert_title.title_title
                               : ""
                           }`}
                         </h1>
-                        <h1 className="text-base uppercase text-color-dark-primary group-hover:text-opacity-80">
+                        <h1 className="text-xs uppercase text-color-dark-primary group-hover:text-opacity-80">
                           {`${authExpertObject.expert_name} ${authExpertObject.expert_surname}`}
                         </h1>
                       </div>
@@ -338,7 +399,7 @@ export default function HeaderExpertMobileNavbar({}: Props) {
           ) : (
             <div className="flex items-center justify-center gap-2">
               <Link
-                to={forDoctors ? "/for-doctors/register" : "/register"}
+                to={forDoctors ? "/experts/register" : "/register"}
                 onClick={handleHeaderMobileExpertClose}
               >
                 <button className="group cursor-pointer rounded-[15px] bg-color-third px-4 py-4 transition-all duration-500 hover:bg-color-secondary">
@@ -348,7 +409,7 @@ export default function HeaderExpertMobileNavbar({}: Props) {
                 </button>
               </Link>
               <Link
-                to={forDoctors ? "/for-doctors/login" : "/login"}
+                to={forDoctors ? "/experts/login" : "/login"}
                 onClick={handleHeaderMobileExpertClose}
               >
                 <button

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { BiLoaderAlt } from "react-icons/bi";
 import { BsArrowRight } from "react-icons/bs";
+import { FaStethoscope } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch } from "../../../app/hooks";
 import { AuthExpertForgotPasswordDto } from "../../../common/dtos/auth/expert/authExpertForgotPassword.dto";
@@ -44,7 +45,7 @@ export default function ForgotPassword({}: Props) {
         statusCode: response.data.statusCode,
       };
       dispatch(updateAlert(alert));
-      navigate("/for-doctors/reset-password");
+      navigate("/experts/reset-password");
     } else {
       const alert: Alert = {
         type: "danger",
@@ -61,9 +62,12 @@ export default function ForgotPassword({}: Props) {
     setEmail(value);
   };
   return (
-    <div className="relative flex px-10 lg:px-0 min-h-screen w-full items-center justify-center bg-color-white-secondary py-20 pt-[170px]">
-      <div className="z-20 flex w-full lg:w-1/2 xl:w-1/4 items-center justify-center">
-        <div className="flex w-full flex-col items-center justify-center gap-8">
+    <div className="relative flex min-h-screen w-full items-center justify-center bg-color-white-secondary px-10 py-20 pt-[170px] lg:px-0">
+      <div className="z-20 flex w-full items-center justify-center lg:w-1/2 xl:w-1/4">
+        <div className="relative flex w-full flex-col items-center justify-center gap-8">
+          <div className="absolute top-[15px] right-[15px] rounded-full bg-doctor-color-main p-2">
+            <FaStethoscope className="text-[12px] text-color-white" />
+          </div>
           <div className="flex w-full flex-col items-start justify-center gap-6 rounded-[25px] bg-color-white p-8 px-10 shadow-lg">
             <h1 className="text-xl font-bold text-color-dark-primary opacity-80">
               Şifremi Unuttum

@@ -292,7 +292,7 @@ export default function Checkout({}: Props) {
         if (client) {
           navigate("/dashboard/appointments");
         } else if (clientExpert) {
-          navigate("/for-doctors/dashboard/myappointments");
+          navigate("/experts/dashboard/myappointments");
         }
         const alert: Alert = {
           type: "success",

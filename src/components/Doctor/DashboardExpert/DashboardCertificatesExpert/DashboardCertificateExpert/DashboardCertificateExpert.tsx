@@ -66,7 +66,7 @@ export default function DashboardCertificateExpert(props: Props) {
           };
           dispatch(updateAlert(alert));
           dispatch(addAuthExpertObject(undefined));
-          unauthenticateExpert(navigate("/for-doctors/login"));
+          unauthenticateExpert(navigate("/experts/login"));
         } else {
           const alert: Alert = {
             type: "danger",
@@ -119,7 +119,7 @@ export default function DashboardCertificateExpert(props: Props) {
           };
           dispatch(updateAlert(alert));
           dispatch(addAuthExpertObject(undefined));
-          unauthenticateExpert(navigate("/for-doctors/login"));
+          unauthenticateExpert(navigate("/experts/login"));
         } else {
           const alert: Alert = {
             type: "danger",

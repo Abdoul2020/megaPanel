@@ -205,13 +205,13 @@ function App() {
             }
           />
           <Route
-            path="/for-doctors/*"
+            path="/experts/*"
             element={<DoctorPage doctors={experts} />}
           />
           <Route
-            path="/for-doctors/dashboard/*"
+            path="/experts/dashboard/*"
             element={
-              <ProtectedRouteExpert redirect_url="/for-doctors/login">
+              <ProtectedRouteExpert redirect_url="/experts/login">
                 <DashboardExpert />
               </ProtectedRouteExpert>
             }

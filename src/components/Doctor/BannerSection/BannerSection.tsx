@@ -59,7 +59,7 @@ export default function BannerSection({}: Props) {
         if (authExpertObject) {
           dispatch(addAuthExpertObject(undefined));
           unauthenticatehardExpert(() => {
-            navigate("/for-doctors/login");
+            navigate("/experts/login");
           });
           removeCookie("m_t");
         } else if (authObject) {
@@ -79,7 +79,7 @@ export default function BannerSection({}: Props) {
           dispatch(updateAlert(alert));
         } else {
           navigate(
-            `/for-doctors/register?company=${company}&name=${name}&surname=${surname}`
+            `/experts/register?company=${company}&name=${name}&surname=${surname}`
           );
         }
       }
@@ -87,7 +87,7 @@ export default function BannerSection({}: Props) {
       if (authExpertObject) {
         dispatch(addAuthExpertObject(undefined));
         unauthenticatehardExpert(() => {
-          navigate("/for-doctors/login");
+          navigate("/experts/login");
         });
         removeCookie("m_t");
       } else if (authObject) {
@@ -107,7 +107,7 @@ export default function BannerSection({}: Props) {
         dispatch(updateAlert(alert));
       } else {
         navigate(
-          `/for-doctors/register?company=${company}&name=${name}&surname=${surname}`
+          `/experts/register?company=${company}&name=${name}&surname=${surname}`
         );
       }
     }

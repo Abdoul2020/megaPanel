@@ -3,6 +3,8 @@ import { useDispatch } from "react-redux";
 import { Route, Routes } from "react-router-dom";
 import { useAppSelector } from "../../../app/hooks";
 import { updateHeaderMobileExpertDashboard } from "../../../features/options/optionsSlice";
+import AlertHeaderDanger from "../../Common/AlertHeaderDanger/AlertHeaderDanger";
+import AlertHeaderWarning from "../../Common/AlertHeaderWarning/AlertHeaderWarning";
 import DashboardAppointmentsChartExpert from "./DashboardAppointmentsChartExpert/DashboardAppointmentsChartExpert";
 import DashboardAppointmentsExpert from "./DashboardAppointmentsExpert/DashboardAppointmentsExpert";
 import DashboardAppointmentsMeExpert from "./DashboardAppointmentsMeExpert/DashboardAppointmentsMeExpert";
@@ -21,11 +23,33 @@ export default function DashboardExpert({}: Props) {
   const headerMobileExpertDashboard = useAppSelector(
     (state) => state.options.headerMobileExpertDashboard
   );
+  const authExpertObject = useAppSelector(
+    (state) => state.authexpert.auth_expert_object
+  );
   return (
     <div className="flex w-full items-start justify-start bg-color-white-secondary">
       <DashboardHeaderExpert />
       <DashboardHeaderExpertMobile />
       <div className="h-screen w-full overflow-y-scroll bg-color-gray-secondary py-2 px-2 sm:p-10">
+        <div className="mb-2">
+          {authExpertObject?.expert_status === 0 ? (
+            <AlertHeaderWarning
+              alertHeader={{
+                type: "warning",
+                text: "Hesabınız bekleme listesindedir.",
+              }}
+            />
+          ) : authExpertObject?.expert_status === 2 ? (
+            <AlertHeaderDanger
+              alertHeader={{
+                type: "warning",
+                text: "Hesabınız reddedilmiştir.",
+              }}
+            />
+          ) : (
+            <div></div>
+          )}
+        </div>
         <Routes>
           <Route index element={<DashboardHomeExpert />} />
           <Route

@@ -35,4 +35,5 @@ export type Doctor = {
   expert_experience: string;
   expert_training: string;
   expert_reference_from: Doctor;
+  expert_account_type: number;
 };

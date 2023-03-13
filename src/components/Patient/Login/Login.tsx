@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { AiFillEye } from "react-icons/ai";
 import { BiLoaderAlt } from "react-icons/bi";
-import { BsArrowRight } from "react-icons/bs";
+import { BsArrowRight, BsFillPersonFill } from "react-icons/bs";
 import { Link, useNavigate } from "react-router-dom";
 import { useAppDispatch } from "../../../app/hooks";
 import { AuthClientLoginDto } from "../../../common/dtos/auth/client/authClientLoginDto.dto";
@@ -39,7 +39,7 @@ export default function Login({}: Props) {
   useEffect(() => {
     if (isAuthExpert() || isAuth()) {
       if (isAuthExpert()) {
-        navigate("/for-doctors");
+        navigate("/experts");
       }
       if (isAuth()) {
         navigate("/");
@@ -182,10 +182,13 @@ export default function Login({}: Props) {
   return (
     <div className="relative flex min-h-screen w-full items-center justify-center bg-color-white-secondary py-10 px-10 lg:px-0">
       <div className="z-20 flex w-full items-center justify-center lg:w-1/2 xl:w-1/4">
-        <div className="flex w-full flex-col items-center justify-center gap-8">
+        <div className="relative flex w-full flex-col items-center justify-center gap-8">
+          <div className="absolute top-[15px] right-[15px] rounded-full bg-color-main p-2">
+            <BsFillPersonFill className="text-[12px] text-color-white" />
+          </div>
           <div className="flex w-full flex-col items-start justify-center gap-8 rounded-[25px] bg-color-white p-8 px-10 shadow-lg">
             <h1 className="text-xl font-bold text-color-dark-primary opacity-80">
-              Danışman Girişi
+              <span className="text-color-main">Danışan</span> Girişi
             </h1>
             <form
               className="flex w-full flex-col items-start justify-center gap-8"
