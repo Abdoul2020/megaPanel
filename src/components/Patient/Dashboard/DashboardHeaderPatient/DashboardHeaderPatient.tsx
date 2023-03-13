@@ -132,7 +132,7 @@ export default function DashboardHeaderPatient({}: Props) {
     if (authExpertObject) {
       dispatch(addAuthExpertObject(undefined));
       unauthenticatehardExpert(() => {
-        navigate("/for-doctors/login");
+        navigate("/experts/login");
       });
       removeCookie("m_t");
     } else if (authObject) {

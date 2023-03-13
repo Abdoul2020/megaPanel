@@ -346,7 +346,7 @@ export default function DashboardAppointmentsChartExpert({}: Props) {
         };
         dispatch(updateAlert(alert));
         dispatch(addAuthExpertObject(undefined));
-        unauthenticate(navigate("/for-doctors/login"));
+        unauthenticate(navigate("/experts/login"));
       } else {
         const alert: Alert = {
           type: "danger",
@@ -456,7 +456,7 @@ export default function DashboardAppointmentsChartExpert({}: Props) {
         };
         dispatch(updateAlert(alert));
         dispatch(addAuthExpertObject(undefined));
-        unauthenticate(navigate("/for-doctors/login"));
+        unauthenticate(navigate("/experts/login"));
       } else {
         const alert: Alert = {
           type: "danger",

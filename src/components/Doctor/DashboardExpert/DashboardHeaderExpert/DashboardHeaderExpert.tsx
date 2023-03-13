@@ -1,7 +1,12 @@
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { AiFillSafetyCertificate, AiFillSchedule } from "react-icons/ai";
-import { BsCheckLg, BsFillPersonFill } from "react-icons/bs";
+import {
+  BsCheckCircleFill,
+  BsCheckLg,
+  BsExclamationCircleFill,
+  BsFillPersonFill,
+} from "react-icons/bs";
 import { FaClock } from "react-icons/fa";
 import { FiLogOut } from "react-icons/fi";
 import { GrStatusGoodSmall } from "react-icons/gr";
@@ -24,6 +29,7 @@ import {
   removeCookie,
   unauthenticatehard,
 } from "../../../../helpers/authHelper";
+import Tooltip from "@mui/material/Tooltip";
 
 type Props = {};
 
@@ -62,30 +68,28 @@ export default function DashboardHeaderExpert({}: Props) {
 
   useEffect(() => {
     if (
-      location.pathname === "/for-doctors/dashboard" ||
-      location.pathname === "/for-doctors/dashboard/"
+      location.pathname === "/experts/dashboard" ||
+      location.pathname === "/experts/dashboard/"
     ) {
       setNavElem(0);
     } else if (
-      location.pathname.startsWith("/for-doctors/dashboard/appointments") &&
-      !location.pathname.startsWith("/for-doctors/dashboard/appointments-chart")
+      location.pathname.startsWith("/experts/dashboard/appointments") &&
+      !location.pathname.startsWith("/experts/dashboard/appointments-chart")
     ) {
       setNavElem(1);
     } else if (
-      location.pathname.startsWith("/for-doctors/dashboard/myappointments")
+      location.pathname.startsWith("/experts/dashboard/myappointments")
     ) {
       setNavElem(2);
     } else if (
-      location.pathname.startsWith("/for-doctors/dashboard/appointments-chart")
+      location.pathname.startsWith("/experts/dashboard/appointments-chart")
     ) {
       setNavElem(3);
     } else if (
-      location.pathname.startsWith("/for-doctors/dashboard/certificates")
+      location.pathname.startsWith("/experts/dashboard/certificates")
     ) {
       setNavElem(4);
-    } else if (
-      location.pathname.startsWith("/for-doctors/dashboard/settings")
-    ) {
+    } else if (location.pathname.startsWith("/experts/dashboard/settings")) {
       setNavElem(5);
     } else {
       setNavElem(0);
@@ -121,7 +125,7 @@ export default function DashboardHeaderExpert({}: Props) {
           };
           dispatch(updateAlert(alert));
           dispatch(addAuthExpertObject(undefined));
-          unauthenticateExpert(navigate("/for-doctors/login"));
+          unauthenticateExpert(navigate("/experts/login"));
         } else {
           const alert: Alert = {
             type: "danger",
@@ -147,7 +151,7 @@ export default function DashboardHeaderExpert({}: Props) {
     if (authExpertObject) {
       dispatch(addAuthExpertObject(undefined));
       unauthenticatehardExpert(() => {
-        navigate("/for-doctors/login");
+        navigate("/experts/login");
       });
       removeCookie("m_t");
     } else if (authObject) {
@@ -173,7 +177,7 @@ export default function DashboardHeaderExpert({}: Props) {
       border-color-dark-primary border-opacity-10 py-10 lg:flex"
       // onWheel={handleWheel}
     >
-      <Link to="/for-doctors">
+      <Link to="/experts">
         <img
           src={require("../../../../assets/images/megaverse_logo_2.png")}
           alt="megaverse"
@@ -181,7 +185,7 @@ export default function DashboardHeaderExpert({}: Props) {
         />
       </Link>
       <div className="flex h-full w-full flex-col items-center justify-start gap-12">
-        <Link to="/for-doctors" className="w-full">
+        <Link to="/experts" className="w-full">
           <div
             className="relative flex w-full items-center 
             justify-start gap-4 px-10 hover:cursor-pointer hover:opacity-80"
@@ -193,7 +197,7 @@ export default function DashboardHeaderExpert({}: Props) {
           </div>
         </Link>
         <ul className="flex h-full w-full flex-col items-start justify-start gap-4">
-          {/* <Link to="/for-doctors/dashboard" className="w-full">
+          {/* <Link to="/experts/dashboard" className="w-full">
             <li className="hover:opacity-80 hover:cursor-pointer py-2 px-10 w-full flex justify-start items-center gap-4 relative">
               <MdSpaceDashboard className="text-[24px] text-color-main" />
               <h1 className="text-lg text-color-dark-primary font-bold opacity-60">
@@ -215,7 +219,7 @@ export default function DashboardHeaderExpert({}: Props) {
               )}
             </li>
           </Link> */}
-          <Link to="/for-doctors/dashboard/appointments" className="w-full">
+          <Link to="/experts/dashboard/appointments" className="w-full">
             <li className="relative flex w-full items-center justify-start gap-4 py-2 px-10 hover:cursor-pointer hover:opacity-80">
               <FaClock className="text-[24px] text-color-main" />
               <div className="flex w-full items-center justify-start gap-2">
@@ -240,7 +244,7 @@ export default function DashboardHeaderExpert({}: Props) {
               )}
             </li>
           </Link>
-          <Link to="/for-doctors/dashboard/myappointments" className="w-full">
+          <Link to="/experts/dashboard/myappointments" className="w-full">
             <li className="relative flex w-full items-center justify-start gap-4 py-2 px-10 hover:cursor-pointer hover:opacity-80">
               <FaClock className="text-[24px] text-color-main" />
               <div className="flex w-full items-center justify-start gap-2">
@@ -265,10 +269,7 @@ export default function DashboardHeaderExpert({}: Props) {
               )}
             </li>
           </Link>
-          <Link
-            to="/for-doctors/dashboard/appointments-chart"
-            className="w-full"
-          >
+          <Link to="/experts/dashboard/appointments-chart" className="w-full">
             <li className="relative flex w-full items-center justify-start gap-4 py-2 px-10 hover:cursor-pointer hover:opacity-80">
               <AiFillSchedule className="text-[24px] text-color-main" />
               <div className="relative">
@@ -298,7 +299,7 @@ export default function DashboardHeaderExpert({}: Props) {
               )}
             </li>
           </Link>
-          <Link to="/for-doctors/dashboard/certificates" className="w-full">
+          <Link to="/experts/dashboard/certificates" className="w-full">
             <li className="relative flex w-full items-center justify-start gap-4 py-2 px-10 hover:cursor-pointer hover:opacity-80">
               <AiFillSafetyCertificate className="text-[24px] text-color-main" />
               <div className="relative">
@@ -329,7 +330,7 @@ export default function DashboardHeaderExpert({}: Props) {
               )}
             </li>
           </Link>
-          <Link to="/for-doctors/dashboard/settings" className="w-full">
+          <Link to="/experts/dashboard/settings" className="w-full">
             <li className="relative flex w-full items-center justify-start gap-4 py-2 px-10 hover:cursor-pointer hover:opacity-80">
               <IoSettings className="text-[24px] text-color-main" />
               <div className="relative">
@@ -387,15 +388,73 @@ export default function DashboardHeaderExpert({}: Props) {
       <div className="flex w-full flex-col items-start justify-center gap-6 px-6">
         <div className="group flex cursor-pointer items-center justify-center gap-4 transition-all duration-300">
           {profileImageBase64 ? (
-            <img
-              src={`data:image/jpeg;base64,${profileImageBase64}`}
-              className="h-[75px] w-[75px] rounded-[15px]"
-              alt=""
-            />
+            <div className="relative h-[75px] w-[75px] rounded-[15px]">
+              <img
+                src={`data:image/jpeg;base64,${profileImageBase64}`}
+                className="h-[75px] w-[75px] rounded-[15px]"
+                alt=""
+              />
+              <div className="absolute -top-[5px] -right-[5px]">
+                {authExpertObject?.expert_status === 1 ? (
+                  <Tooltip title="Hesabınız onaylandı." placement="right-start">
+                    <div>
+                      <BsCheckCircleFill className="text-color-success-primary" />
+                    </div>
+                  </Tooltip>
+                ) : authExpertObject?.expert_status === 0 ? (
+                  <Tooltip
+                    title="Hesabınız onay bekliyor."
+                    placement="right-start"
+                  >
+                    <div>
+                      <BsExclamationCircleFill className="text-color-warning-primary" />
+                    </div>
+                  </Tooltip>
+                ) : (
+                  <Tooltip
+                    title="Hesabınız reddedildi."
+                    placement="right-start"
+                  >
+                    <div>
+                      <BsExclamationCircleFill className="text-color-danger-primary" />
+                    </div>
+                  </Tooltip>
+                )}
+              </div>
+            </div>
           ) : (
-            <button className="rounded-[15px] bg-color-secondary p-4 transition-all duration-300 group-hover:bg-color-third">
-              <BsFillPersonFill className="text-[24px] text-color-white" />
-            </button>
+            <div className="relative">
+              <button className="rounded-[15px] bg-color-secondary p-4 transition-all duration-300 group-hover:bg-color-third">
+                <BsFillPersonFill className="text-[24px] text-color-white" />
+              </button>
+              <div className="absolute -top-[5px] -right-[5px]">
+                {authExpertObject?.expert_status === 1 ? (
+                  <Tooltip title="Hesabınız onaylandı." placement="right-start">
+                    <div>
+                      <BsCheckCircleFill className="text-color-success-primary" />
+                    </div>
+                  </Tooltip>
+                ) : authExpertObject?.expert_status === 0 ? (
+                  <Tooltip
+                    title="Hesabınız onay bekliyor."
+                    placement="right-start"
+                  >
+                    <div>
+                      <BsExclamationCircleFill className="text-color-warning-primary" />
+                    </div>
+                  </Tooltip>
+                ) : (
+                  <Tooltip
+                    title="Hesabınız reddedildi."
+                    placement="right-start"
+                  >
+                    <div>
+                      <BsExclamationCircleFill className="text-color-danger-primary" />
+                    </div>
+                  </Tooltip>
+                )}
+              </div>
+            </div>
           )}
 
           <div>
@@ -403,7 +462,7 @@ export default function DashboardHeaderExpert({}: Props) {
               Hoşgeldin
             </h1>
             <div className="flex flex-wrap items-start justify-start">
-              <h1 className="text-base font-bold text-color-dark-primary text-opacity-50">
+              <h1 className="text-sm font-bold text-color-dark-primary text-opacity-50">
                 {`${
                   authExpertObject !== undefined
                     ? authExpertObject.expert_title
@@ -412,7 +471,7 @@ export default function DashboardHeaderExpert({}: Props) {
                     : ""
                 } `}
               </h1>
-              <h1 className="text-color-dark-primary">{`${
+              <h1 className="text-sm text-color-dark-primary">{`${
                 authExpertObject !== undefined
                   ? authExpertObject.expert_name
                   : ""

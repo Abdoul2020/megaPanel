@@ -40,7 +40,7 @@ export default function DashboardNotFoundPagePatient({}: Props) {
                 </button>
               </div>
             </Link>
-            <Link to="/for-doctors">
+            <Link to="/experts">
               <div
                 className={`group z-20 flex cursor-pointer items-center justify-center gap-4 rounded-[15px] bg-doctor-color-main px-10 py-[18px] transition-all duration-500 hover:bg-color-white`}
               >

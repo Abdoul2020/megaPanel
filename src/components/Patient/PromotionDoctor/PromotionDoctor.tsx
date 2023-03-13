@@ -22,7 +22,7 @@ export default function PromotionDoctor({}: Props) {
               tarafa da kolaylıklar sağlayan bir kişisel gelişim portalıdır.
             </p>
           </div>
-          <Link to="/for-doctors/#banner">
+          <Link to="/experts/#banner">
             <button
               className="flex items-center justify-center gap-2 rounded-[15px] bg-color-third
            py-4 px-8 transition-all duration-300 hover:cursor-pointer hover:opacity-80"

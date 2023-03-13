@@ -10,7 +10,7 @@ export default function HaederExpertMobile({}: Props) {
   const dispatch = useDispatch();
   return (
     <div className="absolute top-0 z-10 flex h-[90px] w-full items-center justify-between px-10 lg:hidden">
-      <Link to="/for-doctors">
+      <Link to="/experts">
         <motion.img
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
@@ -20,9 +20,9 @@ export default function HaederExpertMobile({}: Props) {
             reapat: 1,
           }}
           viewport={{ once: true }}
-          src={require("../../../assets/images/megaverse_logo_3.png")}
+          src={require("../../../assets/images/megaverse_logo_4.png")}
           alt=""
-          className="h-10"
+          className="h-8"
         />
       </Link>
       <GiHamburgerMenu

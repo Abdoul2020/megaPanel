@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { BiLoaderAlt } from "react-icons/bi";
+import { FaStethoscope } from "react-icons/fa";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useAppDispatch } from "../../../app/hooks";
 import { AuthExpertResetPasswordDto } from "../../../common/dtos/auth/expert/authExpertResetPassword.dto";
@@ -23,7 +24,7 @@ export default function ResetPassword({}: Props) {
 
   useEffect(() => {
     if (isAuthExpert()) {
-      navigate("/for-doctors/");
+      navigate("/experts/");
     }
   }, []);
 
@@ -69,7 +70,7 @@ export default function ResetPassword({}: Props) {
           statusCode: response.data.statusCode,
         };
         dispatch(updateAlert(alert));
-        navigate("/for-doctors/login");
+        navigate("/experts/login");
       } else {
         const alert: Alert = {
           type: "danger",
@@ -91,21 +92,24 @@ export default function ResetPassword({}: Props) {
     setRetypeNewPassword(value);
   };
   return (
-    <div className="relative min-h-screen w-full flex justify-center items-center bg-color-white-secondary py-20 pt-[170px] px-10 lg:px-0">
-      <div className="z-20  w-full lg:w-1/2 xl:w-1/4 flex justify-center items-center">
-        <div className="flex flex-col justify-center items-center gap-8 w-full">
-          <div className="flex flex-col justify-center items-start gap-6 p-8 px-10 bg-color-white shadow-lg rounded-[25px] w-full">
-            <h1 className="text-xl text-color-dark-primary font-bold opacity-80">
+    <div className="relative flex min-h-screen w-full items-center justify-center bg-color-white-secondary py-20 px-10 pt-[170px] lg:px-0">
+      <div className="z-20  flex w-full items-center justify-center lg:w-1/2 xl:w-1/4">
+        <div className="relative flex w-full flex-col items-center justify-center gap-8">
+          <div className="absolute top-[15px] right-[15px] rounded-full bg-doctor-color-main p-2">
+            <FaStethoscope className="text-[12px] text-color-white" />
+          </div>
+          <div className="flex w-full flex-col items-start justify-center gap-6 rounded-[25px] bg-color-white p-8 px-10 shadow-lg">
+            <h1 className="text-xl font-bold text-color-dark-primary opacity-80">
               Şifre Sıfırla
             </h1>
             <form
-              className="flex flex-col justify-center items-start gap-8 w-full"
+              className="flex w-full flex-col items-start justify-center gap-8"
               onSubmit={handleSubmit}
             >
-              <div className="flex flex-col justify-center items-start gap-1 w-full">
+              <div className="flex w-full flex-col items-start justify-center gap-1">
                 <label
                   htmlFor="email"
-                  className="text-color-dark-primary opacity-50 font-bold"
+                  className="font-bold text-color-dark-primary opacity-50"
                 >
                   Yeni Şifre
                 </label>
@@ -116,14 +120,14 @@ export default function ResetPassword({}: Props) {
                   name="newPassword"
                   id="newPassword"
                   placeholder="Yeni Şifre"
-                  className="w-full transition-all duration-300 focus:border-color-main font-medium outline-none bg-color-white-third text-[16px]
-                py-[15px] px-[22px] border-[1px] border-color-dark-primary rounded-[20px] border-opacity-10"
+                  className="w-full rounded-[20px] border-[1px] border-color-dark-primary border-opacity-10 bg-color-white-third py-[15px] px-[22px]
+                text-[16px] font-medium outline-none transition-all duration-300 focus:border-color-main"
                 />
               </div>
-              <div className="flex flex-col justify-center items-start gap-1 w-full">
+              <div className="flex w-full flex-col items-start justify-center gap-1">
                 <label
                   htmlFor="retypeNewPassword"
-                  className="text-color-dark-primary opacity-50 font-bold"
+                  className="font-bold text-color-dark-primary opacity-50"
                 >
                   Şifre Tekrar
                 </label>
@@ -134,23 +138,23 @@ export default function ResetPassword({}: Props) {
                   name="retypeNewPassword"
                   id="retypeNewPassword"
                   placeholder="Şifre Tekrar"
-                  className="w-full transition-all duration-300 focus:border-color-main font-medium outline-none bg-color-white-third text-[16px]
-                py-[15px] px-[22px] border-[1px] border-color-dark-primary rounded-[20px] border-opacity-10"
+                  className="w-full rounded-[20px] border-[1px] border-color-dark-primary border-opacity-10 bg-color-white-third py-[15px] px-[22px]
+                text-[16px] font-medium outline-none transition-all duration-300 focus:border-color-main"
                 />
               </div>
               <button
                 type="submit"
                 disabled={submitDisable}
-                className="w-full flex justify-center items-center gap-2 bg-color-third rounded-[15px]
-           py-4 px-8 hover:opacity-80 hover:cursor-pointer transition-all duration-300"
+                className="flex w-full items-center justify-center gap-2 rounded-[15px] bg-color-third
+           py-4 px-8 transition-all duration-300 hover:cursor-pointer hover:opacity-80"
               >
                 {loader ? (
                   <div className="animate-spin">
-                    <BiLoaderAlt className="text-color-white text-[24px] text-opacity-80" />
+                    <BiLoaderAlt className="text-[24px] text-color-white text-opacity-80" />
                   </div>
                 ) : (
-                  <div className="flex justify-center items-center gap-2">
-                    <h1 className="text-color-white-secondary font-bold">
+                  <div className="flex items-center justify-center gap-2">
+                    <h1 className="font-bold text-color-white-secondary">
                       Sıfırla
                     </h1>
                     {/* <BsArrowRight className="text-color-white-secondary text-[24px]" /> */}

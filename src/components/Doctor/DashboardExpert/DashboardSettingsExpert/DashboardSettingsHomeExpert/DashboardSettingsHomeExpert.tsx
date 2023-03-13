@@ -3,6 +3,9 @@ import * as CurrencyFormat from "react-currency-format";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 import { BiLoaderAlt } from "react-icons/bi";
 import { MdModeEdit } from "react-icons/md";
+import { VscReferences } from "react-icons/vsc";
+import PhoneInput from "react-phone-number-input";
+import "react-phone-number-input/style.css";
 import { Link, useNavigate } from "react-router-dom";
 import { SocialIcon } from "react-social-icons";
 import { useAppDispatch, useAppSelector } from "../../../../../app/hooks";
@@ -11,10 +14,8 @@ import { FirmFilterDto } from "../../../../../common/filters/FirmFilter.dto";
 import { Alert } from "../../../../../common/types/Alert";
 import { Branch } from "../../../../../common/types/Branch.entity";
 import { City } from "../../../../../common/types/City.entity";
-import { Country } from "../../../../../common/types/Country.entity";
 import { Expertise } from "../../../../../common/types/Expertise.entity";
 import { Firm } from "../../../../../common/types/Firm.entity";
-import { Region } from "../../../../../common/types/Region";
 import { State } from "../../../../../common/types/State.entity";
 import { Title } from "../../../../../common/types/Title.entity";
 import {
@@ -24,14 +25,10 @@ import {
 } from "../../../../../features/authExpert/authExpertAPI";
 import { addAuthExpertObject } from "../../../../../features/authExpert/authExpertSlice";
 import { fetchFirms } from "../../../../../features/firms/firmsAPI";
-import { addFirms } from "../../../../../features/firms/firmsSlice";
 import { updateAlert } from "../../../../../features/options/optionsSlice";
 import { getCookie } from "../../../../../helpers/authExpertHelper";
 import { unauthenticate } from "../../../../../helpers/authHelper";
 import AlertHeaderWarning from "../../../../Common/AlertHeaderWarning/AlertHeaderWarning";
-import { VscReferences } from "react-icons/vsc";
-import PhoneInput from "react-phone-number-input";
-import "react-phone-number-input/style.css";
 
 type Props = {};
 
@@ -43,6 +40,7 @@ export default function DashboardSettingsHomeExpert({}: Props) {
   const [email, setEmail] = useState("");
   const [company, setCompany] = useState("");
   const [aboutMe, setAboutMe] = useState("");
+  const [accountType, setAccountType] = useState(0);
   const [tel, setTel] = useState("");
   const [postalCode, setPostalCode] = useState("");
   const [physicalLocation, setPhysicalLocation] = useState("");
@@ -237,16 +235,24 @@ export default function DashboardSettingsHomeExpert({}: Props) {
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
       const theFile = e.target.files[0];
-      if (theFile.type === "image/jpeg" && theFile.size < 20000000) {
-        setFile(theFile);
-      } else {
+      if (theFile.type !== "image/jpeg") {
         const alert: Alert = {
           type: "danger",
-          text: "yüklenecek dosya jpeg olup 20MB'ı geçmemelidir.",
+          text: "Yüklenecek dosyanın türü JPEG olmalıdır.",
           active: true,
           statusCode: 400,
         };
         dispatch(updateAlert(alert));
+      } else if (theFile.size > 2097152) {
+        const alert: Alert = {
+          type: "danger",
+          text: "Yüklenecek dosyanın boyutu 2MB'ı geçmemelidir.",
+          active: true,
+          statusCode: 400,
+        };
+        dispatch(updateAlert(alert));
+      } else {
+        setFile(theFile);
       }
     }
   };
@@ -291,7 +297,7 @@ export default function DashboardSettingsHomeExpert({}: Props) {
             };
             dispatch(updateAlert(alert));
             dispatch(addAuthExpertObject(undefined));
-            unauthenticate(navigate("/for-doctors/login"));
+            unauthenticate(navigate("/experts/login"));
           } else {
             const alert: Alert = {
               type: "danger",
@@ -361,6 +367,7 @@ export default function DashboardSettingsHomeExpert({}: Props) {
       expert_training: training,
       expert_additional_information: additionalInformation,
       expert_experience: experience,
+      expert_account_type: accountType,
     };
     const token = getCookie("m_e_t");
     setLoader(true);
@@ -395,7 +402,7 @@ export default function DashboardSettingsHomeExpert({}: Props) {
         };
         dispatch(updateAlert(alert));
         dispatch(addAuthExpertObject(undefined));
-        unauthenticate(navigate("/for-doctors/login"));
+        unauthenticate(navigate("/experts/login"));
       } else {
         const alert: Alert = {
           type: "danger",
@@ -434,7 +441,7 @@ export default function DashboardSettingsHomeExpert({}: Props) {
           };
           dispatch(updateAlert(alert));
           dispatch(addAuthExpertObject(undefined));
-          unauthenticate(navigate("/for-doctors/login"));
+          unauthenticate(navigate("/experts/login"));
         } else {
           const alert: Alert = {
             type: "danger",
@@ -524,6 +531,11 @@ export default function DashboardSettingsHomeExpert({}: Props) {
         ? authExpertObject.expert_city
         : ""
     );
+    setAccountType(
+      authExpertObject && authExpertObject?.expert_account_type
+        ? authExpertObject.expert_account_type
+        : 0
+    );
     if (
       authExpertObject &&
       authExpertObject?.expert_avatar_path !== "" &&
@@ -578,7 +590,7 @@ export default function DashboardSettingsHomeExpert({}: Props) {
             className="flex w-full flex-col items-start justify-start"
           >
             <div className="flex w-full grid-cols-2 flex-col items-start justify-start gap-10 xl:grid">
-              <div className="flex grid-cols-2 flex-col items-center justify-center gap-4 md:grid">
+              <div className="flex grid-cols-2 flex-col items-start justify-start gap-4 md:grid">
                 <div className="flex w-full flex-col items-start justify-start gap-1">
                   <label
                     htmlFor="name"
@@ -939,6 +951,128 @@ export default function DashboardSettingsHomeExpert({}: Props) {
                   </div>
                 </div> */}
 
+                <div className="flex flex-col items-start justify-start gap-2">
+                  <label className="font-bold text-color-dark-primary opacity-50">
+                    Hesap Türü
+                  </label>
+
+                  <div className="flex items-center justify-center gap-2">
+                    <input
+                      onClick={() => setAccountType(1)}
+                      className="form-check-input float-left
+                   h-6 w-6 cursor-pointer appearance-none rounded-md
+                   border border-solid border-color-main bg-color-white bg-contain bg-center bg-no-repeat
+                   transition-all
+                   duration-300 checked:border-none checked:bg-color-main focus:outline-none"
+                      type="checkbox"
+                      checked={accountType === 1}
+                      id="remindme"
+                    />
+                    <label htmlFor="remindme">
+                      <h1 className="font-bold text-color-dark-primary opacity-50">
+                        Bireysel
+                      </h1>
+                    </label>
+                    <input
+                      onClick={() => setAccountType(2)}
+                      className="form-check-input float-left
+                   h-6 w-6 cursor-pointer appearance-none rounded-md
+                   border border-solid border-color-main bg-color-white bg-contain bg-center bg-no-repeat
+                   transition-all
+                   duration-300 checked:border-none checked:bg-color-main focus:outline-none"
+                      type="checkbox"
+                      checked={accountType === 2}
+                      id="remindme"
+                    />
+                    <label htmlFor="remindme">
+                      <h1 className="font-bold text-color-dark-primary opacity-50">
+                        Kurumsal
+                      </h1>
+                    </label>
+                  </div>
+                </div>
+                {accountType === 2 ? (
+                  <div className="flex w-full flex-col items-start justify-center gap-1">
+                    <div className="flex w-full flex-col items-start justify-center gap-1">
+                      <label
+                        htmlFor="company"
+                        className="font-bold text-color-dark-primary opacity-50"
+                      >
+                        Firma Adı
+                      </label>
+                      {company !== "" && company !== undefined ? (
+                        <div
+                          className="group flex cursor-pointer items-center justify-center gap-2 rounded-[15px]
+                    bg-color-gray-primary p-2 px-6
+                    transition-all duration-300 hover:bg-color-main"
+                          onClick={() => {
+                            setCompany("");
+                            setCompanyObject(undefined);
+                          }}
+                        >
+                          <h1
+                            className="text-sm font-bold 
+                                    text-color-dark-primary text-opacity-80
+                                  transition-all duration-300 group-hover:text-color-white"
+                          >
+                            {company}
+                          </h1>
+                          <AiOutlineCloseCircle className="text-color-dark-primary transition-all duration-300 group-hover:text-color-white" />
+                        </div>
+                      ) : (
+                        <div
+                          className="min-w-4 w-full rounded-[20px] border-[1px] border-solid border-color-dark-primary border-opacity-10 py-[15px]
+              px-[22px] transition-all duration-300 focus:border-color-main"
+                        >
+                          <select
+                            name=""
+                            id=""
+                            className="w-full cursor-pointer text-lg text-opacity-50 outline-none"
+                            onChange={onFirmChange}
+                          >
+                            <option value="" selected>
+                              Firma Seç
+                            </option>
+                            {firms.map((Firm) => {
+                              return (
+                                <option
+                                  key={Firm._id}
+                                  value={JSON.stringify(Firm)}
+                                >
+                                  {Firm.firm_title}
+                                </option>
+                              );
+                            })}
+                          </select>
+                        </div>
+                      )}
+                    </div>
+                    {companyObject === undefined ? (
+                      <div className="flex w-full flex-col items-start justify-center gap-1">
+                        <label
+                          htmlFor="company"
+                          className="font-bold text-color-dark-primary opacity-50"
+                        >
+                          Firma Adı(Diğer)
+                        </label>
+                        <input
+                          onChange={handleCompanyChange}
+                          value={company}
+                          type="text"
+                          name="company"
+                          id="company"
+                          placeholder="Firma Adı"
+                          className="w-full rounded-[20px] border-[1px] border-color-dark-primary border-opacity-10 bg-color-white-third py-[15px] px-[22px]
+                text-[16px] font-medium outline-none transition-all duration-300 focus:border-color-main"
+                        />
+                      </div>
+                    ) : (
+                      <div></div>
+                    )}
+                  </div>
+                ) : (
+                  <div></div>
+                )}
                 <div className="flex w-full flex-col items-start justify-start gap-1">
                   <label
                     htmlFor="postalCode"
@@ -956,84 +1090,6 @@ export default function DashboardSettingsHomeExpert({}: Props) {
                     className="w-full rounded-[20px] border-[1px] border-color-dark-primary border-opacity-10 bg-color-white-third py-[15px] px-[22px]
                 text-[16px] font-medium outline-none transition-all duration-300 focus:border-color-main"
                   />
-                </div>
-                <div className="flex w-full flex-col items-start justify-center gap-1">
-                  <div className="flex w-full flex-col items-start justify-center gap-1">
-                    <label
-                      htmlFor="company"
-                      className="font-bold text-color-dark-primary opacity-50"
-                    >
-                      Firma Adı
-                    </label>
-                    {company !== "" && company !== undefined ? (
-                      <div
-                        className="group flex cursor-pointer items-center justify-center gap-2 rounded-[15px]
-                    bg-color-gray-primary p-2 px-6
-                    transition-all duration-300 hover:bg-color-main"
-                        onClick={() => {
-                          setCompany("");
-                          setCompanyObject(undefined);
-                        }}
-                      >
-                        <h1
-                          className="text-sm font-bold 
-                                    text-color-dark-primary text-opacity-80
-                                  transition-all duration-300 group-hover:text-color-white"
-                        >
-                          {company}
-                        </h1>
-                        <AiOutlineCloseCircle className="text-color-dark-primary transition-all duration-300 group-hover:text-color-white" />
-                      </div>
-                    ) : (
-                      <div
-                        className="min-w-4 w-full rounded-[20px] border-[1px] border-solid border-color-dark-primary border-opacity-10 py-[15px]
-              px-[22px] transition-all duration-300 focus:border-color-main"
-                      >
-                        <select
-                          name=""
-                          id=""
-                          className="w-full cursor-pointer text-lg text-opacity-50 outline-none"
-                          onChange={onFirmChange}
-                        >
-                          <option value="" selected>
-                            Firma Seç
-                          </option>
-                          {firms.map((Firm) => {
-                            return (
-                              <option
-                                key={Firm._id}
-                                value={JSON.stringify(Firm)}
-                              >
-                                {Firm.firm_title}
-                              </option>
-                            );
-                          })}
-                        </select>
-                      </div>
-                    )}
-                  </div>
-                  {companyObject === undefined ? (
-                    <div className="flex w-full flex-col items-start justify-center gap-1">
-                      <label
-                        htmlFor="company"
-                        className="font-bold text-color-dark-primary opacity-50"
-                      >
-                        Firma Adı(Diğer)
-                      </label>
-                      <input
-                        onChange={handleCompanyChange}
-                        value={company}
-                        type="text"
-                        name="company"
-                        id="company"
-                        placeholder="Firma Adı"
-                        className="w-full rounded-[20px] border-[1px] border-color-dark-primary border-opacity-10 bg-color-white-third py-[15px] px-[22px]
-                text-[16px] font-medium outline-none transition-all duration-300 focus:border-color-main"
-                      />
-                    </div>
-                  ) : (
-                    <div></div>
-                  )}
                 </div>
                 <div className="flex w-full flex-col items-start justify-center gap-1">
                   <label
@@ -1290,6 +1346,7 @@ export default function DashboardSettingsHomeExpert({}: Props) {
                               <SocialIcon
                                 url={`${Social}`}
                                 style={{ height: "25px", width: "25px" }}
+                                target="_blank"
                               />
                               <h1
                                 className="text-sm font-bold 

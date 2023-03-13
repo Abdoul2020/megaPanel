@@ -4,6 +4,7 @@ import CountUp from "react-countup";
 import { AiFillEye, AiOutlineCloseCircle } from "react-icons/ai";
 import { BiLoaderAlt } from "react-icons/bi";
 import { BsArrowRight } from "react-icons/bs";
+import { FaStethoscope } from "react-icons/fa";
 import { IoIosPerson } from "react-icons/io";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../../app/hooks";
@@ -31,6 +32,7 @@ export default function Register({}: Props) {
   const [companyObject, setCompanyObject] = useState<Firm | undefined>(
     undefined
   );
+  const [accountType, setAccountType] = useState(0);
   const [currentBranches, setCurrentBranches] = useState<Branch[] | []>([]);
   const [password, setPassword] = useState("");
   const [passwordRetype, setPasswordRetype] = useState("");
@@ -49,7 +51,7 @@ export default function Register({}: Props) {
   useEffect(() => {
     if (isAuthExpert() || isAuth()) {
       if (isAuthExpert()) {
-        navigate("/for-doctors");
+        navigate("/experts");
       }
       if (isAuth()) {
         navigate("/");
@@ -95,7 +97,9 @@ export default function Register({}: Props) {
       email === "" ||
       currentBranches.length === 0 ||
       password === "" ||
-      passwordRetype === ""
+      passwordRetype === "" ||
+      accountType === 0 ||
+      (accountType === 2 && company === "")
     ) {
       const alert: Alert = {
         type: "danger",
@@ -115,6 +119,7 @@ export default function Register({}: Props) {
           expert_password: password,
           expert_retype_password: passwordRetype,
           expert_reference_from: referenceId !== "" ? referenceId : undefined,
+          expert_account_type: accountType,
         };
         setLoader(true);
         setSubmitDisable(true);
@@ -122,7 +127,7 @@ export default function Register({}: Props) {
         setLoader(false);
         setSubmitDisable(false);
         if (response.success === true) {
-          navigate("/for-doctors/login");
+          navigate("/experts/login");
           const alert: Alert = {
             type: "success",
             text: "Kayıt Başarılı",
@@ -229,10 +234,13 @@ export default function Register({}: Props) {
   return (
     <div className="relative flex min-h-screen w-full items-center justify-center bg-color-white-secondary py-10 px-10 pt-[130px] xl:px-0">
       <div className="z-20 flex w-full grid-cols-2 items-start justify-start gap-10 lg:grid xl:w-2/3">
-        <div className="flex w-full flex-col items-center justify-center gap-8">
+        <div className="relative flex w-full flex-col items-center justify-center gap-8">
+          <div className="absolute top-[15px] right-[15px] rounded-full bg-doctor-color-main p-2">
+            <FaStethoscope className="text-[12px] text-color-white" />
+          </div>
           <div className="flex w-full flex-col items-start justify-center gap-6 rounded-[25px] bg-color-white p-8 px-10 shadow-lg">
             <h1 className="text-xl font-bold text-color-dark-primary opacity-80">
-              Ücretsiz Dene
+              <span className="text-color-main">Uzman</span> Olarak Kayıt Ol
             </h1>
             <form
               className="flex w-full flex-col items-start justify-center gap-4"
@@ -294,38 +302,7 @@ export default function Register({}: Props) {
                 text-[16px] font-medium outline-none transition-all duration-300 focus:border-color-main"
                 />
               </div>
-              <div className="flex w-full grid-cols-2 flex-col items-start justify-center gap-y-4 sm:flex-row">
-                <div className="flex w-full flex-col items-start justify-start gap-2">
-                  <h1 className="font-bold text-color-dark-primary opacity-50">
-                    Branşlarım
-                  </h1>
-                  {currentBranches.length === 0 ? (
-                    <h1>Henüz bir şey yok.</h1>
-                  ) : (
-                    <ul className="flex max-w-[450px] flex-wrap items-start justify-start gap-2">
-                      {currentBranches.map((branch) => {
-                        return (
-                          <li
-                            className="group flex cursor-pointer items-center justify-center gap-2 rounded-[15px]
-                        bg-color-gray-primary p-2 px-6
-                        transition-all duration-300 hover:bg-color-main"
-                            onClick={() => handleRemoveBranch(branch._id)}
-                            key={branch._id}
-                          >
-                            <h1
-                              className="text-sm font-bold 
-                                    text-color-dark-primary text-opacity-80
-                                  transition-all duration-300 group-hover:text-color-white"
-                            >
-                              {branch.branch_title}
-                            </h1>
-                            <AiOutlineCloseCircle className="text-color-dark-primary transition-all duration-300 group-hover:text-color-white" />
-                          </li>
-                        );
-                      })}
-                    </ul>
-                  )}
-                </div>
+              <div className="flex w-full grid-cols-2 flex-col items-start justify-center gap-4 gap-y-4 sm:flex-row">
                 <div className="relative flex w-full flex-col items-start justify-start gap-1">
                   <label
                     htmlFor="branch"
@@ -359,66 +336,86 @@ export default function Register({}: Props) {
                     </select>
                   </div>
                 </div>
-              </div>
-              <div className="flex w-full flex-col items-start justify-center gap-4">
-                <div className="flex w-full flex-col items-start justify-center gap-1">
-                  <label
-                    htmlFor="company"
-                    className="font-bold text-color-dark-primary opacity-50"
-                  >
-                    Firma Adı
-                  </label>
-                  {company !== "" ? (
-                    <div
-                      className="group flex cursor-pointer items-center justify-center gap-2 rounded-[15px]
-                    bg-color-gray-primary p-2 px-6
-                    transition-all duration-300 hover:bg-color-main"
-                      onClick={() => {
-                        setCompany("");
-                        setCompanyObject(undefined);
-                      }}
-                    >
-                      <h1
-                        className="text-sm font-bold 
+                <div className="flex w-full flex-col items-start justify-start gap-2">
+                  <h1 className="font-bold text-color-dark-primary opacity-50">
+                    Branşlarım
+                  </h1>
+                  {currentBranches.length === 0 ? (
+                    <h1>Henüz bir şey yok.</h1>
+                  ) : (
+                    <ul className="flex max-w-[450px] flex-wrap items-start justify-start gap-2">
+                      {currentBranches.map((branch) => {
+                        return (
+                          <li
+                            className="group flex cursor-pointer items-center justify-center gap-2 rounded-[15px]
+                        bg-color-gray-primary p-2 px-6
+                        transition-all duration-300 hover:bg-color-main"
+                            onClick={() => handleRemoveBranch(branch._id)}
+                            key={branch._id}
+                          >
+                            <h1
+                              className="text-sm font-bold 
                                     text-color-dark-primary text-opacity-80
                                   transition-all duration-300 group-hover:text-color-white"
-                      >
-                        {company}
-                      </h1>
-                      <AiOutlineCloseCircle className="text-color-dark-primary transition-all duration-300 group-hover:text-color-white" />
-                    </div>
-                  ) : (
-                    <div
-                      className="min-w-4 w-full rounded-[20px] border-[1px] border-solid border-color-dark-primary border-opacity-10 py-[15px]
-              px-[22px] transition-all duration-300 focus:border-color-main"
-                    >
-                      <select
-                        name=""
-                        id=""
-                        className="w-full cursor-pointer text-lg text-opacity-50 outline-none"
-                        onChange={onFirmChange}
-                      >
-                        <option value="" selected>
-                          Firma Seç
-                        </option>
-                        {firms.map((Firm) => {
-                          return (
-                            <option key={Firm._id} value={JSON.stringify(Firm)}>
-                              {Firm.firm_title}
-                            </option>
-                          );
-                        })}
-                      </select>
-                    </div>
+                            >
+                              {branch.branch_title}
+                            </h1>
+                            <AiOutlineCloseCircle className="text-color-dark-primary transition-all duration-300 group-hover:text-color-white" />
+                          </li>
+                        );
+                      })}
+                    </ul>
                   )}
                 </div>
-                {companyObject === undefined ? (
+              </div>
+              <div className="flex flex-col items-start justify-start gap-2">
+                <label className="font-bold text-color-dark-primary opacity-50">
+                  Hesap Türü
+                </label>
+
+                <div className="flex items-center justify-center gap-2">
+                  <input
+                    onClick={() => setAccountType(1)}
+                    className="form-check-input float-left
+                   h-6 w-6 cursor-pointer appearance-none rounded-md
+                   border border-solid border-color-main bg-color-white bg-contain bg-center bg-no-repeat
+                   transition-all
+                   duration-300 checked:border-none checked:bg-color-main focus:outline-none"
+                    type="checkbox"
+                    checked={accountType === 1}
+                    id="remindme"
+                  />
+                  <label htmlFor="remindme">
+                    <h1 className="font-bold text-color-dark-primary opacity-50">
+                      Bireysel
+                    </h1>
+                  </label>
+                  <input
+                    onClick={() => setAccountType(2)}
+                    className="form-check-input float-left
+                   h-6 w-6 cursor-pointer appearance-none rounded-md
+                   border border-solid border-color-main bg-color-white bg-contain bg-center bg-no-repeat
+                   transition-all
+                   duration-300 checked:border-none checked:bg-color-main focus:outline-none"
+                    type="checkbox"
+                    checked={accountType === 2}
+                    id="remindme"
+                  />
+                  <label htmlFor="remindme">
+                    <h1 className="font-bold text-color-dark-primary opacity-50">
+                      Kurumsal
+                    </h1>
+                  </label>
+                </div>
+              </div>
+              <div className="flex w-full flex-col items-start justify-center gap-4">
+                {accountType === 2 ? (
                   <div className="flex w-full flex-col items-start justify-center gap-1">
                     <label
                       htmlFor="company"
                       className="font-bold text-color-dark-primary opacity-50"
                     >
-                      Firma Adı(Diğer)
+                      Kurumsal Adınız
                     </label>
                     <input
                       onChange={handleCompanyChange}
@@ -426,13 +423,13 @@ export default function Register({}: Props) {
                       type="text"
                       name="company"
                       id="company"
-                      placeholder="Firma Adı"
+                      placeholder="Kurumsal Adınız"
                       className="w-full rounded-[20px] border-[1px] border-color-dark-primary border-opacity-10 bg-color-white-third py-[15px] px-[22px]
                 text-[16px] font-medium outline-none transition-all duration-300 focus:border-color-main"
                     />
                   </div>
                 ) : (
-                  <div></div>
+                  <div className="hidden"></div>
                 )}
               </div>
               <div className="flex w-full flex-col items-start justify-center gap-1">
@@ -546,7 +543,7 @@ export default function Register({}: Props) {
             <h1 className="text-base text-color-dark-primary opacity-50">
               Zaten üye misiniz?
             </h1>
-            <Link to="/for-doctors/login">
+            <Link to="/experts/login">
               <h1 className="text-lg text-color-main opacity-80">Giriş Yap</h1>
             </Link>
           </div>

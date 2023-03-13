@@ -19,12 +19,148 @@ export default function FeaturesSection({}: Props) {
             Öne Çıkan Özelliklerimiz
           </h1>
           <p className="text-color-dark-primary opacity-70">
-            Klinik yönetimi ve danışan takibi için ihtiyaç duyacağınızdan fazlası.
+            Klinik yönetimi ve danışan takibi için ihtiyaç duyacağınızdan
+            fazlası.
           </p>
         </div>
       </div>
-      <div className="flex w-full flex-col items-center justify-center gap-8 lg:w-2/3">
-        <div className="relative flex w-full items-start justify-between gap-4 gap-y-4 overflow-visible overflow-y-visible overflow-x-scroll border-b-[1px] border-color-dark-primary border-opacity-10 scrollbar-none">
+      <div className="flex w-full flex-row items-start justify-start gap-4 lg:w-2/3 lg:flex-col lg:gap-8">
+        <ul className="flex flex-col items-start justify-start gap-6 border-r-[1px] border-color-dark-primary border-opacity-10 lg:hidden">
+          <li
+            className="relative cursor-pointer pr-4"
+            onClick={() => setActiveFeature(0)}
+          >
+            <RiCalendarCheckFill className="text-[28px] text-color-main transition-all duration-300 group-hover:scale-110" />
+            {activeFeature === 0 ? (
+              <motion.div
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: "100%" }}
+                transition={{
+                  ease: "backInOut",
+                  duration: 0.3,
+                  reapat: 1,
+                }}
+                className="absolute -right-[3px] top-0 w-[3px] rounded-full bg-color-main"
+              ></motion.div>
+            ) : (
+              <div className="absolute -right-[3px] rounded-full"></div>
+            )}
+          </li>
+          <li
+            className="relative cursor-pointer pr-4"
+            onClick={() => setActiveFeature(1)}
+          >
+            <div className="relative">
+              <TfiAgenda className="text-[28px] text-color-main transition-all duration-500 group-hover:scale-110" />
+              <IoTicket className="absolute bottom-[70%] left-[70%] text-[16px] text-color-warning-primary" />
+            </div>
+            {activeFeature === 1 ? (
+              <motion.div
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: "100%" }}
+                transition={{
+                  ease: "backInOut",
+                  duration: 0.3,
+                  reapat: 1,
+                }}
+                className="absolute -right-[3px] top-0 w-[3px] rounded-full bg-color-main"
+              ></motion.div>
+            ) : (
+              <div className="absolute -right-[3px] rounded-full"></div>
+            )}
+          </li>
+          <li
+            className="relative cursor-pointer pr-4"
+            onClick={() => setActiveFeature(2)}
+          >
+            <div className="relative">
+              <ImSearch className="text-[28px] text-color-main transition-all duration-500 group-hover:scale-110" />
+            </div>
+            {activeFeature === 2 ? (
+              <motion.div
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: "100%" }}
+                transition={{
+                  ease: "backInOut",
+                  duration: 0.3,
+                  reapat: 1,
+                }}
+                className="absolute -right-[3px] top-0 w-[3px] rounded-full bg-color-main"
+              ></motion.div>
+            ) : (
+              <div className="absolute -right-[3px] rounded-full"></div>
+            )}
+          </li>
+          <li
+            className="relative cursor-pointer pr-4"
+            onClick={() => setActiveFeature(3)}
+          >
+            <div className="relative">
+              <TbReportAnalytics className="text-[28px] text-color-main transition-all duration-500 group-hover:scale-110" />
+              <IoTicket className="absolute bottom-[70%] left-[70%] text-[16px] text-color-warning-primary" />
+            </div>
+            {activeFeature === 3 ? (
+              <motion.div
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: "100%" }}
+                transition={{
+                  ease: "backInOut",
+                  duration: 0.3,
+                  reapat: 1,
+                }}
+                className="absolute -right-[3px] top-0 w-[3px] rounded-full bg-color-main"
+              ></motion.div>
+            ) : (
+              <div className="absolute -right-[3px] rounded-full"></div>
+            )}
+          </li>
+          <li
+            className="relative cursor-pointer pr-4"
+            onClick={() => setActiveFeature(5)}
+          >
+            <div className="relative">
+              <TbReport className="text-[28px] text-color-main transition-all duration-500 group-hover:scale-110" />
+              <IoTicket className="absolute bottom-[70%] left-[70%] text-[16px] text-color-warning-primary" />
+            </div>
+            {activeFeature === 5 ? (
+              <motion.div
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: "100%" }}
+                transition={{
+                  ease: "backInOut",
+                  duration: 0.3,
+                  reapat: 1,
+                }}
+                className="absolute -right-[3px] top-0 w-[3px] rounded-full bg-color-main"
+              ></motion.div>
+            ) : (
+              <div className="absolute -right-[3px] rounded-full"></div>
+            )}
+          </li>
+          <li
+            className="relative cursor-pointer pr-4"
+            onClick={() => setActiveFeature(6)}
+          >
+            <div className="relative">
+              <IoFolder className="text-[28px] text-color-main transition-all duration-500 group-hover:scale-110" />
+            </div>
+            {activeFeature === 6 ? (
+              <motion.div
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: "100%" }}
+                transition={{
+                  ease: "backInOut",
+                  duration: 0.3,
+                  reapat: 1,
+                }}
+                className="absolute -right-[3px] top-0 w-[3px] rounded-full bg-color-main"
+              ></motion.div>
+            ) : (
+              <div className="absolute -right-[3px] rounded-full"></div>
+            )}
+          </li>
+        </ul>
+        <div className="relative hidden w-full items-start justify-between gap-y-4 border-b-[1px] border-color-dark-primary border-opacity-10 lg:flex">
           <div
             className="group relative flex flex-col items-center justify-center gap-2 px-2 pb-6 hover:cursor-pointer"
             onClick={() => setActiveFeature(0)}
@@ -281,9 +417,14 @@ export default function FeaturesSection({}: Props) {
         ) : activeFeature === 1 ? (
           <div className="flex w-full grid-cols-3 flex-col items-start justify-start gap-4 xl:grid xl:gap-0">
             <div className="col-span-1 flex flex-col items-start justify-start gap-4">
-              <h1 className="text-2xl font-bold text-color-main">
-                Ajanda ve Notlar
-              </h1>
+              <div className="flex flex-col items-start justify-start">
+                <h1 className="text-2xl font-bold text-color-main">
+                  Ajanda ve Notlar
+                </h1>
+                <h1 className="text-sm font-bold text-color-dark-primary text-opacity-50">
+                  (yakında)
+                </h1>
+              </div>
               {/* <h1 className="text-lg font-bold text-color-dark-primary">
                 Hastalar için medikal özgeçmiş ve muayene bilgilerini kolaylıkla
                 kayıt altına alabilir, geçmiş bulgulara birkaç tıklama ile
@@ -332,9 +473,14 @@ export default function FeaturesSection({}: Props) {
         ) : activeFeature === 3 ? (
           <div className="flex w-full grid-cols-3 flex-col items-start justify-start gap-4 xl:grid xl:gap-0">
             <div className="col-span-1 flex flex-col items-start justify-start gap-4">
-              <h1 className="text-2xl font-bold text-color-main">
-                Finansal Bilgiler
-              </h1>
+              <div className="flex flex-col items-start justify-start">
+                <h1 className="text-2xl font-bold text-color-main">
+                  Finansal Bilgiler
+                </h1>
+                <h1 className="text-sm font-bold text-color-dark-primary text-opacity-50">
+                  (yakında)
+                </h1>
+              </div>
               <h1 className="text-lg font-bold text-color-dark-primary">
                 Danışanınız ile yaptığınız tüm işlemleri hizmet girişi olarak
                 kayıt altına alabilirsiniz. Hizmetlere bağlı olarak oluşacak
@@ -358,9 +504,14 @@ export default function FeaturesSection({}: Props) {
         ) : activeFeature === 4 ? (
           <div className="flex w-full grid-cols-3 flex-col items-start justify-start gap-4 xl:grid xl:gap-0">
             <div className="col-span-1 flex flex-col items-start justify-start gap-4">
-              <h1 className="text-2xl font-bold text-color-main">
-                Personel Yönetimi
-              </h1>
+              <div className="flex flex-col items-start justify-start">
+                <h1 className="text-2xl font-bold text-color-main">
+                  Personel Yönetimi
+                </h1>
+                <h1 className="text-sm font-bold text-color-dark-primary text-opacity-50">
+                  (yakında)
+                </h1>
+              </div>
               {/* <h1 className="text-lg font-bold text-color-dark-primary">
                 Hastalarınızın Boy, kilo, adım, tansiyon, ateş, alınan kalori
                 gibi takip etmek isteyeceğiz tüm bilgileri tarih bazlı kayıt
@@ -386,9 +537,14 @@ export default function FeaturesSection({}: Props) {
         ) : activeFeature === 5 ? (
           <div className="flex w-full grid-cols-3 flex-col items-start justify-start gap-4 xl:grid xl:gap-0">
             <div className="col-span-1 flex flex-col items-start justify-start gap-4">
-              <h1 className="text-2xl font-bold text-color-main">
-                Raporlama/Analiz
-              </h1>
+              <div className="flex flex-col items-start justify-start">
+                <h1 className="text-2xl font-bold text-color-main">
+                  Raporlama / Analiz
+                </h1>
+                <h1 className="text-sm font-bold text-color-dark-primary text-opacity-50">
+                  (yakında)
+                </h1>
+              </div>
               {/* <h1 className="text-lg font-bold text-color-dark-primary">
                 Kliniğinizde tüm verileri analiz edebileceğiniz raporlar sizin
                 için hazır olarak gelmektedir. Dilerseniz grafik, dilerseniz
@@ -424,9 +580,9 @@ export default function FeaturesSection({}: Props) {
               </h1>
               <p className="text-color-dark-primary opacity-80">
                 Sürükle-bırak veya kameradan fotograf çekme yöntemi ile
-                kolaylıkla yüklenebilen dökümanlar, kişisel danışan dosyası
-                ile eşleştirilmektedir. Böylelikle bir danışan dosyası
-                içerisinde eklenmiş dokümanlara rahatlıkla ulaşabilirsiniz.
+                kolaylıkla yüklenebilen dökümanlar, kişisel danışan dosyası ile
+                eşleştirilmektedir. Böylelikle bir danışan dosyası içerisinde
+                eklenmiş dokümanlara rahatlıkla ulaşabilirsiniz.
               </p>
             </div>
             <div className="col-span-2 hidden items-center justify-center lg:flex">

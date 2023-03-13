@@ -6,7 +6,7 @@ type Props = {
   alertHeader: Alertheader;
 };
 
-export default function AlertHeaderWarning(props: Props) {
+export default function AlertHeaderDanger(props: Props) {
   return (
     <motion.div
       initial={{ opacity: 0.5 }}
@@ -16,9 +16,9 @@ export default function AlertHeaderWarning(props: Props) {
         duration: 0.5,
         reapat: 1,
       }}
-      className="w-full bg-color-warning-primary p-6 flex justify-start items-center gap-4 rounded-[15px]"
+      className="flex w-full items-center justify-start gap-4 rounded-[15px] bg-color-danger-primary p-6"
     >
-      <AiFillCheckCircle className="text-color-white text-[24px]" />
+      <AiFillCheckCircle className="text-[24px] text-color-white" />
       <h1 className="text-color-white">{props.alertHeader.text}</h1>
     </motion.div>
   );

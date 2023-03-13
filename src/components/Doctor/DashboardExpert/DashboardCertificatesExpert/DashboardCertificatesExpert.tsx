@@ -121,10 +121,18 @@ export default function DashboardCertificatesExpert({}: Props) {
       const theFile = e.target.files[0];
       if (theFile.type === "application/pdf") {
         setFile(theFile);
+      } else if (theFile.size > 5242880) {
+        const alert: Alert = {
+          type: "danger",
+          text: "Yüklenecek dosyanın boyutu 5MB'ı geçmemelidir.",
+          active: true,
+          statusCode: 400,
+        };
+        dispatch(updateAlert(alert));
       } else {
         const alert: Alert = {
           type: "danger",
-          text: "Yüklenecek dosya pdf olmalıdır.",
+          text: "Yüklenecek dosyanın türü PDF olmalıdır.",
           active: true,
           statusCode: 400,
         };
@@ -215,7 +223,7 @@ export default function DashboardCertificatesExpert({}: Props) {
           };
           dispatch(updateAlert(alert));
           dispatch(addAuthExpertObject(undefined));
-          unauthenticateExpert(navigate("/for-doctors/login"));
+          unauthenticateExpert(navigate("/experts/login"));
         } else {
           const alert: Alert = {
             type: "danger",

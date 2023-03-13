@@ -24,4 +24,5 @@ export interface AuthExpertUpdateProfileDto {
   expert_additional_information?: string;
   expert_experience?: string;
   expert_training?: string;
+  expert_account_type?: number;
 }

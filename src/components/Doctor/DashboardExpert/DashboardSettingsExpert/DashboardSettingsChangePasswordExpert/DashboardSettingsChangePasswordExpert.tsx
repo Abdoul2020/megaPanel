@@ -83,7 +83,7 @@ export default function DashboardSettingsChangePasswordExpert({}: Props) {
         dispatch(
           addAuthExpertObject(authExpertUpdateProfileResponse.data.data)
         );
-        navigate("/for-doctors/dashboard/settings");
+        navigate("/experts/dashboard/settings");
       } else {
         if (
           authExpertUpdateProfileResponse.data.response.data.message &&
@@ -98,7 +98,7 @@ export default function DashboardSettingsChangePasswordExpert({}: Props) {
           };
           dispatch(updateAlert(alert));
           dispatch(addAuthExpertObject(undefined));
-          unauthenticateExpert(navigate("/for-doctors/login"));
+          unauthenticateExpert(navigate("/experts/login"));
         } else {
           const alert: Alert = {
             type: "danger",

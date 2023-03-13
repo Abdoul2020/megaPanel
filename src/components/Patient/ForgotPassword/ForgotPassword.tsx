@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { BiLoaderAlt } from "react-icons/bi";
-import { BsArrowRight } from "react-icons/bs";
+import { BsArrowRight, BsFillPersonFill } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch } from "../../../app/hooks";
 import { AuthClientForgotPasswordDto } from "../../../common/dtos/auth/client/authClientForgotPassword.dto";
@@ -64,7 +64,10 @@ export default function ForgotPassword({}: Props) {
   return (
     <div className="relative flex h-screen w-full items-center justify-center bg-color-white-secondary py-20 px-10 pt-[170px] lg:px-0">
       <div className="z-20 flex w-full items-center justify-center lg:w-1/2 xl:w-1/4">
-        <div className="flex w-full flex-col items-center justify-center gap-8">
+        <div className="relative flex w-full flex-col items-center justify-center gap-8">
+          <div className="absolute top-[15px] right-[15px] rounded-full bg-color-main p-2">
+            <BsFillPersonFill className="text-[12px] text-color-white" />
+          </div>
           <div className="flex w-full flex-col items-start justify-center gap-6 rounded-[25px] bg-color-white p-8 px-10 shadow-lg">
             <h1 className="text-xl font-bold text-color-dark-primary opacity-80">
               Şifremi Unuttum

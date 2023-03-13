@@ -50,16 +50,24 @@ export default function DashboardSettingsHomePatient({}: Props) {
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
       const theFile = e.target.files[0];
-      if (theFile.type === "image/jpeg" && theFile.size < 20000000) {
-        setFile(theFile);
-      } else {
+      if (theFile.type !== "image/jpeg") {
         const alert: Alert = {
           type: "danger",
-          text: "yüklenecek dosya jpeg olup 20MB'ı geçmemelidir.",
+          text: "Yüklenecek dosyanın türü JPEG olmalıdır.",
           active: true,
           statusCode: 400,
         };
         dispatch(updateAlert(alert));
+      } else if (theFile.size > 2097152) {
+        const alert: Alert = {
+          type: "danger",
+          text: "Yüklenecek dosyanın boyutu 2MB'ı geçmemelidir.",
+          active: true,
+          statusCode: 400,
+        };
+        dispatch(updateAlert(alert));
+      } else {
+        setFile(theFile);
       }
     }
   };
