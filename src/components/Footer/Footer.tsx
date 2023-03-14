@@ -152,8 +152,9 @@ export default function Footer({}: Props) {
                   <a
                     href="https://www.tiktok.com/@megaversecoach"
                     target="_blank"
-                  ></a>
-                  <FaTiktok className="text-[30px] text-color-main opacity-50" />
+                  >
+                    <FaTiktok className="text-[30px] text-color-main opacity-50" />
+                  </a>
                 </li>
                 <li>
                   <a href="https://t.me/megaversecoach" target="_blank">
@@ -172,7 +173,7 @@ export default function Footer({}: Props) {
                 </li>
                 <li className="flex items-center justify-center gap-2">
                   <AiFillMail className="text-color-main" />
-                  <a href="mailto:info@megaverse.coach">
+                  <a href="mailto:coach.megaverse@gmail.com">
                     <h1 className="text-base text-color-dark-primary opacity-50">
                       coach.megaverse@gmail.com
                     </h1>

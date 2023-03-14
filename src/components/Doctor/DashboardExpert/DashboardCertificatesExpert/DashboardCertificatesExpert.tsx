@@ -277,7 +277,7 @@ export default function DashboardCertificatesExpert({}: Props) {
             />
             <h1 className="text-color-white">Dosya Yükle</h1>
           </button>
-          <ul className="flex w-full flex-col items-start justify-start gap-10">
+          <ul className="flex w-full flex-wrap items-start justify-start gap-10">
             {authExpertCertificates.map((certificate) => {
               return (
                 <DashboardCertificateExpert

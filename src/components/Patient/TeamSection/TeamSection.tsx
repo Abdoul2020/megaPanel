@@ -16,7 +16,7 @@ export default function TeamSection(props: Props) {
     dots: false,
     infinite: true,
     speed: 500,
-    slidesToShow: props.doctors.length < 4 ? props.doctors.length : 4,
+    slidesToShow:  4,
     slidesToScroll: 1,
     initialSlide: 0,
     itemsCenter: true,
@@ -24,12 +24,12 @@ export default function TeamSection(props: Props) {
     arrows: false,
     responsive: [
       {
-        breakpoint: 1024,
+        breakpoint: 1360,
         settings: {
           dots: false,
           infinite: true,
           speed: 500,
-          slidesToShow: props.doctors.length < 4 ? props.doctors.length : 3,
+          slidesToShow:  3,
           slidesToScroll: 1,
           initialSlide: 0,
           itemsCenter: true,
@@ -38,12 +38,12 @@ export default function TeamSection(props: Props) {
         },
       },
       {
-        breakpoint: 600,
+        breakpoint: 900,
         settings: {
           dots: false,
           infinite: true,
           speed: 500,
-          slidesToShow: 1,
+          slidesToShow: 2,
           slidesToScroll: 1,
           initialSlide: 0,
           itemsCenter: true,

@@ -6,11 +6,11 @@ import { Alert } from "../../../../../common/types/Alert";
 import { Certificate } from "../../../../../common/types/Certificate.entity";
 import {
   addAuthExpertObject,
-  removeAuthExpertCertificate
+  removeAuthExpertCertificate,
 } from "../../../../../features/authExpert/authExpertSlice";
 import {
   fetchCertificatePdf,
-  removeCertificatePdf
+  removeCertificatePdf,
 } from "../../../../../features/certificates/certificatesAPI";
 import { updateAlert } from "../../../../../features/options/optionsSlice";
 import { unauthenticateExpert } from "../../../../../helpers/authExpertHelper";
@@ -137,7 +137,7 @@ export default function DashboardCertificateExpert(props: Props) {
   };
   return (
     <div
-      className={`flex w-full items-center justify-center
+      className={`relative flex items-center justify-center
     border-[5px] border-solid p-4
    ${
      props.certificate.certificate_status === 0
@@ -147,14 +147,15 @@ export default function DashboardCertificateExpert(props: Props) {
        : "border-color-danger-primary"
    } rounded-[15px]`}
     >
-      <div className="relative flex w-full items-start justify-start gap-10">
+      <div className="absolute top-[90%] left-[90%] h-[30px] w-[30px] rounded-full bg-color-white p-1 transition-all duration-300 ease-in-out hover:scale-150">
         <img
           src={require("../../../../../assets/images/PDF_file_icon.svg.png")}
-          className="h-[150px] w-[150px] 
-          hover:cursor-pointer"
+          className="h-full w-full hover:cursor-pointer"
           alt=""
           onClick={handleOpenPdf}
         />
+      </div>
+      <div className="relative flex w-full items-start justify-start gap-10">
         <div className="flex flex-col items-start justify-start gap-6">
           <div className="flex flex-col items-start justify-start gap-2">
             <div className="flex flex-wrap items-start justify-start gap-2">

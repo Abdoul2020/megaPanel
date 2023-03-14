@@ -13,7 +13,7 @@ const initialState: initialState = {
     },
     {
       question:
-        "Megaverse Uluslararası Kişisel Gelişim Portalı Projesinin amacınedir?",
+        "Megaverse Uluslararası Kişisel Gelişim Portalı Projesinin amacı nedir?",
       answer:
         "Geçmiş olduğumuz pandemi ve kapanma dönemiyle beraber birçok etkinlik ve toplantı dijital tabanlı olmaya başladı; iyileşmenin yeri ya da zamanı olmaz, iyileşmek bir karardır. Megaverse Uluslararası Kişisel Gelişim Portalı ise her zaman ve her yerdeiyileşmeyi, sağlığı amaçlamaktadır.",
     },
