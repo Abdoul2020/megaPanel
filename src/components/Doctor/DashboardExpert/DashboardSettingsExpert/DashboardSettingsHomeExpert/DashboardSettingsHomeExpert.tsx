@@ -19,6 +19,10 @@ import { Firm } from "../../../../../common/types/Firm.entity";
 import { State } from "../../../../../common/types/State.entity";
 import { Title } from "../../../../../common/types/Title.entity";
 import {
+  authExpertActiveAccount,
+  authExpertPassiveAccount,
+} from "../../../../../features/auth/authAPI";
+import {
   authExpertDownloadProfilePicture,
   authExpertUpdateProfile,
   authExpertUploadProfilePicture,
@@ -50,6 +54,7 @@ export default function DashboardSettingsHomeExpert({}: Props) {
   const [companyObject, setCompanyObject] = useState<Firm | undefined>(
     undefined
   );
+  const [active, setActive] = useState(1);
   const [telCountry, setTelCountry] = useState("");
   const [experience, setExperience] = useState("");
   const [training, setTraining] = useState("");
@@ -234,7 +239,7 @@ export default function DashboardSettingsHomeExpert({}: Props) {
 
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
-      const theFile = e.target.files[0];
+      const theFile = e.target.files[0]; 
       if (theFile.type !== "image/jpeg") {
         const alert: Alert = {
           type: "danger",
@@ -501,6 +506,11 @@ export default function DashboardSettingsHomeExpert({}: Props) {
         ? authExpertObject.expert_experience
         : ""
     );
+    setActive(
+      authExpertObject && authExpertObject?.expert_active
+        ? authExpertObject.expert_active
+        : 1
+    );
     setAdditionalInformation(
       authExpertObject && authExpertObject?.expert_additional_information
         ? authExpertObject.expert_additional_information
@@ -544,6 +554,82 @@ export default function DashboardSettingsHomeExpert({}: Props) {
       fetchData();
     }
   }, [authExpertObject]);
+
+  const handleToggleButton = () => {
+    async function fetchData() {
+      const token = getCookie("m_e_t");
+      if (active === 2) {
+        const authExpertActiveAccountResponse = await authExpertActiveAccount(
+          token
+        );
+        const success = authExpertActiveAccountResponse.success;
+        if (success) {
+          dispatch(
+            addAuthExpertObject(authExpertActiveAccountResponse.data.data)
+          );
+        } else {
+          if (
+            authExpertActiveAccountResponse.data.response.data.message &&
+            authExpertActiveAccountResponse.data.response.data.message ===
+              "error:TokenExpiredError: jwt expired"
+          ) {
+            const alert: Alert = {
+              type: "warning",
+              text: "Oturum zaman aşımına uğradı",
+              active: true,
+              statusCode: authExpertActiveAccountResponse.data.statusCode,
+            };
+            dispatch(updateAlert(alert));
+            dispatch(addAuthExpertObject(undefined));
+            unauthenticate(navigate("/experts/login"));
+          } else {
+            const alert: Alert = {
+              type: "danger",
+              text: authExpertActiveAccountResponse.data.response.data.message,
+              active: true,
+              statusCode: authExpertActiveAccountResponse.data.statusCode,
+            };
+            dispatch(updateAlert(alert));
+          }
+        }
+      } else if (active === 1) {
+        const authExpertActiveAccountResponse = await authExpertPassiveAccount(
+          token
+        );
+        const success = authExpertActiveAccountResponse.success;
+        if (success) {
+          dispatch(
+            addAuthExpertObject(authExpertActiveAccountResponse.data.data)
+          );
+        } else {
+          if (
+            authExpertActiveAccountResponse.data.response.data.message &&
+            authExpertActiveAccountResponse.data.response.data.message ===
+              "error:TokenExpiredError: jwt expired"
+          ) {
+            const alert: Alert = {
+              type: "warning",
+              text: "Oturum zaman aşımına uğradı",
+              active: true,
+              statusCode: authExpertActiveAccountResponse.data.statusCode,
+            };
+            dispatch(updateAlert(alert));
+            dispatch(addAuthExpertObject(undefined));
+            unauthenticate(navigate("/experts/login"));
+          } else {
+            const alert: Alert = {
+              type: "danger",
+              text: authExpertActiveAccountResponse.data.response.data.message,
+              active: true,
+              statusCode: authExpertActiveAccountResponse.data.statusCode,
+            };
+            dispatch(updateAlert(alert));
+          }
+        }
+      }
+    }
+    fetchData();
+  };
 
   return (
     <div className="flex w-full flex-col items-start justify-start gap-4 overflow-x-hidden">
@@ -1294,6 +1380,32 @@ export default function DashboardSettingsHomeExpert({}: Props) {
                         ? authExpertObject?.expert_about_me
                         : ""}
                     </p>
+                  </div>
+                </div>
+                <div className="flex flex-col items-start justify-start gap-2">
+                  <div className="flex items-center justify-center gap-1">
+                    <h1 className="font-bold text-color-dark-primary opacity-50">
+                      Hesap Durumum:
+                    </h1>
+                    {active === 1 ? (
+                      <h1 className="text-color-success-primary">Aktif</h1>
+                    ) : (
+                      <h1 className="text-color-danger-primary">Pasif</h1>
+                    )}
+                  </div>
+                  <div
+                    className={`relative h-6 w-12 rounded-full ${
+                      active === 1
+                        ? "bg-color-secondary"
+                        : "bg-color-gray-primary"
+                    } cursor-pointer p-1 transition-all duration-300`}
+                    onClick={() => handleToggleButton()}
+                  >
+                    <div
+                      className={`h-full w-4 rounded-full bg-color-white ${
+                        active === 1 ? "translate-x-[150%]" : "translate-x-0"
+                      } transition-all duration-300`}
+                    ></div>
                   </div>
                 </div>
                 <div className="flex flex-col items-start justify-start gap-2">

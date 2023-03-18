@@ -9,7 +9,7 @@ type Props = {};
 export default function HaederExpertMobile({}: Props) {
   const dispatch = useDispatch();
   return (
-    <div className="absolute top-0 z-10 flex h-[90px] w-full items-center justify-between px-10 lg:hidden">
+    <div className="absolute top-0 z-50 flex h-[90px] w-full items-center justify-between px-10 lg:hidden">
       <Link to="/experts">
         <motion.img
           initial={{ opacity: 0 }}
@@ -26,7 +26,7 @@ export default function HaederExpertMobile({}: Props) {
         />
       </Link>
       <GiHamburgerMenu
-        className="text-[48px] opacity-50 hover:cursor-pointer"
+        className="text-[32px] text-color-main opacity-50 hover:cursor-pointer"
         onClick={() => {
           dispatch(updateHeaderMobileExpert(true));
         }}

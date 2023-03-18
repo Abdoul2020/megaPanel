@@ -22,7 +22,59 @@ export default function PromotionSection({}: Props) {
           </div>
         </div> */}
         </div>
-        <div className="z-0 flex h-full w-full items-center justify-center">
+        <div className="z-0 flex min-h-full w-full items-center justify-center">
+          <div className="grid grid-cols-2 items-center justify-around gap-10 md:grid-cols-4 lg:grid-cols-2">
+            <div className="flex flex-col items-center justify-center gap-2">
+              <div className="rounded-[30px] bg-color-white-secondary p-8 shadow-lg">
+                <img
+                  src={require("../../../assets/images/uzmansec.png")}
+                  alt=""
+                  className="w-[48px]"
+                />
+              </div>
+              <h1 className="text-center text-base text-color-main text-opacity-80">
+               Kayıt Ol
+              </h1>
+            </div>
+            <div className="flex flex-col items-center justify-center gap-2">
+              <div className="rounded-[30px] bg-color-white-secondary p-8 shadow-lg">
+                <img
+                  src={require("../../../assets/images/doktorbul.png")}
+                  alt=""
+                  className="w-[48px]"
+                />
+              </div>
+              <h1 className="text-center text-base text-color-main text-opacity-80">
+              Bilgilerini Gir
+              </h1>
+            </div>
+            <div className="flex flex-col items-center justify-center gap-2">
+              <div className="rounded-[30px] bg-color-white-secondary p-8 shadow-lg">
+                <img
+                  src={require("../../../assets/images/yuzyuzerandevu.png")}
+                  alt=""
+                  className="w-[48px]"
+                />
+              </div>
+              <h1 className="text-center text-base text-color-main text-opacity-80">
+                Takvimini Ayarla
+              </h1>
+            </div>
+            <div className="flex flex-col items-center justify-center gap-2">
+              <div className="rounded-[30px] bg-color-white-secondary p-8 shadow-lg">
+                <img
+                  src={require("../../../assets/images/onlinegorusme.png")}
+                  alt=""
+                  className="w-[48px]"
+                />
+              </div>
+              <h1 className="text-center text-base text-color-main text-opacity-80">
+                Görüşmeye Başla
+              </h1>
+            </div>
+          </div>
+        </div>
+        {/* <div className="z-0 flex h-full w-full items-center justify-center">
           <div className="grid grid-cols-1 content-start items-start justify-around gap-10 md:grid-cols-2">
             <div className="flex flex-col items-start justify-center gap-4">
               <div className="flex items-center justify-center gap-6">
@@ -147,7 +199,7 @@ export default function PromotionSection({}: Props) {
               </h1>
             </div>
           </div>
-        </div>
+        </div> */}
       </div>
     </div>
   );

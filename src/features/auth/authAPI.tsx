@@ -255,3 +255,39 @@ export const authClientUpdatePassword = async (
     });
   return response;
 };
+
+export const authExpertActiveAccount = async (token: string) => {
+  const response = await axios({
+    method: "get",
+    url: `${BASE_URL}/auth/expert/active`,
+    headers: { Authorization: `Bearer ${token}` },
+  })
+    .then((response) => {
+      return { success: true, data: response };
+    })
+    .catch((err) => {
+      return {
+        success: false,
+        data: err,
+      };
+    });
+  return response;
+};
+
+export const authExpertPassiveAccount = async (token: string) => {
+  const response = await axios({
+    method: "get",
+    url: `${BASE_URL}/auth/expert/passive`,
+    headers: { Authorization: `Bearer ${token}` },
+  })
+    .then((response) => {
+      return { success: true, data: response };
+    })
+    .catch((err) => {
+      return {
+        success: false,
+        data: err,
+      };
+    });
+  return response;
+};

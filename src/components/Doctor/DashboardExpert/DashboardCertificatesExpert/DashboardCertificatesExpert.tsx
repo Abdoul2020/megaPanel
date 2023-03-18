@@ -193,8 +193,8 @@ export default function DashboardCertificatesExpert({}: Props) {
       const uploadCertificatePdfResponse = await authExpertUploadCertificatePdf(
         tokenExpert,
         file,
-        company,
-        certificateTitle
+        certificateTitle,
+        company
       );
       setLoader(false);
       setSubmitDisable(false);

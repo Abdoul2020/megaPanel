@@ -59,10 +59,15 @@ export default function BannerSection() {
       states.filter((state) => state.country_id == String(value?.id))
     );
   }, []);
-  function useOutsideAlerter(ref: any) {
+  function useOutsideAlerter(ref: any, ref2: any) {
     useEffect(() => {
       function handleClickOutside(event: any) {
-        if (ref.current && !ref.current.contains(event.target)) {
+        if (
+          ref.current &&
+          !ref.current.contains(event.target) &&
+          ref2.current &&
+          !ref2.current.contains(event.target)
+        ) {
           setCountrySelectOpen(false);
         }
       }
@@ -72,10 +77,15 @@ export default function BannerSection() {
       };
     }, [ref]);
   }
-  function useOutsideAlerterCity(ref: any) {
+  function useOutsideAlerterCity(ref: any, ref2: any) {
     useEffect(() => {
       function handleClickOutside(event: any) {
-        if (ref.current && !ref.current.contains(event.target)) {
+        if (
+          ref.current &&
+          !ref.current.contains(event.target) &&
+          ref2.current &&
+          !ref2.current.contains(event.target)
+        ) {
           setCitySelectOpen(false);
         }
       }
@@ -99,12 +109,18 @@ export default function BannerSection() {
     }, [ref]);
   }
 
+  // Responsive
+
+  const wrapperRefResponsive = useRef(null);
+  const wrapperRefCityResponsive = useRef(null);
+
   const wrapperRef = useRef(null);
   const wrapperRefCity = useRef(null);
   const wrapperRefInput = useRef(null);
-  useOutsideAlerter(wrapperRef);
-  useOutsideAlerterCity(wrapperRefCity);
+  useOutsideAlerter(wrapperRef, wrapperRefResponsive);
+  useOutsideAlerterCity(wrapperRefCity, wrapperRefCityResponsive);
   useOutsideAlerterInput(wrapperRefInput);
+
   const [countrySelectOpen, setCountrySelectOpen] = useState(false);
   const handleCountrySelectOpen = () => {
     setCountrySelectOpen((value) => !value);

@@ -25,6 +25,7 @@ export type Doctor = {
   expert_postal_code: string;
   expert_tel: string;
   expert_status: number;
+  expert_active: number;
   expert_creation_date: string;
   expert_operating_type: number;
   expert_about_me: string;

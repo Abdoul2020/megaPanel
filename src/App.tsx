@@ -1,5 +1,7 @@
+import { Dialog } from "@mui/material";
 import { useEffect, useRef, useState } from "react";
 import { AiOutlineArrowUp } from "react-icons/ai";
+import { IoMdHelp } from "react-icons/io";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "slick-carousel/slick/slick-theme.css";
 import "slick-carousel/slick/slick.css";
@@ -12,6 +14,7 @@ import AlertDanger from "./components/Common/Alerts/AlertDanger";
 import AlertInfo from "./components/Common/Alerts/AlertInfo";
 import AlertSuccess from "./components/Common/Alerts/AlertSuccess";
 import AlertWarning from "./components/Common/Alerts/AlertWarning";
+import FeedBackDialog from "./components/Common/FeedBackDialog/FeedBackDialog";
 import NotFoundPage from "./components/Common/NotFoundPage/NotFoundPage";
 import DashboardExpert from "./components/Doctor/DashboardExpert/DashboardExpert";
 import DoctorPage from "./components/Doctor/DoctorPage";
@@ -24,12 +27,13 @@ import { addAuthExpertObject } from "./features/authExpert/authExpertSlice";
 import { fetchBranches } from "./features/branches/branchesAPI";
 import { addBranches } from "./features/branches/branchesSlice";
 import { fetchExperts } from "./features/doctorSlice/doctorAPI";
+import { updateFeedBackDialogOpen } from "./features/feedbacks/feedbacksSlice";
 import { fetchFirms } from "./features/firms/firmsAPI";
 import { addFirms } from "./features/firms/firmsSlice";
 import {
   updateAlert,
   updateScrollToTop,
-  updateSticky
+  updateSticky,
 } from "./features/options/optionsSlice";
 import { fetchSpecializations } from "./features/specializations/specializationsAPI";
 import { addSpecializations } from "./features/specializations/specializationsSlice";
@@ -44,11 +48,9 @@ function App() {
   const [sticky, setSticky] = useState(false);
   const [experts, setExperts] = useState<Doctor[]>([]);
   const [branches, setBranches] = useState<Branch[]>([]);
-
   const alert = useAppSelector((state) => state.options.alert);
   const scrollToTop = useAppSelector((state) => state.options.scrollToTop);
   const dispatch = useAppDispatch();
-
   const handleScroll = (e: any) => {
     const scrollTop = appRef.current?.scrollTop;
     if (scrollTop && scrollTop > 0) {
@@ -183,6 +185,9 @@ function App() {
       dispatch(updateScrollToTop(false));
     }
   }, [scrollToTop]);
+  const feedBackDialogOpen = useAppSelector(
+    (state) => state.feedBacks.feedBackDialogOpen
+  );
   return (
     <div
       className="relative m-0 box-border h-screen scroll-smooth p-0 overflow-x-hidden"
@@ -204,10 +209,7 @@ function App() {
               </ProtectedRoute>
             }
           />
-          <Route
-            path="/experts/*"
-            element={<DoctorPage doctors={experts} />}
-          />
+          <Route path="/experts/*" element={<DoctorPage doctors={experts} />} />
           <Route
             path="/experts/dashboard/*"
             element={
@@ -252,6 +254,19 @@ function App() {
           <AlertInfo alert={alert} />
         )}
       </div>
+      <div
+        className="fixed bottom-5 left-5 z-50 rounded-lg bg-color-main p-2 shadow-lg transition-all duration-300 hover:cursor-pointer hover:opacity-80"
+        onClick={() => dispatch(updateFeedBackDialogOpen(true))}
+      >
+        <IoMdHelp className="text-[30px] text-color-white" />
+      </div>
+      <Dialog
+        PaperProps={{ style: { borderRadius: "15px" } }}
+        onClose={() => dispatch(dispatch(updateFeedBackDialogOpen(false)))}
+        open={feedBackDialogOpen}
+      >
+        <FeedBackDialog />
+      </Dialog>
     </div>
   );
 }

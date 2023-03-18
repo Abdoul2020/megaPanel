@@ -401,10 +401,15 @@ export default function SearchPage(props: Props) {
     setCountrySelectOpen(false);
   };
 
-  function useOutsideAlerter(ref: any) {
+  function useOutsideAlerter(ref: any, ref2: any) {
     useEffect(() => {
       function handleClickOutside(event: any) {
-        if (ref.current && !ref.current.contains(event.target)) {
+        if (
+          ref.current &&
+          !ref.current.contains(event.target) &&
+          ref2.current &&
+          !ref2.current.contains(event.target)
+        ) {
           setCountrySelectOpen(false);
         }
       }
@@ -414,10 +419,15 @@ export default function SearchPage(props: Props) {
       };
     }, [ref]);
   }
-  function useOutsideAlerterCity(ref: any) {
+  function useOutsideAlerterCity(ref: any, ref2: any) {
     useEffect(() => {
       function handleClickOutside(event: any) {
-        if (ref.current && !ref.current.contains(event.target)) {
+        if (
+          ref.current &&
+          !ref.current.contains(event.target) &&
+          ref2.current &&
+          !ref2.current.contains(event.target)
+        ) {
           setCitySelectOpen(false);
         }
       }
@@ -441,11 +451,14 @@ export default function SearchPage(props: Props) {
     }, [ref]);
   }
 
+  const wrapperRefResponsive = useRef(null);
+  const wrapperRefCityResponsive = useRef(null);
+
   const wrapperRef = useRef(null);
   const wrapperRefCity = useRef(null);
   const wrapperRefInput = useRef(null);
-  useOutsideAlerter(wrapperRef);
-  useOutsideAlerterCity(wrapperRefCity);
+  useOutsideAlerter(wrapperRef, wrapperRefResponsive);
+  useOutsideAlerterCity(wrapperRefCity, wrapperRefCityResponsive);
   useOutsideAlerterInput(wrapperRefInput);
   const [countrySelectOpen, setCountrySelectOpen] = useState(false);
   const handleCountrySelectOpen = () => {
@@ -666,7 +679,7 @@ export default function SearchPage(props: Props) {
               className="flex w-full items-center justify-between gap-2 rounded-[20px] bg-color-white"
               onSubmit={handleSubmit}
             >
-              <div className="hidden md:block">
+              <div className="z-50 hidden md:block">
                 {!online ? (
                   <motion.div
                     initial={{ opacity: 0, x: -50 }}
@@ -693,7 +706,7 @@ export default function SearchPage(props: Props) {
                     ) : (
                       <div
                         className="relative flex h-full w-[100px] items-center justify-center rounded-l-[15px] bg-color-main px-1 outline-none"
-                        ref={wrapperRef}
+                        ref={wrapperRefResponsive}
                       >
                         <div
                           className="flex w-full cursor-pointer items-center justify-center gap-2"
@@ -749,7 +762,7 @@ export default function SearchPage(props: Props) {
                     ) : (
                       <div
                         className="relative flex h-full w-[100px] items-center justify-center rounded-r-[15px] bg-color-main px-1 outline-none"
-                        ref={wrapperRefCity}
+                        ref={wrapperRefCityResponsive}
                       >
                         <div
                           className="flex w-full cursor-pointer items-center justify-center gap-2"

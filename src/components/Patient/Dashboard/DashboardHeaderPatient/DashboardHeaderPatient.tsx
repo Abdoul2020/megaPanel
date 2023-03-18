@@ -263,7 +263,7 @@ export default function DashboardHeaderPatient({}: Props) {
             <h1 className="text-sm font-bold text-color-dark-primary text-opacity-60">
               Hoşgeldin
             </h1>
-            <h1 className="text-base font-bold uppercase text-color-dark-primary group-hover:text-opacity-80">
+            <h1 className="text-sm font-bold uppercase text-color-dark-primary group-hover:text-opacity-80">
               {`${authObject !== undefined ? authObject.client_name : ""} ${
                 authObject !== undefined ? authObject?.client_surname : ""
               }`}

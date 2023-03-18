@@ -285,7 +285,7 @@ export default function HeaderPatient() {
                         ) : (
                           <div className="relative">
                             <button className="flex h-full w-full items-center justify-center rounded-[15px] bg-color-secondary p-4 transition-all duration-300 group-hover:bg-color-third">
-                              <BsFillPersonFill className="text-[40px] text-color-white" />
+                              <BsFillPersonFill className="text-[20px] text-color-white" />
                             </button>
                             <div className="absolute -top-[5px] -right-[5px]">
                               {authExpertObject?.expert_status === 1 ? (
@@ -350,7 +350,7 @@ export default function HeaderPatient() {
                             />
                           ) : (
                             <button className="flex h-full w-full items-center justify-center rounded-[15px] bg-color-secondary p-4 transition-all duration-300 group-hover:bg-color-third">
-                              <BsFillPersonFill className="text-[40px] text-color-white" />
+                              <BsFillPersonFill className="text-[20px] text-color-white" />
                             </button>
                           )}
                         </div>

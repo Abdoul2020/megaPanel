@@ -1,4 +1,3 @@
-
 type Props = {};
 
 export default function PromotionSection({}: Props) {
@@ -25,8 +24,8 @@ export default function PromotionSection({}: Props) {
                   className="w-[48px]"
                 />
               </div>
-              <h1 className="text-base text-center text-color-white text-opacity-80">
-                Uzman Seç
+              <h1 className="text-center text-base text-color-white text-opacity-80">
+                Uzman Ara
               </h1>
             </div>
             <div className="flex flex-col items-center justify-center gap-2">
@@ -37,7 +36,7 @@ export default function PromotionSection({}: Props) {
                   className="w-[48px]"
                 />
               </div>
-              <h1 className="text-base text-center text-color-white text-opacity-80">
+              <h1 className="text-center text-base text-color-white text-opacity-80">
                 Uzman Bul
               </h1>
             </div>
@@ -49,8 +48,8 @@ export default function PromotionSection({}: Props) {
                   className="w-[48px]"
                 />
               </div>
-              <h1 className="text-base text-center text-color-white text-opacity-80">
-                Yüz yüze Randevu
+              <h1 className="text-center text-base text-color-white text-opacity-80">
+                Randevu Al
               </h1>
             </div>
             <div className="flex flex-col items-center justify-center gap-2">
@@ -61,8 +60,8 @@ export default function PromotionSection({}: Props) {
                   className="w-[48px]"
                 />
               </div>
-              <h1 className="text-base text-center text-color-white text-opacity-80">
-                Online Görüşme
+              <h1 className="text-center text-base text-color-white text-opacity-80">
+                Görüşmeye Başla
               </h1>
             </div>
           </div>

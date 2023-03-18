@@ -11,7 +11,7 @@ export default function HeaderPatientMobile({}: Props) {
   const dispatch = useDispatch();
   const pathname = useAppSelector((state) => state.options.pathname);
   return (
-    <div className="absolute top-0 z-10 flex h-[90px] w-full items-center justify-between px-10 lg:hidden">
+    <div className="absolute top-0 z-50 flex h-[90px] w-full items-center justify-between px-10 lg:hidden">
       <Link to="/">
         {pathname === "/" || pathname === "/experts" ? (
           <motion.img
@@ -44,11 +44,11 @@ export default function HeaderPatientMobile({}: Props) {
         )}
       </Link>
       <GiHamburgerMenu
-        className={`text-[48px] ${
+        className={`text-[32px] ${
           pathname === "/" || pathname === "/experts"
-            ? "text-color-white-secondary"
+            ? "text-color-white"
             : "text-color-main"
-        } opacity-50 hover:cursor-pointer`}
+        } opacity-70 hover:cursor-pointer`}
         onClick={() => {
           dispatch(updateHeaderMobilePatient(true));
         }}

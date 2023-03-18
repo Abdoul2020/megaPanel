@@ -83,19 +83,22 @@ export default function DoctorCard(props: Props) {
             )}
           </div>
           <div className="flex flex-col items-start justify-start">
-            <div className="flex items-center justify-center gap-2">
-              <Link to={`/doctors/${props.expert._id}`}>
-                <h1 className="text-center text-lg font-bold text-color-dark-primary transition-all duration-300 hover:cursor-pointer hover:text-color-main">
+            <Link to={`/doctors/${props.expert._id}`}>
+              <div className="flex flex-wrap items-start justify-start gap-y-0">
+                <h1 className="text-center text-base sm:text-lg font-bold text-color-dark-primary transition-all duration-300 hover:cursor-pointer hover:text-color-main">
                   {`${JSON.stringify(props.expert.expert_title)
                     .split(",")[1]
                     .replace('"title_title"', "")
                     .replace(":", "")
-                    .replaceAll('"', "")} ${props.expert.expert_name}`}
+                    .replaceAll('"', "")}`}
                 </h1>
-              </Link>
-            </div>
+                <h1 className="text-center text-base sm:text-lg font-bold text-color-dark-primary transition-all duration-300 hover:cursor-pointer hover:text-color-main">
+                  {props.expert.expert_name}
+                </h1>
+              </div>
+            </Link>
 
-            <ul className="flex max-w-[400px] flex-wrap items-start justify-start gap-4 gap-y-0">
+            <ul className="flex max-w-full flex-wrap items-start justify-start gap-2 gap-y-0">
               {props.expert.expert_branch.map((branch) => {
                 return (
                   <h1
@@ -203,7 +206,7 @@ export default function DoctorCard(props: Props) {
       </div>
       <div className="relative flex h-full w-full items-center justify-center">
         <div
-          className="h-full max-h-[420px] w-full overflow-y-scroll px-12 py-6 
+          className="h-full max-h-[420px] w-full overflow-y-scroll px-6 py-6 
         scrollbar-thin scrollbar-track-color-white scrollbar-thumb-color-main"
         >
           {online ? (
