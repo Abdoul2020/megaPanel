@@ -4,7 +4,7 @@ import { Navigate } from "react-router-dom";
 import { useAppDispatch } from "../app/hooks";
 import { Alert } from "../common/types/Alert";
 import { updateAlert } from "../features/options/optionsSlice";
-import { isAuthExpert } from "./authExpertHelper";
+import { getCookie, isAuthExpert } from "./authExpertHelper";
 
 type Props = {
   redirect_url: string;

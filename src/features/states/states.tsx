@@ -4536,7 +4536,7 @@ export const states = [
   },
   {
     id: "913",
-    name: "Turkish controlled area",
+    name: "KKTC",
     country_id: "56",
   },
   {

@@ -293,7 +293,7 @@ export default function BannerSection() {
                   ) : (
                     <div
                       className="relative flex h-full w-[100px] items-center justify-center rounded-l-[15px] bg-color-main px-1 outline-none"
-                      ref={wrapperRef}
+                      ref={wrapperRefResponsive}
                     >
                       <div
                         className="flex w-full cursor-pointer items-center justify-center gap-2"
@@ -349,7 +349,7 @@ export default function BannerSection() {
                   ) : (
                     <div
                       className="relative flex h-full w-[100px] items-center justify-center rounded-r-[15px] bg-color-main px-1 outline-none"
-                      ref={wrapperRefCity}
+                      ref={wrapperRefCityResponsive}
                     >
                       <div
                         className="flex w-full cursor-pointer items-center justify-center gap-2"
