@@ -22,12 +22,10 @@ export const fetchCertificates = async (expertID?: string) => {
   return response;
 };
 
-export const fetchCertificatePdf = async (id: string, token: string) => {
+export const fetchCertificatePdf = async (id?: string) => {
   const response = await axios({
     method: "get",
     url: `${BASE_URL}/certificates/${id}/download`,
-    headers: { Authorization: `Bearer ${token}` },
-    responseType: "arraybuffer",
   })
     .then((response: any) => {
       return { success: true, data: response };

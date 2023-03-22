@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { AiFillCloseCircle } from "react-icons/ai";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAppDispatch } from "../../../../../app/hooks";
 import { Alert } from "../../../../../common/types/Alert";
 import { Certificate } from "../../../../../common/types/Certificate.entity";
@@ -24,66 +24,10 @@ type Props = {
 export default function DashboardCertificateExpert(props: Props) {
   const navigate = useNavigate();
 
-  const [certificatePdf, setCertificatePdf] = useState();
-  const [certificatePdfLoader, setCertificatePdfLoader] = useState(false);
   const [removeButtonDisable, setRemoveButtonDisable] = useState(false);
 
   const dispatch = useAppDispatch();
 
-  const handleOpenPdf = () => {
-    let blob = new Blob([certificatePdf || ""], {
-        type: "application/pdf",
-      }),
-      url = window.URL.createObjectURL(blob);
-    window.open(url);
-  };
-
-  useEffect(() => {
-    const tokenExpert = getCookie("m_e_t");
-    async function fetchData() {
-      setCertificatePdfLoader(true);
-      const authExpertDownloadCertificatePdfResponse =
-        await fetchCertificatePdf(props.certificate._id, tokenExpert);
-      setCertificatePdfLoader(true);
-      const authExpertCertificatePdfSuccess =
-        authExpertDownloadCertificatePdfResponse.success;
-
-      if (authExpertCertificatePdfSuccess) {
-        const base64 = authExpertDownloadCertificatePdfResponse.data.data;
-        setCertificatePdf(base64);
-      } else {
-        if (
-          authExpertDownloadCertificatePdfResponse.data.response.data.message &&
-          authExpertDownloadCertificatePdfResponse.data.response.data
-            .message === "error:TokenExpiredError: jwt expired"
-        ) {
-          const alert: Alert = {
-            type: "warning",
-            text: "Oturum zaman aşımına uğradı",
-            active: true,
-            statusCode:
-              authExpertDownloadCertificatePdfResponse.data.statusCode,
-          };
-          dispatch(updateAlert(alert));
-          dispatch(addAuthExpertObject(undefined));
-          unauthenticateExpert(navigate("/experts/login"));
-        } else {
-          const alert: Alert = {
-            type: "danger",
-            text: authExpertDownloadCertificatePdfResponse.data.response.data
-              .message,
-            active: true,
-            statusCode:
-              authExpertDownloadCertificatePdfResponse.data.statusCode,
-          };
-          dispatch(updateAlert(alert));
-        }
-      }
-    }
-    if (props.certificate && props.certificate.certificate_file_path !== "") {
-      fetchData();
-    }
-  }, []);
   const handleRemoveCertificate = () => {
     async function fetchData() {
       const tokenExpert = getCookie("m_e_t");
@@ -148,12 +92,13 @@ export default function DashboardCertificateExpert(props: Props) {
    } rounded-[15px]`}
     >
       <div className="absolute top-[90%] left-[90%] h-[30px] w-[30px] rounded-full bg-color-white p-1 transition-all duration-300 ease-in-out hover:scale-150">
-        <img
-          src={require("../../../../../assets/images/PDF_file_icon.svg.png")}
-          className="h-full w-full hover:cursor-pointer"
-          alt=""
-          onClick={handleOpenPdf}
-        />
+        <Link to={`/experts/dashboard/certificates/${props.certificate._id}`}>
+          <img
+            src={require("../../../../../assets/images/PDF_file_icon.svg.png")}
+            className="h-full w-full hover:cursor-pointer"
+            alt=""
+          />
+        </Link>
       </div>
       <div className="relative flex w-full items-start justify-start gap-10">
         <div className="flex flex-col items-start justify-start gap-6">

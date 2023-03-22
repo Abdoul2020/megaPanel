@@ -8,6 +8,7 @@ import AlertHeaderWarning from "../../Common/AlertHeaderWarning/AlertHeaderWarni
 import DashboardAppointmentsChartExpert from "./DashboardAppointmentsChartExpert/DashboardAppointmentsChartExpert";
 import DashboardAppointmentsExpert from "./DashboardAppointmentsExpert/DashboardAppointmentsExpert";
 import DashboardAppointmentsMeExpert from "./DashboardAppointmentsMeExpert/DashboardAppointmentsMeExpert";
+import DashboardCertificateDetailExpert from "./DashboardCertificateDetailExpert/DashboardCertificateDetailExpert";
 import DashboardCertificatesExpert from "./DashboardCertificatesExpert/DashboardCertificatesExpert";
 import DashboardHeaderExpert from "./DashboardHeaderExpert/DashboardHeaderExpert";
 import DashboardHeaderExpertMobile from "./DashboardHeaderExpertMobile/DashboardHeaderExpertMobile";
@@ -67,6 +68,10 @@ export default function DashboardExpert({}: Props) {
           <Route
             path="/certificates"
             element={<DashboardCertificatesExpert />}
+          />
+          <Route
+            path="/certificates/:id"
+            element={<DashboardCertificateDetailExpert />}
           />
           <Route path="/settings/*" element={<DashboardSettingsExpert />} />
           <Route path="*" element={<DashboardNotFoundPageExpert />} />
