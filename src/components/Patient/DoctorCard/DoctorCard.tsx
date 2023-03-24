@@ -84,16 +84,17 @@ export default function DoctorCard(props: Props) {
           </div>
           <div className="flex flex-col items-start justify-start">
             <Link to={`/doctors/${props.expert._id}`}>
-              <div className="flex flex-wrap items-start justify-start gap-y-0">
-                <h1 className="text-center text-base sm:text-lg font-bold text-color-dark-primary transition-all duration-300 hover:cursor-pointer hover:text-color-main">
-                  {`${JSON.stringify(props.expert.expert_title)
-                    .split(",")[1]
-                    .replace('"title_title"', "")
-                    .replace(":", "")
-                    .replaceAll('"', "")}`}
+              <div className="flex flex-wrap items-start justify-start gap-1 gap-y-0">
+                <h1 className="text-center text-base font-bold text-color-dark-primary transition-all duration-300 hover:cursor-pointer hover:text-color-main sm:text-lg">
+                  {props.expert.expert_title !== undefined
+                    ? props.expert.expert_title.title_title
+                    : ""}
                 </h1>
-                <h1 className="text-center text-base sm:text-lg font-bold text-color-dark-primary transition-all duration-300 hover:cursor-pointer hover:text-color-main">
+                <h1 className="text-center text-base font-bold text-color-dark-primary transition-all duration-300 hover:cursor-pointer hover:text-color-main sm:text-lg">
                   {props.expert.expert_name}
+                </h1>
+                <h1 className="text-center text-base font-bold text-color-dark-primary transition-all duration-300 hover:cursor-pointer hover:text-color-main sm:text-lg">
+                  {props.expert.expert_surname}
                 </h1>
               </div>
             </Link>
