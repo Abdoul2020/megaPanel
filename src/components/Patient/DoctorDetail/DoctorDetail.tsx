@@ -115,7 +115,7 @@ export default function DoctorDetail({}: Props) {
     <div className="flex w-full flex-col items-center justify-center bg-color-white-fourth">
       <div className="flex w-full flex-col items-center justify-start bg-color-white-secondary">
         <div className="flex min-h-[50vh] w-full items-end justify-center bg-doctor-color-main bg-opacity-50 pt-[90px]">
-          <div className="flex h-full w-2/3 items-start justify-start py-10">
+          <div className="flex h-full w-full flex-col items-start justify-start py-0 lg:py-5 px-10 xl:w-2/3 xl:px-0">
             <div className="flex items-start justify-start gap-5">
               <div className="h-[150px] w-[150px] overflow-hidden rounded-[20px]">
                 {profileImageBase64 ? (
@@ -133,8 +133,8 @@ export default function DoctorDetail({}: Props) {
                 )}
               </div>
               <div className="flex-col items-start justify-start gap-6">
-                <div className="flex items-center justify-center gap-4">
-                  <div className="flex items-center justify-center gap-1">
+                <div className="flex flex-wrap items-start justify-start gap-4 gap-y-0">
+                  <div className="flex flex-wrap items-start justify-start gap-1 gap-y-0">
                     <h1 className="text-lg font-bold text-color-dark-primary">
                       {expert?.expert_title !== undefined
                         ? expert?.expert_title.title_title
@@ -216,9 +216,17 @@ export default function DoctorDetail({}: Props) {
                 </div>
               </div>
             </div>
+            <div className="w-full py-5 lg:hidden block">
+              <button
+                className="w-full rounded-[10px] bg-color-main py-2"
+                onClick={() => setAppointmentBoxOpen(true)}
+              >
+                <h1 className="tracking-wide text-color-white">Randevu al</h1>
+              </button>
+            </div>
           </div>
         </div>
-        <div className="grid min-h-[100vh] w-2/3 grid-cols-5 gap-10 py-10">
+        <div className="flex min-h-[100vh] w-full grid-cols-5 gap-10 px-10 py-10 lg:grid xl:w-2/3 xl:px-0">
           <div className="col-span-3 flex w-full flex-col items-start justify-start gap-10">
             <div className="flex w-full flex-col items-start justify-start gap-4">
               <h1 className="text-lg font-bold text-color-main">Özgeçmiş</h1>
@@ -389,7 +397,7 @@ export default function DoctorDetail({}: Props) {
               </div>
             </div> */}
           </div>
-          <div className="sticky top-0 bottom-10 col-span-2 flex h-[650px] w-full flex-col items-start justify-start gap-4">
+          <div className="sticky top-0 bottom-10 col-span-2 hidden h-[650px] w-full flex-col items-start justify-start gap-4 lg:flex">
             <h1 className="text-lg font-bold text-color-main opacity-0">
               Empty
             </h1>
@@ -398,18 +406,18 @@ export default function DoctorDetail({}: Props) {
                 <div className="w-full rounded-[30px] bg-color-third p-2">
                   <div className="relative grid grid-cols-2 py-2">
                     <div
-                      className="flex cursor-pointer items-center justify-center sm:py-3 sm:px-6 lg:px-12"
+                      className="flex cursor-pointer items-center justify-center py-4"
                       onClick={() => setOnline(true)}
                     >
-                      <h1 className="z-50 text-xs font-bold text-color-white sm:text-sm">
+                      <h1 className="z-50 text-xs font-bold text-color-white">
                         Online Görüşme
                       </h1>
                     </div>
                     <div
-                      className="flex cursor-pointer items-center justify-center sm:py-3 sm:px-6 lg:px-12"
+                      className="flex cursor-pointer items-center justify-center py-4"
                       onClick={() => setOnline(false)}
                     >
-                      <h1 className="z-50 text-xs font-bold text-color-white sm:text-sm">
+                      <h1 className="z-50 text-xs font-bold text-color-white">
                         Yüz Yüze Görüşme
                       </h1>
                     </div>

@@ -129,6 +129,73 @@ export default function SearchPage(props: Props) {
     fetchData();
   }, []);
 
+  useEffect(() => {
+    async function fetchData() {
+      setCitySelectOpen(false);
+      setInputSelectOpen(false);
+      setCountrySelectOpen(false);
+      const paramOnline = searchParams.get("online") || "false";
+      const paramCity = searchParams.get("city") || "";
+      const paramBranch = searchParams.get("branch") || "";
+      const paramQueryText = searchParams.get("query_text") || "";
+      const paramPage = searchParams.get("page") || 1;
+      const paramSize = searchParams.get("size") || 5;
+      const paramSort = searchParams.get("sort") || "ASC";
+      const paramSortBy = searchParams.get("sortBy") || "expert_name";
+
+      setSearchParams({
+        online: `${paramOnline}`,
+        city: `${paramCity}`,
+        query_text: `${queryText}`,
+        branch: `${paramBranch}`,
+        page: `${paramPage}`,
+        size: `${paramSize}`,
+        sort: `${paramSort}`,
+        sort_by: `${paramSortBy}`,
+      });
+
+      setElementsLoading(true);
+      const fetchExpertsResponse = await fetchExperts({
+        ...query,
+        query_text: queryText,
+        city: online ? "" : city,
+      });
+      const fetchExpertsCountResponse = await fetchExpertsCount({
+        ...query,
+        query_text: queryText,
+        city: online ? "" : city,
+      });
+      setElementsLoading(false);
+
+      const successTotals = fetchExpertsCountResponse.success;
+      const sucessExperts = fetchExpertsResponse.success;
+
+      if (successTotals) {
+        const statusCodeTotals = fetchExpertsCountResponse.data.status;
+        const data = fetchExpertsCountResponse.data.data;
+        setCount(data);
+        setPageCount(Math.ceil(data / size) === 0 ? 1 : Math.ceil(data / size));
+      } else {
+        // console.log(fetchExpertsCountResponse);
+      }
+
+      if (sucessExperts) {
+        const statusCodeExperts = fetchExpertsResponse.data.status;
+        const data = fetchExpertsResponse.data.data;
+        dispatch(addExperts(data));
+      } else {
+        // console.log({ fetchExpertsResponse });
+      }
+    }
+    if (
+      searchParams.get("branch") !== "" &&
+      searchParams.get("branch") !== undefined
+    ) {
+      setQueryText(searchParams.get("branch") || "");
+      fetchData();
+    }
+  }, [searchParams.get("branch")]);
+
   const handleToggleButton = () => {
     async function fetchData() {
       const paramOnline = searchParams.get("online") || "false";
