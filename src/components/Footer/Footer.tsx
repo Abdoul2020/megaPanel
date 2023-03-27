@@ -173,9 +173,9 @@ export default function Footer({}: Props) {
                 </li>
                 <li className="flex items-center justify-center gap-2">
                   <AiFillMail className="text-color-main" />
-                  <a href="mailto:coach.megaverse@gmail.com">
+                  <a href="mailto:info@megaverse.coach">
                     <h1 className="text-base text-color-dark-primary opacity-50">
-                      coach.megaverse@gmail.com
+                    info@megaverse.coach
                     </h1>
                   </a>
                 </li>

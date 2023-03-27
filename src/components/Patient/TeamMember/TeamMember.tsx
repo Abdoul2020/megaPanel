@@ -191,18 +191,18 @@ export default function TeamMember(props: Props) {
           alt=""
           className="w-2/3"
         />
-        <div className="absolute top-[75%] z-20 h-3/4 w-auto overflow-hidden rounded-[20px]">
+        <div className="absolute top-[75%] z-20 h-[75px] w-auto overflow-hidden rounded-[20px]">
           {profileImageBase64 ? (
             <img
               src={`data:image/jpeg;base64,${profileImageBase64}`}
               alt=""
-              className="h-full w-full rounded-[20px] transition-all duration-300 hover:scale-110"
+              className="h-[75px] w-[75px] rounded-[20px] transition-all duration-300 hover:scale-110"
             />
           ) : (
             <img
               src={require("../../../assets/images/doc_pp.jpg")}
               alt=""
-              className="h-full w-full rounded-[20px]"
+              className="h-[75px] w-[75px] rounded-[20px]"
             />
           )}
         </div>
