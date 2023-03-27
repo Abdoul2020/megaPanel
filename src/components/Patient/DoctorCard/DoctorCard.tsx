@@ -67,18 +67,18 @@ export default function DoctorCard(props: Props) {
       border-solid border-color-dark-primary border-opacity-10 p-6"
       >
         <div className="flex w-full items-start justify-start gap-4">
-          <div className="h-[100px] w-[100px] overflow-hidden rounded-[20px]">
+          <div className="h-[100px] min-w-[100px] overflow-hidden rounded-[20px]">
             {profileImageBase64 ? (
               <img
                 src={`data:image/jpeg;base64,${profileImageBase64}`}
                 alt=""
-                className="h-full w-full rounded-[20px] transition-all duration-300 hover:scale-110"
+                className="h-[100px] w-[100px] rounded-[20px] transition-all duration-300 hover:scale-110"
               />
             ) : (
               <img
                 src={require("../../../assets/images/doc_pp.jpg")}
                 alt=""
-                className="h-full w-full rounded-[20px]"
+                className="h-[100px] w-[100px] rounded-[20px]"
               />
             )}
           </div>

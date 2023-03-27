@@ -4,7 +4,7 @@ import { BranchFilterDto } from "../../common/filters/BranchFilter.dto";
 
 const generalQuery = {
   page: 1,
-  size: 50,
+  size: 500,
   sort: "ASC",
   sort_by: "branch_title",
   query_text: "",

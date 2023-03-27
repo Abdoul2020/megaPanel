@@ -96,11 +96,13 @@ export default function SearchPage(props: Props) {
       setElementsLoading(true);
       const fetchExpertsResponse = await fetchExperts({
         ...query,
+        query_text: paramQueryText || "",
         branch: branch,
         city: online ? "" : city,
       });
       const fetchExpertsCountResponse = await fetchExpertsCount({
         ...query,
+        query_text: paramQueryText || "",
         branch: branch,
         city: online ? "" : city,
       });
@@ -128,6 +130,28 @@ export default function SearchPage(props: Props) {
     }
     fetchData();
   }, []);
+
+  const CleanCity = () => {
+    setCity("");
+    const paramOnline = searchParams.get("online") || "false";
+    const paramCity = searchParams.get("city") || "";
+    const paramBranch = searchParams.get("branch") || "";
+    const paramQueryText = searchParams.get("query_text") || "";
+    const paramPage = searchParams.get("page") || 1;
+    const paramSize = searchParams.get("size") || 5;
+    const paramSort = searchParams.get("sort") || "ASC";
+    const paramSortBy = searchParams.get("sortBy") || "expert_name";
+    setSearchParams({
+      online: `${paramOnline}`,
+      city: "",
+      query_text: `${paramQueryText}`,
+      branch: `${paramBranch}`,
+      page: `${paramPage}`,
+      size: `${paramSize}`,
+      sort: `${paramSort}`,
+      sort_by: `${paramSortBy}`,
+    });
+  };
 
   useEffect(() => {
     async function fetchData() {
@@ -687,7 +711,7 @@ export default function SearchPage(props: Props) {
                 {city !== "" && city !== undefined ? (
                   <div
                     className="relative flex h-full w-[100px] cursor-pointer items-center justify-center rounded-r-[15px] bg-color-main px-1 outline-none transition-all duration-300 ease-out hover:opacity-80"
-                    onClick={() => setCity("")}
+                    onClick={() => CleanCity()}
                   >
                     <div className="flex w-full items-center justify-center">
                       <h1 className="text-truncate w-[70px] text-center text-base text-color-white">
@@ -741,7 +765,98 @@ export default function SearchPage(props: Props) {
               <div></div>
             )}
           </div>
-          <div className="flex w-full items-center justify-center lg:w-2/3">
+          <div className="relative z-50 flex w-full items-center justify-center lg:w-2/3">
+            {inputSelectOpen ? (
+              <motion.div
+                initial={{ opacity: 0, y: -50 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{
+                  ease: "backInOut",
+                  duration: 0.5,
+                  reapat: 1,
+                }}
+                className="absolute top-[125%] left-0 z-50 w-full rounded-[15px] bg-color-white p-4 shadow-sm"
+                ref={wrapperRefInput}
+              >
+                <div className="flex max-h-[300px] w-full flex-col items-start justify-start gap-4 overflow-y-scroll scrollbar-thin scrollbar-track-color-white-secondary scrollbar-thumb-color-secondary scrollbar-track-rounded-lg scrollbar-thumb-rounded-full">
+                  <div className="flex w-full flex-col items-start justify-start gap-2">
+                    <div className="flex items-center justify-center gap-1">
+                      <h1 className="font-bold text-color-dark-primary text-opacity-50">
+                        Branşlar
+                      </h1>
+                      <div
+                        className={`${
+                          inputSelectLoading ? "inline-block" : "hidden"
+                        } animate-spin`}
+                      >
+                        <BiLoaderAlt className="text-[16px] text-color-dark-primary text-opacity-50" />
+                      </div>
+                    </div>
+                    <ul className="flex w-full flex-col items-start justify-start gap-1">
+                      {inputSelectBranches?.map((Branch) => {
+                        return (
+                          <li
+                            className="flex w-full cursor-pointer items-center justify-start gap-1 rounded-[10px] p-1 hover:bg-color-secondary hover:bg-opacity-10"
+                            onClick={() => {
+                              handleInputSelectSubmit(Branch.branch_title);
+                            }}
+                          >
+                            <h1 className="text-base font-bold text-color-dark-primary opacity-80">
+                              {Branch.branch_title}
+                            </h1>
+                          </li>
+                        );
+                      })}
+                    </ul>
+                  </div>
+                  <div className="flex w-full flex-col items-start justify-start gap-2">
+                    <div className="flex items-center justify-center gap-1">
+                      <h1 className="font-bold text-color-dark-primary text-opacity-50">
+                        Uzmanlar
+                      </h1>
+                      <div
+                        className={`${
+                          inputSelectLoading ? "inline-block" : "hidden"
+                        } animate-spin`}
+                      >
+                        <BiLoaderAlt className="text-[16px] text-color-dark-primary text-opacity-50" />
+                      </div>
+                    </div>
+                    <ul className="overflow-x-hidden flex w-full flex-col items-start justify-start gap-1">
+                      {inputSelectExperts?.map((Expert) => {
+                        return (
+                          <li
+                            className="flex w-full cursor-pointer flex-col items-start justify-start gap-2 gap-y-0 rounded-[10px] p-2 hover:bg-color-secondary hover:bg-opacity-10"
+                            onClick={() =>
+                              handleInputSelectSubmit(Expert.expert_name)
+                            }
+                          >
+                            <div className="flex items-center justify-center overflow-hidden text-ellipsis whitespace-nowrap">
+                              <div className="flex items-center justify-center gap-2">
+                                <h1 className="text-base font-bold text-color-dark-primary opacity-50">
+                                  {Expert.expert_title.title_title}
+                                </h1>
+                                <h1 className="text-base font-bold text-color-dark-primary opacity-80">
+                                  {Expert.expert_name}
+                                </h1>
+                                <h1 className="text-base font-bold text-color-dark-primary opacity-80">
+                                  {Expert.expert_surname}
+                                </h1>
+                              </div>
+                            </div>
+                            <h1 className="text-base font-bold text-color-dark-primary opacity-50">
+                              {Expert.expert_branch[0].branch_title}
+                            </h1>
+                          </li>
+                        );
+                      })}
+                    </ul>
+                  </div>
+                </div>
+              </motion.div>
+            ) : (
+              <div className="hidden"></div>
+            )}
             <form
               className="flex w-full items-center justify-between gap-2 rounded-[20px] bg-color-white"
               onSubmit={handleSubmit}
@@ -875,10 +990,7 @@ export default function SearchPage(props: Props) {
                   <div></div>
                 )}
               </div>
-              <div
-                className="relative flex w-full items-center justify-center"
-                ref={wrapperRefInput}
-              >
+              <div className="relative flex w-full items-center justify-center">
                 <input
                   ref={inputRef}
                   onChange={handleSearchValueChange}
@@ -888,7 +1000,7 @@ export default function SearchPage(props: Props) {
                   name="search"
                   id="search"
                   autoComplete="off"
-                  className="w-full bg-color-white py-2 pl-4 text-sm tracking-wide opacity-80 outline-none lg:text-base"
+                  className="w-full rounded-[15px] bg-color-white py-2 pl-4 text-sm tracking-wide opacity-80 outline-none lg:text-base"
                   placeholder="Uzman veya branş arayın..."
                 />
                 {queryText.length > 0 ? (
@@ -898,96 +1010,6 @@ export default function SearchPage(props: Props) {
                   >
                     <IoClose className="text-color-dark-primary text-opacity-50" />
                   </div>
-                ) : (
-                  <div></div>
-                )}
-                {inputSelectOpen ? (
-                  <motion.div
-                    initial={{ opacity: 0, y: -50 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{
-                      ease: "backInOut",
-                      duration: 0.5,
-                      reapat: 1,
-                    }}
-                    className="absolute top-[150%] left-0 z-50 w-full rounded-[15px] bg-color-white p-4 shadow-sm"
-                  >
-                    <div className="flex max-h-[300px] w-full flex-col items-start justify-start gap-4 overflow-y-scroll scrollbar-thin scrollbar-track-color-white-secondary scrollbar-thumb-color-secondary scrollbar-track-rounded-lg scrollbar-thumb-rounded-full">
-                      <div className="flex w-full flex-col items-start justify-start gap-2">
-                        <div className="flex items-center justify-center gap-1">
-                          <h1 className="font-bold text-color-dark-primary text-opacity-50">
-                            Branşlar
-                          </h1>
-                          <div
-                            className={`${
-                              inputSelectLoading ? "inline-block" : "hidden"
-                            } animate-spin`}
-                          >
-                            <BiLoaderAlt className="text-[16px] text-color-dark-primary text-opacity-50" />
-                          </div>
-                        </div>
-                        <ul className="flex w-full flex-col items-start justify-start gap-1">
-                          {inputSelectBranches?.map((Branch) => {
-                            return (
-                              <li
-                                className="flex w-full cursor-pointer items-center justify-start gap-1 rounded-[10px] p-1 hover:bg-color-secondary hover:bg-opacity-10"
-                                onClick={() =>
-                                  handleInputSelectSubmit(Branch.branch_title)
-                                }
-                              >
-                                <h1 className="text-lg font-bold text-color-dark-primary opacity-80">
-                                  {Branch.branch_title}
-                                </h1>
-                              </li>
-                            );
-                          })}
-                        </ul>
-                      </div>
-                      <div className="flex w-full flex-col items-start justify-start gap-2">
-                        <div className="flex items-center justify-center gap-1">
-                          <h1 className="font-bold text-color-dark-primary text-opacity-50">
-                            Uzmanlar
-                          </h1>
-                          <div
-                            className={`${
-                              inputSelectLoading ? "inline-block" : "hidden"
-                            } animate-spin`}
-                          >
-                            <BiLoaderAlt className="text-[16px] text-color-dark-primary text-opacity-50" />
-                          </div>
-                        </div>
-                        <ul className="flex w-full flex-col items-start justify-start gap-1">
-                          {inputSelectExperts?.map((Expert) => {
-                            return (
-                              <li
-                                className="flex w-full cursor-pointer items-end justify-start gap-2 rounded-[10px] p-1 hover:bg-color-secondary hover:bg-opacity-10"
-                                onClick={() =>
-                                  handleInputSelectSubmit(Expert.expert_name)
-                                }
-                              >
-                                <div className="flex items-center justify-center">
-                                  <div className="flex items-center justify-center gap-2">
-                                    <h1 className="text-lg font-bold text-color-dark-primary opacity-80">
-                                      {Expert.expert_title.title_title}
-                                    </h1>
-                                    <h1 className="text-lg font-bold text-color-dark-primary opacity-80">
-                                      {Expert.expert_name}
-                                    </h1>
-                                    <h1 className="text-lg font-bold text-color-dark-primary opacity-80">
-                                      {Expert.expert_surname}
-                                    </h1>
-                                  </div>
-                                </div>
-                                <h1 className="text-base font-bold text-color-dark-primary opacity-50">
-                                  {Expert.expert_branch[0].branch_title}
-                                </h1>
-                              </li>
-                            );
-                          })}
-                        </ul>
-                      </div>
-                    </div>
-                  </motion.div>
                 ) : (
                   <div></div>
                 )}
