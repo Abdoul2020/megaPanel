@@ -358,97 +358,97 @@ export default function BannerSection({}: Props) {
               className="relative flex w-full items-center justify-between gap-2 rounded-[20px] bg-color-white lg:w-2/3"
               onSubmit={handleSubmitSearch}
             >
-              {inputSelectOpen ? (
-                <motion.div
-                  initial={{ opacity: 0, y: -50 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{
-                    ease: "backInOut",
-                    duration: 0.5,
-                    reapat: 1,
-                  }}
-                  className="absolute top-[125%] left-0 z-[99] w-full rounded-[15px] bg-color-white p-4 shadow-sm"
-                  ref={wrapperRefInput}
-                >
-                  <div className="flex max-h-[300px] w-full flex-col items-start justify-start gap-4 overflow-y-scroll scrollbar-thin scrollbar-track-color-white-secondary scrollbar-thumb-color-secondary scrollbar-track-rounded-lg scrollbar-thumb-rounded-full">
-                    <div className="flex w-full flex-col items-start justify-start gap-2">
-                      <div className="flex items-center justify-center gap-1">
-                        <h1 className="font-bold text-color-dark-primary text-opacity-50">
-                          Branşlar
-                        </h1>
-                        <div
-                          className={`${
-                            inputSelectLoading ? "inline-block" : "hidden"
-                          } animate-spin`}
-                        >
-                          <BiLoaderAlt className="text-[16px] text-color-dark-primary text-opacity-50" />
-                        </div>
+             {inputSelectOpen ? (
+              <motion.div
+                initial={{ opacity: 0, y: -50 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{
+                  ease: "backInOut",
+                  duration: 0.5,
+                  reapat: 1,
+                }}
+                className="absolute top-[115%] left-0 z-50 w-full rounded-[15px] bg-color-white p-4 shadow-sm"
+                ref={wrapperRefInput}
+              >
+                <div className="flex max-h-[300px] w-full flex-col items-start justify-start gap-4 overflow-y-scroll scrollbar-thin scrollbar-track-color-white-secondary scrollbar-thumb-color-secondary scrollbar-track-rounded-lg scrollbar-thumb-rounded-full">
+                  <div className="flex w-full flex-col items-start justify-start gap-2">
+                    <div className="flex items-center justify-center gap-1">
+                      <h1 className="font-bold text-color-dark-primary text-opacity-50">
+                        Branşlar
+                      </h1>
+                      <div
+                        className={`${
+                          inputSelectLoading ? "inline-block" : "hidden"
+                        } animate-spin`}
+                      >
+                        <BiLoaderAlt className="text-[16px] text-color-dark-primary text-opacity-50" />
                       </div>
-                      <ul className="flex w-full flex-col items-start justify-start gap-1">
-                        {inputSelectBranches?.map((Branch) => {
-                          return (
-                            <li
-                              className="flex w-full cursor-pointer items-center justify-start gap-1 rounded-[10px] p-1 hover:bg-color-secondary hover:bg-opacity-10"
-                              onClick={() =>
-                                handleInputSelectSubmit(Branch.branch_title)
-                              }
-                            >
-                              <h1 className="text-lg font-bold text-color-dark-primary opacity-80">
-                                {Branch.branch_title}
-                              </h1>
-                            </li>
-                          );
-                        })}
-                      </ul>
                     </div>
-                    <div className="flex w-full flex-col items-start justify-start gap-2">
-                      <div className="flex items-center justify-center gap-1">
-                        <h1 className="font-bold text-color-dark-primary text-opacity-50">
-                          Uzmanlar
-                        </h1>
-                        <div
-                          className={`${
-                            inputSelectLoading ? "inline-block" : "hidden"
-                          } animate-spin`}
-                        >
-                          <BiLoaderAlt className="text-[16px] text-color-dark-primary text-opacity-50" />
-                        </div>
-                      </div>
-                      <ul className="flex w-full flex-col items-start justify-start gap-1">
-                        {inputSelectExperts?.map((Expert) => {
-                          return (
-                            <li
-                              className="flex w-full cursor-pointer items-end justify-start gap-2 rounded-[10px] p-1 hover:bg-color-secondary hover:bg-opacity-10"
-                              onClick={() =>
-                                handleInputSelectSubmit(Expert.expert_name)
-                              }
-                            >
-                              <div className="flex items-center justify-center">
-                                <div className="flex items-center justify-center gap-2">
-                                  <h1 className="text-lg font-bold text-color-dark-primary opacity-80">
-                                    {Expert.expert_title.title_title}
-                                  </h1>
-                                  <h1 className="text-lg font-bold text-color-dark-primary opacity-80">
-                                    {Expert.expert_name}
-                                  </h1>
-                                  <h1 className="text-lg font-bold text-color-dark-primary opacity-80">
-                                    {Expert.expert_surname}
-                                  </h1>
-                                </div>
-                              </div>
-                              <h1 className="text-base font-bold text-color-dark-primary opacity-50">
-                                {Expert.expert_branch[0].branch_title}
-                              </h1>
-                            </li>
-                          );
-                        })}
-                      </ul>
-                    </div>
+                    <ul className="flex w-full flex-col items-start justify-start gap-1">
+                      {inputSelectBranches?.map((Branch) => {
+                        return (
+                          <li
+                            className="flex w-full cursor-pointer items-center justify-start gap-1 rounded-[10px] p-1 hover:bg-color-secondary hover:bg-opacity-10"
+                            onClick={() => {
+                              handleInputSelectSubmit(Branch.branch_title);
+                            }}
+                          >
+                            <h1 className="text-base font-bold text-color-dark-primary opacity-80">
+                              {Branch.branch_title}
+                            </h1>
+                          </li>
+                        );
+                      })}
+                    </ul>
                   </div>
-                </motion.div>
-              ) : (
-                <div className="hidden"></div>
-              )}
+                  <div className="flex w-full flex-col items-start justify-start gap-2">
+                    <div className="flex items-center justify-center gap-1">
+                      <h1 className="font-bold text-color-dark-primary text-opacity-50">
+                        Uzmanlar
+                      </h1>
+                      <div
+                        className={`${
+                          inputSelectLoading ? "inline-block" : "hidden"
+                        } animate-spin`}
+                      >
+                        <BiLoaderAlt className="text-[16px] text-color-dark-primary text-opacity-50" />
+                      </div>
+                    </div>
+                    <ul className="overflow-x-hidden flex w-full flex-col items-start justify-start gap-1">
+                      {inputSelectExperts?.map((Expert) => {
+                        return (
+                          <li
+                            className="flex w-full cursor-pointer flex-col items-start justify-start gap-2 gap-y-0 rounded-[10px] p-2 hover:bg-color-secondary hover:bg-opacity-10"
+                            onClick={() =>
+                              handleInputSelectSubmit(Expert.expert_name)
+                            }
+                          >
+                            <div className="flex items-center justify-center overflow-hidden text-ellipsis whitespace-nowrap">
+                              <div className="flex items-center justify-center gap-2">
+                                <h1 className="text-base font-bold text-color-dark-primary opacity-50">
+                                  {Expert.expert_title.title_title}
+                                </h1>
+                                <h1 className="text-base font-bold text-color-dark-primary opacity-80">
+                                  {Expert.expert_name}
+                                </h1>
+                                <h1 className="text-base font-bold text-color-dark-primary opacity-80">
+                                  {Expert.expert_surname}
+                                </h1>
+                              </div>
+                            </div>
+                            <h1 className="text-base font-bold text-color-dark-primary opacity-50">
+                              {Expert.expert_branch[0].branch_title}
+                            </h1>
+                          </li>
+                        );
+                      })}
+                    </ul>
+                  </div>
+                </div>
+              </motion.div>
+            ) : (
+              <div className="hidden"></div>
+            )}
               <div className="hidden md:block">
                 {!online ? (
                   <motion.div
@@ -611,7 +611,7 @@ export default function BannerSection({}: Props) {
                 </button>
               </div>
             </form>
-            <div className="z-50 mt-1 flex w-full items-start justify-start md:hidden">
+            <div className="z-40 mt-1 flex w-full items-start justify-start md:hidden">
               {!online ? (
                 <motion.div
                   initial={{ opacity: 0, x: -50 }}
