@@ -21,7 +21,7 @@ export default function CTAResponsive({}: Props) {
               alt=""
               className="h-[180px]"
             />
-            <h1 className="-ml-[15%] font-bold text-color-dark-primary opacity-80">
+            <h1 className="-ml-[5%] md:-ml-[15%] font-bold text-color-dark-primary opacity-80">
               Bilgisayarda
             </h1>
           </li>
@@ -31,7 +31,7 @@ export default function CTAResponsive({}: Props) {
               alt=""
               className="h-[160px]"
             />
-            <h1 className="-ml-[15%] font-bold text-color-dark-primary opacity-80">
+            <h1 className="-ml-[5%] md:-ml-[15%] font-bold text-color-dark-primary opacity-80">
               Notebook'ta
             </h1>
           </li>
@@ -41,7 +41,7 @@ export default function CTAResponsive({}: Props) {
               alt=""
               className="h-[140px]"
             />
-            <h1 className="-ml-[15%] font-bold text-color-dark-primary opacity-80">
+            <h1 className="-ml-[5%] md:-ml-[15%] font-bold text-color-dark-primary opacity-80">
               Tablette
             </h1>
           </li>
@@ -51,7 +51,7 @@ export default function CTAResponsive({}: Props) {
               alt=""
               className="h-[120px]"
             />
-            <h1 className="-ml-[15%] font-bold text-color-dark-primary opacity-80">
+            <h1 className="-ml-[5%] md:-ml-[15%] font-bold text-color-dark-primary opacity-80">
               Telefonda
             </h1>
           </li>

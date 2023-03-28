@@ -14,14 +14,14 @@ export default function CTAResponsive({}: Props) {
             ulaşım sağlayabilirsiniz.
           </p>
         </div>
-        <ul className="relative z-10 grid w-full grid-cols-1 content-end items-end gap-y-10 py-20 md:grid-cols-2 2xl:grid-cols-4">
+        <ul className="relative z-10 grid w-full grid-cols-1 content-end items-end gap-y-0 py-20 md:grid-cols-2 lg:grid-cols-4">
           <li className="relative flex flex-col items-center justify-center gap-10">
             <img
               src={require("../../../assets/images/megaverse_expert_monitor.webp")}
               alt=""
-              className="h-[275px]"
+              className="h-[180px]"
             />
-            <h1 className="-ml-[15%] font-bold text-color-dark-primary opacity-80">
+            <h1 className="-ml-[5%] md:-ml-[15%] font-bold text-color-dark-primary opacity-80">
               Bilgisayarda
             </h1>
           </li>
@@ -29,9 +29,9 @@ export default function CTAResponsive({}: Props) {
             <img
               src={require("../../../assets/images/megaverse_expert_laptop.webp")}
               alt=""
-              className="h-[220px]"
+              className="h-[160px]"
             />
-            <h1 className="-ml-[15%] font-bold text-color-dark-primary opacity-80">
+            <h1 className="-ml-[5%] md:-ml-[15%] font-bold text-color-dark-primary opacity-80">
               Notebook'ta
             </h1>
           </li>
@@ -39,9 +39,9 @@ export default function CTAResponsive({}: Props) {
             <img
               src={require("../../../assets/images/megaverse_expert_tablet.webp")}
               alt=""
-              className="h-[190px]"
+              className="h-[140px]"
             />
-            <h1 className="-ml-[15%] font-bold text-color-dark-primary opacity-80">
+            <h1 className="-ml-[5%] md:-ml-[15%] font-bold text-color-dark-primary opacity-80">
               Tablette
             </h1>
           </li>
@@ -49,9 +49,9 @@ export default function CTAResponsive({}: Props) {
             <img
               src={require("../../../assets/images/megaverse_expert_phone.webp")}
               alt=""
-              className="h-[160px]"
+              className="h-[120px]"
             />
-            <h1 className="-ml-[15%] font-bold text-color-dark-primary opacity-80">
+            <h1 className="-ml-[5%] md:-ml-[15%] font-bold text-color-dark-primary opacity-80">
               Telefonda
             </h1>
           </li>
