@@ -179,8 +179,13 @@ export default function CalendarLocation(props: Props) {
   };
 
   const calSecond: any = (i: number) => {
-    const todayDate = new Date().getDate();
-    return i >= todayDate;
+    const today = new Date();
+    let theDate = new Date();
+    theDate.setDate(i);
+    theDate.setMonth(month);
+    theDate.setFullYear(year);
+
+    return theDate >= today && today.getDate() >= i;
   };
 
   const calHours: any = (week_date: string) => {

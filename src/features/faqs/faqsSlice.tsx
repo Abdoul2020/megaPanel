@@ -9,7 +9,7 @@ const initialState: initialState = {
     {
       question: "Megaverse nedir?",
       answer:
-        "Megaverse Uluslararası Kişisel Gelişim Portalı, BülentGardiyanoğlu'nun bireysel olarak geliştirdiği, 10 yıllık emeği barındıran bir çalışma yöntemidir. Danışan ve danışmanları bir araya getiren dünyanın ilk ve tek kişisel gelişim portalıdır.",
+        "Megaverse Uluslararası Kişisel Gelişim Portalı danışan ve danışmanları bir araya getiren, iyileşme yoluna adım atan herkesi kucaklayan, dünyayı daha güzel bir yer yapma misyonuna sahip bütün profesyonelleri bünyesine davet eden bir platformdur.",
     },
     {
       question:

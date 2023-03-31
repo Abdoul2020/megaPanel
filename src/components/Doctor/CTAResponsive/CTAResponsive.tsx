@@ -14,7 +14,7 @@ export default function CTAResponsive({}: Props) {
             ulaşım sağlayabilirsiniz.
           </p>
         </div>
-        <ul className="relative z-10 grid w-full grid-cols-1 content-end items-end gap-y-0 py-20 md:grid-cols-2 lg:grid-cols-4">
+        <ul className="relative z-10 grid w-full grid-cols-1 content-end items-end gap-y-0 py-20 pb-0 md:grid-cols-2 lg:grid-cols-4">
           <li className="relative flex flex-col items-center justify-center gap-10">
             <img
               src={require("../../../assets/images/megaverse_expert_monitor.webp")}

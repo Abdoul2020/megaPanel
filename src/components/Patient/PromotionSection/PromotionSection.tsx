@@ -12,7 +12,7 @@ export default function PromotionSection({}: Props) {
       <div className="absolute h-full w-full bg-color-main opacity-80"></div>
       <div className="relative flex w-full grid-cols-2 gap-10 py-20 px-10 lg:grid lg:py-0 xl:w-3/4 xl:px-0">
         <div className="z-0 hidden lg:inline-block">
-          <img src={require("../../../assets/images/people.webp")} alt="" />
+          <img src={require("../../../assets/images/people.webp")} alt="" className="w-full h-full"/>
         </div>
         <div className="z-0 flex min-h-full w-full items-center justify-center">
           <div className="grid grid-cols-2 items-center justify-around gap-10 md:grid-cols-4 lg:grid-cols-2">

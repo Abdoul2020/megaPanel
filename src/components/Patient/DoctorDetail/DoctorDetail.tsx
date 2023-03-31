@@ -495,14 +495,14 @@ export default function DoctorDetail({}: Props) {
              border-color-dark-primary border-opacity-10"
             >
               <div className="h-[75px] w-full rounded-[30px] bg-color-third p-2">
-                <div className="relative grid h-full grid-cols-2 p-2">
-                  <div className="flex h-full cursor-pointer items-center justify-center p-3">
-                    <h1 className="z-50 h-full text-sm font-bold text-color-white">
+                <div className="relative grid h-full grid-cols-2 content-center">
+                  <div className="flex h-full cursor-pointer items-center justify-center p-1">
+                    <h1 className="z-50 h-full text-xs font-bold text-color-white">
                       Online Görüşme
                     </h1>
                   </div>
-                  <div className="flex h-full cursor-pointer items-center justify-center py-3">
-                    <h1 className="z-50 h-full text-sm font-bold text-color-white">
+                  <div className="flex h-full cursor-pointer items-center justify-center p-1">
+                    <h1 className="z-50 h-full text-xs font-bold text-color-white">
                       Yüz Yüze Randevu
                     </h1>
                   </div>

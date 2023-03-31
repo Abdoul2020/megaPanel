@@ -371,7 +371,7 @@ export default function BannerSection() {
                 >
                   {country !== "" && country !== undefined ? (
                     <div
-                      className="relative flex h-full w-[100px] cursor-pointer items-center justify-center rounded-l-[15px] bg-color-main px-1 outline-none transition-all duration-300 ease-out hover:opacity-80"
+                      className="relative flex h-full w-[120px] cursor-pointer items-center justify-center rounded-l-[15px] bg-color-main px-1 outline-none transition-all duration-300 ease-out hover:opacity-80"
                       onClick={() => setCountry("")}
                     >
                       <div className="flex w-full items-center justify-center">
@@ -383,7 +383,7 @@ export default function BannerSection() {
                     </div>
                   ) : (
                     <div
-                      className="relative flex h-full w-[100px] items-center justify-center rounded-l-[15px] bg-color-main px-1 outline-none"
+                      className="relative flex h-full w-[120px] items-center justify-center rounded-l-[15px] bg-color-main px-1 outline-none"
                       ref={wrapperRefResponsive}
                     >
                       <div
@@ -427,7 +427,7 @@ export default function BannerSection() {
                   )}
                   {city !== "" && city !== undefined ? (
                     <div
-                      className="relative flex h-full w-[100px] cursor-pointer items-center justify-center rounded-r-[15px] bg-color-main px-1 outline-none transition-all duration-300 ease-out hover:opacity-80"
+                      className="relative flex h-full w-[120px] cursor-pointer items-center justify-center rounded-r-[15px] bg-color-main px-1 outline-none transition-all duration-300 ease-out hover:opacity-80"
                       onClick={() => setCity("")}
                     >
                       <div className="flex w-full items-center justify-center">
@@ -439,7 +439,7 @@ export default function BannerSection() {
                     </div>
                   ) : (
                     <div
-                      className="relative flex h-full w-[100px] items-center justify-center rounded-r-[15px] bg-color-main px-1 outline-none"
+                      className="relative flex h-full w-[120px] items-center justify-center rounded-r-[15px] bg-color-main px-1 outline-none"
                       ref={wrapperRefCityResponsive}
                     >
                       <div
@@ -536,7 +536,7 @@ export default function BannerSection() {
               >
                 {country !== "" && country !== undefined ? (
                   <div
-                    className="relative flex h-full w-[100px] cursor-pointer items-center justify-center rounded-l-[15px] bg-color-main px-1 outline-none transition-all duration-300 ease-out hover:opacity-80"
+                    className="relative flex h-full w-[120px] cursor-pointer items-center justify-center rounded-l-[15px] bg-color-main px-1 outline-none transition-all duration-300 ease-out hover:opacity-80"
                     onClick={() => setCountry("")}
                   >
                     <div className="flex w-full items-center justify-center">
@@ -548,7 +548,7 @@ export default function BannerSection() {
                   </div>
                 ) : (
                   <div
-                    className="relative flex h-full w-[100px] items-center justify-center rounded-l-[15px] bg-color-main px-1 outline-none"
+                    className="relative flex h-full w-[120px] items-center justify-center rounded-l-[15px] bg-color-main px-1 outline-none"
                     ref={wrapperRef}
                   >
                     <div
@@ -592,7 +592,7 @@ export default function BannerSection() {
                 )}
                 {city !== "" && city !== undefined ? (
                   <div
-                    className="relative flex h-full w-[100px] cursor-pointer items-center justify-center rounded-r-[15px] bg-color-main px-1 outline-none transition-all duration-300 ease-out hover:opacity-80"
+                    className="relative flex h-full w-[120px] cursor-pointer items-center justify-center rounded-r-[15px] bg-color-main px-1 outline-none transition-all duration-300 ease-out hover:opacity-80"
                     onClick={() => setCity("")}
                   >
                     <div className="flex w-full items-center justify-center">
@@ -604,7 +604,7 @@ export default function BannerSection() {
                   </div>
                 ) : (
                   <div
-                    className="relative flex h-full w-[100px] items-center justify-center rounded-r-[15px] bg-color-main px-1 outline-none"
+                    className="relative flex h-full w-[120px] items-center justify-center rounded-r-[15px] bg-color-main px-1 outline-none"
                     ref={wrapperRefCity}
                   >
                     <div
