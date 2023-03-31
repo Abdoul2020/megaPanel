@@ -5,7 +5,7 @@ type Props = {};
 
 export default function CTASecondSection({}: Props) {
   return (
-    <div className="flex w-full items-center justify-center bg-color-white-secondary py-20 pt-40 px-10 lg:px-0">
+    <div className="flex w-full items-center justify-center bg-color-white-secondary py-0 pt-40 px-10 lg:px-0">
       <div className="relative flex lg:grid w-full lg:w-2/3 grid-cols-2 rounded-[30px] bg-doctor-color-main px-10 py-20">
         <div></div>
         <div className="z-20 flex flex-col items-start justify-center gap-10">

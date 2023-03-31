@@ -28,10 +28,6 @@ export default function ResetPassword({}: Props) {
     }
   }, []);
 
-  useEffect(() => {
-    const resetPasswordToken = searchParams.get("resetpasswordtoken");
-  }, []);
-
   // Submit
   const handleSubmit = async (e: any) => {
     e.preventDefault();
