@@ -44,7 +44,7 @@ export default function SearchPage(props: Props) {
 
   const inputRef = useRef<HTMLInputElement | null>(null);
 
-  const [online, setOnline] = useState(false);
+  const [online, setOnline] = useState(true);
   const [city, setCity] = useState("");
   const [country, setCountry] = useState("Turkey");
   const [queryText, setQueryText] = useState("");

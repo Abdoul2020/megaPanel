@@ -50,8 +50,7 @@ export default function PatientPage(props: Props) {
           index
           element={<Home doctors={props.doctors} branches={props.branches} />}
         />
-        <Route path="/about" element={<AboutPage />} />
-        <Route path="/faq" element={<FaqPage />} />
+        <Route path="/about/*" element={<AboutPage />} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />

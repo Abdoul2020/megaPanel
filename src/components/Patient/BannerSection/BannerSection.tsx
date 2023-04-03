@@ -16,7 +16,7 @@ import { fetchExperts } from "../../../features/doctorSlice/doctorAPI";
 
 export default function BannerSection() {
   const [inputSelectOpen, setInputSelectOpen] = useState(false);
-  const [online, setOnline] = useState(false);
+  const [online, setOnline] = useState(true);
   const [queryText, setQueryText] = useState("");
   const [filteredStates, setFilteredStates] = useState<State[]>();
   const [city, setCity] = useState("");

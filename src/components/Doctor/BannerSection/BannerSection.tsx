@@ -39,7 +39,7 @@ export default function BannerSection({}: Props) {
   const [inputSelectExperts, setInputSelectExperts] = useState<Doctor[]>();
 
   const inputRef = useRef<HTMLInputElement | null>(null);
-  const [online, setOnline] = useState(false);
+  const [online, setOnline] = useState(true);
   const [queryText, setQueryText] = useState("");
   const [filteredStates, setFilteredStates] = useState<State[]>();
 
