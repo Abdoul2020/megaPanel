@@ -42,8 +42,6 @@ export default function DoctorPage(props: Props) {
       <HeaderExpert />
       <Routes>
         <Route index element={<Home />} />
-        <Route path="/about" element={<AboutPage />} />
-        <Route path="/faq" element={<FaqPage />} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
