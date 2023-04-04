@@ -12,7 +12,7 @@ export default function Footer({}: Props) {
         <img
           src={require("../../assets/images/megaverse_logo_3.png")}
           alt=""
-          className="bottom absolute bottom-0 left-0 h-2/3 w-auto opacity-5"
+          className="bottom absolute bottom-0 left-0 h-1/3 md:h-2/3 w-auto opacity-5"
         />
         <div className="flex grid-flow-col grid-cols-4 flex-col items-start justify-start gap-10 py-10 xl:grid xl:gap-20">
           <div className="col-span-2 flex flex-col items-start justify-center gap-6">
@@ -232,7 +232,7 @@ export default function Footer({}: Props) {
         </div>
         <div className="flex w-full items-center justify-between border-t-2 border-solid border-color-dark-primary border-opacity-10 py-10 opacity-50">
           <h1>
-            Megaverse Coach bir voipmax ltd şti iştirakidir COPYRIGHT Megaverse
+            Megaverse Coach bir Voipmax Production Ltd. iştirakidir @Copyright Megaverse
             Coach 2023
           </h1>
           <img
