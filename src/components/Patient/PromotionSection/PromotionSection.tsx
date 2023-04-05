@@ -17,7 +17,7 @@ export default function PromotionSection({}: Props) {
         <div className="z-0 flex min-h-full w-full items-center justify-center">
           <div className="grid grid-cols-2 items-center justify-around gap-10 md:grid-cols-4 lg:grid-cols-2">
             <div className="flex flex-col items-center justify-center gap-2">
-              <div className="rounded-[30px] bg-color-white-secondary p-8 shadow-lg">
+              <div className="rounded-[30px] bg-color-white-secondary p-7 shadow-lg">
                 <img
                   src={require("../../../assets/images/uzmansec.png")}
                   alt=""
@@ -29,7 +29,7 @@ export default function PromotionSection({}: Props) {
               </h1>
             </div>
             <div className="flex flex-col items-center justify-center gap-2">
-              <div className="rounded-[30px] bg-color-white-secondary p-8 shadow-lg">
+              <div className="rounded-[30px] bg-color-white-secondary p-7 shadow-lg">
                 <img
                   src={require("../../../assets/images/doktorbul.png")}
                   alt=""
@@ -41,7 +41,7 @@ export default function PromotionSection({}: Props) {
               </h1>
             </div>
             <div className="flex flex-col items-center justify-center gap-2">
-              <div className="rounded-[30px] bg-color-white-secondary p-8 shadow-lg">
+              <div className="rounded-[30px] bg-color-white-secondary p-7 shadow-lg">
                 <img
                   src={require("../../../assets/images/yuzyuzerandevu.png")}
                   alt=""
@@ -53,7 +53,7 @@ export default function PromotionSection({}: Props) {
               </h1>
             </div>
             <div className="flex flex-col items-center justify-center gap-2">
-              <div className="rounded-[30px] bg-color-white-secondary p-8 shadow-lg">
+              <div className="rounded-[30px] bg-color-white-secondary p-7 shadow-lg">
                 <img
                   src={require("../../../assets/images/onlinegorusme.png")}
                   alt=""

@@ -25,7 +25,7 @@ const initialState: initialState = {
     {
       question: "İhtiyaç halinde nasıl teknik destek alırım?",
       answer:
-        "Teknik destek ekibimiz Megaverse'ü kullandığınız süre boyunca sınırız ve ücretsiz destek ile yanınızdadır. destek@megaverse.com adresine e-posta göndererek, uygulamanın içinden (sağ üst köşedeki kullanıcı menüsü altında yer al “Destek Al” bölümünden) canlı mesajlaşma ile veya hafta içi 09.30 - 17.00 saatleri arası 0850 390 7262 no’lu telefonlardan bize ulaşabilirsiniz.",
+        "Teknik destek ekibimiz Megaverse'ü kullandığınız süre boyunca sınırız ve ücretsiz destek ile yanınızdadır. info@megaverse.com adresine e-posta göndererek, uygulamanın içinden (sağ üst köşedeki kullanıcı menüsü altında yer al “Destek Al” bölümünden) canlı mesajlaşma ile veya hafta içi 09.30 - 17.00 saatleri arası 0850 390 7262 no’lu telefonlardan bize ulaşabilirsiniz.",
     },
   ],
 };
