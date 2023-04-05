@@ -114,6 +114,7 @@ export default function Footer({}: Props) {
                 <img
                   src={require("../../assets/images/rana_kaplan_akademi.webp")}
                   alt=""
+                  className="h-[25px]"
                 />
               </a>
             </div>
