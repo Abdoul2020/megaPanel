@@ -110,6 +110,7 @@ export default function Footer({}: Props) {
               <a
                 href="https://ranakaplancompetenceacademy.com/"
                 target="_blank"
+                className="h-[25px]"
               >
                 <img
                   src={require("../../assets/images/rana_kaplan_akademi.webp")}
