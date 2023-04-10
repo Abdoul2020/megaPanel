@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import "react-credit-cards/es/styles-compiled.css";
 import {
-  AiFillCalendar, AiFillClockCircle,
-  AiOutlineFieldTime
+  AiFillCalendar,
+  AiFillClockCircle,
+  AiOutlineFieldTime,
 } from "react-icons/ai";
 import { BiLoaderAlt } from "react-icons/bi";
 import { BsArrowLeft, BsArrowRight } from "react-icons/bs";
@@ -21,10 +22,11 @@ import { addAuthObject } from "../../../features/auth/authSlice";
 import { authExpertGetProfile } from "../../../features/authExpert/authExpertAPI";
 import {
   fetchExpert,
-  fetchExpertProfilePicture
+  fetchExpertProfilePicture,
 } from "../../../features/doctorSlice/doctorAPI";
 import { updateAlert } from "../../../features/options/optionsSlice";
 import { getCookie, unauthenticate } from "../../../helpers/authHelper";
+import Cards from "react-credit-cards";
 
 type Props = {};
 
@@ -59,6 +61,8 @@ export default function Checkout({}: Props) {
 
   const [loader, setLoader] = useState(false);
   const [submitDisable, setSubmitDisable] = useState(false);
+
+  const [purchaseState, setPurchaseState] = useState(0);
 
   const months_string: any = [
     "January",
@@ -134,7 +138,7 @@ export default function Checkout({}: Props) {
           setClientExpert(getExpertProfileResponse.data.data);
         } else {
           // console.log({ getExpertProfileResponse });
-        } 
+        }
       }
 
       const fetchExpertSuccess = fetchExpertResponse.success;
@@ -341,13 +345,25 @@ export default function Checkout({}: Props) {
     setCardName(value);
   };
   const handleCardNumberChange = (e: any) => {
-    const value = e.target.value;
+    const value = e.target.value.replace(" ", "");
+    console.log(value);
     if (value.length <= 16) {
       setCardNumber(value);
     }
   };
+  const chunk = (e: any) => {
+    var ret = [];
+    var i;
+    var len;
+
+    for (i = 0, len = e.length; i < len; i += 4) {
+      ret.push(e.substr(i, 4));
+    }
+
+    return ret.join(" ");
+  };
   const handleCardLedChange = (e: any) => {
-    const value = e.target.value;
+    const value = e.target.value.replace(" / ", "");
     if (value.length <= 4) {
       setCardLed(value);
     }
@@ -358,7 +374,11 @@ export default function Checkout({}: Props) {
       setCardCVV(value);
     }
   };
-
+  const handlePurchaseState = (pState: any) => {
+    if (purchaseState > pState) {
+      setPurchaseState((value) => value - 1);
+    }
+  };
   return (
     <div className="flex w-full flex-col items-center justify-center bg-color-white-fourth">
       <div className="flex min-h-[100vh] w-full items-center justify-center bg-color-white-secondary pt-[90px]">
@@ -371,256 +391,357 @@ export default function Checkout({}: Props) {
               <BsArrowLeft className="text-xl text-color-main" />
               <h1 className="text-lg font-bold text-color-main">Geri Dön</h1>
             </div>
-            <div className="flex min-w-[400px] items-center justify-center">
-              {/* <div className="flex flex-col justify-center items-start col-span-3 w-full bg-color-white rounded-[25px] p-6">
-              <h1 className="text-color-dark-primary text-xl font-bold">
-                Kart Bilgisi
-              </h1>
-              <form
-                className="flex flex-col justify-center items-start w-full"
-                onSubmit={handleSubmit}
+            <div className="relative flex w-full items-center justify-between px-6 py-6 pb-10">
+              <div className="absolute left-0 z-10 flex h-full w-full items-center justify-start px-6">
+                <div
+                  className={`h-[8px] bg-color-secondary ${
+                    purchaseState === 0
+                      ? "w-0"
+                      : purchaseState === 1
+                      ? "w-1/2"
+                      : "w-full"
+                  } transition-all duration-500 ease-in`}
+                ></div>
+              </div>
+              <div className="absolute left-0 flex h-full w-full items-center justify-start px-6">
+                <div className="border-secondary-main h-[10px] w-full border-solid bg-color-white"></div>
+              </div>
+              <div
+                className="relative z-10 flex cursor-pointer flex-col items-center justify-center gap-2"
+                onClick={() => handlePurchaseState(0)}
               >
                 <div
-                  className="w-full grid grid-cols-2 gap-10 py-10 border-b-[1px]
-                   border-solid border-color-dark-primary border-opacity-10"
+                  className={`flex h-[40px] w-[40px] items-center justify-center rounded-full border-[2px] border-solid border-color-secondary ${
+                    purchaseState >= 0 ? "bg-color-secondary" : "bg-color-white"
+                  } transition-all duration-500 ease-in`}
                 >
-                  <div className="flex flex-col justify-between items-start gap-5 w-full">
-                    <div className="flex flex-col justify-center items-start gap-1 w-full">
-                      <label
-                        htmlFor="email"
-                        className="text-color-dark-primary text-sm opacity-50 font-bold"
-                      >
-                        Kart Üzerindeki İsim
-                      </label>
-                      <input
-                        onChange={handleCardNameChange}
-                        value={cardName}
-                        onFocus={(e: any) => setFocus(e.target.name)}
-                        type="text"
-                        name="name"
-                        id="name"
-                        placeholder="Kart Üzerindeki İsim"
-                        className="w-full transition-all duration-300 focus:border-color-main font-medium outline-none bg-color-white-third text-[16px]
-                py-[15px] px-[22px] border-[1px] border-color-dark-primary rounded-[20px] border-opacity-10"
-                      />
-                    </div>
-                    <div className="flex flex-col justify-between items-start gap-1 w-full">
-                      <label
-                        htmlFor="cardNumber"
-                        className="text-color-dark-primary text-sm opacity-50 font-bold"
-                      >
-                        Kart Numarası
-                      </label>
-                      <input
-                        onChange={handleCardNumberChange}
-                        value={cardNumber}
-                        onFocus={(e: any) => setFocus(e.target.name)}
-                        type="number"
-                        name="number"
-                        id="cardNumber"
-                        placeholder="Kart Numarası"
-                        className="w-full transition-all duration-300 focus:border-color-main font-medium outline-none bg-color-white-third text-[16px]
-                py-[15px] px-[22px] border-[1px] border-color-dark-primary rounded-[20px] border-opacity-10"
-                      />
-                    </div>
-                  </div>
-                  <div className="h-full w-full">
-                    <Cards
-                      placeholders={{ name: "İSİM SOYİSİM", expiry: "SKT" }}
-                      number={cardNumber}
-                      name={cardName}
-                      expiry={cardLed}
-                      cvc={cardCVV}
-                      focused={focus}
-                    />
-                  </div>
-                </div>
-                <div className="py-10 grid grid-cols-2 gap-10 w-full">
-                  <div className="flex flex-col justify-center items-start gap-1 w-full">
-                    <label
-                      htmlFor="led"
-                      className="text-color-dark-primary text-sm opacity-50 font-bold"
-                    >
-                      Son Kullanma Tarihi
-                    </label>
-                    <input
-                      onChange={handleCardLedChange}
-                      value={cardLed}
-                      onFocus={(e: any) => setFocus(e.target.name)}
-                      type="number"
-                      name="expiry"
-                      id="led"
-                      placeholder="Ay / Yıl"
-                      className="w-full transition-all duration-300 focus:border-color-main font-medium outline-none bg-color-white-third text-[16px]
-                py-[15px] px-[22px] border-[1px] border-color-dark-primary rounded-[20px] border-opacity-10"
-                    />
-                  </div>
-                  <div className="flex flex-col justify-between items-start gap-1 w-full">
-                    <label
-                      htmlFor="cardCVV"
-                      className="text-color-dark-primary text-sm opacity-50 font-bold"
-                    >
-                      CVV/CCV
-                    </label>
-                    <input
-                      onChange={handleCardCVVChange}
-                      value={cardCVV}
-                      onFocus={(e: any) => setFocus(e.target.name)}
-                      type="number"
-                      name="cvc"
-                      id="cardCVV"
-                      placeholder="CVV"
-                      className="w-full transition-all duration-300 focus:border-color-main font-medium outline-none bg-color-white-third text-[16px]
-                py-[15px] px-[22px] border-[1px] border-color-dark-primary rounded-[20px] border-opacity-10"
-                    />
-                  </div>
-                </div>
-              </form>
-            </div> */}
-              <div className="col-span-2 flex h-full w-full flex-col items-start justify-start gap-8 rounded-[25px] bg-color-white p-6">
-                <h1 className="text-xl font-bold text-color-dark-primary">
-                  Randevu Özeti
-                </h1>
-                <div className="flex w-full flex-col items-start justify-start">
-                  <div className="flex w-full items-start justify-start gap-4">
-                    <div className="h-[75px] w-[75px] overflow-hidden rounded-[15px]">
-                      {profileImageBase64 ? (
-                        <img
-                          src={`data:image/jpeg;base64,${profileImageBase64}`}
-                          alt=""
-                          className="h-full w-full rounded-[20px] transition-all duration-300 hover:scale-110"
-                        />
-                      ) : (
-                        <img
-                          src={require("../../../assets/images/doc_pp.jpg")}
-                          alt=""
-                          className="h-full w-full rounded-[20px]"
-                        />
-                      )}
-                    </div>
-                    <div className="flex flex-col items-start justify-start">
-                      <Link to={`/doctors/${expert?._id}`}>
-                        <h1 className="text-center text-lg font-bold text-color-dark-primary transition-all duration-300 hover:cursor-pointer hover:text-color-main">
-                          {`${expert?.expert_title.title_title} ${expert?.expert_name}`}
-                        </h1>
-                      </Link>
-                      <ul className="flex max-w-[400px] flex-wrap items-start justify-start gap-4 gap-y-0">
-                        {expert?.expert_branch.map((branch) => {
-                          return (
-                            <h1
-                              className="font-bold text-color-dark-primary opacity-50"
-                              key={branch._id}
-                            >
-                              {branch.branch_title}
-                            </h1>
-                          );
-                        })}
-                      </ul>
-                    </div>
-                  </div>
-                  <div
-                    className="grid-center grid w-full grid-cols-2 place-items-center gap-4 border-b-[1px] border-solid border-color-dark-primary
-             border-opacity-10 py-10"
+                  <h5
+                    className={`${
+                      purchaseState >= 0
+                        ? "text-color-white"
+                        : "text-color-secondary"
+                    } transition-all duration-500 ease-in`}
                   >
-                    <div className="flex w-full items-center justify-start">
-                      <div className="flex flex-col items-start justify-center gap-2">
-                        <div className="flex items-center justify-center gap-1">
-                          <AiFillCalendar className="text-[20px] text-color-main" />
-                          <h1 className="text-color-dark-primary">Tarih</h1>
-                        </div>
-                        {appointmentDate ? (
-                          <h1 className="text-color-dark-primary opacity-50">
-                            {`${appointmentDate?.getDate()} ${toMonthTr(
-                              months_string[appointmentDate?.getMonth()]
-                            )} ${appointmentDate?.getFullYear()}`}
-                          </h1>
+                    1
+                  </h5>
+                </div>
+                <h5 className="absolute top-full mt-1 whitespace-nowrap">
+                  Randevu Özeti
+                </h5>
+              </div>
+              <div
+                className="relative z-10 flex cursor-pointer flex-col items-center justify-center gap-2"
+                onClick={() => handlePurchaseState(0)}
+              >
+                <div
+                  className={`flex h-[40px] w-[40px] items-center justify-center rounded-full border-[2px] border-solid border-color-secondary ${
+                    purchaseState >= 1 ? "bg-color-secondary" : "bg-color-white"
+                  } transition-all duration-500 ease-in`}
+                >
+                  <h5
+                    className={`${
+                      purchaseState >= 1
+                        ? "text-color-white"
+                        : "text-color-secondary"
+                    } transition-all duration-500 ease-in`}
+                  >
+                    2
+                  </h5>
+                </div>
+                <h5 className="absolute top-full mt-1 whitespace-nowrap">
+                  Adres Bilgisi
+                </h5>
+              </div>
+              <div
+                className="relative z-10 flex cursor-pointer flex-col items-center justify-center gap-2"
+                onClick={() => handlePurchaseState(0)}
+              >
+                <div
+                  className={`flex h-[40px] w-[40px] items-center justify-center rounded-full border-[2px] border-solid border-color-secondary ${
+                    purchaseState >= 2 ? "bg-color-secondary" : "bg-color-white"
+                  } transition-all duration-500 ease-in`}
+                >
+                  <h5
+                    className={`${
+                      purchaseState >= 2
+                        ? "text-color-white"
+                        : "text-color-secondary"
+                    } transition-all duration-500 ease-in`}
+                  >
+                    3
+                  </h5>
+                </div>
+                <h5 className="absolute top-full mt-1 whitespace-nowrap">
+                  Ödeme Yöntemi
+                </h5>
+              </div>
+            </div>
+            <div className="flex min-w-[500px] items-center justify-center">
+              {purchaseState === 0 ? (
+                <div className="flex h-full w-[700px] flex-col items-start justify-start gap-8 rounded-[25px] bg-color-white p-6">
+                  <h1 className="text-xl font-bold text-color-dark-primary">
+                    Randevu Özeti
+                  </h1>
+                  <div className="flex w-full flex-col items-start justify-start">
+                    <div className="flex w-full items-start justify-start gap-4">
+                      <div className="h-[75px] w-[75px] overflow-hidden rounded-[15px]">
+                        {profileImageBase64 ? (
+                          <img
+                            src={`data:image/jpeg;base64,${profileImageBase64}`}
+                            alt=""
+                            className="h-full w-full rounded-[20px] transition-all duration-300 hover:scale-110"
+                          />
                         ) : (
-                          <div></div>
+                          <img
+                            src={require("../../../assets/images/doc_pp.jpg")}
+                            alt=""
+                            className="h-full w-full rounded-[20px]"
+                          />
                         )}
                       </div>
+                      <div className="flex flex-col items-start justify-start">
+                        <Link to={`/doctors/${expert?._id}`}>
+                          <h1 className="text-center text-lg font-bold text-color-dark-primary transition-all duration-300 hover:cursor-pointer hover:text-color-main">
+                            {`${expert?.expert_title.title_title} ${expert?.expert_name}`}
+                          </h1>
+                        </Link>
+                        <ul className="flex max-w-[400px] flex-wrap items-start justify-start gap-4 gap-y-0">
+                          {expert?.expert_branch.map((branch) => {
+                            return (
+                              <h1
+                                className="font-bold text-color-dark-primary opacity-50"
+                                key={branch._id}
+                              >
+                                {branch.branch_title}
+                              </h1>
+                            );
+                          })}
+                        </ul>
+                      </div>
                     </div>
-                    <div className="flex w-full items-center justify-start">
-                      <div className="flex flex-col items-start justify-center gap-2">
-                        <div className="flex items-center justify-center gap-1">
-                          <AiFillClockCircle className="text-[20px] text-color-main" />
-                          <h1 className="text-color-dark-primary">Saat</h1>
+                    <div
+                      className="grid-center grid w-full grid-cols-2 place-items-center gap-4 border-b-[1px] border-solid border-color-dark-primary
+           border-opacity-10 py-10"
+                    >
+                      <div className="flex w-full items-center justify-start">
+                        <div className="flex flex-col items-start justify-center gap-2">
+                          <div className="flex items-center justify-center gap-1">
+                            <AiFillCalendar className="text-[20px] text-color-main" />
+                            <h1 className="text-color-dark-primary">Tarih</h1>
+                          </div>
+                          {appointmentDate ? (
+                            <h1 className="text-color-dark-primary opacity-50">
+                              {`${appointmentDate?.getDate()} ${toMonthTr(
+                                months_string[appointmentDate?.getMonth()]
+                              )} ${appointmentDate?.getFullYear()}`}
+                            </h1>
+                          ) : (
+                            <div></div>
+                          )}
                         </div>
-                        {appointmentDate ? (
+                      </div>
+                      <div className="flex w-full items-center justify-start">
+                        <div className="flex flex-col items-start justify-center gap-2">
+                          <div className="flex items-center justify-center gap-1">
+                            <AiFillClockCircle className="text-[20px] text-color-main" />
+                            <h1 className="text-color-dark-primary">Saat</h1>
+                          </div>
+                          {appointmentDate ? (
+                            <h1 className="text-color-dark-primary opacity-50">
+                              {`${
+                                String(appointmentDate?.getHours()).length === 1
+                                  ? `0${appointmentDate?.getHours()}`
+                                  : String(appointmentDate?.getHours())
+                              }:${
+                                String(appointmentDate?.getMinutes()).length ===
+                                1
+                                  ? `0${appointmentDate?.getMinutes()}`
+                                  : String(appointmentDate?.getMinutes())
+                              }`}
+                            </h1>
+                          ) : (
+                            <div></div>
+                          )}
+                        </div>
+                      </div>
+                      <div className="flex w-full items-center justify-start">
+                        <div className="flex flex-col items-start justify-center gap-2">
+                          <div className="flex items-center justify-center gap-1">
+                            <MdPeopleAlt className="text-[20px] text-color-main" />
+                            <h1 className="text-color-dark-primary">
+                              Seans türü
+                            </h1>
+                          </div>
                           <h1 className="text-color-dark-primary opacity-50">
-                            {`${
-                              String(appointmentDate?.getHours()).length === 1
-                                ? `0${appointmentDate?.getHours()}`
-                                : String(appointmentDate?.getHours())
-                            }:${
-                              String(appointmentDate?.getMinutes()).length === 1
-                                ? `0${appointmentDate?.getMinutes()}`
-                                : String(appointmentDate?.getMinutes())
-                            }`}
-                          </h1>
-                        ) : (
-                          <div></div>
-                        )}
-                      </div>
-                    </div>
-                    <div className="flex w-full items-center justify-start">
-                      <div className="flex flex-col items-start justify-center gap-2">
-                        <div className="flex items-center justify-center gap-1">
-                          <MdPeopleAlt className="text-[20px] text-color-main" />
-                          <h1 className="text-color-dark-primary">
-                            Seans türü
+                            {online ? "Online" : "Yüz yüze"}
                           </h1>
                         </div>
-                        <h1 className="text-color-dark-primary opacity-50">
-                          {online ? "Online" : "Yüz yüze"}
-                        </h1>
                       </div>
-                    </div>
-                    <div className="flex w-full items-center justify-start">
-                      <div className="flex flex-col items-start justify-center gap-2">
-                        <div className="flex items-center justify-center gap-1">
-                          <AiOutlineFieldTime className="text-[20px] text-color-main" />
-                          <h1 className="text-color-dark-primary">
-                            Seans süresi
+                      <div className="flex w-full items-center justify-start">
+                        <div className="flex flex-col items-start justify-center gap-2">
+                          <div className="flex items-center justify-center gap-1">
+                            <AiOutlineFieldTime className="text-[20px] text-color-main" />
+                            <h1 className="text-color-dark-primary">
+                              Seans süresi
+                            </h1>
+                          </div>
+                          <h1 className="text-color-dark-primary opacity-50">
+                            {
+                              expert?.expert_appointment_schedule
+                                .appointment_duration
+                            }{" "}
+                            dk.
                           </h1>
                         </div>
-                        <h1 className="text-color-dark-primary opacity-50">
-                          {
-                            expert?.expert_appointment_schedule
-                              .appointment_duration
-                          }{" "}
-                          dk.
-                        </h1>
                       </div>
+                    </div>
+                    <div className="flex w-full items-center justify-between pt-5">
+                      <h1 className="text-lg font-bold text-color-dark-primary">
+                        Toplam Tutar
+                      </h1>
+                      <h1 className="text-3xl text-color-dark-primary">
+                        {expert?.expert_session_fee}
+                      </h1>
                     </div>
                   </div>
-                  {/* <div className="flex w-full items-center justify-between py-10">
-                    <h1 className="text-lg font-bold text-color-dark-primary">
-                      Toplam Tutar
-                    </h1>
-                    <h1 className="text-3xl text-color-dark-primary">
-                      {expert?.expert_session_fee}
-                    </h1>
-                  </div> */}
+                  <button
+                    onClick={() => setPurchaseState(1)}
+                    className="flex w-full items-center justify-center gap-2 rounded-[15px] bg-color-third
+         py-4 px-8 transition-all duration-300 hover:cursor-pointer hover:opacity-80"
+                  >
+                    {loader ? (
+                      <div className="animate-spin">
+                        <BiLoaderAlt className="text-[24px] text-color-white text-opacity-80" />
+                      </div>
+                    ) : (
+                      <div className="flex items-center justify-center gap-2">
+                        <h1 className="font-bold text-color-white-secondary">
+                          Ödemeye Geç
+                        </h1>
+                        <BsArrowRight className="text-[24px] text-color-white-secondary" />
+                      </div>
+                    )}
+                  </button>
                 </div>
-                <button
-                  onClick={handleSubmit}
-                  className="flex w-full items-center justify-center gap-2 rounded-[15px] bg-color-third
-           py-4 px-8 transition-all duration-300 hover:cursor-pointer hover:opacity-80"
-                >
-                  {loader ? (
-                    <div className="animate-spin">
-                      <BiLoaderAlt className="text-[24px] text-color-white text-opacity-80" />
+              ) : purchaseState === 1 ? (
+                <div className="flex w-[700px] flex-col items-start justify-center rounded-[25px] bg-color-white p-6">
+                  <h1 className="text-xl font-bold text-color-dark-primary">
+                    Kart Bilgisi
+                  </h1>
+                  <form
+                    className="flex w-full flex-col items-start justify-center"
+                    onSubmit={handleSubmit}
+                  >
+                    <div
+                      className="grid w-full grid-cols-2 gap-10 border-b-[1px] border-solid
+                   border-color-dark-primary border-opacity-10 py-10"
+                    >
+                      <div className="flex w-full flex-col items-start justify-between gap-5">
+                        <div className="flex w-full flex-col items-start justify-center gap-1">
+                          <label
+                            htmlFor="email"
+                            className="text-sm font-bold text-color-dark-primary opacity-50"
+                          >
+                            Kart Üzerindeki İsim
+                          </label>
+                          <input
+                            onChange={handleCardNameChange}
+                            value={cardName}
+                            onFocus={(e: any) => setFocus(e.target.name)}
+                            type="text"
+                            name="name"
+                            id="name"
+                            placeholder="Kart Üzerindeki İsim"
+                            className="w-full rounded-[20px] border-[1px] border-color-dark-primary border-opacity-10 bg-color-white-third py-[15px] px-[22px]
+                text-[16px] font-medium outline-none transition-all duration-300 focus:border-color-main"
+                          />
+                        </div>
+                        <div className="flex w-full flex-col items-start justify-between gap-1">
+                          <label
+                            htmlFor="cardNumber"
+                            className="text-sm font-bold text-color-dark-primary opacity-50"
+                          >
+                            Kart Numarası
+                          </label>
+                          <input
+                            onChange={handleCardNumberChange}
+                            value={
+                              cardNumber.length === 16
+                                ? chunk(cardNumber)
+                                : cardNumber
+                            }
+                            onFocus={(e: any) => setFocus(e.target.name)}
+                            type="text"
+                            name="number"
+                            id="cardNumber"
+                            placeholder="Kart Numarası"
+                            className="w-full rounded-[20px] border-[1px] border-color-dark-primary border-opacity-10 bg-color-white-third py-[15px] px-[22px]
+                text-[16px] font-medium outline-none transition-all duration-300 focus:border-color-main"
+                          />
+                        </div>
+                      </div>
+                      <div className="h-full w-full">
+                        <Cards
+                          placeholders={{ name: "İSİM SOYİSİM", expiry: "SKT" }}
+                          number={cardNumber}
+                          name={cardName}
+                          expiry={cardLed}
+                          cvc={cardCVV}
+                          focused={focus}
+                        />
+                      </div>
                     </div>
-                  ) : (
-                    <div className="flex items-center justify-center gap-2">
-                      <h1 className="font-bold text-color-white-secondary">
-                        Randevu Al
-                      </h1>
-                      <BsArrowRight className="text-[24px] text-color-white-secondary" />
+                    <div className="grid w-full grid-cols-2 gap-10 py-10">
+                      <div className="flex w-full flex-col items-start justify-center gap-1">
+                        <label
+                          htmlFor="led"
+                          className="text-sm font-bold text-color-dark-primary opacity-50"
+                        >
+                          Son Kullanma Tarihi
+                        </label>
+                        <input
+                          onChange={handleCardLedChange}
+                          value={
+                            cardLed.length === 4
+                              ? cardLed.slice(0, 2) +
+                                " / " +
+                                cardLed.slice(2, 4)
+                              : cardLed
+                          }
+                          onFocus={(e: any) => setFocus(e.target.name)}
+                          type="text"
+                          name="expiry"
+                          id="led"
+                          placeholder="Ay / Yıl"
+                          className="w-full rounded-[20px] border-[1px] border-color-dark-primary border-opacity-10 bg-color-white-third py-[15px] px-[22px]
+                text-[16px] font-medium outline-none transition-all duration-300 focus:border-color-main"
+                        />
+                      </div>
+                      <div className="flex w-full flex-col items-start justify-between gap-1">
+                        <label
+                          htmlFor="cardCVV"
+                          className="text-sm font-bold text-color-dark-primary opacity-50"
+                        >
+                          CVV/CCV
+                        </label>
+                        <input
+                          onChange={handleCardCVVChange}
+                          value={cardCVV}
+                          onFocus={(e: any) => setFocus(e.target.name)}
+                          type="number"
+                          name="cvc"
+                          id="cardCVV"
+                          placeholder="CVV"
+                          className="w-full rounded-[20px] border-[1px] border-color-dark-primary border-opacity-10 bg-color-white-third py-[15px] px-[22px]
+                text-[16px] font-medium outline-none transition-all duration-300 focus:border-color-main"
+                        />
+                      </div>
                     </div>
-                  )}
-                </button>
-              </div>
+                  </form>
+                </div>
+              ) : (
+                <div></div>
+              )}
             </div>
           </div>
         </div>
