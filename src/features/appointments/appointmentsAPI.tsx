@@ -49,6 +49,26 @@ export const fetchAppointments = async (query: AppointmentFilterDto) => {
   return resopnse;
 };
 
+export const fetchAppointment = async (id: string) => {
+  const resopnse = await axios({
+    method: "get",
+    url: `${BASE_URL}/appointments/${id}`,
+  })
+    .then((response) => {
+      return {
+        success: true,
+        data: response,
+      };
+    })
+    .catch((err) => {
+      return {
+        success: false,
+        data: err,
+      };
+    });
+  return resopnse;
+};
+
 export const acceptAppointment = async (token: string, id: string) => {
   const response = await axios({
     method: "get",
@@ -70,11 +90,16 @@ export const acceptAppointment = async (token: string, id: string) => {
   return response;
 };
 
-export const declineAppointment = async (token: string, id: string) => {
+export const declineAppointment = async (
+  token: string,
+  id: string,
+  body: any
+) => {
   const response = await axios({
-    method: "get",
+    method: "patch",
     url: `${BASE_URL}/appointments/${id}/decline`,
     headers: { Authorization: `Bearer ${token}` },
+    data: body,
   })
     .then((response) => {
       return {
@@ -91,11 +116,12 @@ export const declineAppointment = async (token: string, id: string) => {
   return response;
 };
 
-export const cancelAppointment = async (token: string, id: string) => {
+export const cancelAppointment = async (token: string, id: string,body:any) => {
   const response = await axios({
-    method: "get",
+    method: "patch",
     url: `${BASE_URL}/appointments/${id}/cancel`,
     headers: { Authorization: `Bearer ${token}` },
+    data:body
   })
     .then((response) => {
       return {

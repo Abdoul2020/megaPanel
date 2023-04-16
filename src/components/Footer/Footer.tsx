@@ -107,7 +107,7 @@ export default function Footer({}: Props) {
                   </ul>
                 </div>
               </div>
-              <a
+              {/* <a
                 href="https://ranakaplancompetenceacademy.com/"
                 target="_blank"
                 className="h-[25px]"
@@ -117,7 +117,7 @@ export default function Footer({}: Props) {
                   alt=""
                   className="h-[25px]"
                 />
-              </a>
+              </a> */}
             </div>
             {/* <div className="flex items-center justify-center gap-2">
               <div className="flex items-center justify-center gap-2 rounded-[15px] bg-color-main py-2 px-6">

@@ -65,7 +65,7 @@ export default function DashboardCertificatesExpert({}: Props) {
     async function fetchData() {
       const query: FirmFilterDto = {
         page: 1,
-        size: 5,
+        size: 50,
         sort: "ASC",
         sort_by: "branch_title",
         query_text: "",

@@ -5,7 +5,7 @@ import { Doctor } from "../../../../common/types/Doctor.entity";
 import { AppointmentSchedule } from "../../../../common/types/expert/AppointmentSchedule.entity";
 
 type Props = {
-  expert: Doctor | null;
+  expert?: Doctor | null;
 };
 
 export default function CalendarLocation(props: Props) {

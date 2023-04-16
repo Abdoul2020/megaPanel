@@ -1,17 +1,5 @@
 import { useEffect, useState } from "react";
-import {
-  AiFillCalendar,
-  AiFillCheckCircle,
-  AiFillClockCircle,
-  AiFillCloseCircle,
-  AiFillPhone,
-  AiOutlineFieldTime,
-  AiTwotoneMail,
-} from "react-icons/ai";
-import { BiLoaderAlt } from "react-icons/bi";
-import { BsFillClockFill } from "react-icons/bs";
-import { MdLocationPin, MdPeopleAlt } from "react-icons/md";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAppDispatch } from "../../../../../app/hooks";
 import { Alert } from "../../../../../common/types/Alert";
 import { Appointment } from "../../../../../common/types/Appointment.entity";
@@ -28,6 +16,11 @@ import { fetchExpertProfilePicture } from "../../../../../features/doctorSlice/d
 import { updateAlert } from "../../../../../features/options/optionsSlice";
 import { unauthenticateExpert } from "../../../../../helpers/authExpertHelper";
 import { getCookie } from "../../../../../helpers/authHelper";
+import { HiOutlineMail } from "react-icons/hi";
+import { BsCheck, BsX } from "react-icons/bs";
+import { BiDetail, BiLoaderAlt } from "react-icons/bi";
+import { Dialog } from "@mui/material";
+import { CgDetailsMore } from "react-icons/cg";
 
 type Props = {
   appointment: Appointment;
@@ -42,13 +35,37 @@ export default function DashboardAppointmentExpert(props: Props) {
   const [profileImageBase64, setProfileImageBase64] = useState(null);
   const [profileImageLoader, setProfileImageLoader] = useState(false);
 
+  const [justificationMessage, setJustificationMessage] = useState("");
+
+  const [
+    dialogDeclineJustificationAppointment,
+    setDialogDeclineJustificationAppointment,
+  ] = useState(false);
+
   const dispatch = useAppDispatch();
 
   useEffect(() => {
     setAppointmentDate(editDate(props.appointment.appointment_date || ""));
   }, []);
 
-  const handleAppointmentStatus = () => {
+  const handleSubmit = (e: any) => {
+    e.preventDefault();
+    if (justificationMessage === "") {
+      const alert: Alert = {
+        type: "danger",
+        text: "Bu alanı boş bırakamazsınız.",
+        active: true,
+        statusCode: 400,
+      };
+      dispatch(updateAlert(alert));
+    } else {
+      handleDeclineAppointment(props.appointment._id, justificationMessage);
+      setDialogDeclineJustificationAppointment(false);
+      setJustificationMessage("");
+    }
+  };
+
+  const handleAcceptAppointment = () => {
     async function fetchData() {
       const tokenExpert = getCookie("m_e_t");
       const id = props.appointment._id;
@@ -97,14 +114,22 @@ export default function DashboardAppointmentExpert(props: Props) {
         }
       }
     }
-    async function fetchDataDecline() {
+    fetchData();
+  };
+
+  const handleDeclineAppointment = (id: string, justification: string) => {
+    async function fetchData() {
       const tokenExpert = getCookie("m_e_t");
       const id = props.appointment._id;
+      const body = {
+        appointment_reject_justification: justification,
+      };
       setLoader(true);
       setSubmitDisable(true);
       const declineAppointmentResponse = await declineAppointment(
         tokenExpert,
-        id
+        id,
+        body
       );
       setLoader(false);
       setSubmitDisable(false);
@@ -145,15 +170,7 @@ export default function DashboardAppointmentExpert(props: Props) {
         }
       }
     }
-    if (!submitDisable) {
-      if (props.appointment.appointment_status === 0) {
-        fetchData();
-      } else if (props.appointment.appointment_status === 2) {
-        fetchData();
-      } else {
-        fetchDataDecline();
-      }
-    }
+    fetchData();
   };
 
   const editDate = (date: string) => {
@@ -266,307 +283,255 @@ export default function DashboardAppointmentExpert(props: Props) {
   }, []);
 
   return (
-    <div
-      className="flex h-[400px] w-full items-center justify-between
-    rounded-[15px] border-[1px] border-solid border-color-dark-primary border-opacity-10 
-    bg-opacity-10 shadow-lg md:h-[350px] lg:h-[300px] xl:h-[250px]"
-    >
-      <div className="h-full">
-        {props.appointment.appointment_status === 0 ? (
-          <div
-            className="flex h-full cursor-pointer flex-col
-           items-center justify-center rounded-l-[15px] bg-color-warning-primary px-4 transition-all duration-300 hover:opacity-80"
-            onClick={handleAppointmentStatus}
-          >
-            {loader ? (
-              <div className="animate-spin">
-                <BiLoaderAlt className="text-[24px] text-color-white text-opacity-80" />
+    <div className="relative flex w-full items-center justify-between overflow-hidden rounded-[10px] border-[1px] border-solid border-color-main">
+      <div className="p-5">
+        <div className="flex h-full items-start justify-start gap-5">
+          {props.appointment.appointment_client_client !== undefined ? (
+            <div className="items-star flex justify-start gap-5">
+              <div className="hidden h-[75px] w-[75px] overflow-hidden rounded-[15px] sm:block">
+                {profileImageBase64 ? (
+                  <img
+                    src={`data:image/jpeg;base64,${profileImageBase64}`}
+                    alt=""
+                    className="h-full w-full rounded-[20px] transition-all duration-300 hover:scale-110"
+                  />
+                ) : (
+                  <img
+                    src={require("../../../../../assets/images/doc_pp.jpg")}
+                    alt=""
+                    className="h-full w-full rounded-[20px]"
+                  />
+                )}
               </div>
-            ) : (
-              <BsFillClockFill className="text-[24px] text-color-white" />
-            )}
-          </div>
-        ) : props.appointment.appointment_status === 1 ? (
-          <div
-            className="flex h-full cursor-pointer flex-col
-           items-center justify-center rounded-l-[15px] bg-color-success-primary px-4 transition-all duration-300 hover:opacity-80"
-            onClick={handleAppointmentStatus}
-          >
-            {loader ? (
-              <div className="animate-spin">
-                <BiLoaderAlt className="text-[24px] text-color-white text-opacity-80" />
-              </div>
-            ) : (
-              <AiFillCheckCircle className="text-[24px] text-color-white" />
-            )}
-          </div>
-        ) : (
-          <div
-            className="flex h-full cursor-pointer flex-col items-center
-           justify-center rounded-l-[15px] bg-color-danger-primary px-4 transition-all duration-300 hover:opacity-80"
-            onClick={handleAppointmentStatus}
-          >
-            {loader ? (
-              <div className="animate-spin">
-                <BiLoaderAlt className="text-[24px] text-color-white text-opacity-80" />
-              </div>
-            ) : (
-              <AiFillCloseCircle className="text-[24px] text-color-white" />
-            )}
-          </div>
-        )}
-      </div>
-      <div className="flex h-full w-full grid-cols-6 flex-col items-start justify-start 2xl:grid">
-        <div className="col-span-2 flex h-full w-full items-center justify-center gap-10 self-center rounded-r-[15px] bg-color-white-secondary py-2 2xl:py-0">
-          {props.appointment.appointment_client_expert ? (
-            <div className="flex h-full flex-col items-start justify-start gap-2 py-4">
-              <h1 className="font-bold text-color-dark-primary opacity-50">
-                Danışan
-              </h1>
-              <div className="flex items-start justify-start gap-4">
-                <div className="h-[75px] w-[75px] overflow-hidden rounded-[15px]">
-                  {profileImageBase64 ? (
-                    <img
-                      src={`data:image/jpeg;base64,${profileImageBase64}`}
-                      alt=""
-                      className="h-full w-full rounded-[20px] transition-all duration-300 hover:scale-110"
-                    />
-                  ) : (
-                    <img
-                      src={require("../../../../../assets/images/doc_pp.jpg")}
-                      alt=""
-                      className="h-full w-full rounded-[20px]"
-                    />
-                  )}
-                </div>
-                <div className="flex flex-col items-start justify-start gap-2">
-                  <div
-                    className="group flex 
-            items-center justify-center gap-2 hover:cursor-pointer"
-                  >
-                    <h1
-                      className="text-center text-lg font-bold text-color-dark-primary transition-all
-               duration-300 group-hover:text-color-main"
-                    >
+              <div className="flex flex-col items-start justify-start">
+                <div className="flex flex-col items-start justify-start">
+                  <div className="flex items-center justify-center gap-1">
+                    <h5 className="text-sm">
+                      {props.appointment.appointment_client_client.client_name}
+                    </h5>
+                    <h5 className="text-sm">
                       {
-                        props.appointment.appointment_client_expert
-                          ?.expert_title.title_title
+                        props.appointment.appointment_client_client
+                          .client_surname
                       }
-                    </h1>
-                    <div className="flex items-center justify-center">
-                      <h1 className="text-center text-color-dark-primary opacity-80 transition-all duration-300 group-hover:text-color-main">
-                        {
-                          props.appointment.appointment_client_expert
-                            ?.expert_name
-                        }
-                      </h1>
-                      <h1 className="text-center text-color-dark-primary opacity-80 transition-all duration-300 group-hover:text-color-main">
-                        {
-                          props.appointment.appointment_client_expert
-                            ?.expert_surname
-                        }
-                      </h1>
-                    </div>
+                    </h5>
                   </div>
-                  <div className="flex flex-col items-start justify-start gap-1">
-                    <div className="flex items-center justify-center gap-1">
-                      <MdLocationPin className="text-color-main opacity-80" />
-                      <h1 className="text-color-dark-primary opacity-80">
-                        {
-                          props.appointment.appointment_client_expert
-                            ?.expert_physical_location
-                        }
-                      </h1>
-                    </div>
-                    <div className="flex items-center justify-center gap-1">
-                      <AiTwotoneMail className="text-color-main opacity-80" />
-                      <h1 className="text-color-dark-primary opacity-80">
-                        {
-                          props.appointment.appointment_client_expert
-                            ?.expert_email
-                        }
-                      </h1>
-                    </div>
-                    <div className="flex items-center justify-center gap-1">
-                      <AiFillPhone className="text-color-main opacity-80" />
-                      <h1 className="text-color-dark-primary opacity-80">
-                        {
-                          props.appointment.appointment_client_expert
-                            ?.expert_tel
-                        }
-                      </h1>
-                    </div>
-                  </div>
+                </div>
+                <div className="flex items-center justify-center gap-1 text-sm">
+                  <HiOutlineMail className="text-color-main opacity-80" />
+                  <a
+                    href={`mailto:${props.appointment.appointment_client_client?.client_email}`}
+                  >
+                    {props.appointment.appointment_client_client.client_email}
+                  </a>
                 </div>
               </div>
             </div>
           ) : (
-            <div className="flex h-full flex-col items-start justify-start gap-2 py-4">
-              <h1 className="font-bold text-color-dark-primary opacity-50">
-                Danışan
-              </h1>
-              <div className="flex items-start justify-start gap-4">
-                <div className="h-[75px] w-[75px] overflow-hidden rounded-[15px]">
-                  {profileImageBase64 ? (
-                    <img
-                      src={`data:image/jpeg;base64,${profileImageBase64}`}
-                      alt=""
-                      className="h-full w-full rounded-[20px] transition-all duration-300 hover:scale-110"
-                    />
-                  ) : (
-                    <img
-                      src={require("../../../../../assets/images/client_pp.jpg")}
-                      alt=""
-                      className="h-full w-full rounded-[20px]"
-                    />
-                  )}
-                </div>
-                <div className="flex flex-col items-start justify-start gap-2">
-                  <div
-                    className="group flex 
-          items-center justify-center gap-2 hover:cursor-pointer"
-                  >
-                    <div className="flex items-center justify-center">
-                      <h1 className="text-center text-color-dark-primary opacity-80 transition-all duration-300 group-hover:text-color-main">
+            <div className="flex items-start justify-start gap-5">
+              <div className="hidden h-[75px] w-[75px] overflow-hidden rounded-[15px] sm:block">
+                {profileImageBase64 ? (
+                  <img
+                    src={`data:image/jpeg;base64,${profileImageBase64}`}
+                    alt=""
+                    className="h-full w-full rounded-[20px] transition-all duration-300 hover:scale-110"
+                  />
+                ) : (
+                  <img
+                    src={require("../../../../../assets/images/doc_pp.jpg")}
+                    alt=""
+                    className="h-full w-full rounded-[20px]"
+                  />
+                )}
+              </div>
+              <div className="flex flex-col items-start justify-start">
+                <Link
+                  to={`/experts/${props.appointment.appointment_client_expert?._id}`}
+                >
+                  <div className="flex flex-col items-start justify-start">
+                    <h5 className="text-sm font-bold opacity-50">
+                      {props.appointment.appointment_client_expert
+                        ?.expert_title !== undefined
+                        ? props.appointment.appointment_client_expert
+                            .expert_title.title_title
+                        : ""}
+                    </h5>
+                    <div className="flex items-center justify-center gap-1">
+                      <h5 className="text-sm">
                         {
-                          props.appointment.appointment_client_client
-                            ?.client_name
+                          props.appointment.appointment_client_expert
+                            ?.expert_name
                         }
-                      </h1>
-                      <h1 className="text-center text-color-dark-primary opacity-80 transition-all duration-300 group-hover:text-color-main">
+                      </h5>
+                      <h5 className="text-sm">
                         {
-                          props.appointment.appointment_client_client
-                            ?.client_surname
+                          props.appointment.appointment_client_expert
+                            ?.expert_surname
                         }
-                      </h1>
+                      </h5>
                     </div>
                   </div>
-                  <div className="flex flex-col items-start justify-start gap-1">
-                    {/* <div className="flex justify-center items-center gap-1">
-                  <MdLocationPin className="text-color-main opacity-80" />
-                  <h1 className="text-color-dark-primary opacity-80">
-                    {
-                      props.appointment.appointment_client_expert
-                        ?.expert_physical_location
-                    }
-                  </h1>
-                </div> */}
-                    <a
-                      href={`mailto:${props.appointment.appointment_client_client?.client_email}`}
-                    >
-                      <div className="flex items-center justify-center gap-1">
-                        <AiTwotoneMail className="text-color-main opacity-80" />
-                        <h1 className="text-color-dark-primary opacity-80">
-                          {
-                            props.appointment.appointment_client_client
-                              ?.client_email
-                          }
-                        </h1>
-                      </div>
-                    </a>
-                    {/* <div className="flex justify-center items-center gap-1">
-                  <AiFillPhone className="text-color-main opacity-80" />
-                  <h1 className="text-color-dark-primary opacity-80">
-                    {props.appointment.appointment_client_client?.client_tel}
-                  </h1>
-                </div> */}
-                  </div>
+                </Link>
+                <div className="flex items-center justify-center gap-1 text-sm">
+                  <HiOutlineMail className="text-color-main opacity-80" />
+                  <a
+                    href={`mailto:${props.appointment.appointment_client_expert?.expert_email}`}
+                  >
+                    {props.appointment.appointment_client_expert?.expert_email}
+                  </a>
                 </div>
               </div>
             </div>
           )}
-        </div>
-        <div className="col-span-4 grid w-full grid-cols-3 place-items-center items-center justify-around gap-y-10 self-center py-10 md:flex">
-          {/* <div className="flex justify-start items-center">
-            <div className="flex flex-col justify-center items-start gap-2">
-              <div className="flex justify-center items-center gap-1">
-                <SiStatuspage className="text-color-main text-[20px]" />
-                <h1 className="text-color-dark-primary">Statüs</h1>
+
+          <div className="h-[75px] border-[1px] border-solid border-l-color-dark-primary opacity-50"></div>
+          <div className="flex h-[75px] items-start justify-start gap-5">
+            <div className="flex h-full flex-col items-start justify-between">
+              <div className="flex flex-col items-start justify-start">
+                <h5 className="text-sm">Randevu Durumu: </h5>
+                {props.appointment.appointment_status === 0 ? (
+                  <h5 className="text-sm font-bold text-color-warning-primary">
+                    Onay Bekliyor
+                  </h5>
+                ) : props.appointment.appointment_status === 1 ? (
+                  <h5 className="text-sm font-bold text-color-success-primary">
+                    Onaylandı
+                  </h5>
+                ) : (
+                  <h5 className="text-sm font-bold text-color-danger-primary">
+                    Onaylanmadı
+                  </h5>
+                )}
               </div>
               {props.appointment.appointment_status === 0 ? (
-                <div className="p-1 px-3 rounded-[15px] bg-color-warning-primary">
-                  <h1 className="font-bold text-color-white">
-                    Onay Bekleniyor
-                  </h1>
-                </div>
-              ) : props.appointment.appointment_status === 1 ? (
-                <div className="p-1 px-3 rounded-[15px] bg-color-success-primary">
-                  <h1 className="font-bold text-color-white">Onaylandı</h1>
+                <div className="z-50 flex items-center justify-center">
+                  <button
+                    className="flex h-full cursor-pointer items-center justify-center bg-color-success-primary p-1"
+                    disabled={submitDisable}
+                    onClick={() => handleAcceptAppointment()}
+                  >
+                    {loader ? (
+                      <div className="animate-spin">
+                        <BiLoaderAlt className="text-[18px] text-color-white text-opacity-80" />
+                      </div>
+                    ) : (
+                      <BsCheck className="text-[18px] text-color-white" />
+                    )}
+                  </button>
+                  <button
+                    className="flex h-full cursor-pointer items-center justify-center bg-color-danger-primary p-1"
+                    disabled={submitDisable}
+                    onClick={() =>
+                      setDialogDeclineJustificationAppointment(true)
+                    }
+                  >
+                    {loader ? (
+                      <div className="animate-spin">
+                        <BiLoaderAlt className="text-[18px] text-color-white text-opacity-80" />
+                      </div>
+                    ) : (
+                      <BsX className="text-[18px] text-color-white" />
+                    )}
+                  </button>
                 </div>
               ) : (
-                <div className="p-1 px-3 rounded-[15px] bg-color-danger-primary">
-                  <h1 className="font-bold text-color-white">Reddedildi</h1>
-                </div>
+                <div className="hidden"></div>
               )}
-            </div>
-          </div> */}
-          <div className="flex items-center justify-start">
-            <div className="flex flex-col items-start justify-center gap-2">
-              <div className="flex items-center justify-center gap-1">
-                <AiFillCalendar className="text-[20px] text-color-main" />
-                <h1 className="text-color-dark-primary">Tarih</h1>
-              </div>
-              {appointmentDate ? (
-                <h1 className="text-color-dark-primary opacity-50">
-                  {`${appointmentDate?.getDate()} ${toMonthTr(
-                    months_string[appointmentDate?.getMonth()]
-                  )} ${appointmentDate?.getFullYear()}`}
-                </h1>
-              ) : (
-                <div></div>
-              )}
-            </div>
-          </div>
-          <div className="flex items-center justify-start">
-            <div className="flex flex-col items-start justify-center gap-2">
-              <div className="flex items-center justify-center gap-1">
-                <AiFillClockCircle className="text-[20px] text-color-main" />
-                <h1 className="text-color-dark-primary">Saat</h1>
-              </div>
-              {appointmentDate ? (
-                <h1 className="text-color-dark-primary opacity-50">
-                  {`${
-                    String(appointmentDate?.getHours()).length === 1
-                      ? `0${appointmentDate?.getHours()}`
-                      : String(appointmentDate?.getHours())
-                  }:${
-                    String(appointmentDate?.getMinutes()).length === 1
-                      ? `0${appointmentDate?.getMinutes()}`
-                      : String(appointmentDate?.getMinutes())
-                  }`}
-                </h1>
-              ) : (
-                <div></div>
-              )}
-            </div>
-          </div>
-          <div className="flex items-center justify-start">
-            <div className="flex flex-col items-start justify-center gap-2">
-              <div className="flex items-center justify-center gap-1">
-                <MdPeopleAlt className="text-[20px] text-color-main" />
-                <h1 className="text-color-dark-primary">Seans türü</h1>
-              </div>
-              <h1 className="text-color-dark-primary opacity-50">
-                {props.appointment.appointment_type?.appointment_type_title ===
-                "online"
-                  ? "Online"
-                  : "Yüz yüze"}
-              </h1>
-            </div>
-          </div>
-          <div className="flex items-center justify-start">
-            <div className="flex flex-col items-start justify-center gap-2">
-              <div className="flex items-center justify-center gap-1">
-                <AiOutlineFieldTime className="text-[20px] text-color-main" />
-                <h1 className="text-color-dark-primary">Seans süresi</h1>
-              </div>
-              <h1 className="text-color-dark-primary opacity-50">
-                {props.appointment.appointment_time} dk.
-              </h1>
             </div>
           </div>
         </div>
       </div>
+      <Link
+        to={`/experts/dashboard/appointments/${props.appointment._id}`}
+        className="absolute top-0 right-0 bg-color-main p-2 opacity-80"
+      >
+        <h5 className="text-sm text-color-white">Detay</h5>
+      </Link>
+      <Dialog
+        open={dialogDeclineJustificationAppointment}
+        onClose={() => setDialogDeclineJustificationAppointment(false)}
+      >
+        <div className="item-start flex flex-col justify-start gap-4 rounded-[20px] p-10">
+          <h1 className="text-2xl text-color-dark-primary text-opacity-80">
+            Randevu İsteği Reddetme Gerekçesi
+          </h1>
+          <div className="items-star flex flex-col justify-start gap-1">
+            <h1 className="text-lg font-bold">Örnek Gerekçeler</h1>
+            <ul className="flex list-decimal flex-col items-start justify-start gap-2 pl-4">
+              <li
+                className="cursor-pointer rounded-[10px] bg-color-gray-primary p-1 px-3"
+                onClick={() =>
+                  setJustificationMessage(
+                    "Daha önce bu konuda çalışılmamış olması"
+                  )
+                }
+              >
+                <h5>Daha önce bu konuda çalışılmamış olması</h5>
+              </li>
+              <li
+                className="cursor-pointer rounded-[10px] bg-color-gray-primary p-1 px-3"
+                onClick={() =>
+                  setJustificationMessage(
+                    "Danışanın özellikle uzmanlık alanınız dışında olması"
+                  )
+                }
+              >
+                <h5>Danışanın özellikle uzmanlık alanınız dışında olması</h5>
+              </li>
+              <li
+                className="cursor-pointer rounded-[10px] bg-color-gray-primary p-1 px-3"
+                onClick={() =>
+                  setJustificationMessage(
+                    "Danışanın durumu için uygun olmamanız"
+                  )
+                }
+              >
+                <h5>Danışanın durumu için uygun olmamanız</h5>
+              </li>
+              <li
+                className="cursor-pointer rounded-[10px] bg-color-gray-primary p-1 px-3"
+                onClick={() =>
+                  setJustificationMessage(
+                    "Danışanın gereksiz bir ziyaret isteği olması"
+                  )
+                }
+              >
+                <h5>Danışanın gereksiz bir ziyaret isteği olması</h5>
+              </li>
+            </ul>
+          </div>
+          <form
+            onSubmit={handleSubmit}
+            className="flex flex-col items-start justify-start gap-4"
+          >
+            <textarea
+              value={justificationMessage}
+              onChange={(e: any) => setJustificationMessage(e.target.value)}
+              rows={4}
+              cols={50}
+              name="message"
+              id="message"
+              placeholder="Mesaj"
+              className="w-full rounded-lg border-[1px] border-color-dark-primary border-opacity-10 bg-color-white-third py-[15px] px-[22px]
+          text-[16px] font-medium outline-none transition-all duration-300 focus:border-color-main"
+            />
+            <button
+              disabled={submitDisable}
+              type="submit"
+              className="flex w-full items-center justify-center rounded-lg bg-color-danger-primary py-2 transition-all 
+      duration-300 hover:bg-color-danger-dark"
+            >
+              {loader ? (
+                <div className="animate-spin">
+                  <BiLoaderAlt className="text-[24px] text-color-white text-opacity-80" />
+                </div>
+              ) : (
+                <h1 className="text-lg text-color-white">Reddet</h1>
+              )}
+            </button>
+          </form>
+        </div>
+      </Dialog>
     </div>
   );
 }
