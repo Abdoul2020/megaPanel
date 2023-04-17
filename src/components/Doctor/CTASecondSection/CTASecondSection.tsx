@@ -36,9 +36,9 @@ export default function CTASecondSection({}: Props) {
         <div className="absolute grid h-full w-full grid-cols-2">
           <div className="lg:flex hidden relative items-center justify-center">
             <img
-              src={require("../../../assets/images/gorsel_3.webp")}
+              src={require("../../../assets/images/uzman.webp")}
               alt=""
-              className="absolute bottom-0 max-w-[80%]"
+              className="absolute bottom-0 max-w-[60%]"
             />
           </div>
           <div></div>
