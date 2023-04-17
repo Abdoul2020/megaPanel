@@ -12,7 +12,7 @@ export default function PromotionDoctor({}: Props) {
           <div className="flex flex-col items-start justify-center gap-4">
             <div className="flex flex-col items-start justify-center">
               <h1 className="text-3xl font-bold text-color-dark-primary">
-                Uzmanlar için Megaverse!
+                Uzmanlar için Megaverse2!
               </h1>
             </div>
             <p className="text-color-dark-primary">
@@ -37,9 +37,9 @@ export default function PromotionDoctor({}: Props) {
         <div className="absolute grid h-full w-full grid-cols-2">
           <div className="relative hidden items-center justify-center lg:flex">
             <img
-              src={require("../../../assets/images/gorsel_3.webp")}
+              src={require("../../../assets/images/uzman2.webp")}
               alt=""
-              className="absolute bottom-0 max-w-[80%]"
+              className="absolute bottom-0 max-w-[70%]"
             />
           </div>
           <div></div>

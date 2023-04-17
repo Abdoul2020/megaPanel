@@ -7,6 +7,15 @@ type Props = {};
 export default function AboutHeader({}: Props) {
   const [section, setSection] = useState(0);
   const location = useLocation();
+  useEffect(() => {
+    if (location.pathname.includes("clients")) {
+      setSection(1);
+    } else if (location.pathname.includes("experts")) {
+      setSection(2);
+    } else {
+      setSection(0);
+    }
+  }, [location]);
   return (
     <div className="sticky top-10 flex w-full flex-col items-start justify-start gap-4">
       <div className="flex w-full flex-col items-start justify-start gap-5 border-b-[1px] border-solid border-color-dark-primary border-opacity-10 pb-4">
@@ -98,7 +107,17 @@ export default function AboutHeader({}: Props) {
             section === 1 ? "flex" : "hidden"
           }`}
         >
-          <li className="text-color-dark-primary">Danışan Üyelik Sözleşmesi</li>
+          <Link to="/about/clients/membership-agreement">
+            <li
+              className={`${
+                location.pathname === "/about/clients/membership-agreement"
+                  ? "text-color-main"
+                  : "text-color-dark-primary"
+              }`}
+            >
+              Danışan Hizmet Sözleşmesi
+            </li>
+          </Link>
           <li className="text-color-dark-primary">Danışan Aydınlatma Metni</li>
         </ul>
       </div>
@@ -137,7 +156,7 @@ export default function AboutHeader({}: Props) {
                   : "text-color-dark-primary"
               }`}
             >
-              Uzman Üyelik Sözleşmesi
+              Uzman Hizmet Sözleşmesi
             </li>
           </Link>
           <li className="text-color-dark-primary">Uzman Aydınlatma Metni</li>
