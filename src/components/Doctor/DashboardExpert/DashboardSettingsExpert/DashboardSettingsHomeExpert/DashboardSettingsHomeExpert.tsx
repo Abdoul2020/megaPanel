@@ -239,7 +239,7 @@ export default function DashboardSettingsHomeExpert({}: Props) {
 
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
-      const theFile = e.target.files[0]; 
+      const theFile = e.target.files[0];
       if (theFile.type !== "image/jpeg") {
         const alert: Alert = {
           type: "danger",
@@ -691,8 +691,13 @@ export default function DashboardSettingsHomeExpert({}: Props) {
                     name="name"
                     id="name"
                     placeholder="Adını Gir"
-                    className="w-full rounded-[20px] border-[1px] border-color-dark-primary border-opacity-10 bg-color-white-third py-[15px] px-[22px]
-                text-[16px] font-medium outline-none transition-all duration-300 focus:border-color-main"
+                    className={`w-full rounded-[20px] border-[1px] ${
+                      authExpertObject?.expert_name !== undefined &&
+                      authExpertObject.expert_name !== ""
+                        ? "border-color-dark-primary border-opacity-10"
+                        : "border-color-danger-primary border-opacity-100"
+                    } bg-color-white-third py-[15px] px-[22px]
+                    text-[16px] font-medium outline-none transition-all duration-300 focus:border-color-main`}
                   />
                 </div>
                 <div className="flex w-full flex-col items-start justify-start gap-1">
@@ -709,8 +714,13 @@ export default function DashboardSettingsHomeExpert({}: Props) {
                     name="surname"
                     id="surname"
                     placeholder="Soyadını Gir"
-                    className="w-full rounded-[20px] border-[1px] border-color-dark-primary border-opacity-10 bg-color-white-third py-[15px] px-[22px]
-                text-[16px] font-medium outline-none transition-all duration-300 focus:border-color-main"
+                    className={`w-full rounded-[20px] border-[1px] ${
+                      authExpertObject?.expert_surname !== undefined &&
+                      authExpertObject.expert_surname !== ""
+                        ? "border-color-dark-primary border-opacity-10"
+                        : "border-color-danger-primary border-opacity-100"
+                    } bg-color-white-third py-[15px] px-[22px]
+                    text-[16px] font-medium outline-none transition-all duration-300 focus:border-color-main`}
                   />
                 </div>
                 <div className="flex w-full flex-col items-start justify-start gap-1">
@@ -727,8 +737,13 @@ export default function DashboardSettingsHomeExpert({}: Props) {
                     name="email"
                     id="email"
                     placeholder="E-posta"
-                    className="w-full rounded-[20px] border-[1px] border-color-dark-primary border-opacity-10 bg-color-white-third py-[15px] px-[22px]
-                text-[16px] font-medium outline-none transition-all duration-300 focus:border-color-main"
+                    className={`w-full rounded-[20px] border-[1px] ${
+                      authExpertObject?.expert_email !== undefined &&
+                      authExpertObject.expert_email !== ""
+                        ? "border-color-dark-primary border-opacity-10"
+                        : "border-color-danger-primary border-opacity-100"
+                    } bg-color-white-third py-[15px] px-[22px]
+                    text-[16px] font-medium outline-none transition-all duration-300 focus:border-color-main`}
                   />
                 </div>
                 <div className="flex w-full flex-col items-start justify-start gap-1">
@@ -795,8 +810,12 @@ export default function DashboardSettingsHomeExpert({}: Props) {
                   </label>
 
                   <div
-                    className="min-w-4 w-full rounded-[20px] border-[1px] border-solid border-color-dark-primary border-opacity-10 py-[15px]
-              px-[22px] transition-all duration-300 focus:border-color-main"
+                    className={`min-w-4 w-full rounded-[20px] border-[1px] border-solid ${
+                      authExpertObject?.expert_title !== undefined
+                        ? "border-color-dark-primary border-opacity-10"
+                        : "border-color-danger-primary border-opacity-100"
+                    } py-[15px]
+                    px-[22px] transition-all duration-300 focus:border-color-main`}
                   >
                     <select
                       name=""
@@ -829,8 +848,13 @@ export default function DashboardSettingsHomeExpert({}: Props) {
                     Seans Ücretiniz(*)
                   </label>
                   <div
-                    className="w-full rounded-[20px] border-[1px] border-color-dark-primary border-opacity-10 bg-color-white-third py-[15px] px-[22px]
-                text-[16px] font-medium outline-none transition-all duration-300 focus:border-color-main"
+                    className={`w-full rounded-[20px] border-[1px] ${
+                      authExpertObject?.expert_session_fee !== undefined &&
+                      authExpertObject.expert_session_fee !== ""
+                        ? "border-color-dark-primary border-opacity-10"
+                        : "border-color-danger-primary border-opacity-100"
+                    } bg-color-white-third py-[15px] px-[22px]
+                    text-[16px] font-medium outline-none transition-all duration-300 focus:border-color-main`}
                   >
                     <CurrencyFormat
                       thousandSeparator={true}
@@ -849,8 +873,12 @@ export default function DashboardSettingsHomeExpert({}: Props) {
                     Uzmanlık(*)
                   </label>
                   <div
-                    className="min-w-4 w-full rounded-[20px] border-[1px] border-solid border-color-dark-primary border-opacity-10 py-[15px]
-              px-[22px] transition-all duration-300 focus:border-color-main"
+                    className={`w-full rounded-[20px] border-[1px] ${
+                      authExpertObject?.expert_expertise !== undefined
+                        ? "border-color-dark-primary border-opacity-10"
+                        : "border-color-danger-primary border-opacity-100"
+                    } bg-color-white-third py-[15px] px-[22px]
+                  text-[16px] font-medium outline-none transition-all duration-300 focus:border-color-main`}
                   >
                     <select
                       name=""
@@ -920,8 +948,13 @@ export default function DashboardSettingsHomeExpert({}: Props) {
                     placeholder="Telefon Numarası"
                     value={tel}
                     onChange={handleTelChange}
-                    className="w-full rounded-[20px] border-[1px] border-color-dark-primary border-opacity-10 bg-color-white-third py-[15px] px-[22px]
-                  text-[16px] font-medium outline-none transition-all duration-300 focus:border-color-main"
+                    className={`w-full rounded-[20px] border-[1px] ${
+                      authExpertObject?.expert_tel !== undefined &&
+                      authExpertObject?.expert_tel !== ""
+                        ? "border-color-dark-primary border-opacity-10"
+                        : "border-color-danger-primary border-opacity-100"
+                    } bg-color-white-third py-[15px] px-[22px]
+                  text-[16px] font-medium outline-none transition-all duration-300 focus:border-color-main`}
                   />
                   {/* <input
                     onChange={handleTelChange}
@@ -942,8 +975,13 @@ export default function DashboardSettingsHomeExpert({}: Props) {
                     Ülke(*)
                   </label>
                   <div
-                    className="min-w-4 w-full rounded-[20px] border-[1px] border-solid border-color-dark-primary border-opacity-10 py-[15px]
-              px-[22px] transition-all duration-300 focus:border-color-main"
+                    className={`w-full rounded-[20px] border-[1px] ${
+                      authExpertObject?.expert_city !== undefined &&
+                      authExpertObject?.expert_city !== ""
+                        ? "border-color-dark-primary border-opacity-10"
+                        : "border-color-danger-primary border-opacity-100"
+                    } bg-color-white-third py-[15px] px-[22px]
+                  text-[16px] font-medium outline-none transition-all duration-300 focus:border-color-main`}
                   >
                     <select
                       name=""
@@ -976,8 +1014,13 @@ export default function DashboardSettingsHomeExpert({}: Props) {
                     Şehir(*)
                   </label>
                   <div
-                    className="min-w-4 w-full rounded-[20px] border-[1px] border-solid border-color-dark-primary border-opacity-10 py-[15px]
-              px-[22px] transition-all duration-300 focus:border-color-main"
+                    className={`w-full rounded-[20px] border-[1px] ${
+                      authExpertObject?.expert_city !== undefined &&
+                      authExpertObject?.expert_city !== ""
+                        ? "border-color-dark-primary border-opacity-10"
+                        : "border-color-danger-primary border-opacity-100"
+                    } bg-color-white-third py-[15px] px-[22px]
+                  text-[16px] font-medium outline-none transition-all duration-300 focus:border-color-main`}
                   >
                     <select
                       name=""
@@ -1173,8 +1216,13 @@ export default function DashboardSettingsHomeExpert({}: Props) {
                     name="postalCode"
                     id="postalCode"
                     placeholder="Posta Kodu"
-                    className="w-full rounded-[20px] border-[1px] border-color-dark-primary border-opacity-10 bg-color-white-third py-[15px] px-[22px]
-                text-[16px] font-medium outline-none transition-all duration-300 focus:border-color-main"
+                    className={`w-full rounded-[20px] border-[1px] ${
+                      authExpertObject?.expert_postal_code !== undefined &&
+                      authExpertObject?.expert_postal_code !== ""
+                        ? "border-color-dark-primary border-opacity-10"
+                        : "border-color-danger-primary border-opacity-100"
+                    } bg-color-white-third py-[15px] px-[22px]
+                  text-[16px] font-medium outline-none transition-all duration-300 focus:border-color-main`}
                   />
                 </div>
                 <div className="flex w-full flex-col items-start justify-center gap-1">
@@ -1192,8 +1240,14 @@ export default function DashboardSettingsHomeExpert({}: Props) {
                     name="physicalLocation"
                     id="physicalLocation"
                     placeholder="Fiziksel Lokasyon"
-                    className="w-full rounded-[20px] border-[1px] border-color-dark-primary border-opacity-10 bg-color-white-third py-[15px] px-[22px]
-                text-[16px] font-medium outline-none transition-all duration-300 focus:border-color-main"
+                    className={`w-full rounded-[20px] border-[1px] ${
+                      authExpertObject?.expert_physical_location !==
+                        undefined &&
+                      authExpertObject?.expert_physical_location !== ""
+                        ? "border-color-dark-primary border-opacity-10"
+                        : "border-color-danger-primary border-opacity-100"
+                    } bg-color-white-third py-[15px] px-[22px]
+                  text-[16px] font-medium outline-none transition-all duration-300 focus:border-color-main`}
                   />
                 </div>
                 <div className="flex w-full flex-col items-start justify-center gap-1">
@@ -1211,8 +1265,13 @@ export default function DashboardSettingsHomeExpert({}: Props) {
                     name="aboutMe"
                     id="aboutMe"
                     placeholder="Hakkımda"
-                    className="w-full rounded-[20px] border-[1px] border-color-dark-primary border-opacity-10 bg-color-white-third py-[15px] px-[22px]
-                text-[16px] font-medium outline-none transition-all duration-300 focus:border-color-main"
+                    className={`w-full rounded-[20px] border-[1px] ${
+                      authExpertObject?.expert_about_me !== undefined &&
+                      authExpertObject?.expert_about_me !== ""
+                        ? "border-color-dark-primary border-opacity-10"
+                        : "border-color-danger-primary border-opacity-100"
+                    } bg-color-white-third py-[15px] px-[22px]
+                  text-[16px] font-medium outline-none transition-all duration-300 focus:border-color-main`}
                   />
                 </div>
                 <div className="flex w-full flex-col items-start justify-center gap-1">
@@ -1230,8 +1289,14 @@ export default function DashboardSettingsHomeExpert({}: Props) {
                     name="extraInformation"
                     id="extraInformation"
                     placeholder="Ekstra Bilgi"
-                    className="w-full rounded-[20px] border-[1px] border-color-dark-primary border-opacity-10 bg-color-white-third py-[15px] px-[22px]
-                text-[16px] font-medium outline-none transition-all duration-300 focus:border-color-main"
+                    className={`w-full rounded-[20px] border-[1px] ${
+                      authExpertObject?.expert_additional_information !==
+                        undefined &&
+                      authExpertObject?.expert_additional_information !== ""
+                        ? "border-color-dark-primary border-opacity-10"
+                        : "border-color-danger-primary border-opacity-100"
+                    } bg-color-white-third py-[15px] px-[22px]
+                  text-[16px] font-medium outline-none transition-all duration-300 focus:border-color-main`}
                   />
                 </div>
                 <div className="flex w-full flex-col items-start justify-center gap-1">
@@ -1249,8 +1314,13 @@ export default function DashboardSettingsHomeExpert({}: Props) {
                     name="training"
                     id="training"
                     placeholder="Eğitim Geçmişi"
-                    className="w-full rounded-[20px] border-[1px] border-color-dark-primary border-opacity-10 bg-color-white-third py-[15px] px-[22px]
-                text-[16px] font-medium outline-none transition-all duration-300 focus:border-color-main"
+                    className={`w-full rounded-[20px] border-[1px] ${
+                      authExpertObject?.expert_training !== undefined &&
+                      authExpertObject?.expert_training !== ""
+                        ? "border-color-dark-primary border-opacity-10"
+                        : "border-color-danger-primary border-opacity-100"
+                    } bg-color-white-third py-[15px] px-[22px]
+                  text-[16px] font-medium outline-none transition-all duration-300 focus:border-color-main`}
                   />
                 </div>
                 <div className="flex w-full flex-col items-start justify-center gap-1">
@@ -1268,8 +1338,13 @@ export default function DashboardSettingsHomeExpert({}: Props) {
                     name="experience"
                     id="experience"
                     placeholder="Tecrübeler"
-                    className="w-full rounded-[20px] border-[1px] border-color-dark-primary border-opacity-10 bg-color-white-third py-[15px] px-[22px]
-                text-[16px] font-medium outline-none transition-all duration-300 focus:border-color-main"
+                    className={`w-full rounded-[20px] border-[1px] ${
+                      authExpertObject?.expert_experience !== undefined &&
+                      authExpertObject?.expert_experience !== ""
+                        ? "border-color-dark-primary border-opacity-10"
+                        : "border-color-danger-primary border-opacity-100"
+                    } bg-color-white-third py-[15px] px-[22px]
+                  text-[16px] font-medium outline-none transition-all duration-300 focus:border-color-main`}
                   />
                 </div>
                 <div className="flex items-end justify-center gap-4">
@@ -1304,7 +1379,14 @@ export default function DashboardSettingsHomeExpert({}: Props) {
 
               <div className="flex w-full flex-col items-start justify-start gap-4">
                 <div className="flex w-full flex-col items-start justify-start gap-10 md:flex-row">
-                  <div className="relative h-[200px] min-w-[200px] rounded-[20px]">
+                  <div
+                    className={`relative h-[200px] min-w-[200px] rounded-[20px] border-[1px] border-solid ${
+                      authExpertObject?.expert_avatar_path !== undefined &&
+                      authExpertObject.expert_avatar_path !== ""
+                        ? "border-color-dark-primary border-opacity-10"
+                        : "border-color-danger-primary border-opacity-100"
+                    }`}
+                  >
                     {profileImageBase64 ? (
                       <img
                         src={`data:image/jpeg;base64,${profileImageBase64}`}
@@ -1324,8 +1406,13 @@ export default function DashboardSettingsHomeExpert({}: Props) {
                     >
                       <label
                         htmlFor="pp"
-                        className="rounded-full border-[1px] border-solid border-color-dark-primary border-opacity-10
-                  bg-color-white p-2 shadow-lg hover:cursor-pointer"
+                        className={`rounded-full border-[1px] border-solid ${
+                          authExpertObject?.expert_avatar_path !== undefined &&
+                          authExpertObject.expert_avatar_path !== ""
+                            ? "border-color-dark-primary border-opacity-10"
+                            : "border-color-danger-primary border-opacity-100"
+                        }
+                        bg-color-white p-2 shadow-lg hover:cursor-pointer`}
                       >
                         <MdModeEdit className="text-[18px] text-color-main" />
                       </label>
@@ -1382,6 +1469,41 @@ export default function DashboardSettingsHomeExpert({}: Props) {
                     </p>
                   </div>
                 </div>
+                {authExpertObject?.expert_name !== undefined &&
+                authExpertObject?.expert_name !== "" &&
+                authExpertObject?.expert_surname !== undefined &&
+                authExpertObject?.expert_surname !== "" &&
+                authExpertObject?.expert_email !== undefined &&
+                authExpertObject?.expert_email !== "" &&
+                authExpertObject?.expert_title !== undefined &&
+                authExpertObject?.expert_expertise !== undefined &&
+                authExpertObject?.expert_physical_location !== undefined &&
+                authExpertObject?.expert_physical_location !== "" &&
+                authExpertObject?.expert_session_fee !== undefined &&
+                authExpertObject?.expert_session_fee !== "" &&
+                authExpertObject?.expert_tel !== undefined &&
+                authExpertObject?.expert_tel !== "" &&
+                authExpertObject?.expert_operating_type !== undefined &&
+                authExpertObject?.expert_about_me !== undefined &&
+                authExpertObject?.expert_about_me !== "" &&
+                authExpertObject?.expert_city !== undefined &&
+                authExpertObject?.expert_city !== "" &&
+                authExpertObject?.expert_country !== undefined &&
+                authExpertObject?.expert_country !== "" &&
+                authExpertObject?.expert_postal_code !== undefined &&
+                authExpertObject?.expert_postal_code !== "" &&
+                authExpertObject?.expert_avatar_path !== undefined &&
+                authExpertObject?.expert_avatar_path !== "" &&
+                authExpertObject?.expert_appointment_schedule !== undefined ? (
+                  <Link to="/experts/dashboard/settings/profile-preview">
+                    <button className="rounded-[5px] bg-color-main px-3 py-1">
+                      <h5 className="text-color-white">Profil Önizlemesi</h5>
+                    </button>
+                  </Link>
+                ) : (
+                  <div className="hidden"></div>
+                )}
+
                 <div className="flex flex-col items-start justify-start gap-2">
                   <div className="flex items-center justify-center gap-1">
                     <h1 className="font-bold text-color-dark-primary opacity-50">

@@ -10,6 +10,7 @@ import DashboardHeaderPatientMobileNavbar from "./DashboardHeaderPatientMobileNa
 import DashboardHomePatient from "./DashboardHomePatient/DashboardHomePatient";
 import DashboardNotFoundPagePatient from "./DashboardNotFoundPagePatient/DashboardNotFoundPagePatient";
 import DashboardSettingsPatient from "./DashboardSettingsPatient/DashboardSettingsPatient";
+import DashboardAppointmentDetail from "./DashboardAppointmentsPatient/DashboardAppointment/DashboardAppointmentDetail/DashboardAppointmentDetail";
 
 type Props = {};
 
@@ -29,8 +30,12 @@ export default function Dashboard({}: Props) {
             path="/appointments"
             element={<DashboardAppointmentsPatient />}
           />
+          <Route
+            path="/appointments/:id"
+            element={<DashboardAppointmentDetail />}
+          />
           <Route path="/settings/*" element={<DashboardSettingsPatient />} />
-        <Route path="*" element={<DashboardNotFoundPagePatient />} />
+          <Route path="*" element={<DashboardNotFoundPagePatient />} />
         </Routes>
       </div>
       <Drawer

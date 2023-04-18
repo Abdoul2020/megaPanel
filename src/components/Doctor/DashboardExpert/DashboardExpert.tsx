@@ -16,6 +16,8 @@ import DashboardHeaderExpertMobileNavbar from "./DashboardHeaderExpertMobileNavb
 import DashboardHomeExpert from "./DashboardHomeExpert/DashboardHomeExpert";
 import DashboardNotFoundPageExpert from "./DashboardNotFoundPageExpert/DashboardNotFoundPageExpert";
 import DashboardSettingsExpert from "./DashboardSettingsExpert/DashboardSettingsExpert";
+import DashboardAppointmentDetailExpert from "./DashboardAppointmentsExpert/DashboardAppointmentExpert/DashboardAppointmentDetailExpert/DashboardAppointmentDetailExpert";
+import DashboardAppointmentMeDetailExpert from "./DashboardAppointmentsMeExpert/DashboardAppointmentMeExpert/DashboardAppointmentMeDetailExpert/DashboardAppointmentMeDetailExpert";
 
 type Props = {};
 
@@ -58,8 +60,16 @@ export default function DashboardExpert({}: Props) {
             element={<DashboardAppointmentsExpert />}
           />
           <Route
+            path="/appointments/:id"
+            element={<DashboardAppointmentDetailExpert/>}
+          />
+          <Route
             path="/myappointments"
             element={<DashboardAppointmentsMeExpert />}
+          />
+          <Route
+            path="/myappointments/:id"
+            element={<DashboardAppointmentMeDetailExpert />}
           />
           <Route
             path="/appointments-chart"

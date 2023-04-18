@@ -149,11 +149,11 @@ export default function BranchSection(props: Props) {
                     className="h-20 w-20"
                   />
                   <h1 className="flex text-center font-bold text-color-dark-primary">
-                    Aile Dizimi
+                    Psikodrama
                   </h1>
                 </div>
                 <div className="w-full px-2 pb-2">
-                  <Link to="/search?online=true&query_text=Aile Dizimi">
+                  <Link to="/search?online=true&query_text=Psikodrama">
                     <button className="w-full rounded-[15px] bg-color-secondary py-2 transition-all duration-100 hover:opacity-80">
                       <h1 className="font-bold text-color-white">{`${
                         branches.find(
@@ -306,35 +306,6 @@ export default function BranchSection(props: Props) {
                         ) !== undefined
                           ? branches.find(
                               (branch) => branch.branch_title === "Psikiyatr"
-                            )?.branch_expert_count
-                          : 0
-                      } Uzman`}</h1>
-                    </button>
-                  </Link>
-                </div>
-              </div>
-            </li>
-            <li className="flex w-[250px] flex-col items-center justify-center gap-6 px-4">
-              <div className="flex flex-col items-center justify-center rounded-[25px] bg-color-white">
-                <div className="flex flex-col items-center justify-center gap-4 p-8 px-6">
-                  <img
-                    src={require("../../../assets/images/sifacilik.webp")}
-                    alt=""
-                    className="h-20 w-20"
-                  />
-                  <h1 className="flex text-center font-bold text-color-dark-primary">
-                    Şifacılık
-                  </h1>
-                </div>
-                <div className="w-full px-2 pb-2">
-                  <Link to="/search?online=true&query_text=Şifacılık">
-                    <button className="w-full rounded-[15px] bg-color-secondary py-2 transition-all duration-100 hover:opacity-80">
-                      <h1 className="font-bold text-color-white">{`${
-                        branches.find(
-                          (branch) => branch.branch_title === "Şifacılık"
-                        ) !== undefined
-                          ? branches.find(
-                              (branch) => branch.branch_title === "Şifacılık"
                             )?.branch_expert_count
                           : 0
                       } Uzman`}</h1>

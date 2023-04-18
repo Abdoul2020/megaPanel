@@ -34,19 +34,19 @@ export default function DashboardAppointmentsExpert({}: Props) {
     fetchData();
   }, [authExpertObject]);
   return (
-    <div className="w-full flex flex-col justify-start items-start gap-4">
-      <div className="w-full flex justify-start items-center gap-2">
-        <h1 className="text-color-dark-primary font-bold">
-          Randevularım{" "}
-          <span className="text-color-dark-primary font-bold opacity-50">
+    <div className="flex w-full flex-col items-start justify-start gap-4">
+      <div className="flex w-full items-center justify-start gap-2">
+        <h1 className="font-bold text-color-dark-primary">
+          Randevularım
+          <span className="font-bold text-color-dark-primary opacity-50">
             (verdiğim)
           </span>
         </h1>
-        <HiArrowUturnRight className="text-color-dark-primary font-bold opacity-80 text-[24px]" />
+        <HiArrowUturnRight className="text-[24px] font-bold text-color-dark-primary opacity-80" />
       </div>
       {authExpertAppointments.length !== 0 ? (
-        <div className="w-full min-h-[85vh] flex flex-col justify-start items-start gap-10 shadow-lg bg-color-white rounded-[25px] p-5">
-          {authExpertAppointments.map((appointment) => {
+        <div className="flex min-h-[85vh] w-full flex-col items-start justify-start gap-5 rounded-[25px] bg-color-white p-5 shadow-lg">
+          {authExpertAppointments.map((appointment: any) => {
             return (
               <DashboardAppointmentExpert
                 key={appointment._id}

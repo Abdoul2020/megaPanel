@@ -375,15 +375,16 @@ export default function Checkout({}: Props) {
     }
   };
   const handlePurchaseState = (pState: any) => {
-    if (purchaseState > pState) {
-      setPurchaseState((value) => value - 1);
-    }
+    // let increase: boolean = false;
+    // if (purchaseState > pState) increase = false;
+    // else increase = true;
+    // if(purchaseState)
   };
   return (
     <div className="flex w-full flex-col items-center justify-center bg-color-white-fourth">
-      <div className="flex min-h-[100vh] w-full items-center justify-center bg-color-white-secondary pt-[90px]">
-        <div className="flex w-2/3 flex-col items-center justify-start">
-          <div className="flex flex-col items-start justify-start gap-2">
+      <div className="flex min-h-[100vh] w-full items-center justify-center bg-color-white-secondary py-10 pt-[90px]">
+        <div className="flex w-full flex-col items-center justify-start px-5 lg:w-2/3 lg:px-0">
+          <div className="flex w-full flex-col items-start justify-start gap-2">
             <div
               className="flex items-center justify-center gap-2 opacity-80 hover:cursor-pointer hover:opacity-80"
               onClick={() => navigate(-1)}
@@ -404,7 +405,7 @@ export default function Checkout({}: Props) {
                 ></div>
               </div>
               <div className="absolute left-0 flex h-full w-full items-center justify-start px-6">
-                <div className="border-secondary-main h-[10px] w-full border-solid bg-color-white"></div>
+                <div className="border-secondary-main h-[8px] w-full border-solid bg-color-white"></div>
               </div>
               <div
                 className="relative z-10 flex cursor-pointer flex-col items-center justify-center gap-2"
@@ -476,7 +477,7 @@ export default function Checkout({}: Props) {
                 </h5>
               </div>
             </div> */}
-            <div className="flex min-w-[500px] items-center justify-center">
+            <div className="flex w-full items-center justify-center">
               <div className="flex h-full w-[700px] flex-col items-start justify-start gap-8 rounded-[25px] bg-color-white p-6">
                 <h1 className="text-xl font-bold text-color-dark-primary">
                   Randevu Özeti
@@ -622,7 +623,7 @@ export default function Checkout({}: Props) {
                 </button>
               </div>
               {/* {purchaseState === 0 ? (
-                <div className="flex h-full w-[700px] flex-col items-start justify-start gap-8 rounded-[25px] bg-color-white p-6">
+                <div className="flex h-full flex-col items-start justify-start gap-8 rounded-[25px] bg-color-white p-6">
                   <h1 className="text-xl font-bold text-color-dark-primary">
                     Randevu Özeti
                   </h1>
@@ -649,7 +650,7 @@ export default function Checkout({}: Props) {
                             {`${expert?.expert_title.title_title} ${expert?.expert_name}`}
                           </h1>
                         </Link>
-                        <ul className="flex max-w-[400px] flex-wrap items-start justify-start gap-4 gap-y-0">
+                        <ul className="flex max-w-full flex-wrap items-start justify-start gap-4 gap-y-0">
                           {expert?.expert_branch.map((branch) => {
                             return (
                               <h1
@@ -749,7 +750,8 @@ export default function Checkout({}: Props) {
                     </div>
                   </div>
                   <button
-                    onClick={() => setPurchaseState(1)}
+                    // onClick={() => setPurchaseState(1)}
+                    onClick={handleSubmit}
                     className="flex w-full items-center justify-center gap-2 rounded-[15px] bg-color-third
          py-4 px-8 transition-all duration-300 hover:cursor-pointer hover:opacity-80"
                   >
@@ -768,7 +770,7 @@ export default function Checkout({}: Props) {
                   </button>
                 </div>
               ) : purchaseState === 1 ? (
-                <div className="flex w-[700px] flex-col items-start justify-center rounded-[25px] bg-color-white p-6">
+                <div className="flex w-full flex-col items-start justify-center rounded-[25px] bg-color-white p-6 lg:w-max">
                   <h1 className="text-xl font-bold text-color-dark-primary">
                     Kart Bilgisi
                   </h1>
@@ -777,10 +779,10 @@ export default function Checkout({}: Props) {
                     onSubmit={handleSubmit}
                   >
                     <div
-                      className="grid w-full grid-cols-2 gap-10 border-b-[1px] border-solid
-                   border-color-dark-primary border-opacity-10 py-10"
+                      className="flex w-full flex-col items-start justify-start gap-10 border-b-[1px] border-solid border-color-dark-primary
+                   border-opacity-10 py-10 lg:flex-row"
                     >
-                      <div className="flex w-full flex-col items-start justify-between gap-5">
+                      <div className="order-2 flex w-full flex-col items-start justify-between gap-5 lg:order-1">
                         <div className="flex w-full flex-col items-start justify-center gap-1">
                           <label
                             htmlFor="email"
@@ -835,7 +837,7 @@ export default function Checkout({}: Props) {
                         />
                       </div>
                     </div>
-                    <div className="grid w-full grid-cols-2 gap-10 py-10">
+                    <div className="flex w-full flex-col items-start justify-start gap-5 py-10 lg:flex-row">
                       <div className="flex w-full flex-col items-start justify-center gap-1">
                         <label
                           htmlFor="led"
