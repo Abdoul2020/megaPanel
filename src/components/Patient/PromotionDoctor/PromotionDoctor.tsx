@@ -12,7 +12,7 @@ export default function PromotionDoctor({}: Props) {
           <div className="flex flex-col items-start justify-center gap-4">
             <div className="flex flex-col items-start justify-center">
               <h1 className="text-3xl font-bold text-color-dark-primary">
-                Uzmanlar için Megaverse2!
+                Uzmanlar için Megaverse!
               </h1>
             </div>
             <p className="text-color-dark-primary">
