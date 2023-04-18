@@ -6,6 +6,7 @@ import AboutFaq from "./AboutFaq/AboutFaq";
 import AboutHeader from "./AboutHeader/AboutHeader";
 import AboutHome from "./AboutHome/AboutHome";
 import AboutMembershipAggreement from "./AboutMembershipAggreement/AboutMembershipAggreement";
+import AboutClientMembershipAggreement from "./AboutClientMembershipAggreement/AboutClientMembershipAggreement";
 
 type Props = {};
 
@@ -39,6 +40,10 @@ export default function AboutPage({}: Props) {
               <Route
                 path="experts/membership-agreement"
                 element={<AboutMembershipAggreement />}
+              />
+              <Route
+                path="clients/membership-agreement"
+                element={<AboutClientMembershipAggreement />}
               />
               <Route path="*" element={<NotFoundPage />} />
             </Routes>

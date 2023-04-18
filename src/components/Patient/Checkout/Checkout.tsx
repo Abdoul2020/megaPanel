@@ -208,11 +208,11 @@ export default function Checkout({}: Props) {
     return realDate;
   };
 
-  const handleSubmit = (e: any) => {
+  const handleSubmit = () => {
     if (authObject === undefined && authExpertObject === undefined) {
       navigate("/login");
     }
-    e.preventDefault();
+    // e.preventDefault();
     async function fetchData() {
       const token = getCookie("m_t");
       const body: CreateAppointmentDto = {
@@ -392,7 +392,7 @@ export default function Checkout({}: Props) {
               <BsArrowLeft className="text-xl text-color-main" />
               <h1 className="text-lg font-bold text-color-main">Geri Dön</h1>
             </div>
-            <div className="relative flex w-full items-center justify-between px-6 py-6 pb-10">
+            {/* <div className="relative flex w-full items-center justify-between px-6 py-6 pb-10">
               <div className="absolute left-0 z-10 flex h-full w-full items-center justify-start px-6">
                 <div
                   className={`h-[8px] bg-color-secondary ${
@@ -476,9 +476,153 @@ export default function Checkout({}: Props) {
                   Ödeme Yöntemi
                 </h5>
               </div>
-            </div>
+            </div> */}
             <div className="flex w-full items-center justify-center">
-              {purchaseState === 0 ? (
+              <div className="flex h-full w-[700px] flex-col items-start justify-start gap-8 rounded-[25px] bg-color-white p-6">
+                <h1 className="text-xl font-bold text-color-dark-primary">
+                  Randevu Özeti
+                </h1>
+                <div className="flex w-full flex-col items-start justify-start">
+                  <div className="flex w-full items-start justify-start gap-4">
+                    <div className="h-[75px] w-[75px] overflow-hidden rounded-[15px]">
+                      {profileImageBase64 ? (
+                        <img
+                          src={`data:image/jpeg;base64,${profileImageBase64}`}
+                          alt=""
+                          className="h-full w-full rounded-[20px] transition-all duration-300 hover:scale-110"
+                        />
+                      ) : (
+                        <img
+                          src={require("../../../assets/images/doc_pp.jpg")}
+                          alt=""
+                          className="h-full w-full rounded-[20px]"
+                        />
+                      )}
+                    </div>
+                    <div className="flex flex-col items-start justify-start">
+                      <Link to={`/doctors/${expert?._id}`}>
+                        <h1 className="text-center text-lg font-bold text-color-dark-primary transition-all duration-300 hover:cursor-pointer hover:text-color-main">
+                          {`${expert?.expert_title.title_title} ${expert?.expert_name}`}
+                        </h1>
+                      </Link>
+                      <ul className="flex max-w-[400px] flex-wrap items-start justify-start gap-4 gap-y-0">
+                        {expert?.expert_branch.map((branch) => {
+                          return (
+                            <h1
+                              className="font-bold text-color-dark-primary opacity-50"
+                              key={branch._id}
+                            >
+                              {branch.branch_title}
+                            </h1>
+                          );
+                        })}
+                      </ul>
+                    </div>
+                  </div>
+                  <div
+                    className="grid-center grid w-full grid-cols-2 place-items-center gap-4 border-b-[1px] border-solid border-color-dark-primary
+           border-opacity-10 py-10"
+                  >
+                    <div className="flex w-full items-center justify-start">
+                      <div className="flex flex-col items-start justify-center gap-2">
+                        <div className="flex items-center justify-center gap-1">
+                          <AiFillCalendar className="text-[20px] text-color-main" />
+                          <h1 className="text-color-dark-primary">Tarih</h1>
+                        </div>
+                        {appointmentDate ? (
+                          <h1 className="text-color-dark-primary opacity-50">
+                            {`${appointmentDate?.getDate()} ${toMonthTr(
+                              months_string[appointmentDate?.getMonth()]
+                            )} ${appointmentDate?.getFullYear()}`}
+                          </h1>
+                        ) : (
+                          <div></div>
+                        )}
+                      </div>
+                    </div>
+                    <div className="flex w-full items-center justify-start">
+                      <div className="flex flex-col items-start justify-center gap-2">
+                        <div className="flex items-center justify-center gap-1">
+                          <AiFillClockCircle className="text-[20px] text-color-main" />
+                          <h1 className="text-color-dark-primary">Saat</h1>
+                        </div>
+                        {appointmentDate ? (
+                          <h1 className="text-color-dark-primary opacity-50">
+                            {`${
+                              String(appointmentDate?.getHours()).length === 1
+                                ? `0${appointmentDate?.getHours()}`
+                                : String(appointmentDate?.getHours())
+                            }:${
+                              String(appointmentDate?.getMinutes()).length === 1
+                                ? `0${appointmentDate?.getMinutes()}`
+                                : String(appointmentDate?.getMinutes())
+                            }`}
+                          </h1>
+                        ) : (
+                          <div></div>
+                        )}
+                      </div>
+                    </div>
+                    <div className="flex w-full items-center justify-start">
+                      <div className="flex flex-col items-start justify-center gap-2">
+                        <div className="flex items-center justify-center gap-1">
+                          <MdPeopleAlt className="text-[20px] text-color-main" />
+                          <h1 className="text-color-dark-primary">
+                            Seans türü
+                          </h1>
+                        </div>
+                        <h1 className="text-color-dark-primary opacity-50">
+                          {online ? "Online" : "Yüz yüze"}
+                        </h1>
+                      </div>
+                    </div>
+                    <div className="flex w-full items-center justify-start">
+                      <div className="flex flex-col items-start justify-center gap-2">
+                        <div className="flex items-center justify-center gap-1">
+                          <AiOutlineFieldTime className="text-[20px] text-color-main" />
+                          <h1 className="text-color-dark-primary">
+                            Seans süresi
+                          </h1>
+                        </div>
+                        <h1 className="text-color-dark-primary opacity-50">
+                          {
+                            expert?.expert_appointment_schedule
+                              .appointment_duration
+                          }{" "}
+                          dk.
+                        </h1>
+                      </div>
+                    </div>
+                  </div>
+                  {/* <div className="flex w-full items-center justify-between pt-5">
+                    <h1 className="text-lg font-bold text-color-dark-primary">
+                      Toplam Tutar
+                    </h1>
+                    <h1 className="text-3xl text-color-dark-primary">
+                      {expert?.expert_session_fee}
+                    </h1>
+                  </div> */}
+                </div>
+                <button
+                  onClick={() => handleSubmit()}
+                  className="flex w-full items-center justify-center gap-2 rounded-[15px] bg-color-third
+         py-4 px-8 transition-all duration-300 hover:cursor-pointer hover:opacity-80"
+                >
+                  {loader ? (
+                    <div className="animate-spin">
+                      <BiLoaderAlt className="text-[24px] text-color-white text-opacity-80" />
+                    </div>
+                  ) : (
+                    <div className="flex items-center justify-center gap-2">
+                      <h1 className="font-bold text-color-white-secondary">
+                        Randevu Al
+                      </h1>
+                      <BsArrowRight className="text-[24px] text-color-white-secondary" />
+                    </div>
+                  )}
+                </button>
+              </div>
+              {/* {purchaseState === 0 ? (
                 <div className="flex h-full flex-col items-start justify-start gap-8 rounded-[25px] bg-color-white p-6">
                   <h1 className="text-xl font-bold text-color-dark-primary">
                     Randevu Özeti
@@ -744,6 +888,7 @@ export default function Checkout({}: Props) {
               ) : (
                 <div></div>
               )}
+             */}
             </div>
           </div>
         </div>

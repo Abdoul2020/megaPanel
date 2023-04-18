@@ -172,17 +172,17 @@ export default function Footer({}: Props) {
               </h1>
               <ul className="flex flex-col items-start justify-start gap-2">
                 <Link to="/about">
-                  <li className="text-base text-color-dark-primary opacity-50">
+                  <li className="text-lg text-color-dark-primary opacity-50">
                     Hakkımızda
                   </li>
                 </Link>
                 <Link to="/about/contact">
-                  <li className="text-base text-color-dark-primary opacity-50">
+                  <li className="text-lg text-color-dark-primary opacity-50">
                     İletişim
                   </li>
                 </Link>
                 <Link to="/about/faq">
-                  <li className="text-base text-color-dark-primary opacity-50">
+                  <li className="text-lg text-color-dark-primary opacity-50">
                     S.S.S
                   </li>
                 </Link>
@@ -208,10 +208,12 @@ export default function Footer({}: Props) {
                 Danışanlar için
               </h1>
               <ul className="flex flex-col items-start justify-start gap-2">
-                <li className="text-base text-color-dark-primary opacity-50">
-                  Danışan Üyelik Sözleşmesi
-                </li>
-                <li className="text-base text-color-dark-primary opacity-50">
+                <Link to="about/clients/membership-agreement">
+                  <li className="text-lg text-color-dark-primary opacity-50">
+                    Danışan Hizmet Sözleşmesi
+                  </li>
+                </Link>
+                <li className="text-lg text-color-dark-primary opacity-50">
                   Danışan Aydınlatma Metni
                 </li>
               </ul>
@@ -222,11 +224,11 @@ export default function Footer({}: Props) {
               </h1>
               <ul className="flex flex-col items-start justify-start gap-2">
                 <Link to="about/experts/membership-agreement">
-                  <li className="text-base text-color-dark-primary opacity-50">
-                    Uzman Üyelik Sözleşmesi
+                  <li className="text-lg text-color-dark-primary opacity-50">
+                    Uzman Hizmet Sözleşmesi
                   </li>
                 </Link>
-                <li className="text-base text-color-dark-primary opacity-50">
+                <li className="text-lg text-color-dark-primary opacity-50">
                   Uzman Aydınlatma Metni
                 </li>
               </ul>

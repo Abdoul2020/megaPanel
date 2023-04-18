@@ -6,7 +6,7 @@ export default function AboutMembershipAggreement({}: Props) {
   return (
     <div className="flex flex-col items-start justify-start gap-5">
       <h1 className="text-2xl font-bold text-color-dark-primary">
-        Uzman Üyelik Sözleşmesi
+        Uzman Hizmet Sözleşmesi
       </h1>
       <div className="flex flex-col items-start justify-start gap-8">
         <div className="flex flex-col items-start justify-start gap-2 text-color-dark-primary">
@@ -365,7 +365,7 @@ export default function AboutMembershipAggreement({}: Props) {
           </p>
         </div>
       </div>
-      <h1>Son güncellenme tarihi: 17 Mart 2023</h1>
+      <h1>Son güncellenme tarihi: 17.03.2023</h1>
     </div>
   );
 }
